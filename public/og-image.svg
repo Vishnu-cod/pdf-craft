@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#030712"/>
+      <stop offset="50%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="50%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+    <linearGradient id="badgeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="60" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  
+  <!-- Subtle Glow Orbs -->
+  <circle cx="250" cy="200" r="280" fill="#4f46e5" opacity="0.25" filter="url(#glow)"/>
+  <circle cx="950" cy="450" r="260" fill="#10b981" opacity="0.20" filter="url(#glow)"/>
+
+  <!-- Border -->
+  <rect x="20" y="20" width="1160" height="590" rx="32" fill="none" stroke="#312e81" stroke-width="2" opacity="0.6"/>
+
+  <!-- Logo Icon -->
+  <rect x="100" y="90" width="72" height="72" rx="20" fill="#4f46e5"/>
+  <text x="136" y="142" font-family="system-ui, -apple-system, sans-serif" font-size="40" font-weight="900" fill="#ffffff" text-anchor="middle">P</text>
+
+  <!-- Brand Title -->
+  <text x="190" y="140" font-family="system-ui, -apple-system, sans-serif" font-size="44" font-weight="900" fill="#ffffff">PDF<tspan fill="#818cf8">Craft</tspan></text>
+  
+  <!-- Trust Badge -->
+  <rect x="390" y="106" width="220" height="38" rx="19" fill="#064e3b" stroke="#10b981" stroke-width="1.5"/>
+  <text x="500" y="130" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#6ee7b7" text-anchor="middle">🛡️ 100% Client-Side Privacy</text>
+
+  <!-- Big Hero Value Proposition -->
+  <text x="100" y="260" font-family="system-ui, -apple-system, sans-serif" font-size="54" font-weight="900" fill="#ffffff">
+    All The Pro PDF Tools.
+  </text>
+  <text x="100" y="330" font-family="system-ui, -apple-system, sans-serif" font-size="54" font-weight="900" fill="url(#primaryGrad)">
+    Zero Paywalls. Zero Cloud Leaks.
+  </text>
+
+  <!-- Subtitle -->
+  <text x="100" y="390" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="400" fill="#94a3b8">
+    Edit &amp; sign documents, compress strictly under 200 KB, scan contracts with AI,
+  </text>
+  <text x="100" y="422" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="400" fill="#94a3b8">
+    and craft ATS-verified resumes in 60 seconds — completely in browser memory.
+  </text>
+
+  <!-- 4 Feature Pills -->
+  <g transform="translate(100, 480)">
+    <!-- Pill 1 -->
+    <rect x="0" y="0" width="220" height="52" rx="16" fill="#1e1b4b" stroke="#4338ca" stroke-width="1.5"/>
+    <text x="110" y="32" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#c7d2fe" text-anchor="middle">✍️ Private Sign &amp; Edit</text>
+
+    <!-- Pill 2 -->
+    <rect x="240" y="0" width="240" height="52" rx="16" fill="#064e3b" stroke="#059669" stroke-width="1.5"/>
+    <text x="360" y="32" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#6ee7b7" text-anchor="middle">🗜️ Target Squeezer &lt;200KB</text>
+
+    <!-- Pill 3 -->
+    <rect x="500" y="0" width="230" height="52" rx="16" fill="#4c0519" stroke="#be123c" stroke-width="1.5"/>
+    <text x="615" y="32" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#fda4af" text-anchor="middle">🚨 AI Contract Radar</text>
+
+    <!-- Pill 4 -->
+    <rect x="750" y="0" width="240" height="52" rx="16" fill="#2e1065" stroke="#7e22ce" stroke-width="1.5"/>
+    <text x="870" y="32" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#d8b4fe" text-anchor="middle">🎓 60s ATS Resume Studio</text>
+  </g>
+</svg>

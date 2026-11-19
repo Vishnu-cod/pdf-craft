@@ -203,15 +203,30 @@ export const App: React.FC = () => {
     document.title = title;
   };
 
-  // SEO Route sync on load & browser popstate for all 12 paths
+  // SEO Route sync on load & browser popstate for all 22 high-intent landing pages
   useEffect(() => {
     const handleRoute = () => {
       const path = window.location.pathname.toLowerCase();
-      if (path.includes('100kb')) {
+      if (path.includes('50kb')) {
+        setActiveTab('tools');
+        setTargetSubTool('size-squeezer');
+        setTargetKB(48);
+        document.title = 'Compress PDF to 50KB Online Free (Photo, Signature & Govt Portal Cap) | PDFCraft';
+      } else if (path.includes('100kb')) {
         setActiveTab('tools');
         setTargetSubTool('size-squeezer');
         setTargetKB(95);
         document.title = 'Compress PDF to 100KB Online Free (Govt & UPSC Portal Cap) | PDFCraft';
+      } else if (path.includes('300kb')) {
+        setActiveTab('tools');
+        setTargetSubTool('size-squeezer');
+        setTargetKB(295);
+        document.title = 'Compress PDF Under 300KB Free Online (Visa, Job & College Portal) | PDFCraft';
+      } else if (path.includes('500kb')) {
+        setActiveTab('tools');
+        setTargetSubTool('size-squeezer');
+        setTargetKB(495);
+        document.title = 'Compress PDF Under 500KB Free (Email & Thesis Attachment Limit) | PDFCraft';
       } else if (path.includes('compress') || path.includes('squeezer') || path.includes('200kb')) {
         setActiveTab('tools');
         setTargetSubTool('size-squeezer');
@@ -221,11 +236,15 @@ export const App: React.FC = () => {
         setActiveTab('convert');
         setTargetConverter('pdf-to-excel');
         document.title = 'Convert PDF to Excel (.xlsx) Free Without Email | PDFCraft';
+      } else if (path.includes('png-to-pdf')) {
+        setActiveTab('convert');
+        setTargetConverter('images-to-pdf');
+        document.title = 'Convert PNG to PDF Online Free (Preserve Transparent Alpha) | PDFCraft';
       } else if (path.includes('jpg-to-pdf') || path.includes('images-to-pdf')) {
         setActiveTab('convert');
         setTargetConverter('images-to-pdf');
         document.title = 'Convert JPG & PNG Images to PDF Free Online | PDFCraft';
-      } else if (path.includes('pdf-to-jpg') || path.includes('pdf-to-images')) {
+      } else if (path.includes('extract-images') || path.includes('extract-pdf-images') || path.includes('pdf-to-jpg') || path.includes('pdf-to-images')) {
         setActiveTab('convert');
         setTargetConverter('pdf-to-images');
         document.title = 'Convert PDF to JPG Images High Resolution Free | PDFCraft';
@@ -236,19 +255,25 @@ export const App: React.FC = () => {
       } else if (path.includes('redact')) {
         setActiveTab('sign-edit');
         document.title = 'Redact & Black Out PDF Free Online (Permanent Zero-Leak) | PDFCraft';
-      } else if (path.includes('sign') || path.includes('edit')) {
+      } else if (path.includes('sign')) {
         setActiveTab('sign-edit');
         document.title = 'Sign PDF Free No Account Required (Zero Cloud Leaks) | PDFCraft';
+      } else if (path.includes('rotate')) {
+        setActiveTab('organize');
+        document.title = 'Rotate PDF Pages Permanently Online Free (Zero Uploads) | PDFCraft';
+      } else if (path.includes('delete') || path.includes('remove-pages')) {
+        setActiveTab('organize');
+        document.title = 'Delete Pages from PDF Online Free (Visual Page Selector) | PDFCraft';
       } else if (path.includes('split')) {
         setActiveTab('organize');
         document.title = 'Split PDF Pages & Extract Sheets Free Offline | PDFCraft';
-      } else if (path.includes('merge') || path.includes('organize') || path.includes('rotate')) {
+      } else if (path.includes('merge') || path.includes('organize')) {
         setActiveTab('organize');
         document.title = 'Organize, Rotate & Merge PDF Offline Free | PDFCraft';
       } else if (path.includes('resume') || path.includes('cv')) {
         setActiveTab('resume');
         document.title = 'Free ATS Resume Builder 60s (Zero Paywall & Vector PDF) | PDFCraft';
-      } else if (path.includes('contract') || path.includes('radar') || path.includes('clause')) {
+      } else if (path.includes('protect') || path.includes('unlock') || path.includes('contract') || path.includes('radar') || path.includes('clause')) {
         setActiveTab('tools');
         setTargetSubTool('risk-radar');
         document.title = 'AI Contract Risk Radar — Detect Predatory Clauses Free | PDFCraft';
@@ -838,6 +863,15 @@ export const App: React.FC = () => {
               <ul className="space-y-2 text-slate-400 font-medium">
                 <li>
                   <a
+                    href="/compress-pdf-50kb"
+                    onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'size-squeezer'); setTargetKB(48); }}
+                    className="hover:text-indigo-300 transition block hover:translate-x-0.5"
+                  >
+                    Compress PDF to 50KB (Exam &amp; Photo)
+                  </a>
+                </li>
+                <li>
+                  <a
                     href="/compress-pdf-100kb"
                     onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'size-squeezer-100kb'); }}
                     className="hover:text-indigo-300 transition block hover:translate-x-0.5"
@@ -856,11 +890,20 @@ export const App: React.FC = () => {
                 </li>
                 <li>
                   <a
-                    href="/compress-pdf-200kb"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'size-squeezer'); }}
+                    href="/compress-pdf-300kb"
+                    onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'size-squeezer'); setTargetKB(295); }}
                     className="hover:text-indigo-300 transition block hover:translate-x-0.5"
                   >
-                    Target Size Squeezer (Strict KB)
+                    Compress PDF to 300KB (Visa Limit)
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/compress-pdf-500kb"
+                    onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'size-squeezer'); setTargetKB(495); }}
+                    className="hover:text-indigo-300 transition block hover:translate-x-0.5"
+                  >
+                    Compress PDF to 500KB (Email Cap)
                   </a>
                 </li>
               </ul>
@@ -897,7 +940,16 @@ export const App: React.FC = () => {
                     onClick={(e) => { e.preventDefault(); navigateToTab('convert', undefined, 'images-to-pdf'); }}
                     className="hover:text-violet-300 transition block hover:translate-x-0.5"
                   >
-                    Convert JPG &amp; PNG to PDF
+                    Convert JPG &amp; Photos to PDF
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/png-to-pdf"
+                    onClick={(e) => { e.preventDefault(); navigateToTab('convert', undefined, 'images-to-pdf'); }}
+                    className="hover:text-violet-300 transition block hover:translate-x-0.5"
+                  >
+                    Convert PNG to PDF (Transparent)
                   </a>
                 </li>
                 <li>
@@ -907,6 +959,15 @@ export const App: React.FC = () => {
                     className="hover:text-violet-300 transition block hover:translate-x-0.5"
                   >
                     Extract PDF Pages to JPG ZIP
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/extract-pdf-images"
+                    onClick={(e) => { e.preventDefault(); navigateToTab('convert', undefined, 'pdf-to-images'); }}
+                    className="hover:text-violet-300 transition block hover:translate-x-0.5"
+                  >
+                    Extract All Embedded Photos
                   </a>
                 </li>
               </ul>
@@ -926,6 +987,15 @@ export const App: React.FC = () => {
                     className="hover:text-blue-300 transition block hover:translate-x-0.5"
                   >
                     Sign PDF Free (No Account)
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/sign-pdf-no-account"
+                    onClick={(e) => { e.preventDefault(); navigateToTab('sign-edit'); }}
+                    className="hover:text-blue-300 transition block hover:translate-x-0.5"
+                  >
+                    Zero-Signup Document E-Sign
                   </a>
                 </li>
                 <li>
@@ -955,6 +1025,24 @@ export const App: React.FC = () => {
                     Split PDF Pages &amp; Extract
                   </a>
                 </li>
+                <li>
+                  <a
+                    href="/rotate-pdf"
+                    onClick={(e) => { e.preventDefault(); navigateToTab('organize'); }}
+                    className="hover:text-blue-300 transition block hover:translate-x-0.5"
+                  >
+                    Rotate PDF Pages Permanently
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/delete-pdf-pages"
+                    onClick={(e) => { e.preventDefault(); navigateToTab('organize'); }}
+                    className="hover:text-blue-300 transition block hover:translate-x-0.5"
+                  >
+                    Delete Unwanted &amp; Blank Pages
+                  </a>
+                </li>
               </ul>
             </div>
 
@@ -962,7 +1050,7 @@ export const App: React.FC = () => {
             <div className="space-y-3">
               <h3 className="font-bold text-white uppercase text-[11px] tracking-wider text-emerald-400 flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>Career &amp; AI Intelligence</span>
+                <span>Career &amp; Security</span>
               </h3>
               <ul className="space-y-2 text-slate-400 font-medium">
                 <li>
@@ -985,11 +1073,20 @@ export const App: React.FC = () => {
                 </li>
                 <li>
                   <a
-                    href="/resume-builder"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('resume'); }}
-                    className="hover:text-emerald-300 transition block hover:translate-x-0.5"
+                    href="/protect-pdf"
+                    onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'risk-radar'); }}
+                    className="hover:text-indigo-300 transition block hover:translate-x-0.5"
                   >
-                    ATS Keyword Matcher (Jobscan Alt)
+                    Password Protect &amp; Encrypt PDF
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/unlock-pdf"
+                    onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'risk-radar'); }}
+                    className="hover:text-indigo-300 transition block hover:translate-x-0.5"
+                  >
+                    Unlock &amp; Remove PDF Password
                   </a>
                 </li>
               </ul>

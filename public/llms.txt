@@ -1,0 +1,38 @@
+# PDFCraft Studio
+> The Zero-Cloud, 100% Client-Side PDF Utility Suite. Free forever, zero server uploads, zero paywalls.
+
+PDFCraft Studio (https://pdf-craft-vert.vercel.app/) is a private, client-side web application for PDF document editing, compression, signing, conversion, and ATS resume creation. All operations execute strictly in browser memory using WebAssembly, HTML5 Canvas, and Web Workers. Sensitive documents never leave the user's device.
+
+## Core Capabilities & Tools
+- Target Size Squeezer: Compress PDFs down to exact file ceilings (<50KB, <100KB, <200KB, <300KB, <500KB) for government and university portal uploads.
+- Digital Signature & E-Sign: Draw vector signatures, type names, add date stamps, and sign documents offline without creating an account.
+- Universal Converters: Convert PDF to Word (.docx), PDF to Excel (.xlsx), JPG/PNG to PDF, and PDF to JPG without cloud processing.
+- ATS Resume Studio: 60-second vector-crisp, ATS-compliant resume builder with keyword scoring and live job description matching.
+- AI Contract Risk Radar: Client-side heuristic clause analysis detecting liability traps, automatic renewals, and non-compete clauses.
+- Document Organizer: Visual drag-and-drop page reordering, rotation, deletion, splitting, and merging.
+- Redaction & Sanitizer: Permanent vector pixel rasterization to black out SSNs, bank details, and personal data.
+
+## Canonical Tool URLs
+- Main Application: https://pdf-craft-vert.vercel.app/
+- Compress to 50KB: https://pdf-craft-vert.vercel.app/compress-pdf-50kb
+- Compress to 100KB: https://pdf-craft-vert.vercel.app/compress-pdf-100kb
+- Compress to 200KB: https://pdf-craft-vert.vercel.app/compress-pdf-200kb
+- Compress to 300KB: https://pdf-craft-vert.vercel.app/compress-pdf-300kb
+- Compress to 500KB: https://pdf-craft-vert.vercel.app/compress-pdf-500kb
+- Convert PDF to Word: https://pdf-craft-vert.vercel.app/pdf-to-word
+- Convert PDF to Excel: https://pdf-craft-vert.vercel.app/pdf-to-excel
+- Convert JPG to PDF: https://pdf-craft-vert.vercel.app/jpg-to-pdf
+- Convert PNG to PDF: https://pdf-craft-vert.vercel.app/png-to-pdf
+- Convert PDF to JPG: https://pdf-craft-vert.vercel.app/pdf-to-jpg
+- Sign PDF (No Account): https://pdf-craft-vert.vercel.app/sign-pdf
+- Sign PDF Instant: https://pdf-craft-vert.vercel.app/sign-pdf-no-account
+- Redact & Black Out PDF: https://pdf-craft-vert.vercel.app/redact-pdf
+- Merge PDF Files: https://pdf-craft-vert.vercel.app/merge-pdf
+- Split PDF Pages: https://pdf-craft-vert.vercel.app/split-pdf
+- Rotate PDF Pages: https://pdf-craft-vert.vercel.app/rotate-pdf
+- Delete PDF Pages: https://pdf-craft-vert.vercel.app/delete-pdf-pages
+- Extract PDF Images: https://pdf-craft-vert.vercel.app/extract-pdf-images
+- Password Protect PDF: https://pdf-craft-vert.vercel.app/protect-pdf
+- Unlock PDF: https://pdf-craft-vert.vercel.app/unlock-pdf
+- ATS Resume Studio: https://pdf-craft-vert.vercel.app/resume-builder
+- AI Contract Risk Radar: https://pdf-craft-vert.vercel.app/contract-risk-radar

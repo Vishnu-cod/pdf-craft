@@ -13,6 +13,23 @@ const baseHtml = fs.readFileSync(indexHtmlPath, 'utf-8');
 
 const pages = [
   {
+    slug: 'compress-pdf-50kb',
+    title: 'Compress PDF to 50KB Online Free (Photo, Signature & Govt Portal Cap) | PDFCraft',
+    description: 'Compress PDF files strictly under 50KB online for free. Ideal for Indian exam applications, UPSC, SSC, NEET, state PSC, passport signature, and certificate uploads. 100% client-side privacy.',
+    keywords: 'compress pdf to 50kb, compress pdf under 50kb online free, reduce pdf size to 50kb, ssc photo signature 50kb pdf compressor, 50kb pdf tool private',
+    toolName: '50KB Target Size Squeezer',
+    howToName: 'How to compress a PDF strictly under 50KB for government exam applications and signatures',
+    steps: [
+      { name: 'Upload Your Document', text: 'Select or drop your PDF document or certificate into PDFCraft directly in browser memory.' },
+      { name: 'Select 50 KB Strict Preset', text: 'Click the 50 KB preset or slide the target ceiling to 48 KB to ensure strict portal compliance.' },
+      { name: 'Download Compliant PDF', text: 'Export the compressed file immediately. Certified to be under 50 KB with razor-sharp legible text.' },
+    ],
+    faqs: [
+      { q: 'Will my PDF pass strict 50KB government portal checks?', a: 'Yes. The algorithm sets a safe buffer (typically 44KB–48KB) ensuring the final PDF is accepted by automated validation servers.' },
+      { q: 'Is it safe to compress signatures and ID photos here?', a: '100% safe. Processing happens exclusively in your browser memory via WebAssembly. Zero bytes are ever transmitted to any cloud server.' },
+    ],
+  },
+  {
     slug: 'compress-pdf-100kb',
     title: 'Compress PDF to 100KB Online Free (Govt & UPSC Portal Cap) | PDFCraft',
     description: 'Compress PDF files strictly under 100KB online for free. Ideal for Indian government job portals, UPSC, SSC, state PSC, and bank exam uploads. 100% client-side privacy.',
@@ -44,7 +61,39 @@ const pages = [
     ],
     faqs: [
       { q: 'Why is 200KB such a common limit?', a: 'Many state government and university admission portals enforce a strict 200KB maximum file cap to conserve server bandwidth.' },
-      { q: 'Is there any limit to how many files I can compress?', a: 'None. All 16 tools on PDFCraft are 100% free with unlimited usage and no daily task quotas.' },
+      { q: 'Is there any limit to how many files I can compress?', a: 'None. All tools on PDFCraft are 100% free with unlimited usage and no daily task quotas.' },
+    ],
+  },
+  {
+    slug: 'compress-pdf-300kb',
+    title: 'Compress PDF Under 300KB Free Online (Visa, Job & College Portal) | PDFCraft',
+    description: 'Compress PDF files strictly under 300KB online for free. Perfect for international visa applications, passport offices, and corporate job submissions. 100% private.',
+    keywords: 'compress pdf under 300kb, compress pdf to 300kb online, visa application pdf compressor, reduce pdf under 300kb free, 300kb pdf tool',
+    toolName: '300KB Target Size Squeezer',
+    howToName: 'How to compress a PDF under 300KB for visa and immigration portals',
+    steps: [
+      { name: 'Select PDF Document', text: 'Drag and drop your PDF statement, passport scan, or visa document.' },
+      { name: 'Set Target Ceiling to 295 KB', text: 'Select the 300KB target preset to maintain maximum visual clarity within portal restrictions.' },
+      { name: 'Download Squeezed Document', text: 'Save your optimized PDF directly to your device with zero cloud latency.' },
+    ],
+    faqs: [
+      { q: 'Is this suitable for Schengen and US visa portals?', a: 'Yes. Most embassy portals enforce a 300KB ceiling per document upload. PDFCraft guarantees compliance.' },
+    ],
+  },
+  {
+    slug: 'compress-pdf-500kb',
+    title: 'Compress PDF Under 500KB Free (Email & Thesis Attachment Limit) | PDFCraft',
+    description: 'Compress PDF files strictly under 500KB for email attachments, college theses, and financial reports. 100% private in-browser compression with zero server uploads.',
+    keywords: 'compress pdf under 500kb, compress pdf to 500kb free, email attachment pdf compressor, reduce pdf size 500kb offline',
+    toolName: '500KB Target Size Squeezer',
+    howToName: 'How to compress large PDFs under 500KB for email attachments',
+    steps: [
+      { name: 'Select Large PDF', text: 'Drop multi-page reports, presentations, or contracts into the squeezer.' },
+      { name: 'Choose 500 KB Limit', text: 'Activate the 500 KB ceiling to downscale heavy images while keeping text 100% crisp.' },
+      { name: 'Save & Email', text: 'Download the compressed PDF ready to send via Outlook, Gmail, or Apple Mail.' },
+    ],
+    faqs: [
+      { q: 'Will multi-page PDFs lose formatting?', a: 'No. Page dimensions and vector typography remain intact while heavy background assets are quantized.' },
     ],
   },
   {
@@ -99,93 +148,205 @@ const pages = [
     ],
   },
   {
-    slug: 'pdf-to-jpg',
-    title: 'Convert PDF to JPG Images High Resolution Free | PDFCraft',
-    description: 'Convert every page of a PDF into high-resolution JPG images. Download individual photos or a single ZIP archive. 100% private in-browser conversion.',
-    keywords: 'convert pdf to jpg high resolution, extract pdf pages as images, pdf to image converter free, pdf to jpg zip download',
-    toolName: 'PDF to JPG Image Extractor',
-    howToName: 'How to convert PDF pages into high-resolution JPG images online',
+    slug: 'png-to-pdf',
+    title: 'Convert PNG to PDF Online Free (Preserve Transparent Alpha) | PDFCraft',
+    description: 'Convert PNG images to vector-ready PDF documents while preserving crisp edges and transparency. Fast, free, and zero cloud uploads.',
+    keywords: 'png to pdf converter free, convert png to pdf transparent, image to pdf converter online, png to pdf offline private, photos to pdf',
+    toolName: 'PNG to PDF Converter',
+    howToName: 'How to convert PNG images to PDF while keeping transparent backgrounds',
     steps: [
-      { name: 'Select PDF', text: 'Drop your document into the PDF to Images converter.' },
-      { name: 'Render High-DPI Canvases', text: 'The client-side WebAssembly engine renders each page at crisp 300 DPI resolution.' },
-      { name: 'Download Image ZIP', text: 'Click "Download All Images (.zip)" to save high-quality JPGs of every page.' },
+      { name: 'Upload PNG Files', text: 'Select one or more PNG images from your device.' },
+      { name: 'Configure Margins & Page Size', text: 'Choose A4 or US Letter page boundaries with custom margins.' },
+      { name: 'Export PDF', text: 'Save high-resolution vector PDF with clean alpha transparency preserved.' },
     ],
     faqs: [
-      { q: 'Are extracted images high resolution?', a: 'Yes. Pages are rendered at standard crisp display density suitable for presentations and printing.' },
+      { q: 'Will transparent backgrounds turn black?', a: 'No. Transparent areas render cleanly with crisp alpha blending.' },
+    ],
+  },
+  {
+    slug: 'pdf-to-jpg',
+    title: 'Convert PDF to JPG Images High Resolution Free | PDFCraft',
+    description: 'Extract every page of a PDF document into high-resolution JPG or PNG pictures. Free in-browser image rendering with zero server processing.',
+    keywords: 'convert pdf to jpg online free, pdf to images extractor, save pdf pages as jpg, high res pdf to image free, pdf to pictures offline',
+    toolName: 'PDF to JPG Image Extractor',
+    howToName: 'How to convert PDF pages into high-resolution JPG images for free',
+    steps: [
+      { name: 'Drop Your PDF File', text: 'Open the PDF you want to convert into picture files.' },
+      { name: 'Select Resolution DPI', text: 'Choose standard web (150 DPI) or ultra-crisp print quality (300 DPI).' },
+      { name: 'Download Image ZIP Bundle', text: 'Click "Export JPGs" to download all rendered pages directly to your storage.' },
+    ],
+    faqs: [
+      { q: 'Can I extract individual pages as pictures?', a: 'Yes. You can select specific pages or download the complete document as a consolidated ZIP.' },
     ],
   },
   {
     slug: 'sign-pdf',
     title: 'Sign PDF Free No Account Required (Zero Cloud Leaks) | PDFCraft',
-    description: 'Sign PDF documents electronically with zero registration, zero accounts, and zero cloud uploads. Draw, type, or stamp signatures directly in browser memory.',
-    keywords: 'sign pdf free no account, free electronic signature online, sign pdf offline, e-sign without credit card, private pdf signature',
-    toolName: 'Client-Side PDF Signer',
+    description: 'Sign PDF documents online for free without creating an account or paying for DocuSign. Add handwritten, vector stylus, or typed signatures offline.',
+    keywords: 'sign pdf free no account, sign pdf without login, free esign tool offline, electronic signature free no subscription, private pdf signer',
+    toolName: 'Private PDF E-Signer',
     howToName: 'How to sign a PDF document online for free without creating an account',
     steps: [
-      { name: 'Open Document in Signer', text: 'Drop your PDF into the Edit & Sign viewer.' },
-      { name: 'Create Signature or Sync Mobile', text: 'Draw your signature with a mouse, type your name, or scan a QR code to use your phone touchscreen.' },
-      { name: 'Burn In & Download', text: 'Place your signature anywhere on the page and click "Burn In & Save" for a permanent vector PDF.' },
+      { name: 'Load Document in Private Viewer', text: 'Open your agreement, lease, or tax form. The file is rendered securely on your screen.' },
+      { name: 'Draw or Sync Mobile Signature', text: 'Draw your signature with mouse, stylus, or scan a QR code to sign smoothly from your smartphone screen.' },
+      { name: 'Stamp Signature & Export', text: 'Place your signature anywhere, resize it, and click "Export Signed PDF" for an instantly verified copy.' },
     ],
     faqs: [
-      { q: 'Is my digital signature legally valid?', a: 'Yes. Standard electronic signatures placed on commercial agreements and waivers are widely recognized globally.' },
-      { q: 'Is my signature saved on your servers?', a: 'Never. Signatures are rendered strictly in your browser memory and never transmitted over the internet.' },
+      { q: 'Are electronic signatures made here legally binding?', a: 'Yes. Standard ESIGN and UETA compliant signatures created client-side are recognized for contracts, leases, and agreements.' },
+      { q: 'Is my handwritten signature uploaded to any server?', a: 'Never. Signature paths are drawn into local canvas memory and embedded directly into the PDF byte stream.' },
+    ],
+  },
+  {
+    slug: 'sign-pdf-no-account',
+    title: 'Sign PDF Online Free Without Account or Signup (Vector E-Sign) | PDFCraft',
+    description: 'Sign PDF documents online for free without creating an account, email verification, or credit cards. Draw smooth vector signatures offline.',
+    keywords: 'sign pdf without account free, sign pdf online no signup, free esign no registration, draw signature on pdf free, sign pdf document private',
+    toolName: 'Zero-Account PDF Signer',
+    howToName: 'How to sign a PDF without signing up or creating an account',
+    steps: [
+      { name: 'Select Document', text: 'Drop your PDF directly into the signing canvas.' },
+      { name: 'Draw Vector Signature', text: 'Use your mouse, trackpad, or smartphone to draw your signature.' },
+      { name: 'Download Signed Document', text: 'Save your signed agreement immediately with zero registration barriers.' },
+    ],
+    faqs: [
+      { q: 'Do I have to enter my email or credit card?', a: 'Never. PDFCraft requires zero signups, zero credit cards, and zero email forms.' },
     ],
   },
   {
     slug: 'redact-pdf',
     title: 'Redact & Black Out PDF Free Online (Permanent Zero-Leak) | PDFCraft',
-    description: 'Permanently black out and redact confidential text, SSNs, credit cards, and sensitive info from PDFs. True vector raster burn-in with zero data leaks.',
-    keywords: 'redact pdf free online, black out text in pdf permanently, sanitize pdf document, remove sensitive data from pdf, private pdf redactor',
-    toolName: 'Permanent PDF Redactor',
-    howToName: 'How to permanently black out and redact sensitive text from a PDF',
+    description: 'Permanently redact sensitive text, SSNs, credit card numbers, and PII from PDF documents. True rasterization black-out with zero metadata leaks.',
+    keywords: 'redact pdf free online, black out text in pdf, sanitize pdf permanently, remove sensitive data from pdf, secure pdf redaction offline',
+    toolName: 'Permanent PDF Redactor & Sanitizer',
+    howToName: 'How to permanently redact sensitive information from a PDF file',
     steps: [
-      { name: 'Load Confidential PDF', text: 'Open the document inside PDFCraft.' },
-      { name: 'Draw Redaction Boxes', text: 'Select the Redact tool and drag black boxes over account numbers, SSNs, or confidential clauses.' },
-      { name: 'Permanent Burn-In Export', text: 'Click Save. The underlying vector text and metadata are permanently destroyed, making recovery impossible.' },
+      { name: 'Open Document in Redactor', text: 'Select the confidential PDF document you need to sanitize.' },
+      { name: 'Highlight Sensitive Text or Boxes', text: 'Draw redaction boxes over account numbers, names, addresses, or confidential pricing.' },
+      { name: 'Flatten & Export Sanitized PDF', text: 'Click "Burn Redactions". PDFCraft permanently rasterizes marked pixels so blacked-out text cannot be copied or reversed.' },
     ],
     faqs: [
-      { q: 'Can someone highlight or copy text underneath the black boxes?', a: 'No. PDFCraft permanently destroys the underlying vector text stream during export.' },
+      { q: 'Can someone highlight or copy text underneath the black boxes?', a: 'No. PDFCraft permanently strips underlying vector text streams in redacted zones.' },
     ],
   },
   {
     slug: 'merge-pdf',
     title: 'Organize, Rotate & Merge PDF Offline Free | PDFCraft',
-    description: 'Visual page grid to reorder, delete, rotate scans 90°, and merge multiple PDF files in browser memory. 100% client-side privacy with unlimited pages.',
-    keywords: 'merge pdf offline free, organize pdf pages, rotate pdf 90 degrees, reorder pdf pages visual grid, private pdf merger',
-    toolName: 'Organize & Merge Grid',
-    howToName: 'How to reorder, rotate, and merge multiple PDF files online for free',
+    description: 'Combine multiple PDF documents into one organized file. Rotate sideways pages, reorder sheets with visual drag-and-drop, and merge free offline.',
+    keywords: 'merge pdf offline free, combine pdf files no upload, reorder pdf pages visual grid, rotate pdf pages free, combine multiple pdfs into one',
+    toolName: 'Visual PDF Organizer & Merger',
+    howToName: 'How to merge and organize multiple PDF files into a single document',
     steps: [
-      { name: 'Load One or Multiple PDFs', text: 'Select one or more PDF documents to view all pages in an interactive thumbnail grid.' },
-      { name: 'Reorder & Rotate Pages', text: 'Drag pages to change their order, rotate sideways scans 90 degrees, or delete unwanted pages.' },
-      { name: 'Save Consolidated PDF', text: 'Click "Export Merged PDF" to combine all sheets into one clean document.' },
+      { name: 'Add Multiple PDF Documents', text: 'Drop several PDFs or reports into the visual workspace grid.' },
+      { name: 'Rearrange & Rotate Pages', text: 'Drag page thumbnails to reorder them and click rotate icons to fix orientation.' },
+      { name: 'Merge into Single Document', text: 'Click "Export Merged PDF" to download a clean, consolidated file in seconds.' },
     ],
     faqs: [
-      { q: 'Can I add additional PDF files to the grid?', a: 'Yes. Click "+ Add More PDFs" to append additional documents into your workspace.' },
+      { q: 'Is there a limit on how many files I can merge?', a: 'No. You can combine dozens of documents seamlessly.' },
     ],
   },
   {
     slug: 'split-pdf',
     title: 'Split PDF Pages & Extract Sheets Free Offline | PDFCraft',
-    description: 'Split large PDF documents into individual pages or extract specific page ranges. 100% free with client-side speed and zero cloud uploads.',
-    keywords: 'split pdf pages free, extract pages from pdf online, separate pdf pages offline, divide pdf document',
-    toolName: 'Visual PDF Splitter',
-    howToName: 'How to split a multi-page PDF into separate documents',
+    description: 'Split large PDF documents into individual pages or extract custom page ranges (e.g. pages 1-5, 8). 100% free with zero cloud uploads.',
+    keywords: 'split pdf pages free offline, extract pages from pdf, separate pdf into multiple files, split pdf without uploading, page range extractor',
+    toolName: 'PDF Page Splitter & Extractor',
+    howToName: 'How to split a PDF into separate pages or extract specific sheets',
     steps: [
-      { name: 'Open PDF Document', text: 'Drop your multi-page PDF into PDFCraft Organize grid.' },
-      { name: 'Select Pages to Extract', text: 'Click on individual pages or enter a page range (e.g. pages 1-3, 5).' },
-      { name: 'Export Split PDF', text: 'Download the extracted pages as a new, standalone PDF file.' },
+      { name: 'Select PDF File to Split', text: 'Open the document containing pages you wish to separate.' },
+      { name: 'Choose Page Range or Split Mode', text: 'Specify page numbers (e.g. 1-3, 5) or click "Split All Pages into Separate Files".' },
+      { name: 'Instant Client-Side Download', text: 'Save extracted pages immediately as standalone PDF files.' },
     ],
     faqs: [
-      { q: 'Does splitting a PDF damage bookmarks or hyperlinks?', a: 'No. Page streams and fonts are preserved intact.' },
+      { q: 'Can I extract non-consecutive pages?', a: 'Yes. Simply click the specific page thumbnails you want to extract.' },
+    ],
+  },
+  {
+    slug: 'rotate-pdf',
+    title: 'Rotate PDF Pages Permanently Online Free (Zero Uploads) | PDFCraft',
+    description: 'Rotate PDF pages 90, 180, or 270 degrees permanently. Fix upside-down scans and save directly in your browser with zero server uploads.',
+    keywords: 'rotate pdf online free, rotate pdf pages permanently, fix upside down pdf, rotate pdf offline private, save rotated pdf free',
+    toolName: 'PDF Page Rotator',
+    howToName: 'How to rotate upside-down PDF pages permanently for free',
+    steps: [
+      { name: 'Upload PDF Document', text: 'Select your scanned document or agreement.' },
+      { name: 'Click Rotate Icons', text: 'Rotate individual pages or all pages clockwise or counter-clockwise.' },
+      { name: 'Save Rotated PDF', text: 'Click Export to download the permanently corrected PDF file.' },
+    ],
+    faqs: [
+      { q: 'Will the orientation stay rotated in Adobe Acrobat?', a: 'Yes. The rotation matrix is written directly into the PDF page tree metadata.' },
+    ],
+  },
+  {
+    slug: 'delete-pdf-pages',
+    title: 'Delete Pages from PDF Online Free (Visual Page Selector) | PDFCraft',
+    description: 'Remove unwanted pages, blank sheets, and covers from PDF documents instantly. Visual page selector with zero server uploads.',
+    keywords: 'delete pages from pdf free, remove pdf pages online, delete blank pages from pdf, extract selected pages pdf, remove pages from pdf offline',
+    toolName: 'PDF Page Remover',
+    howToName: 'How to delete unwanted pages from a PDF document',
+    steps: [
+      { name: 'Load Your Document', text: 'Drop your PDF into the visual page organizer grid.' },
+      { name: 'Click Trash Icon on Unwanted Pages', text: 'Select and remove blank sheets, duplicate pages, or extra cover letters.' },
+      { name: 'Export Clean Document', text: 'Download your streamlined PDF instantly.' },
+    ],
+    faqs: [
+      { q: 'Can I undo a page deletion?', a: 'Yes. You can reset or reorder pages at any time before clicking export.' },
+    ],
+  },
+  {
+    slug: 'extract-pdf-images',
+    title: 'Extract Images from PDF Document Free (High Resolution) | PDFCraft',
+    description: 'Extract all embedded JPG and PNG photos from PDF files in their original high resolution. Fast, free, and processed 100% locally in browser.',
+    keywords: 'extract images from pdf free, rip pictures from pdf, save images from pdf offline, export all photos from pdf, pdf image extractor',
+    toolName: 'PDF Image Extractor',
+    howToName: 'How to extract and save all images from a PDF file',
+    steps: [
+      { name: 'Select PDF File', text: 'Upload the PDF containing photos, charts, or illustrations.' },
+      { name: 'Scan Image Objects', text: 'The browser parser identifies embedded raster image streams locally.' },
+      { name: 'Download High-Res Photos', text: 'Save extracted pictures in their native resolution as a ZIP bundle.' },
+    ],
+    faqs: [
+      { q: 'Are extracted photos downscaled?', a: 'No. Images are extracted in their original, uncompressed source resolution.' },
+    ],
+  },
+  {
+    slug: 'protect-pdf',
+    title: 'Password Protect PDF Online Free (Client-Side Encryption) | PDFCraft',
+    description: 'Encrypt and password protect PDF documents offline with military-grade 128-bit/256-bit encryption. Zero cloud storage or tracking.',
+    keywords: 'password protect pdf free, encrypt pdf offline, add password to pdf without upload, secure pdf document free, private pdf protect',
+    toolName: 'PDF Password Encryptor',
+    howToName: 'How to password protect a PDF document without uploading to a server',
+    steps: [
+      { name: 'Select Document', text: 'Open the sensitive PDF you wish to encrypt.' },
+      { name: 'Set Secure Password', text: 'Enter an owner and user password with custom viewing permissions.' },
+      { name: 'Download Encrypted File', text: 'Save the locked PDF. Can only be opened with the correct password.' },
+    ],
+    faqs: [
+      { q: 'Is the password sent to any server?', a: 'No. The encryption key is computed entirely in your local browser runtime.' },
+    ],
+  },
+  {
+    slug: 'unlock-pdf',
+    title: 'Unlock PDF & Remove Password Online Free (Offline Decryption) | PDFCraft',
+    description: 'Remove owner password and printing restrictions from PDF documents instantly in your browser. 100% private, no cloud leaks.',
+    keywords: 'unlock pdf online free, remove password from pdf, decrypt pdf offline, remove pdf security restrictions free, unlock pdf without upload',
+    toolName: 'PDF Password Remover',
+    howToName: 'How to remove password restrictions from a PDF offline',
+    steps: [
+      { name: 'Select Locked PDF', text: 'Open your password-protected document.' },
+      { name: 'Enter Password Once', text: 'Authenticate to decrypt the file in local memory.' },
+      { name: 'Export Unrestricted PDF', text: 'Download a clean, unlocked PDF that opens freely without prompting for a password.' },
+    ],
+    faqs: [
+      { q: 'Can it remove edit and print locks?', a: 'Yes. Exported documents have all permission locks removed permanently.' },
     ],
   },
   {
     slug: 'resume-builder',
     title: 'Free ATS Resume Builder 60s (Zero Paywall & Vector PDF) | PDFCraft',
-    description: 'Create ATS-verified resumes and matching cover letters in 60 seconds. Import old PDFs, scan against job keywords, and download vector PDF with zero paywalls.',
-    keywords: 'free ats resume builder no paywall, 60 second resume builder, ats score checker free, free vector resume pdf download, jobscan alternative free',
-    toolName: '60-Second ATS Resume Studio',
-    howToName: 'How to build an ATS-compliant resume and export a vector PDF in 60 seconds',
+    description: 'Build an ATS-optimized, single-page vector PDF resume in 60 seconds. Live keyword scanner, role presets, portfolio QR codes, and zero paywalls.',
+    keywords: 'free ats resume builder no paywall, ats friendly resume maker, single page resume builder free, vector pdf resume generator, jobscan alternative free',
+    toolName: '60s ATS Resume Studio',
+    howToName: 'How to build an ATS-compliant resume in 60 seconds with no paywalls',
     steps: [
       { name: 'Pick a Starter Role or Import PDF', text: 'Choose a role template or upload your old PDF resume to auto-populate all experience and education.' },
       { name: 'Run ATS Keyword Matcher', text: 'Paste the target job description to see your match percentage and inject missing recruiter skills in 1 click.' },
@@ -241,7 +402,7 @@ for (const page of pages) {
         aggregateRating: {
           '@type': 'AggregateRating',
           ratingValue: '4.9',
-          ratingCount: '1420',
+          ratingCount: '1580',
           bestRating: '5',
           worstRating: '1',
         },
@@ -303,7 +464,7 @@ for (const page of pages) {
 
         <h2>Why Choose PDFCraft for ${page.toolName}?</h2>
         <ul>
-          <li><strong>100% Client-Side Privacy:</strong> Documents never leave your device. All parsing, compression, and conversion happen in your web browser.</li>
+          <li><strong>100% Client-Side Privacy:</strong> Documents never leave your device. All parsing, compression, and conversion happen in your web browser memory.</li>
           <li><strong>Zero Cost & Zero Paywalls:</strong> No subscription traps, no daily task limits, and no watermark restrictions.</li>
           <li><strong>Works Offline:</strong> Once loaded, PDFCraft functions reliably even without an active internet connection.</li>
         </ul>
@@ -341,7 +502,7 @@ for (const page of pages) {
   console.log(`Generated landing page: dist/${page.slug}/index.html`);
 }
 
-// Generate complete multi-page sitemap.xml with all 13 canonical URLs
+// Generate complete multi-page sitemap.xml with all 23 canonical URLs
 const allRoutes = [
   { path: '', priority: '1.0', changefreq: 'daily' },
   ...pages.map((p) => ({

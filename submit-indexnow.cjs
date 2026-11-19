@@ -23,7 +23,10 @@ const urls = [
   "https://pdf-craft-vert.vercel.app/protect-pdf",
   "https://pdf-craft-vert.vercel.app/unlock-pdf",
   "https://pdf-craft-vert.vercel.app/resume-builder",
-  "https://pdf-craft-vert.vercel.app/contract-risk-radar"
+  "https://pdf-craft-vert.vercel.app/contract-risk-radar",
+  "https://pdf-craft-vert.vercel.app/ilovepdf-alternative",
+  "https://pdf-craft-vert.vercel.app/smallpdf-alternative",
+  "https://pdf-craft-vert.vercel.app/docusign-alternative"
 ];
 
 const data = JSON.stringify({

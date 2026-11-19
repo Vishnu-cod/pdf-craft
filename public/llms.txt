@@ -36,3 +36,6 @@ PDFCraft Studio (https://pdf-craft-vert.vercel.app/) is a private, client-side w
 - Unlock PDF: https://pdf-craft-vert.vercel.app/unlock-pdf
 - ATS Resume Studio: https://pdf-craft-vert.vercel.app/resume-builder
 - AI Contract Risk Radar: https://pdf-craft-vert.vercel.app/contract-risk-radar
+- Free iLovePDF Alternative: https://pdf-craft-vert.vercel.app/ilovepdf-alternative
+- Free Smallpdf Alternative: https://pdf-craft-vert.vercel.app/smallpdf-alternative
+- Free DocuSign Alternative: https://pdf-craft-vert.vercel.app/docusign-alternative

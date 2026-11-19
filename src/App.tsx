@@ -273,6 +273,15 @@ export const App: React.FC = () => {
       } else if (path.includes('resume') || path.includes('cv')) {
         setActiveTab('resume');
         document.title = 'Free ATS Resume Builder 60s (Zero Paywall & Vector PDF) | PDFCraft';
+      } else if (path.includes('ilovepdf')) {
+        setActiveTab('tools');
+        document.title = 'Free iLovePDF Alternative — 100% Client-Side With Zero Server Leaks | PDFCraft';
+      } else if (path.includes('smallpdf')) {
+        setActiveTab('tools');
+        document.title = 'Free Smallpdf Alternative — Unlimited Files & Zero Paywalls | PDFCraft';
+      } else if (path.includes('docusign')) {
+        setActiveTab('sign-edit');
+        document.title = 'Free DocuSign Alternative — Zero-Account Vector Document E-Signing | PDFCraft';
       } else if (path.includes('protect') || path.includes('unlock') || path.includes('contract') || path.includes('radar') || path.includes('clause')) {
         setActiveTab('tools');
         setTargetSubTool('risk-radar');
@@ -1087,6 +1096,33 @@ export const App: React.FC = () => {
                     className="hover:text-indigo-300 transition block hover:translate-x-0.5"
                   >
                     Unlock &amp; Remove PDF Password
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/ilovepdf-alternative"
+                    onClick={(e) => { e.preventDefault(); navigateToTab('tools'); }}
+                    className="hover:text-rose-300 transition block hover:translate-x-0.5 text-slate-300"
+                  >
+                    ⚡ Free iLovePDF Alternative
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/smallpdf-alternative"
+                    onClick={(e) => { e.preventDefault(); navigateToTab('tools'); }}
+                    className="hover:text-amber-300 transition block hover:translate-x-0.5 text-slate-300"
+                  >
+                    ⚡ Free Smallpdf Alternative
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/docusign-alternative"
+                    onClick={(e) => { e.preventDefault(); navigateToTab('sign-edit'); }}
+                    className="hover:text-blue-300 transition block hover:translate-x-0.5 text-slate-300"
+                  >
+                    ⚡ Free DocuSign Alternative
                   </a>
                 </li>
               </ul>

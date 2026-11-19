@@ -373,6 +373,56 @@ const pages = [
       { q: 'Is my contract shared with external AI companies?', a: 'No. The contract analysis rules execute client-side in your browser memory without uploading confidential text to third-party APIs.' },
     ],
   },
+  {
+    slug: 'ilovepdf-alternative',
+    title: 'Free iLovePDF Alternative — 100% Client-Side With Zero Server Leaks | PDFCraft',
+    description: 'Looking for a private, free alternative to iLovePDF? PDFCraft processes all files directly in your web browser memory with zero server uploads, no daily task limits, and no paywalls.',
+    keywords: 'ilovepdf alternative free, private alternative to ilovepdf, ilovepdf without uploading files, free pdf tools no paywall, ilovepdf vs pdfcraft',
+    toolName: 'Private iLovePDF Alternative',
+    howToName: 'How to edit, compress, and sign PDFs without uploading files to iLovePDF servers',
+    steps: [
+      { name: 'Load PDF Locally', text: 'Select or drop your PDF document into PDFCraft. It opens immediately in browser memory with zero bytes sent to external cloud servers.' },
+      { name: 'Use Pro Tools Without Limits', text: 'Compress strictly under 100KB/200KB, draw vector signatures, convert to Word/Excel, or organize pages with zero task limits.' },
+      { name: 'Instant Free Download', text: 'Export your modified document directly to your device with no daily paywalls or subscriptions.' },
+    ],
+    faqs: [
+      { q: 'Why choose PDFCraft over iLovePDF?', a: 'iLovePDF uploads your private documents to remote cloud servers and enforces daily free quotas. PDFCraft runs 100% in your browser using WebAssembly with zero server storage and unlimited free use.' },
+      { q: 'Are all 16 tools free forever?', a: 'Yes. PDFCraft is 100% free with no credit cards, no account registration, and no watermark restrictions.' },
+    ],
+  },
+  {
+    slug: 'smallpdf-alternative',
+    title: 'Free Smallpdf Alternative — Unlimited Files & Zero Paywalls | PDFCraft',
+    description: 'Tired of Smallpdf\'s 2-file daily limit and $12/month paywalls? PDFCraft offers unlimited PDF compression, conversion, and editing 100% free with zero cloud uploads.',
+    keywords: 'smallpdf alternative free, smallpdf without paywall, unlimited smallpdf alternative, smallpdf vs pdfcraft, free offline pdf tools',
+    toolName: 'Unlimited Smallpdf Alternative',
+    howToName: 'How to compress and convert PDFs without Smallpdf daily limits or paywalls',
+    steps: [
+      { name: 'Select Your Document', text: 'Open PDFCraft in any web browser on desktop or mobile.' },
+      { name: 'Run Target Squeezer or Converter', text: 'Hit exact file sizes (e.g. <100KB) or extract clean Word/Excel tables offline.' },
+      { name: 'Save Without Paywalls', text: 'Download unlimited files without ever hitting a daily limit banner.' },
+    ],
+    faqs: [
+      { q: 'Is there a daily limit on how many PDFs I can edit?', a: 'None. You can compress, convert, merge, and sign as many files as you need.' },
+    ],
+  },
+  {
+    slug: 'docusign-alternative',
+    title: 'Free DocuSign Alternative — Zero-Account Vector Document E-Signing | PDFCraft',
+    description: 'Sign PDF documents, leases, and NDAs free without creating an account or paying for DocuSign. 100% private in-browser vector signature pad with mobile QR sync.',
+    keywords: 'docusign alternative free, free electronic signature no account, sign pdf without docusign subscription, simple esign free, private pdf signing',
+    toolName: 'Zero-Account DocuSign Alternative',
+    howToName: 'How to sign agreements and contracts without paying for DocuSign',
+    steps: [
+      { name: 'Drop Contract into E-Sign Viewer', text: 'Open your NDA, lease agreement, or tax form locally in PDFCraft.' },
+      { name: 'Draw or Sync Mobile Signature', text: 'Draw your vector signature using mouse, touchscreen, or scan a QR code to sign with your smartphone.' },
+      { name: 'Download Legally Recognized Copy', text: 'Embed vector signatures and date stamps into the document byte stream and save immediately.' },
+    ],
+    faqs: [
+      { q: 'Do I or my signers need an account?', a: 'No. PDFCraft requires zero signups, zero credit cards, and zero email verifications.' },
+      { q: 'Are documents legally recognized?', a: 'Yes. Standard ESIGN and UETA compliant signatures created client-side are valid for agreements, leases, and contracts.' },
+    ],
+  },
 ];
 
 for (const page of pages) {

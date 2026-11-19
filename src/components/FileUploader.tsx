@@ -152,13 +152,13 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto py-12 px-4">
+    <div className="w-full max-w-3xl mx-auto py-6 sm:py-12 px-3 sm:px-4">
       {/* Upload Box */}
       <div
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
-        className={`relative border-2 border-dashed rounded-3xl p-10 sm:p-14 text-center transition-all cursor-pointer ${
+        className={`relative border-2 border-dashed rounded-3xl p-6 sm:p-14 text-center transition-all cursor-pointer ${
           isDragging
             ? 'border-indigo-500 bg-indigo-500/10 scale-[1.01]'
             : 'border-slate-800 bg-slate-900/60 hover:border-slate-700 hover:bg-slate-900/90'
@@ -173,15 +173,15 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         />
 
         <div className="flex flex-col items-center justify-center pointer-events-none">
-          <div className="w-16 h-16 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center mb-5 shadow-inner">
-            <UploadCloud className="w-8 h-8" />
+          <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center mb-4 sm:mb-5 shadow-inner">
+            <UploadCloud className="w-7 h-7 sm:w-8 sm:h-8" />
           </div>
 
-          <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">{title}</h2>
-          <p className="text-slate-400 text-sm max-w-md mb-6">{subtitle}</p>
+          <h2 className="text-lg sm:text-2xl font-bold text-white mb-2">{title}</h2>
+          <p className="text-slate-400 text-xs sm:text-sm max-w-md mb-5 sm:mb-6">{subtitle}</p>
 
-          <div className="flex items-center gap-3">
-            <button className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-sm transition-colors shadow-lg shadow-indigo-600/30 flex items-center gap-2">
+          <div className="flex items-center gap-3 w-full sm:w-auto justify-center">
+            <button className="w-full sm:w-auto px-6 py-3 sm:py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition-colors shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2">
               <FileText className="w-4 h-4" />
               <span>Choose PDF File</span>
             </button>

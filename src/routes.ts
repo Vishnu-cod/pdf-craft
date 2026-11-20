@@ -26,18 +26,6 @@ export const APP_ROUTES: RouteConfig[] = [
     title: 'WhatsApp 15-Minute HD Video Booster & 30s Status Slicer | PDFCraft',
     description: 'Compress up to 15-minute videos under 16MB or 64MB without WhatsApp blurry re-compression, plus auto 30s status slicer.',
   },
-  {
-    path: '/whatsapp-direct',
-    tab: 'whatsapp-studio',
-    title: 'Direct WhatsApp Chat Without Saving Contact Number (100% Free) | PDFCraft',
-    description: 'Send messages, PDFs, and documents on WhatsApp without saving numbers to your personal phone contacts. 100% official Meta wa.me API.',
-  },
-  {
-    path: '/status-saver',
-    tab: 'whatsapp-studio',
-    title: 'WhatsApp Status Saver & Screen-Recording UI Stripper | PDFCraft',
-    description: '1-Click WhatsApp Web status downloader and clean screen-recording UI stripper. Zero ads, 100% free.',
-  },
 
   // 1. Home / Sign & Edit
   {

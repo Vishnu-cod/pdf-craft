@@ -323,16 +323,6 @@ export const App: React.FC = () => {
       action: () => navigateToTab('whatsapp-studio'),
     },
     {
-      id: 'whatsapp-direct',
-      name: 'WhatsApp Direct Chat',
-      badge: 'No Save Needed',
-      icon: MessageSquare,
-      bg: 'from-emerald-600 to-teal-600',
-      desc: 'Message any WhatsApp number directly without saving to contacts + 15m video compressor & UI stripper.',
-      category: ['all', 'popular'],
-      action: () => navigateToTab('whatsapp-studio'),
-    },
-    {
       id: 'edit-sign',
       name: 'Edit & Sign PDF',
       badge: 'Touch Sync',

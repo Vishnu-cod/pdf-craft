@@ -527,42 +527,6 @@ const pages = [
       { q: 'Is my personal video uploaded anywhere?', a: 'No! Processing runs completely client-side in your web browser using HTML5 Canvas, MediaRecorder, and WebCodecs.' },
     ],
   },
-  {
-    slug: 'whatsapp-direct',
-    title: 'Direct WhatsApp Chat Without Saving Contact Number (100% Free) | PDFCraft',
-    description: 'Send messages, PDFs, invoices, and documents on WhatsApp without saving numbers to your personal phone contacts. 100% official Meta wa.me API with live QR code generator.',
-    keywords: 'whatsapp message without saving number, send whatsapp without saving contact, direct whatsapp chat online free, wa me link generator, whatsapp chat without saving contact online',
-    toolName: 'Direct WhatsApp Chat (No Contact Save)',
-    howToName: 'How to send a WhatsApp message without saving the phone number to your contacts',
-    steps: [
-      { name: 'Enter Country Code & Phone Number', text: 'Select country code and type the recipient digits with zero formatting needed.' },
-      { name: 'Type Optional Message or Document Note', text: 'Type your message or select quick presets like "Sharing the requested PDF document".' },
-      { name: 'Tap Open WhatsApp Chat', text: 'Instantly opens the official WhatsApp chat on mobile app or desktop with one click.' },
-    ],
-    faqs: [
-      { q: 'Can my WhatsApp account get banned for using this?', a: 'No, absolutely not. PDFCraft uses Meta\'s official public wa.me deep-linking protocol. It does not use unofficial bots or third-party socket connections.' },
-      { q: 'Is the phone number stored or uploaded to any server?', a: 'Zero storage. All numbers stay in your local browser memory with zero tracking and zero server storage.' },
-      { q: 'Does this work on both iPhone and Android?', a: 'Yes! It seamlessly opens the official WhatsApp application on iOS, Android, macOS, and Windows.' },
-    ],
-  },
-  {
-    slug: 'status-saver',
-    title: 'WhatsApp Status Saver & Screen-Recording UI Stripper | PDFCraft',
-    description: '1-Click WhatsApp Web status downloader and clean screen-recording UI stripper. Automatically crop away top contact bars and bottom reply boxes for clean HD status videos and MP3 audio. Zero ads, 100% free.',
-    keywords: 'whatsapp status saver web online, save whatsapp status without app, whatsapp status video cropper, remove ui from screen recording whatsapp, extract mp3 from whatsapp status',
-    toolName: 'WhatsApp Status Saver & Clean UI Stripper',
-    howToName: 'How to save WhatsApp Status videos and clean screen recordings online for free',
-    steps: [
-      { name: 'Select Status Video or Screen Recording', text: 'Open your saved status or screen-recorded clip in the browser studio.' },
-      { name: 'Auto-Crop UI Overlays', text: 'Click "Auto Strip WhatsApp UI" to instantly crop away the top header name bar and bottom reply input box.' },
-      { name: 'Export Clean HD Video or MP3 Audio', text: 'Save a pristine, distraction-free vertical 9:16 video or extract pure MP3 audio with one click.' },
-    ],
-    faqs: [
-      { q: 'How do I download statuses directly from WhatsApp Web?', a: 'Use our instant 1-Click WhatsApp Web bookmarklet button, or right-click any opened status story on web.whatsapp.com to save the source MP4 or JPEG directly.' },
-      { q: 'Why is the Screen Recording UI Stripper so useful?', a: 'Many mobile users screen-record friend\'s statuses which includes their name, timestamp, and reply box. The UI stripper automatically crops these out, leaving only the clean original video.' },
-      { q: 'Do I need to install any sketchy Android APKs or apps with ads?', a: 'No. Traditional Play Store status savers are filled with invasive ads and trackers. PDFCraft works safely in your browser with zero installation, zero tracking, and zero ads.' },
-    ],
-  },
 ];
 
 for (const page of pages) {

@@ -198,15 +198,15 @@ export const SecurityPrivacyStudio: React.FC<SecurityPrivacyStudioProps> = ({
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950/40 to-slate-900 border border-indigo-500/20 p-8 shadow-2xl mb-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-3">
               <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Next-Gen Security & Trust Studio</span>
+              <span>100% Private In-Browser Protection</span>
             </div>
             <h1 className="text-2xl md:text-3xl font-black text-white tracking-tight">
-              Smart PII Masker & PKI Digital Signature Validator
+              Mask Sensitive IDs &amp; Verify Digital Signatures
             </h1>
             <p className="text-sm text-slate-400 max-w-2xl mt-2 leading-relaxed">
-              100% in-browser identity protection and cryptographic verification. Automatically mask sensitive Aadhaar & PAN numbers with irreversible raster burn-in, or verify CCA India & Adobe AATL digital signatures.
+              100% private in your browser. Automatically black out sensitive Aadhaar and PAN numbers before sharing, or check if digital signatures on government certificates and documents are genuine and unaltered.
             </p>
           </div>
 
@@ -224,7 +224,7 @@ export const SecurityPrivacyStudio: React.FC<SecurityPrivacyStudioProps> = ({
               }`}
             >
               <EyeOff className="w-4 h-4" />
-              <span>Smart PII & Aadhaar Masker</span>
+              <span>Mask Aadhaar &amp; IDs</span>
             </button>
             <button
               onClick={() => {
@@ -238,7 +238,7 @@ export const SecurityPrivacyStudio: React.FC<SecurityPrivacyStudioProps> = ({
               }`}
             >
               <FileCheck2 className="w-4 h-4" />
-              <span>Digital Signature & PKI Validator</span>
+              <span>Verify Digital Signature</span>
             </button>
           </div>
         </div>

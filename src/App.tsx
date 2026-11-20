@@ -71,6 +71,9 @@ import {
   ChevronDown,
   Scissors,
   KeyRound,
+  EyeOff,
+  FileCheck2,
+  Unlock,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -93,8 +96,8 @@ export const App: React.FC = () => {
     'pdf-to-word' | 'pdf-to-excel' | 'pdf-to-images' | 'images-to-pdf' | 'word-to-pdf' | 'word-to-images'
   >('pdf-to-word');
 
-  // Landing Page Bento Filter
-  const [bentoFilter, setBentoFilter] = useState<'all' | 'career' | 'legal' | 'convert' | 'edit'>('all');
+  // Landing Page Feature Filter
+  const [bentoFilter, setBentoFilter] = useState<'all' | 'popular' | 'security' | 'convert' | 'edit'>('all');
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 
   // Check if opened as mobile signing page
@@ -292,6 +295,169 @@ export const App: React.FC = () => {
     navigateToTab(tab, subTool, converter, targetKB, securityMode, securityStudioSubTab);
   };
 
+  const homeTools = [
+    {
+      id: 'edit-sign',
+      name: 'Edit & Sign PDF',
+      badge: 'Touch Sync',
+      icon: FileSignature,
+      bg: 'from-blue-600 to-indigo-600',
+      desc: 'Sign with mobile phone sync, add text notes, dates & stamps.',
+      category: ['all', 'popular', 'edit'],
+      action: () => navigateToTab('sign-edit'),
+    },
+    {
+      id: 'mask-aadhaar',
+      name: 'Mask Aadhaar & IDs',
+      badge: '1-Click Auto',
+      icon: EyeOff,
+      bg: 'from-rose-600 to-red-600',
+      desc: 'Auto-detect and black out 12-digit Aadhaar & PAN numbers before sharing.',
+      category: ['all', 'popular', 'security'],
+      action: () => handleLaunchTool('security-studio', undefined, undefined, undefined, undefined, 'pii_masker'),
+    },
+    {
+      id: 'size-squeezer',
+      name: 'Compress to Exact Size',
+      badge: '50KB / 100KB',
+      icon: Shrink,
+      bg: 'from-emerald-600 to-teal-600',
+      desc: 'Shrink strictly under 50KB, 100KB, or 200KB for exam & govt portals.',
+      category: ['all', 'popular', 'edit'],
+      action: () => handleLaunchTool('tools', 'size-squeezer'),
+    },
+    {
+      id: 'organize-merge',
+      name: 'Merge & Reorder Pages',
+      badge: 'Multi-PDF',
+      icon: Layers,
+      bg: 'from-teal-600 to-emerald-600',
+      desc: 'Combine multiple PDFs into one and arrange custom page order.',
+      category: ['all', 'popular', 'edit'],
+      action: () => navigateToTab('organize'),
+    },
+    {
+      id: 'split-pdf',
+      name: 'Split PDF Pages',
+      badge: 'Extract Pages',
+      icon: Scissors,
+      bg: 'from-amber-600 to-orange-600',
+      desc: 'Extract custom page ranges or split into individual sheets in a ZIP.',
+      category: ['all', 'edit'],
+      action: () => navigateToTab('split'),
+    },
+    {
+      id: 'pdf-to-word',
+      name: 'PDF to Word (.docx)',
+      badge: 'Editable DOCX',
+      icon: FileText,
+      bg: 'from-blue-600 to-sky-600',
+      desc: 'Convert PDF documents into formatted, editable Microsoft Word files.',
+      category: ['all', 'popular', 'convert'],
+      action: () => handleLaunchTool('convert', undefined, 'pdf-to-word'),
+    },
+    {
+      id: 'pdf-to-excel',
+      name: 'PDF to Excel (.xlsx)',
+      badge: 'Spreadsheet',
+      icon: FileSpreadsheet,
+      bg: 'from-emerald-600 to-green-600',
+      desc: 'Extract tables and numbers from invoices into Excel workbooks.',
+      category: ['all', 'convert'],
+      action: () => handleLaunchTool('convert', undefined, 'pdf-to-excel'),
+    },
+    {
+      id: 'verify-signature',
+      name: 'Verify Digital Signature',
+      badge: 'CCA India / Adobe',
+      icon: FileCheck2,
+      bg: 'from-emerald-600 to-teal-600',
+      desc: 'Validate eSignatures from eMudhra, Capricorn, DigiLocker & Adobe.',
+      category: ['all', 'popular', 'security'],
+      action: () => handleLaunchTool('security-studio', undefined, undefined, undefined, undefined, 'signature_validator'),
+    },
+    {
+      id: 'resume-builder',
+      name: 'ATS Resume Builder',
+      badge: '60s Vector PDF',
+      icon: GraduationCap,
+      bg: 'from-indigo-600 to-violet-600',
+      desc: 'Build job-ready resumes & matching cover letters in 60 seconds.',
+      category: ['all', 'popular'],
+      action: () => navigateToTab('resume'),
+    },
+    {
+      id: 'risk-radar',
+      name: 'Check Contract Risks',
+      badge: 'AI Clause Audit',
+      icon: Scale,
+      bg: 'from-rose-600 to-amber-600',
+      desc: 'Spot sneaky non-competes, IP grabs, and unfair contract terms.',
+      category: ['all', 'security'],
+      action: () => handleLaunchTool('tools', 'risk-radar'),
+    },
+    {
+      id: 'contract-diff',
+      name: 'Compare Two PDFs',
+      badge: 'Side-by-Side',
+      icon: GitCompare,
+      bg: 'from-indigo-600 to-blue-600',
+      desc: 'Highlight visual and text differences between two contract drafts.',
+      category: ['all', 'edit'],
+      action: () => handleLaunchTool('tools', 'diff'),
+    },
+    {
+      id: 'protect-pdf',
+      name: 'Lock with Password',
+      badge: 'AES-256',
+      icon: Lock,
+      bg: 'from-purple-600 to-indigo-600',
+      desc: 'Protect confidential PDFs with user and owner passwords.',
+      category: ['all', 'security'],
+      action: () => handleLaunchTool('security', undefined, undefined, 'protect'),
+    },
+    {
+      id: 'unlock-pdf',
+      name: 'Remove Password',
+      badge: 'Instant Unlock',
+      icon: Unlock,
+      bg: 'from-cyan-600 to-teal-600',
+      desc: 'Remove password restrictions and export clean, unlocked PDFs.',
+      category: ['all', 'security'],
+      action: () => handleLaunchTool('security', undefined, undefined, 'unlock'),
+    },
+    {
+      id: 'document-doctor',
+      name: 'Clean & Brighten Scans',
+      badge: 'Scan Enhancer',
+      icon: Wand2,
+      bg: 'from-fuchsia-600 to-purple-600',
+      desc: 'Whiten dark scanned paper and boost faded photocopy ink.',
+      category: ['all', 'edit'],
+      action: () => handleLaunchTool('tools', 'doctor'),
+    },
+    {
+      id: 'pdf-to-images',
+      name: 'PDF to Images (ZIP)',
+      badge: 'High-Res PNG',
+      icon: FileImage,
+      bg: 'from-amber-600 to-yellow-600',
+      desc: 'Save every page as crisp high-resolution PNG or JPG images in a ZIP.',
+      category: ['all', 'convert'],
+      action: () => handleLaunchTool('convert', undefined, 'pdf-to-images'),
+    },
+    {
+      id: 'images-to-pdf',
+      name: 'Images to Single PDF',
+      badge: 'Photos to PDF',
+      icon: Zap,
+      bg: 'from-violet-600 to-fuchsia-600',
+      desc: 'Combine photos, receipts, and scans into a single PDF document.',
+      category: ['all', 'convert'],
+      action: () => handleLaunchTool('convert', undefined, 'images-to-pdf'),
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col text-slate-100 relative overflow-x-clip selection:bg-indigo-500 selection:text-white">
       {/* Ambient Radial Glowing Lights constrained in fixed container */}
@@ -334,93 +500,40 @@ export const App: React.FC = () => {
               </h1>
 
               <p className="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-                Edit & sign with mobile sync, detect predatory contract clauses with AI Radar, squeeze PDFs strictly under 200 KB, and craft ATS-verified resumes in 60 seconds.
+                Edit, sign, mask Aadhaar &amp; IDs, compress to exact KB, merge, split, and convert directly in your browser with zero server uploads.
               </p>
-
-              {/* 1-Click Fast-Launch Pills */}
-              <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
-                <button
-                  onClick={() => setIsFeatureModalOpen(true)}
-                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white text-xs font-bold flex items-center gap-2 transition cursor-pointer shadow-lg shadow-indigo-600/30 hover:scale-[1.02]"
-                >
-                  <Search className="w-3.5 h-3.5" />
-                  <span>🔍 Explore All 16 Pro Tools</span>
-                  <span className="text-[10px] bg-white/20 px-1.5 py-0.5 rounded font-mono hidden sm:inline">⌘K</span>
-                </button>
-
-                <button
-                  onClick={() => {
-                    navigateToTab('resume');
-                    confetti({ particleCount: 30, spread: 40 });
-                  }}
-                  className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-indigo-500/30 text-indigo-300 text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer shadow-sm hover:border-indigo-400"
-                >
-                  <GraduationCap className="w-3.5 h-3.5 text-indigo-400" />
-                  <span>⚡ 60s Resume Studio</span>
-                </button>
-
-                <button
-                  onClick={() => {
-                    handleLaunchTool('tools', 'risk-radar');
-                    confetti({ particleCount: 30, spread: 40 });
-                  }}
-                  className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-rose-500/30 text-rose-300 text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer shadow-sm hover:border-rose-400"
-                >
-                  <Scale className="w-3.5 h-3.5 text-rose-400" />
-                  <span>🚨 AI Contract Risk Radar</span>
-                </button>
-
-                <button
-                  onClick={() => {
-                    handleLaunchTool('tools', 'size-squeezer');
-                    confetti({ particleCount: 30, spread: 40 });
-                  }}
-                  className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-emerald-500/30 text-emerald-300 text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer shadow-sm hover:border-emerald-400"
-                >
-                  <Shrink className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>🗜️ Target Size Squeezer</span>
-                </button>
-
-                <button
-                  onClick={() => {
-                    navigateToTab('convert');
-                    confetti({ particleCount: 30, spread: 40 });
-                  }}
-                  className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer shadow-sm hover:border-slate-500"
-                >
-                  <ArrowLeftRight className="w-3.5 h-3.5 text-slate-400" />
-                  <span>Universal Converter</span>
-                </button>
-              </div>
             </div>
 
-            {/* Uploader Drop Box */}
-            <FileUploader onFileLoaded={handleFileLoaded} />
+            {/* Universal Uploader Drop Box */}
+            <FileUploader onFileLoaded={handleFileLoaded} title="Drop any PDF here to edit immediately, or select a tool below" />
 
-            {/* Bento Grid: All Feature Pillars */}
-            <div className="max-w-6xl mx-auto px-4 mt-12 pb-16 w-full">
+            {/* All 16 Tools Open Visual Grid */}
+            <div className="max-w-6xl mx-auto px-4 mt-10 pb-16 w-full">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
                 <div>
-                  <h2 className="text-sm font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
-                    <Zap className="w-4 h-4 text-amber-400" />
-                    <span>Instant Pro Feature Directory</span>
+                  <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                    <Zap className="w-5 h-5 text-amber-400" />
+                    <span>All 16 PDF Super-Tools</span>
+                    <span className="text-[10px] font-semibold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full">
+                      100% Free
+                    </span>
                   </h2>
-                  <p className="text-xs text-slate-400 mt-0.5">Click any feature to launch directly with zero sign-up</p>
+                  <p className="text-xs text-slate-400 mt-0.5">Click any tool to launch instantly in your browser — zero accounts required</p>
                 </div>
 
                 {/* Filter Pills */}
                 <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-1">
                   {[
-                    { id: 'all', label: 'All Highlights' },
-                    { id: 'career', label: 'Resume & Career' },
-                    { id: 'legal', label: 'AI Legal & Audit' },
-                    { id: 'convert', label: 'Conversions' },
-                    { id: 'edit', label: 'Edit & Sign' },
+                    { id: 'all', label: 'All 16 Tools' },
+                    { id: 'popular', label: '⭐ Popular' },
+                    { id: 'security', label: '🛡️ Protect & Mask' },
+                    { id: 'convert', label: '🔄 Converters' },
+                    { id: 'edit', label: '✍️ Edit & Organize' },
                   ].map((f) => (
                     <button
                       key={f.id}
                       onClick={() => setBentoFilter(f.id as any)}
-                      className={`px-3 py-1 rounded-xl text-xs font-semibold whitespace-nowrap transition cursor-pointer ${
+                      className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition cursor-pointer ${
                         bentoFilter === f.id
                           ? 'bg-indigo-600 text-white shadow-md'
                           : 'bg-slate-900 hover:bg-slate-800 text-slate-400 border border-slate-800'
@@ -432,313 +545,41 @@ export const App: React.FC = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {/* 1. Resume Studio */}
-                {(bentoFilter === 'all' || bentoFilter === 'career') && (
-                  <div
-                    onClick={() => {
-                      navigateToTab('resume');
-                      confetti({ particleCount: 40, spread: 50 });
-                    }}
-                    className="p-5 rounded-3xl bg-slate-900/60 border border-slate-800 hover:border-indigo-500/50 hover:bg-slate-900 transition cursor-pointer group shadow-lg flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="w-10 h-10 rounded-2xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center border border-indigo-500/20 group-hover:scale-105 transition">
-                          <GraduationCap className="w-5 h-5" />
+              {/* Responsive 4-Column Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {homeTools
+                  .filter((t) => bentoFilter === 'all' || t.category.includes(bentoFilter))
+                  .map((tool) => {
+                    const Icon = tool.icon;
+                    return (
+                      <div
+                        key={tool.id}
+                        onClick={() => {
+                          tool.action();
+                          confetti({ particleCount: 35, spread: 50 });
+                        }}
+                        className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800/80 hover:border-indigo-500/50 hover:bg-slate-800/60 transition cursor-pointer group shadow-sm flex flex-col justify-between hover:scale-[1.02]"
+                      >
+                        <div>
+                          <div className="flex items-center justify-between mb-3">
+                            <div className={`w-9 h-9 rounded-xl bg-gradient-to-tr ${tool.bg} flex items-center justify-center text-white shadow-md shadow-indigo-500/20 group-hover:scale-105 transition`}>
+                              <Icon className="w-4 h-4" />
+                            </div>
+                            <span className="text-[10px] font-semibold uppercase tracking-wider bg-slate-800 text-slate-300 border border-slate-700/60 px-2 py-0.5 rounded-full">
+                              {tool.badge}
+                            </span>
+                          </div>
+                          <h3 className="text-sm font-bold text-white group-hover:text-indigo-300 transition flex items-center gap-1">
+                            <span>{tool.name}</span>
+                            <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition -translate-x-1 group-hover:translate-x-0 text-indigo-400" />
+                          </h3>
+                          <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
+                            {tool.desc}
+                          </p>
                         </div>
-                        <span className="text-[10px] bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2 py-0.5 rounded-full font-bold">
-                          Jobscan Alternative
-                        </span>
                       </div>
-                      <h3 className="text-sm font-bold text-white mb-1 group-hover:text-indigo-300 transition flex items-center gap-1">
-                        <span>60s Resume & Career Studio</span>
-                        <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition -translate-x-1 group-hover:translate-x-0" />
-                      </h3>
-                      <p className="text-xs text-slate-400 leading-relaxed">
-                        Auto-import old PDFs, scan against real job descriptions for ATS keywords, add portfolio QR codes, and generate matching cover letters.
-                      </p>
-                    </div>
-                    <div className="flex flex-wrap gap-1.5 pt-4 text-[10px] font-semibold text-indigo-400">
-                      <span>• ATS Matcher</span>
-                      <span>• Cover Letter</span>
-                      <span>• Vector QR</span>
-                      <span>• Headshot Studio</span>
-                    </div>
-                  </div>
-                )}
-
-                {/* 2. AI Contract Risk Radar */}
-                {(bentoFilter === 'all' || bentoFilter === 'legal') && (
-                  <div
-                    onClick={() => {
-                      handleLaunchTool('tools', 'risk-radar');
-                      confetti({ particleCount: 40, spread: 50 });
-                    }}
-                    className="p-5 rounded-3xl bg-slate-900/60 border border-slate-800 hover:border-rose-500/50 hover:bg-slate-900 transition cursor-pointer group shadow-lg flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="w-10 h-10 rounded-2xl bg-rose-500/10 text-rose-400 flex items-center justify-center border border-rose-500/20 group-hover:scale-105 transition">
-                          <Scale className="w-5 h-5" />
-                        </div>
-                        <span className="text-[10px] bg-rose-500/20 text-rose-300 border border-rose-500/30 px-2 py-0.5 rounded-full font-bold">
-                          Ironclad Alternative
-                        </span>
-                      </div>
-                      <h3 className="text-sm font-bold text-white mb-1 group-hover:text-rose-300 transition flex items-center gap-1">
-                        <span>AI Contract Risk & Red-Flag Radar</span>
-                        <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition -translate-x-1 group-hover:translate-x-0" />
-                      </h3>
-                      <p className="text-xs text-slate-400 leading-relaxed">
-                        Scans offer letters, NDAs, and agreements in 2 seconds. Flags non-competes, IP grabs, and uncapped liability with counter-proposals.
-                      </p>
-                    </div>
-                    <div className="flex flex-wrap gap-1.5 pt-4 text-[10px] font-semibold text-rose-400">
-                      <span>• Red-Flag Scan</span>
-                      <span>• Plain English</span>
-                      <span>• Counter-Clauses</span>
-                    </div>
-                  </div>
-                )}
-
-                {/* 3. Target Size Squeezer */}
-                {(bentoFilter === 'all' || bentoFilter === 'legal') && (
-                  <div
-                    onClick={() => {
-                      handleLaunchTool('tools', 'size-squeezer');
-                      confetti({ particleCount: 40, spread: 50 });
-                    }}
-                    className="p-5 rounded-3xl bg-slate-900/60 border border-slate-800 hover:border-emerald-500/50 hover:bg-slate-900 transition cursor-pointer group shadow-lg flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20 group-hover:scale-105 transition">
-                          <Shrink className="w-5 h-5" />
-                        </div>
-                        <span className="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold">
-                          Guaranteed &lt; 200 KB
-                        </span>
-                      </div>
-                      <h3 className="text-sm font-bold text-white mb-1 group-hover:text-emerald-300 transition flex items-center gap-1">
-                        <span>Target Size Squeezer</span>
-                        <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition -translate-x-1 group-hover:translate-x-0" />
-                      </h3>
-                      <p className="text-xs text-slate-400 leading-relaxed">
-                        Never get rejected by government or job portal caps again. Downscales and crunches documents to strictly fit under 100 KB, 200 KB, or 500 KB.
-                      </p>
-                    </div>
-                    <div className="flex flex-wrap gap-1.5 pt-4 text-[10px] font-semibold text-emerald-400">
-                      <span>• 195 KB Preset</span>
-                      <span>• Bicubic Sharp</span>
-                      <span>• Zero Uploads</span>
-                    </div>
-                  </div>
-                )}
-
-                {/* 4. Edit & Mobile Sign */}
-                {(bentoFilter === 'all' || bentoFilter === 'edit') && (
-                  <div
-                    onClick={() => {
-                      navigateToTab('sign-edit');
-                      confetti({ particleCount: 40, spread: 50 });
-                    }}
-                    className="p-5 rounded-3xl bg-slate-900/60 border border-slate-800 hover:border-blue-500/50 hover:bg-slate-900 transition cursor-pointer group shadow-lg flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="w-10 h-10 rounded-2xl bg-blue-500/10 text-blue-400 flex items-center justify-center border border-blue-500/20 group-hover:scale-105 transition">
-                          <FileSignature className="w-5 h-5" />
-                        </div>
-                        <span className="text-[10px] bg-blue-500/20 text-blue-300 border border-blue-500/30 px-2 py-0.5 rounded-full font-bold">
-                          Mobile Touch Sync
-                        </span>
-                      </div>
-                      <h3 className="text-sm font-bold text-white mb-1 group-hover:text-blue-300 transition flex items-center gap-1">
-                        <span>Edit & Sign with Mobile Sync</span>
-                        <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition -translate-x-1 group-hover:translate-x-0" />
-                      </h3>
-                      <p className="text-xs text-slate-400 leading-relaxed">
-                        Scan QR code with your phone to use your touchscreen as a signature pad. Add text, dates, stamps, and permanent burn-in redactions.
-                      </p>
-                    </div>
-                    <div className="flex flex-wrap gap-1.5 pt-4 text-[10px] font-semibold text-blue-400">
-                      <span>• Phone QR Sync</span>
-                      <span>• Text & Redact</span>
-                      <span>• Stamps</span>
-                    </div>
-                  </div>
-                )}
-
-                {/* 5. Organize & Merge */}
-                {(bentoFilter === 'all' || bentoFilter === 'edit') && (
-                  <div
-                    onClick={() => {
-                      navigateToTab('organize');
-                      confetti({ particleCount: 40, spread: 50 });
-                    }}
-                    className="p-5 rounded-3xl bg-slate-900/60 border border-slate-800 hover:border-teal-500/50 hover:bg-slate-900 transition cursor-pointer group shadow-lg flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="w-10 h-10 rounded-2xl bg-teal-500/10 text-teal-400 flex items-center justify-center border border-teal-500/20 group-hover:scale-105 transition">
-                          <Layers className="w-5 h-5" />
-                        </div>
-                        <span className="text-[10px] bg-teal-500/20 text-teal-300 border border-teal-500/30 px-2 py-0.5 rounded-full font-bold">
-                          Visual Grid
-                        </span>
-                      </div>
-                      <h3 className="text-sm font-bold text-white mb-1 group-hover:text-teal-300 transition flex items-center gap-1">
-                        <span>Organize, Rotate & Merge</span>
-                        <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition -translate-x-1 group-hover:translate-x-0" />
-                      </h3>
-                      <p className="text-xs text-slate-400 leading-relaxed">
-                        Interactive page thumbnail cards. Drag to reorder, rotate sideways/upside-down scans 90°, delete pages, and append additional PDFs.
-                      </p>
-                    </div>
-                    <div className="flex flex-wrap gap-1.5 pt-4 text-[10px] font-semibold text-teal-400">
-                      <span>• Drag Reorder</span>
-                      <span>• 90° Rotate</span>
-                      <span>• Multi-Merge</span>
-                    </div>
-                  </div>
-                )}
-
-                {/* 6. Universal Converters */}
-                {(bentoFilter === 'all' || bentoFilter === 'convert') && (
-                  <div
-                    onClick={() => {
-                      navigateToTab('convert');
-                      confetti({ particleCount: 40, spread: 50 });
-                    }}
-                    className="p-5 rounded-3xl bg-slate-900/60 border border-slate-800 hover:border-violet-500/50 hover:bg-slate-900 transition cursor-pointer group shadow-lg flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="w-10 h-10 rounded-2xl bg-violet-500/10 text-violet-400 flex items-center justify-center border border-violet-500/20 group-hover:scale-105 transition">
-                          <ArrowLeftRight className="w-5 h-5" />
-                        </div>
-                        <span className="text-[10px] bg-violet-500/20 text-violet-300 border border-violet-500/30 px-2 py-0.5 rounded-full font-bold">
-                          6-in-1 Converters
-                        </span>
-                      </div>
-                      <h3 className="text-sm font-bold text-white mb-1 group-hover:text-violet-300 transition flex items-center gap-1">
-                        <span>Universal Document Converters</span>
-                        <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition -translate-x-1 group-hover:translate-x-0" />
-                      </h3>
-                      <p className="text-xs text-slate-400 leading-relaxed">
-                        Convert PDF to Word (.docx), PDF to Excel (.xlsx), PDF to Images ZIP, and convert Word and Images into clean PDFs.
-                      </p>
-                    </div>
-                    <div className="flex flex-wrap gap-1.5 pt-4 text-[10px] font-semibold text-violet-400">
-                      <span>• Word (.docx)</span>
-                      <span>• Excel (.xlsx)</span>
-                      <span>• Images (.zip)</span>
-                    </div>
-                  </div>
-                )}
-
-                {/* 7. Dedicated Split PDF */}
-                {(bentoFilter === 'all' || bentoFilter === 'edit') && (
-                  <div
-                    onClick={() => {
-                      navigateToTab('split');
-                      confetti({ particleCount: 40, spread: 50 });
-                    }}
-                    className="p-5 rounded-3xl bg-slate-900/60 border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900 transition cursor-pointer group shadow-lg flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center border border-amber-500/20 group-hover:scale-105 transition">
-                          <Scissors className="w-5 h-5" />
-                        </div>
-                        <span className="text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded-full font-bold">
-                          4 Split Modes
-                        </span>
-                      </div>
-                      <h3 className="text-sm font-bold text-white mb-1 group-hover:text-amber-300 transition flex items-center gap-1">
-                        <span>Split PDF & Extract Pages</span>
-                        <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition -translate-x-1 group-hover:translate-x-0" />
-                      </h3>
-                      <p className="text-xs text-slate-400 leading-relaxed">
-                        Split into single sheets, custom page ranges (e.g. 1-3, 4-6), chunks of N pages, or visual picker with 1-click ZIP download.
-                      </p>
-                    </div>
-                    <div className="flex flex-wrap gap-1.5 pt-4 text-[10px] font-semibold text-amber-400">
-                      <span>• Single Pages</span>
-                      <span>• Page Ranges</span>
-                      <span>• Batch ZIP</span>
-                    </div>
-                  </div>
-                )}
-
-                {/* 8. Military-Grade AES-256 PDF Protect & Unlock */}
-                {(bentoFilter === 'all' || bentoFilter === 'legal') && (
-                  <div
-                    onClick={() => {
-                      navigateToTab('security');
-                      confetti({ particleCount: 40, spread: 50 });
-                    }}
-                    className="p-5 rounded-3xl bg-slate-900/60 border border-slate-800 hover:border-indigo-500/50 hover:bg-slate-900 transition cursor-pointer group shadow-lg flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="w-10 h-10 rounded-2xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center border border-indigo-500/20 group-hover:scale-105 transition">
-                          <Lock className="w-5 h-5" />
-                        </div>
-                        <span className="text-[10px] bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2 py-0.5 rounded-full font-bold">
-                          AES-256 Crypto
-                        </span>
-                      </div>
-                      <h3 className="text-sm font-bold text-white mb-1 group-hover:text-indigo-300 transition flex items-center gap-1">
-                        <span>Protect & Unlock PDF</span>
-                        <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition -translate-x-1 group-hover:translate-x-0" />
-                      </h3>
-                      <p className="text-xs text-slate-400 leading-relaxed">
-                        Encrypt PDFs with standard AES-256 password protection and permission flags, or unlock protected documents you legitimately own.
-                      </p>
-                    </div>
-                    <div className="flex flex-wrap gap-1.5 pt-4 text-[10px] font-semibold text-indigo-400">
-                      <span>• Password Encrypt</span>
-                      <span>• Decrypt & Unlock</span>
-                      <span>• Pure In-Browser</span>
-                    </div>
-                  </div>
-                )}
-
-                {/* 9. Smart PII Masker & PKI Signature Validator */}
-                {(bentoFilter === 'all' || bentoFilter === 'legal') && (
-                  <div
-                    onClick={() => {
-                      navigateToTab('security-studio');
-                      confetti({ particleCount: 45, spread: 55 });
-                    }}
-                    className="p-5 rounded-3xl bg-slate-900/60 border border-slate-800 hover:border-emerald-500/50 hover:bg-slate-900 transition cursor-pointer group shadow-lg flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20 group-hover:scale-105 transition">
-                          <ShieldCheck className="w-5 h-5" />
-                        </div>
-                        <span className="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold">
-                          100% In-Browser Privacy
-                        </span>
-                      </div>
-                      <h3 className="text-sm font-bold text-white mb-1 group-hover:text-emerald-300 transition flex items-center gap-1">
-                        <span>Aadhaar Masker &amp; PKI Signature Validator</span>
-                        <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition -translate-x-1 group-hover:translate-x-0" />
-                      </h3>
-                      <p className="text-xs text-slate-400 leading-relaxed">
-                        Auto-detect and irreversibly black out 12-digit Aadhaar &amp; PAN numbers with raster burn-in. Cryptographically verify CCA India &amp; Adobe AATL digital signatures.
-                      </p>
-                    </div>
-                    <div className="flex flex-wrap gap-1.5 pt-4 text-[10px] font-semibold text-emerald-400">
-                      <span>• Mask Aadhaar &amp; PAN</span>
-                      <span>• CCA India Root CA</span>
-                      <span>• Zero Cloud Leaks</span>
-                    </div>
-                  </div>
-                )}
+                    );
+                  })}
               </div>
             </div>
 

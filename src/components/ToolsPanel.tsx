@@ -287,7 +287,7 @@ export const ToolsPanel: React.FC<ToolsPanelProps> = ({
             }`}
           >
             <Scale className="w-4 h-4 text-amber-300" />
-            <span>AI Risk Radar</span>
+            <span>Check Contract Risks</span>
           </button>
 
           <button
@@ -299,7 +299,7 @@ export const ToolsPanel: React.FC<ToolsPanelProps> = ({
             }`}
           >
             <Shrink className="w-4 h-4 text-emerald-300" />
-            <span>Target Size Squeezer</span>
+            <span>Compress to Exact Size</span>
           </button>
 
           <button
@@ -311,7 +311,7 @@ export const ToolsPanel: React.FC<ToolsPanelProps> = ({
             }`}
           >
             <GitCompare className="w-4 h-4" />
-            <span>Contract Diff</span>
+            <span>Compare Two PDFs</span>
           </button>
 
           <button
@@ -323,7 +323,7 @@ export const ToolsPanel: React.FC<ToolsPanelProps> = ({
             }`}
           >
             <Table2 className="w-4 h-4" />
-            <span>Table to Excel</span>
+            <span>Extract Tables to Excel</span>
           </button>
 
           <button
@@ -335,7 +335,7 @@ export const ToolsPanel: React.FC<ToolsPanelProps> = ({
             }`}
           >
             <Wand2 className="w-4 h-4" />
-            <span>Document Doctor</span>
+            <span>Clean & Brighten Scans</span>
           </button>
         </div>
       </div>

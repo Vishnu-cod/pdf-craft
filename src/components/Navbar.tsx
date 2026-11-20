@@ -59,10 +59,10 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const tabs = [
     { id: 'sign-edit', label: 'Edit & Sign', shortLabel: 'Sign & Edit', icon: FileSignature },
-    { id: 'organize', label: 'Organize & Merge', shortLabel: 'Organize', icon: Layers },
+    { id: 'organize', label: 'Merge & Organize', shortLabel: 'Merge', icon: Layers },
     { id: 'convert', label: 'Convert', shortLabel: 'Convert', icon: ArrowLeftRight },
-    { id: 'security-studio', label: 'Security & PII', shortLabel: 'Security', icon: ShieldCheck, badge: 'New' },
-    { id: 'tools', label: 'Pro Tools', shortLabel: 'Pro Tools', icon: Sparkles, badge: 'AI Radar' },
+    { id: 'security-studio', label: 'Protect & Mask', shortLabel: 'Protect', icon: ShieldCheck, badge: 'New' },
+    { id: 'tools', label: 'Pro Tools', shortLabel: 'Tools', icon: Sparkles, badge: 'AI Tools' },
     { id: 'resume', label: 'Resume Builder', shortLabel: 'Resume', icon: GraduationCap, badge: '60s' },
   ];
 

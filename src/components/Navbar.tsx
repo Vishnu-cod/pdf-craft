@@ -61,6 +61,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     { id: 'sign-edit', label: 'Edit & Sign', shortLabel: 'Sign & Edit', icon: FileSignature },
     { id: 'organize', label: 'Organize & Merge', shortLabel: 'Organize', icon: Layers },
     { id: 'convert', label: 'Convert', shortLabel: 'Convert', icon: ArrowLeftRight },
+    { id: 'security-studio', label: 'Security & PII', shortLabel: 'Security', icon: ShieldCheck, badge: 'New' },
     { id: 'tools', label: 'Pro Tools', shortLabel: 'Pro Tools', icon: Sparkles, badge: 'AI Radar' },
     { id: 'resume', label: 'Resume Builder', shortLabel: 'Resume', icon: GraduationCap, badge: '60s' },
   ];
@@ -107,7 +108,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <nav aria-label="Main Navigation" className="flex items-center gap-0.5 sm:gap-1 bg-slate-950/80 p-1 rounded-2xl border border-slate-800 shadow-inner overflow-x-auto scrollbar-none">
               {tabs.map((tab) => {
                 const Icon = tab.icon;
-                const isActive = activeTab === tab.id || (tab.id === 'organize' && activeTab === 'split') || (tab.id === 'tools' && activeTab === 'security');
+                const isActive = activeTab === tab.id || (tab.id === 'organize' && activeTab === 'split') || (tab.id === 'security-studio' && activeTab === 'security');
                 return (
                   <button
                     key={tab.id}
@@ -127,6 +128,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                         className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider border shrink-0 ${
                           tab.badge === 'AI Radar'
                             ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
+                            : tab.badge === 'New'
+                            ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
                             : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
                         }`}
                       >
@@ -408,6 +411,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                         className={`text-[9px] px-2 py-0.5 rounded-full font-bold uppercase ${
                           tab.badge === 'AI Radar'
                             ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
+                            : tab.badge === 'New'
+                            ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
                             : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
                         }`}
                       >

@@ -608,6 +608,18 @@ export async function convertPDFToImagesZip(
 }
 
 /**
+ * Irreversibly burn in redactions into PDF document bytes.
+ * Flattens redacted pages to high-DPI raster canvases and purges underlying text glyphs and metadata.
+ */
+export async function burnInRedactions(
+  originalBytes: ArrayBuffer,
+  redactions: Annotation[],
+  scale: number = 2.0
+): Promise<Uint8Array> {
+  return applyAnnotationsAndSave(originalBytes, redactions, 800 * scale, 1100 * scale);
+}
+
+/**
  * Helper to trigger immediate browser file download
  */
 export function downloadBlob(blob: Blob | Uint8Array, fileName: string) {

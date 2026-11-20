@@ -29,6 +29,9 @@ import {
   Trash2,
   Shield,
   Eye,
+  EyeOff,
+  FileCheck2,
+  ShieldCheck,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -56,6 +59,7 @@ export interface ToolItem {
   converter?: 'pdf-to-word' | 'pdf-to-excel' | 'pdf-to-images' | 'images-to-pdf' | 'word-to-pdf' | 'word-to-images';
   targetKB?: number;
   securityMode?: 'protect' | 'unlock';
+  securityStudioSubTab?: 'pii_masker' | 'signature_validator';
   hotkey?: string;
 }
 
@@ -67,7 +71,8 @@ interface FeatureDirectoryModalProps {
     subTool?: string,
     converter?: any,
     securityMode?: 'protect' | 'unlock',
-    targetKB?: number
+    targetKB?: number,
+    securityStudioSubTab?: 'pii_masker' | 'signature_validator'
   ) => void;
 }
 
@@ -242,7 +247,31 @@ export const FeatureDirectoryModal: React.FC<FeatureDirectoryModalProps> = ({
       targetKB: 195,
     },
 
-    // 5. Security
+    // 5. Security & Privacy
+    {
+      id: 'mask-pii-aadhaar',
+      name: 'Smart PII & Aadhaar Masker',
+      category: 'security',
+      badge: 'Auto Redaction',
+      badgeColor: 'bg-rose-500/20 text-rose-300 border-rose-500/30',
+      icon: EyeOff,
+      iconBg: 'from-rose-600 to-red-600',
+      description: 'Auto-detects 12-digit Aadhaar, PAN card, US SSN, credit cards & emails. Permanently burns irreversible redaction into the PDF.',
+      targetTab: 'security-studio',
+      securityStudioSubTab: 'pii_masker',
+    },
+    {
+      id: 'verify-digital-signature',
+      name: 'Digital Signature & PKI Validator',
+      category: 'security',
+      badge: 'CCA India & Adobe AATL',
+      badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+      icon: FileCheck2,
+      iconBg: 'from-emerald-600 to-teal-600',
+      description: 'Cryptographic PKI validation of eSignatures, eMudhra, Capricorn, VSign, DigiLocker & AATL with byte range integrity checks.',
+      targetTab: 'security-studio',
+      securityStudioSubTab: 'signature_validator',
+    },
     {
       id: 'protect-pdf',
       name: 'Password Protect PDF',
@@ -476,7 +505,8 @@ export const FeatureDirectoryModal: React.FC<FeatureDirectoryModalProps> = ({
                     tool.subTool,
                     tool.converter,
                     tool.securityMode,
-                    tool.targetKB
+                    tool.targetKB,
+                    tool.securityStudioSubTab
                   );
                   confetti({ particleCount: 30, spread: 40 });
                   onClose();

@@ -7,6 +7,7 @@ export interface RouteConfig {
   converter?: 'pdf-to-word' | 'pdf-to-excel' | 'pdf-to-images' | 'images-to-pdf' | 'word-to-pdf' | 'word-to-images';
   targetKB?: number;
   securityMode?: 'protect' | 'unlock';
+  securityStudioSubTab?: 'pii_masker' | 'signature_validator';
   title: string;
   description: string;
 }
@@ -207,6 +208,42 @@ export const APP_ROUTES: RouteConfig[] = [
     title: 'Zero-Cloud Privacy Policy & Security Guarantee | PDFCraft',
     description: '100% in-browser client-side privacy architecture. Your PDF documents never leave your local device.',
   },
+
+  // 8. Security & Privacy Studio (Aadhaar & PAN Masking + PKI Digital Signature Validation)
+  {
+    path: '/security-studio',
+    tab: 'security-studio',
+    title: 'Security & Privacy Studio — Aadhaar & PAN Masker, Digital Signature PKI Validator | PDFCraft',
+    description: '100% in-browser identity protection. Automatically mask sensitive Aadhaar & PAN numbers with irreversible raster burn-in, or verify CCA India & Adobe AATL digital signatures.',
+  },
+  {
+    path: '/mask-aadhaar',
+    tab: 'security-studio',
+    securityStudioSubTab: 'pii_masker',
+    title: 'Mask Aadhaar Card PDF Free (1-Click Client-Side Auto-Redact) | PDFCraft',
+    description: 'Legally compliant Masked Aadhaar creator. Automatically detects 12-digit Aadhaar numbers and irreversibly blackouts the first 8 digits directly in your browser with zero server uploads.',
+  },
+  {
+    path: '/mask-pan-card',
+    tab: 'security-studio',
+    securityStudioSubTab: 'pii_masker',
+    title: 'Mask PAN Card PDF Free Online (Zero Server Leaks) | PDFCraft',
+    description: 'Safely mask PAN numbers on bank statements and tax returns before sharing. Irreversible client-side redaction purges underlying text.',
+  },
+  {
+    path: '/verify-signature',
+    tab: 'security-studio',
+    securityStudioSubTab: 'signature_validator',
+    title: 'Verify PDF Digital Signature Free (CCA India & Adobe AATL PKI) | PDFCraft',
+    description: 'Validate digital signatures on government PDFs, eMudhra, Capricorn, VSign, DigiLocker, and Adobe AATL certificates with byte-range cryptographic integrity checks.',
+  },
+  {
+    path: '/validate-dsc',
+    tab: 'security-studio',
+    securityStudioSubTab: 'signature_validator',
+    title: 'Validate Digital Signature Certificate (DSC) Online Free | PDFCraft',
+    description: 'Free in-browser Digital Signature Certificate validator for India and global PKI. Check certificate validity and document tampering without uploading.',
+  },
 ];
 
 /**
@@ -247,6 +284,15 @@ export function matchRoute(pathname: string): RouteConfig {
   if (normalized.includes('smallpdf')) return APP_ROUTES.find((r) => r.path === '/smallpdf-alternative')!;
   if (normalized.includes('docusign')) return APP_ROUTES.find((r) => r.path === '/docusign-alternative')!;
   if (normalized.includes('contract') || normalized.includes('radar')) return APP_ROUTES.find((r) => r.path === '/contract-risk-radar')!;
+  if (normalized.includes('aadhaar') || normalized.includes('mask-pan') || normalized.includes('mask-pii')) {
+    return APP_ROUTES.find((r) => r.path === '/mask-aadhaar') || APP_ROUTES.find((r) => r.path === '/security-studio')!;
+  }
+  if (normalized.includes('verify-signature') || normalized.includes('validate-dsc') || normalized.includes('dsc') || normalized.includes('signature-validator')) {
+    return APP_ROUTES.find((r) => r.path === '/verify-signature') || APP_ROUTES.find((r) => r.path === '/security-studio')!;
+  }
+  if (normalized.includes('security-studio') || normalized.includes('privacy-studio')) {
+    return APP_ROUTES.find((r) => r.path === '/security-studio')!;
+  }
   if (normalized.includes('privacy')) return APP_ROUTES.find((r) => r.path === '/privacy')!;
 
   // Fallback to Home

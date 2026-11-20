@@ -39,6 +39,7 @@ const ResumeBuilder = safeLazy(() => import('./components/ResumeBuilder'), 'Resu
 const MobileSignPad = safeLazy(() => import('./components/MobileSignPad'), 'MobileSignPad');
 const SplitPanel = safeLazy(() => import('./components/SplitPanel'), 'SplitPanel');
 const SecurityPanel = safeLazy(() => import('./components/SecurityPanel'), 'SecurityPanel');
+const SecurityPrivacyStudio = safeLazy(() => import('./components/SecurityPrivacyStudio'), 'SecurityPrivacyStudio');
 
 const ViewSkeleton: React.FC = () => (
   <div className="flex-1 flex flex-col items-center justify-center min-h-[350px] text-slate-400 gap-3 py-16 animate-pulse">
@@ -83,6 +84,7 @@ export const App: React.FC = () => {
   const [isFeatureModalOpen, setIsFeatureModalOpen] = useState(false);
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
   const [securityMode, setSecurityMode] = useState<'protect' | 'unlock'>('protect');
+  const [securityStudioSubTab, setSecurityStudioSubTab] = useState<'pii_masker' | 'signature_validator'>('pii_masker');
   const [targetSubTool, setTargetSubTool] = useState<
     'risk-radar' | 'size-squeezer' | 'diff' | 'table-extract' | 'doctor'
   >('risk-radar');
@@ -147,19 +149,21 @@ export const App: React.FC = () => {
     document.title = 'PDFCraft — 100% Free & Private PDF Editor, Signer & Tools (Zero Cloud Leaks)';
   };
 
-  // Comprehensive SEO Route & URL sync handler for all 26 canonical tools
+  // Comprehensive SEO Route & URL sync handler for all canonical tools
   const navigateToTab = (
     tab: ActiveTab,
     subTool?: any,
     converter?: any,
     targetSize?: number,
-    security?: 'protect' | 'unlock'
+    security?: 'protect' | 'unlock',
+    studioTab?: 'pii_masker' | 'signature_validator'
   ) => {
     setActiveTab(tab);
     if (subTool) setTargetSubTool(subTool);
     if (converter) setTargetConverter(converter);
     if (targetSize) setTargetKB(targetSize);
     if (security) setSecurityMode(security);
+    if (studioTab) setSecurityStudioSubTab(studioTab);
 
     let path = '/';
     let title = 'PDFCraft — 100% Free & Private PDF Editor, Signer & Tools (Zero Cloud Leaks)';
@@ -175,6 +179,15 @@ export const App: React.FC = () => {
     } else if (tab === 'split') {
       path = '/split-pdf';
       title = 'Split PDF Pages & Extract Sheets Free Offline | PDFCraft';
+    } else if (tab === 'security-studio') {
+      const activeStudio = studioTab || securityStudioSubTab;
+      if (activeStudio === 'signature_validator') {
+        path = '/verify-signature';
+        title = 'Verify PDF Digital Signature Free (CCA India & Adobe AATL PKI) | PDFCraft';
+      } else {
+        path = '/mask-aadhaar';
+        title = 'Mask Aadhaar Card PDF Free (1-Click Client-Side Auto-Redact) | PDFCraft';
+      }
     } else if (tab === 'security') {
       if (security === 'unlock') {
         path = '/unlock-pdf';
@@ -258,6 +271,7 @@ export const App: React.FC = () => {
       if (route.converter) setTargetConverter(route.converter);
       if (route.targetKB) setTargetKB(route.targetKB);
       if (route.securityMode) setSecurityMode(route.securityMode);
+      if (route.securityStudioSubTab) setSecurityStudioSubTab(route.securityStudioSubTab);
       document.title = route.title;
     };
 
@@ -271,9 +285,11 @@ export const App: React.FC = () => {
     subTool?: string,
     converter?: any,
     securityMode?: 'protect' | 'unlock',
-    targetKB?: number
+    targetKB?: number,
+    securityStudioSubTab?: 'pii_masker' | 'signature_validator'
   ) => {
-    navigateToTab(tab, subTool, converter, targetKB, securityMode);
+    if (securityStudioSubTab) setSecurityStudioSubTab(securityStudioSubTab);
+    navigateToTab(tab, subTool, converter, targetKB, securityMode, securityStudioSubTab);
   };
 
   return (
@@ -689,6 +705,40 @@ export const App: React.FC = () => {
                     </div>
                   </div>
                 )}
+
+                {/* 9. Smart PII Masker & PKI Signature Validator */}
+                {(bentoFilter === 'all' || bentoFilter === 'legal') && (
+                  <div
+                    onClick={() => {
+                      navigateToTab('security-studio');
+                      confetti({ particleCount: 45, spread: 55 });
+                    }}
+                    className="p-5 rounded-3xl bg-slate-900/60 border border-slate-800 hover:border-emerald-500/50 hover:bg-slate-900 transition cursor-pointer group shadow-lg flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20 group-hover:scale-105 transition">
+                          <ShieldCheck className="w-5 h-5" />
+                        </div>
+                        <span className="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold">
+                          100% In-Browser Privacy
+                        </span>
+                      </div>
+                      <h3 className="text-sm font-bold text-white mb-1 group-hover:text-emerald-300 transition flex items-center gap-1">
+                        <span>Aadhaar Masker &amp; PKI Signature Validator</span>
+                        <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition -translate-x-1 group-hover:translate-x-0" />
+                      </h3>
+                      <p className="text-xs text-slate-400 leading-relaxed">
+                        Auto-detect and irreversibly black out 12-digit Aadhaar &amp; PAN numbers with raster burn-in. Cryptographically verify CCA India &amp; Adobe AATL digital signatures.
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5 pt-4 text-[10px] font-semibold text-emerald-400">
+                      <span>• Mask Aadhaar &amp; PAN</span>
+                      <span>• CCA India Root CA</span>
+                      <span>• Zero Cloud Leaks</span>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -861,6 +911,15 @@ export const App: React.FC = () => {
                   <SplitPanel
                     pdfBytes={currentBytes || undefined}
                     fileName={currentFile?.name}
+                    onFileLoaded={handleFileLoaded}
+                  />
+                )}
+
+                {activeTab === 'security-studio' && (
+                  <SecurityPrivacyStudio
+                    initialFile={currentFile}
+                    initialPdfBytes={currentBytes || undefined}
+                    initialSubTab={securityStudioSubTab}
                     onFileLoaded={handleFileLoaded}
                   />
                 )}
@@ -1142,6 +1201,24 @@ export const App: React.FC = () => {
                     className="hover:text-rose-300 transition block hover:translate-x-0.5"
                   >
                     AI Contract Risk Radar
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/mask-aadhaar"
+                    onClick={(e) => { e.preventDefault(); navigateToTab('security-studio', undefined, undefined, undefined, undefined, 'pii_masker'); }}
+                    className="hover:text-emerald-300 transition block hover:translate-x-0.5 text-emerald-400 font-semibold"
+                  >
+                    🛡️ Mask Aadhaar &amp; PAN Card
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/verify-signature"
+                    onClick={(e) => { e.preventDefault(); navigateToTab('security-studio', undefined, undefined, undefined, undefined, 'signature_validator'); }}
+                    className="hover:text-emerald-300 transition block hover:translate-x-0.5 text-emerald-400 font-semibold"
+                  >
+                    ✓ Verify Digital Signature (CCA India)
                   </a>
                 </li>
                 <li>

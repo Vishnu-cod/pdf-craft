@@ -423,6 +423,74 @@ const pages = [
       { q: 'Are documents legally recognized?', a: 'Yes. Standard ESIGN and UETA compliant signatures created client-side are valid for agreements, leases, and contracts.' },
     ],
   },
+  {
+    slug: 'mask-aadhaar',
+    title: 'Mask Aadhaar Card PDF Free Online (1-Click Auto-Redact) | PDFCraft',
+    description: 'Free Masked Aadhaar card creator online. Automatically detect and black out the first 8 digits of your Aadhaar number to comply with UIDAI KYC guidelines. 100% private in-browser redaction with zero server uploads.',
+    keywords: 'mask aadhaar card online free, masked aadhaar generator, black out aadhaar number pdf, uidai compliant masked aadhaar, mask pan card pdf, private aadhaar masking tool',
+    toolName: 'Smart Aadhaar & PII Masker',
+    howToName: 'How to create a masked Aadhaar card PDF with the first 8 digits blacked out',
+    steps: [
+      { name: 'Upload Your e-Aadhaar PDF', text: 'Select or drop your Aadhaar document into PDFCraft. The file loads directly in local browser memory with zero server uploads.' },
+      { name: '1-Click Smart Auto-Detect', text: 'Our client-side regex engine instantly locates the 12-digit Aadhaar number and generates precise redaction coordinates.' },
+      { name: 'Download Irreversible Masked Aadhaar', text: 'Purges underlying vector text glyphs and burns a high-DPI black raster mask. Safe for any bank KYC verification.' },
+    ],
+    faqs: [
+      { q: 'Is masked Aadhaar legally accepted for KYC?', a: 'Yes. RBI, SEBI, IRDAI, and UIDAI guidelines explicitly permit and recommend Masked Aadhaar (where only the last 4 digits are visible) for all KYC and verification purposes.' },
+      { q: 'Can anyone unmask or remove the black box from the PDF?', a: 'No. PDFCraft uses true raster burn-in that completely purges the underlying font characters and byte streams, preventing inspection via DevTools or text copying.' },
+      { q: 'Is my Aadhaar card uploaded to any server?', a: 'Never. All scanning and masking happen 100% inside your browser using WebAssembly. Your identity data never leaves your device.' },
+    ],
+  },
+  {
+    slug: 'mask-pan-card',
+    title: 'Mask PAN Card PDF Free Online (Zero Cloud Leaks) | PDFCraft',
+    description: 'Mask PAN numbers and sensitive identifiers from financial PDFs, bank statements, and tax returns before sharing. 100% in-browser irreversible redaction.',
+    keywords: 'mask pan card online free, redact pan number pdf, black out pan card, hide pan number income tax pdf, sanitize financial pdf',
+    toolName: 'Smart PAN Card Masker',
+    howToName: 'How to mask PAN numbers on tax documents and bank statements',
+    steps: [
+      { name: 'Upload Financial PDF', text: 'Drop your tax returns, bank statements, or salary slips into PDFCraft.' },
+      { name: 'Detect PAN Sequence', text: 'The engine automatically scans text streams for 10-character alphanumeric PAN numbers.' },
+      { name: 'Apply Permanent Redaction', text: 'Burn in irreversible black blackout blocks and export a sanitized PDF.' },
+    ],
+    faqs: [
+      { q: 'Why should I mask my PAN number?', a: 'Masking your PAN prevents identity theft and unauthorized financial queries when sharing statements with landlords, lenders, or employers.' },
+      { q: 'Does this work on scanned PDF statements?', a: 'Yes. You can review detected items or add manual blackout boxes over any scanned section.' },
+    ],
+  },
+  {
+    slug: 'verify-signature',
+    title: 'Verify PDF Digital Signature Free (CCA India & Adobe AATL PKI) | PDFCraft',
+    description: 'Validate digital signatures on government certificates, tax filings, and legal PDFs. Check eMudhra, Capricorn, VSign, DigiLocker, and Adobe AATL certificates with cryptographic byte-range integrity verification.',
+    keywords: 'verify digital signature pdf online free, validate dsc certificate pdf, check emudhra signature validity, cca india digital signature validator, adobe aatl signature check',
+    toolName: 'Digital Signature & PKI Validator',
+    howToName: 'How to verify a digital signature certificate (DSC) on a PDF document',
+    steps: [
+      { name: 'Load Signed PDF Document', text: 'Select your digitally signed invoice, MCA document, court order, or GST filing.' },
+      { name: 'Cryptographic Integrity Check', text: 'Scans signature dictionaries, byte range offsets, and root certifying authority certificates in browser memory.' },
+      { name: 'Review Authenticity Certificate', text: 'Inspect Certifying Authority issuer (eMudhra, Capricorn, VSign, DigiLocker, Adobe), signature reason, and tamper status.' },
+    ],
+    faqs: [
+      { q: 'Which Certifying Authorities are recognized?', a: 'PDFCraft validates against Controller of Certifying Authorities (CCA) India root authorities (eMudhra, Capricorn, VSign, IDsign, Pantasign, SafeScrypt, NSDL, DigiLocker) as well as Adobe Approved Trust List (AATL).' },
+      { q: 'Can it detect if the document was altered after signing?', a: 'Yes. The engine checks the /ByteRange hash integrity to confirm whether any bytes were modified post-signature.' },
+    ],
+  },
+  {
+    slug: 'security-studio',
+    title: 'Security & Privacy Studio — Aadhaar Masker & PKI Signature Validator | PDFCraft',
+    description: 'Unified in-browser PDF security powerhouse. Mask Aadhaar & PAN IDs, verify PKI digital signatures, and encrypt with AES-256 with 100% client-side privacy.',
+    keywords: 'pdf security studio, mask aadhaar online, verify pdf signature, cca india signature check, private pdf redaction',
+    toolName: 'Security & Privacy Studio',
+    howToName: 'How to use PDFCraft Security & Privacy Studio to protect and verify documents',
+    steps: [
+      { name: 'Select Security Mode', text: 'Choose between Smart PII Masking or PKI Digital Signature Validation.' },
+      { name: 'Analyze Locally', text: 'Instant client-side scan executes in milliseconds with zero cloud uploads.' },
+      { name: 'Export Protected PDF', text: 'Download compliant, redacted, or verified files with complete confidence.' },
+    ],
+    faqs: [
+      { q: 'Is any data stored or sent to the cloud?', a: 'Zero data is sent anywhere. All computation happens entirely within your browser runtime.' },
+    ],
+  },
 ];
 
 for (const page of pages) {

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { UploadCloud, Image as ImageIcon, Sparkles, RefreshCw, Check } from 'lucide-react';
 import { CanvasElement, CanvasBackground } from '../types';
 import {
   magicEraseImage,
@@ -74,20 +75,75 @@ export const AIToolsModal: React.FC<AIToolsModalProps> = ({
     background: string;
   } | null>(null);
 
-  const imageSrc = selectedElement?.src;
+  const [customImageSrc, setCustomImageSrc] = useState<string | null>(null);
+  const effectiveImageSrc = customImageSrc || selectedElement?.src || null;
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isDragOver, setIsDragOver] = useState(false);
+
+  const SAMPLE_PHOTOS = [
+    {
+      label: 'Portrait (Model)',
+      src: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
+    },
+    {
+      label: 'Product (Sneaker)',
+      src: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80',
+    },
+    {
+      label: 'Urban (Fashion)',
+      src: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80',
+    },
+  ];
+
+  const handleLoadImage = (dataUrl: string) => {
+    setCustomImageSrc(dataUrl);
+    setBeforeImg(dataUrl);
+    setResultImg(null);
+    setGrabResults(null);
+    setLayersResults(null);
+    if (tool === 'eraser') {
+      setTimeout(() => initEraserMask(dataUrl), 60);
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const src = event.target?.result as string;
+      if (src) handleLoadImage(src);
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const src = event.target?.result as string;
+        if (src) handleLoadImage(src);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   // Setup preview when modal opens
   useEffect(() => {
-    if (imageSrc) {
-      setBeforeImg(imageSrc);
+    if (effectiveImageSrc) {
+      setBeforeImg(effectiveImageSrc);
       if (tool === 'eraser') {
-        initEraserMask(imageSrc);
+        initEraserMask(effectiveImageSrc);
       }
     }
     if (tool === 'bg_gen') {
       handleGenerateBackground(selectedStyle);
     }
-  }, [tool, imageSrc]);
+  }, [tool, effectiveImageSrc]);
 
   // Initialize eraser canvas
   const initEraserMask = (src: string) => {
@@ -151,12 +207,12 @@ export const AIToolsModal: React.FC<AIToolsModalProps> = ({
 
   // Run Magic Eraser
   const handleRunEraser = async () => {
-    if (!imageSrc || !maskCanvasRef.current) return;
+    if (!effectiveImageSrc || !maskCanvasRef.current) return;
     setIsProcessing(true);
     setProgressText('Analyzing image textures and running neural inpainting...');
     try {
       const maskData = maskCanvasRef.current.toDataURL('image/png');
-      const inpainted = await magicEraseImage(imageSrc, maskData);
+      const inpainted = await magicEraseImage(effectiveImageSrc, maskData);
       setResultImg(inpainted);
       setProgressText('Inpainting complete!');
     } catch (err) {
@@ -169,11 +225,11 @@ export const AIToolsModal: React.FC<AIToolsModalProps> = ({
 
   // Run Background Remover
   const handleRunBgRemover = async () => {
-    if (!imageSrc) return;
+    if (!effectiveImageSrc) return;
     setIsProcessing(true);
     setProgressText('Detecting foreground subject and extracting alpha matte...');
     try {
-      const cutout = await removeBackground(imageSrc, { feather, threshold });
+      const cutout = await removeBackground(effectiveImageSrc, { feather, threshold });
       setResultImg(cutout);
       setProgressText('Subject extracted cleanly!');
     } catch (err) {
@@ -186,11 +242,11 @@ export const AIToolsModal: React.FC<AIToolsModalProps> = ({
 
   // Run Magic Grab
   const handleRunMagicGrab = async () => {
-    if (!imageSrc) return;
+    if (!effectiveImageSrc) return;
     setIsProcessing(true);
     setProgressText('Extracting subject and synthesizing background fill...');
     try {
-      const res = await magicGrabSubject(imageSrc);
+      const res = await magicGrabSubject(effectiveImageSrc);
       setGrabResults(res);
       setResultImg(res.subject);
       setProgressText('Subject separated from background!');
@@ -204,11 +260,11 @@ export const AIToolsModal: React.FC<AIToolsModalProps> = ({
 
   // Run Magic Layers
   const handleRunMagicLayers = async () => {
-    if (!imageSrc) return;
+    if (!effectiveImageSrc) return;
     setIsProcessing(true);
     setProgressText('Decomposing photo into Foreground, Midground, and Background...');
     try {
-      const res = await decomposeToMagicLayers(imageSrc);
+      const res = await decomposeToMagicLayers(effectiveImageSrc);
       setLayersResults(res);
       setResultImg(res.foreground);
       setProgressText('Decomposition into 3 layers ready!');
@@ -244,74 +300,185 @@ export const AIToolsModal: React.FC<AIToolsModalProps> = ({
 
   // Apply Changes
   const handleApply = () => {
-    if (tool === 'eraser' && resultImg && selectedElement) {
-      onUpdateElement(selectedElement.id, {
-        src: resultImg,
-        isAiLayer: true,
-        aiType: 'inpainted',
-      });
-      onCommitHistory();
-      onClose();
-    } else if (tool === 'bg_remover' && resultImg && selectedElement) {
-      onUpdateElement(selectedElement.id, {
-        src: resultImg,
-        isAiLayer: true,
-        aiType: 'bg_removed',
-      });
-      onCommitHistory();
-      onClose();
-    } else if (tool === 'grab' && grabResults && selectedElement) {
-      // Replace original with reconstructed background
-      onUpdateElement(selectedElement.id, {
-        src: grabResults.background,
-        name: `${selectedElement.name} (Background)`,
-        isAiLayer: true,
-      });
+    const defaultX = Math.max(40, Math.round((canvasWidth - 600) / 2));
+    const defaultY = Math.max(40, Math.round((canvasHeight - 600) / 2));
+    const defaultW = Math.min(600, canvasWidth - 80);
+    const defaultH = Math.min(600, canvasHeight - 80);
 
-      // Add extracted subject as new top layer
-      const newSubjectElement: CanvasElement = {
-        id: `grabbed-${Date.now()}`,
-        type: 'image',
-        name: `${selectedElement.name} (Grabbed Subject)`,
-        src: grabResults.subject,
-        x: selectedElement.x + 20,
-        y: selectedElement.y + 20,
-        width: selectedElement.width,
-        height: selectedElement.height,
-        rotation: 0,
-        opacity: 100,
-        isLocked: false,
-        isVisible: true,
-        zIndex: selectedElement.zIndex + 1,
-        isAiLayer: true,
-        aiType: 'magic_grab',
-      };
-      onAddElement(newSubjectElement);
+    if (tool === 'eraser' && resultImg) {
+      if (selectedElement) {
+        onUpdateElement(selectedElement.id, {
+          src: resultImg,
+          isAiLayer: true,
+          aiType: 'inpainted',
+        });
+      } else {
+        const newEl: CanvasElement = {
+          id: `inpainted-${Date.now()}`,
+          type: 'image',
+          name: 'Inpainted Photo',
+          src: resultImg,
+          x: defaultX,
+          y: defaultY,
+          width: defaultW,
+          height: defaultH,
+          rotation: 0,
+          opacity: 100,
+          isLocked: false,
+          isVisible: true,
+          zIndex: 10,
+          isAiLayer: true,
+          aiType: 'inpainted',
+        };
+        onAddElement(newEl);
+      }
       onCommitHistory();
       onClose();
-    } else if (tool === 'layers' && layersResults && selectedElement) {
-      // Layer 1: Background
-      onUpdateElement(selectedElement.id, {
-        src: layersResults.background,
-        name: `${selectedElement.name} (Deep Background)`,
-        isAiLayer: true,
-      });
+    } else if (tool === 'bg_remover' && resultImg) {
+      if (selectedElement) {
+        onUpdateElement(selectedElement.id, {
+          src: resultImg,
+          isAiLayer: true,
+          aiType: 'bg_removed',
+        });
+      } else {
+        const newEl: CanvasElement = {
+          id: `cutout-${Date.now()}`,
+          type: 'image',
+          name: 'Extracted Subject',
+          src: resultImg,
+          x: defaultX,
+          y: defaultY,
+          width: defaultW,
+          height: defaultH,
+          rotation: 0,
+          opacity: 100,
+          isLocked: false,
+          isVisible: true,
+          zIndex: 10,
+          isAiLayer: true,
+          aiType: 'bg_removed',
+        };
+        onAddElement(newEl);
+      }
+      onCommitHistory();
+      onClose();
+    } else if (tool === 'grab' && grabResults) {
+      if (selectedElement) {
+        // Replace original with reconstructed background
+        onUpdateElement(selectedElement.id, {
+          src: grabResults.background,
+          name: `${selectedElement.name} (Background)`,
+          isAiLayer: true,
+        });
+
+        // Add extracted subject as new top layer
+        const newSubjectElement: CanvasElement = {
+          id: `grabbed-${Date.now()}`,
+          type: 'image',
+          name: `${selectedElement.name} (Grabbed Subject)`,
+          src: grabResults.subject,
+          x: selectedElement.x + 20,
+          y: selectedElement.y + 20,
+          width: selectedElement.width,
+          height: selectedElement.height,
+          rotation: 0,
+          opacity: 100,
+          isLocked: false,
+          isVisible: true,
+          zIndex: selectedElement.zIndex + 1,
+          isAiLayer: true,
+          aiType: 'magic_grab',
+        };
+        onAddElement(newSubjectElement);
+      } else {
+        const bgEl: CanvasElement = {
+          id: `grab-bg-${Date.now()}`,
+          type: 'image',
+          name: 'Synthesized Background',
+          src: grabResults.background,
+          x: defaultX,
+          y: defaultY,
+          width: defaultW,
+          height: defaultH,
+          rotation: 0,
+          opacity: 100,
+          isLocked: false,
+          isVisible: true,
+          zIndex: 5,
+          isAiLayer: true,
+        };
+        const subjEl: CanvasElement = {
+          id: `grab-subj-${Date.now()}`,
+          type: 'image',
+          name: 'Grabbed Subject',
+          src: grabResults.subject,
+          x: defaultX + 25,
+          y: defaultY + 25,
+          width: defaultW,
+          height: defaultH,
+          rotation: 0,
+          opacity: 100,
+          isLocked: false,
+          isVisible: true,
+          zIndex: 6,
+          isAiLayer: true,
+          aiType: 'magic_grab',
+        };
+        onAddElement(bgEl);
+        onAddElement(subjEl);
+      }
+      onCommitHistory();
+      onClose();
+    } else if (tool === 'layers' && layersResults) {
+      const baseX = selectedElement ? selectedElement.x : defaultX;
+      const baseY = selectedElement ? selectedElement.y : defaultY;
+      const baseW = selectedElement ? selectedElement.width : defaultW;
+      const baseH = selectedElement ? selectedElement.height : defaultH;
+      const baseZ = selectedElement ? selectedElement.zIndex : 5;
+      const baseName = selectedElement ? selectedElement.name : 'Photo';
+
+      if (selectedElement) {
+        onUpdateElement(selectedElement.id, {
+          src: layersResults.background,
+          name: `${baseName} (Deep Background)`,
+          isAiLayer: true,
+        });
+      } else {
+        const bgEl: CanvasElement = {
+          id: `layer-bg-${Date.now()}`,
+          type: 'image',
+          name: `${baseName} (Deep Background)`,
+          src: layersResults.background,
+          x: baseX,
+          y: baseY,
+          width: baseW,
+          height: baseH,
+          rotation: 0,
+          opacity: 100,
+          isLocked: false,
+          isVisible: true,
+          zIndex: baseZ,
+          isAiLayer: true,
+        };
+        onAddElement(bgEl);
+      }
 
       // Layer 2: Midground
       const midElement: CanvasElement = {
         id: `layer-mid-${Date.now()}`,
         type: 'image',
-        name: `${selectedElement.name} (Mid Accent)`,
+        name: `${baseName} (Mid Accent)`,
         src: layersResults.midground,
-        x: selectedElement.x,
-        y: selectedElement.y,
-        width: selectedElement.width,
-        height: selectedElement.height,
+        x: baseX + 10,
+        y: baseY + 10,
+        width: baseW,
+        height: baseH,
         rotation: 0,
         opacity: 85,
         isLocked: false,
         isVisible: true,
-        zIndex: selectedElement.zIndex + 1,
+        zIndex: baseZ + 1,
         isAiLayer: true,
         aiType: 'magic_layers',
       };
@@ -320,17 +487,17 @@ export const AIToolsModal: React.FC<AIToolsModalProps> = ({
       const foreElement: CanvasElement = {
         id: `layer-fore-${Date.now() + 1}`,
         type: 'image',
-        name: `${selectedElement.name} (Foreground Subject)`,
+        name: `${baseName} (Foreground Subject)`,
         src: layersResults.foreground,
-        x: selectedElement.x,
-        y: selectedElement.y,
-        width: selectedElement.width,
-        height: selectedElement.height,
+        x: baseX + 20,
+        y: baseY + 20,
+        width: baseW,
+        height: baseH,
         rotation: 0,
         opacity: 100,
         isLocked: false,
         isVisible: true,
-        zIndex: selectedElement.zIndex + 2,
+        zIndex: baseZ + 2,
         isAiLayer: true,
         aiType: 'magic_layers',
       };
@@ -391,13 +558,87 @@ export const AIToolsModal: React.FC<AIToolsModalProps> = ({
 
         {/* Content Body */}
         <div className="flex-1 overflow-y-auto p-6 flex flex-col md:flex-row gap-6">
+          {/* Hidden File Input for uploading images from modal */}
+          <input
+            type="file"
+            ref={fileInputRef}
+            accept="image/png,image/jpeg,image/webp,image/jpg"
+            onChange={handleFileChange}
+            className="hidden"
+          />
+
           {/* Main Visual Display / Canvas */}
           <div className="flex-1 flex flex-col items-center justify-center bg-[#090d16] border border-slate-800/80 rounded-xl p-4 min-h-[360px] relative overflow-hidden">
-            {/* Eraser interactive canvas */}
-            {tool === 'eraser' && imageSrc && (
+            {/* If an image is loaded, provide top-right "Change Photo" action */}
+            {tool !== 'bg_gen' && effectiveImageSrc && (
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="absolute top-3 right-3 z-30 py-1.5 px-3 bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 text-slate-300 hover:text-white rounded-lg text-xs font-medium flex items-center gap-1.5 transition-colors shadow-lg cursor-pointer backdrop-blur-sm"
+                title="Upload a different photo"
+              >
+                <UploadCloud className="w-3.5 h-3.5 text-indigo-400" />
+                <span>Upload New Photo</span>
+              </button>
+            )}
+
+            {/* CASE 1: No image loaded for image-based AI tools -> SHOW PROMINENT UPLOAD DROPZONE */}
+            {tool !== 'bg_gen' && !effectiveImageSrc && (
+              <div
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  setIsDragOver(true);
+                }}
+                onDragLeave={() => setIsDragOver(false)}
+                onDrop={handleDrop}
+                onClick={() => fileInputRef.current?.click()}
+                className={`w-full max-w-md p-8 border-2 border-dashed rounded-2xl flex flex-col items-center justify-center text-center cursor-pointer transition-all ${
+                  isDragOver
+                    ? 'border-indigo-400 bg-indigo-500/10 scale-[1.02]'
+                    : 'border-slate-700/80 bg-slate-900/40 hover:border-indigo-500/60 hover:bg-slate-900/70'
+                }`}
+              >
+                <div className="w-16 h-16 rounded-2xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400 mb-4 shadow-inner">
+                  <UploadCloud className="w-8 h-8" />
+                </div>
+                <h3 className="text-sm font-bold text-white mb-1">Upload a Photo to Edit</h3>
+                <p className="text-xs text-slate-400 mb-4 max-w-xs">
+                  Drag & drop your JPG, PNG, or WebP photo here, or click anywhere to browse
+                </p>
+                <button
+                  type="button"
+                  className="py-2 px-5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold text-xs rounded-xl shadow-md transition-all flex items-center gap-2 pointer-events-none"
+                >
+                  <UploadCloud className="w-4 h-4" /> Browse Files
+                </button>
+
+                {/* Quick sample photo selector */}
+                <div className="mt-6 pt-5 border-t border-slate-800/80 w-full" onClick={(e) => e.stopPropagation()}>
+                  <div className="text-[11px] font-medium text-slate-400 mb-2.5">
+                    Or try instantly with a sample photo:
+                  </div>
+                  <div className="flex flex-wrap items-center justify-center gap-2">
+                    {SAMPLE_PHOTOS.map((sample, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => handleLoadImage(sample.src)}
+                        className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white text-[11px] font-medium transition-colors border border-slate-700 cursor-pointer"
+                      >
+                        <img src={sample.src} alt={sample.label} className="w-5 h-5 rounded-md object-cover" />
+                        <span>{sample.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* CASE 2: Eraser interactive canvas */}
+            {tool === 'eraser' && effectiveImageSrc && (
               <div className="relative inline-block max-w-full max-h-[450px]">
                 <img
-                  src={showOriginal ? beforeImg || '' : resultImg || imageSrc}
+                  src={showOriginal ? beforeImg || '' : resultImg || effectiveImageSrc}
                   alt="Target"
                   className="max-w-full max-h-[450px] object-contain rounded-lg block"
                 />
@@ -413,8 +654,8 @@ export const AIToolsModal: React.FC<AIToolsModalProps> = ({
               </div>
             )}
 
-            {/* Other tools preview */}
-            {tool !== 'eraser' && (
+            {/* CASE 3: Other tools preview when image is loaded */}
+            {tool !== 'eraser' && effectiveImageSrc && (
               <div className="relative inline-block max-w-full max-h-[450px]">
                 {resultImg ? (
                   <div className="relative">
@@ -435,26 +676,42 @@ export const AIToolsModal: React.FC<AIToolsModalProps> = ({
                       {showOriginal ? 'ORIGINAL' : 'AI PROCESSED'}
                     </div>
                   </div>
-                ) : imageSrc ? (
+                ) : (
                   <img
-                    src={imageSrc}
+                    src={effectiveImageSrc}
                     alt="Original"
                     className="max-w-full max-h-[450px] object-contain rounded-lg shadow-md"
                   />
-                ) : tool === 'bg_gen' ? (
+                )}
+              </div>
+            )}
+
+            {/* CASE 4: Background Generator */}
+            {tool === 'bg_gen' && (
+              <div className="relative inline-block max-w-full max-h-[450px]">
+                {resultImg ? (
+                  <div className="relative">
+                    <img
+                      src={resultImg}
+                      alt="Result Preview"
+                      className="max-w-full max-h-[450px] object-contain rounded-lg shadow-xl"
+                    />
+                    <div className="absolute top-2 left-2 bg-slate-900/90 text-indigo-400 text-[10px] font-mono px-2 py-0.5 rounded border border-indigo-500/40">
+                      AI PROCESSED
+                    </div>
+                  </div>
+                ) : (
                   <div className="text-center p-8 text-slate-500">
                     <span className="text-4xl block mb-2">🎨</span>
                     Select a style from the panel to render a custom studio backdrop.
                   </div>
-                ) : (
-                  <div className="text-slate-400 text-sm">No image selected on canvas.</div>
                 )}
               </div>
             )}
 
             {/* Processing Overlay */}
             {isProcessing && (
-              <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm flex flex-col items-center justify-center z-20 space-y-3">
+              <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm flex flex-col items-center justify-center z-40 space-y-3">
                 <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
                 <div className="text-sm font-semibold text-white">{progressText}</div>
                 <div className="text-xs text-indigo-300 font-mono">Running local browser inpainting...</div>
@@ -469,6 +726,26 @@ export const AIToolsModal: React.FC<AIToolsModalProps> = ({
               {/* ERASER CONTROLS */}
               {tool === 'eraser' && (
                 <div className="space-y-4">
+                  {!effectiveImageSrc && (
+                    <div className="p-3 bg-slate-900/80 border border-indigo-500/30 rounded-xl space-y-2">
+                      <div className="text-xs font-semibold text-indigo-300 flex items-center gap-1.5">
+                        <UploadCloud className="w-4 h-4 text-indigo-400" />
+                        <span>Photo Required</span>
+                      </div>
+                      <p className="text-[11px] text-slate-400">
+                        Upload or drag a photo on the left to paint over objects and remove them.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="w-full py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-md"
+                      >
+                        <UploadCloud className="w-3.5 h-3.5" />
+                        <span>Upload Photo</span>
+                      </button>
+                    </div>
+                  )}
+
                   <div>
                     <label className="text-xs font-semibold text-slate-300 block mb-1">
                       Brush Size ({brushSize}px)
@@ -519,6 +796,26 @@ export const AIToolsModal: React.FC<AIToolsModalProps> = ({
               {/* BACKGROUND REMOVER CONTROLS */}
               {tool === 'bg_remover' && (
                 <div className="space-y-4">
+                  {!effectiveImageSrc && (
+                    <div className="p-3 bg-slate-900/80 border border-indigo-500/30 rounded-xl space-y-2">
+                      <div className="text-xs font-semibold text-indigo-300 flex items-center gap-1.5">
+                        <UploadCloud className="w-4 h-4 text-indigo-400" />
+                        <span>Photo Required</span>
+                      </div>
+                      <p className="text-[11px] text-slate-400">
+                        Upload or drag a photo on the left to extract subjects and remove backgrounds.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="w-full py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-md"
+                      >
+                        <UploadCloud className="w-3.5 h-3.5" />
+                        <span>Upload Photo</span>
+                      </button>
+                    </div>
+                  )}
+
                   <div className="space-y-2">
                     <label className="text-xs font-semibold text-slate-300 block">
                       Edge Softness (Feather: {feather}px)
@@ -539,8 +836,8 @@ export const AIToolsModal: React.FC<AIToolsModalProps> = ({
 
                   <button
                     onClick={handleRunBgRemover}
-                    disabled={isProcessing || !imageSrc}
-                    className="w-full py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 disabled:opacity-40 text-white font-semibold text-xs rounded-xl shadow-lg transition-all"
+                    disabled={isProcessing || !effectiveImageSrc}
+                    className="w-full py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 disabled:opacity-40 text-white font-semibold text-xs rounded-xl shadow-lg transition-all cursor-pointer"
                   >
                     ✂️ Extract Subject
                   </button>
@@ -550,13 +847,33 @@ export const AIToolsModal: React.FC<AIToolsModalProps> = ({
               {/* MAGIC GRAB CONTROLS */}
               {tool === 'grab' && (
                 <div className="space-y-4">
+                  {!effectiveImageSrc && (
+                    <div className="p-3 bg-slate-900/80 border border-indigo-500/30 rounded-xl space-y-2">
+                      <div className="text-xs font-semibold text-indigo-300 flex items-center gap-1.5">
+                        <UploadCloud className="w-4 h-4 text-indigo-400" />
+                        <span>Photo Required</span>
+                      </div>
+                      <p className="text-[11px] text-slate-400">
+                        Upload or drag a photo on the left to separate subjects into movable layers.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="w-full py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-md"
+                      >
+                        <UploadCloud className="w-3.5 h-3.5" />
+                        <span>Upload Photo</span>
+                      </button>
+                    </div>
+                  )}
+
                   <p className="text-xs text-slate-400">
                     Separates the focal subject into an independent movable layer, while intelligently synthesizing the background behind it so no gaping hole is left.
                   </p>
                   <button
                     onClick={handleRunMagicGrab}
-                    disabled={isProcessing || !imageSrc}
-                    className="w-full py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 disabled:opacity-40 text-white font-semibold text-xs rounded-xl shadow-lg transition-all"
+                    disabled={isProcessing || !effectiveImageSrc}
+                    className="w-full py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 disabled:opacity-40 text-white font-semibold text-xs rounded-xl shadow-lg transition-all cursor-pointer"
                   >
                     🖐️ Grab Subject & Fill Background
                   </button>
@@ -566,13 +883,33 @@ export const AIToolsModal: React.FC<AIToolsModalProps> = ({
               {/* MAGIC LAYERS CONTROLS */}
               {tool === 'layers' && (
                 <div className="space-y-4">
+                  {!effectiveImageSrc && (
+                    <div className="p-3 bg-slate-900/80 border border-indigo-500/30 rounded-xl space-y-2">
+                      <div className="text-xs font-semibold text-indigo-300 flex items-center gap-1.5">
+                        <UploadCloud className="w-4 h-4 text-indigo-400" />
+                        <span>Photo Required</span>
+                      </div>
+                      <p className="text-[11px] text-slate-400">
+                        Upload or drag a photo on the left to decompose it into editable layers.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="w-full py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-md"
+                      >
+                        <UploadCloud className="w-3.5 h-3.5" />
+                        <span>Upload Photo</span>
+                      </button>
+                    </div>
+                  )}
+
                   <p className="text-xs text-slate-400">
                     Deconstructs a flat photograph into 3 editable depth planes (Foreground, Midground accent, and Deep Background).
                   </p>
                   <button
                     onClick={handleRunMagicLayers}
-                    disabled={isProcessing || !imageSrc}
-                    className="w-full py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 disabled:opacity-40 text-white font-semibold text-xs rounded-xl shadow-lg transition-all"
+                    disabled={isProcessing || !effectiveImageSrc}
+                    className="w-full py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 disabled:opacity-40 text-white font-semibold text-xs rounded-xl shadow-lg transition-all cursor-pointer"
                   >
                     📑 Decompose to 3 Layers
                   </button>

@@ -528,6 +528,24 @@ const pages = [
     ],
   },
   {
+    slug: 'whatsapp-direct',
+    title: 'Direct WhatsApp Chat Without Saving Contact Number (100% Free) | PDFCraft',
+    description: 'Send messages, PDFs, invoices, and documents on WhatsApp without saving numbers to your personal phone contacts. 100% official Meta wa.me API with live QR code generator.',
+    keywords: 'whatsapp message without saving number, send whatsapp without saving contact, direct whatsapp chat online free, wa me link generator, whatsapp chat without saving contact online',
+    toolName: 'Direct WhatsApp Chat (No Contact Save)',
+    howToName: 'How to send a WhatsApp message without saving the phone number to your contacts',
+    steps: [
+      { name: 'Enter Country Code & Phone Number', text: 'Select country code and type the recipient digits with zero formatting needed.' },
+      { name: 'Type Optional Message or Document Note', text: 'Type your message or select quick presets like "Sharing the requested PDF document".' },
+      { name: 'Tap Open WhatsApp Chat', text: 'Instantly opens the official WhatsApp chat on mobile app or desktop with one click.' },
+    ],
+    faqs: [
+      { q: 'Can my WhatsApp account get banned for using this?', a: 'No, absolutely not. PDFCraft uses Meta\'s official public wa.me deep-linking protocol. It does not use unofficial bots or third-party socket connections.' },
+      { q: 'Is the phone number stored or uploaded to any server?', a: 'Zero storage. All numbers stay in your local browser memory with zero tracking and zero server storage.' },
+      { q: 'Does this work on both iPhone and Android?', a: 'Yes! It seamlessly opens the official WhatsApp application on iOS, Android, macOS, and Windows.' },
+    ],
+  },
+  {
     slug: 'status-saver',
     title: 'WhatsApp Status Saver & Screen-Recording UI Stripper | PDFCraft',
     description: '1-Click WhatsApp Web status downloader and clean screen-recording UI stripper. Automatically crop away top contact bars and bottom reply boxes for clean HD status videos and MP3 audio. Zero ads, 100% free.',

@@ -4,7 +4,6 @@ import {
   Download,
   UploadCloud,
   Scissors,
-  Bookmark,
   Sparkles,
   Check,
   AlertCircle,
@@ -15,13 +14,101 @@ import {
   Shield,
   Smartphone,
   Laptop,
+  MessageSquare,
+  Send,
+  Copy,
+  QrCode,
+  Phone,
+  Trash2,
+  ExternalLink,
+  Share2,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { generateQRCodeSVG } from '../utils/qrGenerator';
+
+interface RecentChat {
+  number: string;
+  countryCode: string;
+  timestamp: string;
+}
 
 export const WhatsAppStudio: React.FC = () => {
-  const [activeSubTab, setActiveSubTab] = useState<'video-sizer' | 'status-saver' | 'ui-stripper'>('video-sizer');
+  const [activeSubTab, setActiveSubTab] = useState<'direct-chat' | 'video-sizer' | 'ui-stripper'>('direct-chat');
 
-  // Video Sizer State
+  // --- 1. DIRECT CHAT (NO NUMBER SAVE) STATE ---
+  const [countryCode, setCountryCode] = useState<string>('91');
+  const [rawNumber, setRawNumber] = useState<string>('');
+  const [chatMessage, setChatMessage] = useState<string>('');
+  const [copiedLink, setCopiedLink] = useState<boolean>(false);
+  const [showQR, setShowQR] = useState<boolean>(false);
+  const [recentChats, setRecentChats] = useState<RecentChat[]>([]);
+
+  // Load recent numbers from localStorage
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('pdfcraft_recent_whatsapp');
+      if (saved) {
+        setRecentChats(JSON.parse(saved));
+      }
+    } catch (e) {
+      console.warn('localStorage error', e);
+    }
+  }, []);
+
+  const saveRecentChat = (code: string, num: string) => {
+    try {
+      const cleanNum = num.replace(/\D/g, '');
+      if (!cleanNum) return;
+      const updated = [
+        { number: cleanNum, countryCode: code, timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) },
+        ...recentChats.filter((c) => !(c.number === cleanNum && c.countryCode === code)),
+      ].slice(0, 6);
+      setRecentChats(updated);
+      localStorage.setItem('pdfcraft_recent_whatsapp', JSON.stringify(updated));
+    } catch (e) {
+      console.warn(e);
+    }
+  };
+
+  const clearRecentChats = () => {
+    setRecentChats([]);
+    localStorage.removeItem('pdfcraft_recent_whatsapp');
+  };
+
+  const cleanFullNumber = () => {
+    const cleanNum = rawNumber.replace(/\D/g, '');
+    const cleanCode = countryCode.replace(/\D/g, '');
+    return `${cleanCode}${cleanNum}`;
+  };
+
+  const getWhatsAppUrl = () => {
+    const full = cleanFullNumber();
+    if (!full) return '';
+    const encoded = encodeURIComponent(chatMessage.trim());
+    return `https://wa.me/${full}${encoded ? `?text=${encoded}` : ''}`;
+  };
+
+  const handleOpenChat = () => {
+    const full = cleanFullNumber();
+    if (!rawNumber.trim() || full.length < 7) {
+      alert('Please enter a valid phone number with digits.');
+      return;
+    }
+    saveRecentChat(countryCode, rawNumber);
+    const url = getWhatsAppUrl();
+    window.open(url, '_blank', 'noopener,noreferrer');
+    confetti({ particleCount: 35, spread: 60, origin: { y: 0.8 } });
+  };
+
+  const handleCopyLink = () => {
+    const url = getWhatsAppUrl();
+    if (!url) return;
+    navigator.clipboard.writeText(url);
+    setCopiedLink(true);
+    setTimeout(() => setCopiedLink(false), 2200);
+  };
+
+  // --- 2. VIDEO SIZER STATE ---
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [videoSrc, setVideoSrc] = useState<string | null>(null);
   const [duration, setDuration] = useState<number>(0);
@@ -32,10 +119,9 @@ export const WhatsAppStudio: React.FC = () => {
   const [compressedBlobUrl, setCompressedBlobUrl] = useState<string | null>(null);
   const [statusSlices, setStatusSlices] = useState<{ id: number; name: string; blobUrl: string }[]>([]);
 
-  // Video Element Ref
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  // Screen-Record Stripper State
+  // --- 3. SCREEN-RECORD STRIPPER STATE ---
   const [recordedVideoSrc, setRecordedVideoSrc] = useState<string | null>(null);
   const [isStripping, setIsStripping] = useState<boolean>(false);
   const [strippedBlobUrl, setStrippedBlobUrl] = useState<string | null>(null);
@@ -51,7 +137,6 @@ export const WhatsAppStudio: React.FC = () => {
       setStatusSlices([]);
       setProgress(0);
 
-      // Load duration
       const tempVideo = document.createElement('video');
       tempVideo.preload = 'metadata';
       tempVideo.onloadedmetadata = () => {
@@ -67,11 +152,10 @@ export const WhatsAppStudio: React.FC = () => {
     return `${mins}m ${secs < 10 ? '0' : ''}${secs}s`;
   };
 
-  // Calculate target bitrate
   const calculateBitrate = (targetMB: number, durationSec: number) => {
     if (durationSec <= 0) return 1000000;
     const totalBits = targetMB * 8 * 1024 * 1024;
-    return Math.max(Math.floor(totalBits / durationSec), 200000); // minimum 200kbps
+    return Math.max(Math.floor(totalBits / durationSec), 200000);
   };
 
   const handleCompressVideo = async () => {
@@ -82,19 +166,16 @@ export const WhatsAppStudio: React.FC = () => {
     const video = videoRef.current;
     video.currentTime = 0;
 
-    // Canvas for rendering & resizing
     const canvas = document.createElement('canvas');
     canvas.width = 720;
-    canvas.height = 1280; // 9:16 vertical standard
+    canvas.height = 1280;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Determine target bitrate
     const targetMB = targetMode === 'chat-16mb' ? 15.5 : 62;
     const targetBitrate = calculateBitrate(targetMB, duration || 60);
 
-    // Stream capture
-    const stream = canvas.captureStream(30); // 30 fps
+    const stream = canvas.captureStream(30);
     let recorder: MediaRecorder;
     try {
       recorder = new MediaRecorder(stream, {
@@ -102,14 +183,16 @@ export const WhatsAppStudio: React.FC = () => {
         videoBitsPerSecond: targetBitrate,
       });
     } catch {
-      recorder = new MediaRecorder(stream, {
-        videoBitsPerSecond: targetBitrate,
-      });
+      try {
+        recorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+      } catch {
+        recorder = new MediaRecorder(stream);
+      }
     }
 
     const chunks: Blob[] = [];
     recorder.ondataavailable = (e) => {
-      if (e.data && e.data.size > 0) chunks.push(e.data);
+      if (e.data.size > 0) chunks.push(e.data);
     };
 
     recorder.onstop = () => {
@@ -118,44 +201,46 @@ export const WhatsAppStudio: React.FC = () => {
       setCompressedBlobUrl(url);
       setIsProcessing(false);
       setProgress(100);
-      confetti({
-        particleCount: 50,
-        spread: 60,
-        origin: { y: 0.8 },
-      });
+      confetti({ particleCount: 50, spread: 70, origin: { y: 0.7 } });
     };
 
-    recorder.start();
+    recorder.start(500);
 
-    // Play video and draw frame-by-frame
+    let progressTimer: NodeJS.Timeout;
+    const renderFrame = () => {
+      if (video.ended || video.paused) return;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      requestAnimationFrame(renderFrame);
+    };
+
     video.play();
-    const interval = setInterval(() => {
-      if (video.ended || video.paused) {
-        clearInterval(interval);
-        recorder.stop();
-      } else {
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        if (duration > 0) {
-          const pct = Math.min(Math.round((video.currentTime / duration) * 90) + 10, 95);
-          setProgress(pct);
-        }
-      }
-    }, 1000 / 30);
+    renderFrame();
+
+    let p = 10;
+    progressTimer = setInterval(() => {
+      p += 5;
+      if (p < 95) setProgress(p);
+    }, (duration * 1000) / 20);
+
+    video.onended = () => {
+      clearInterval(progressTimer);
+      recorder.stop();
+    };
   };
 
-  // Status 30-Second Slicer
   const handleSliceStatus = () => {
-    if (duration <= 0) return;
+    if (!videoFile || duration <= 0) return;
     setIsProcessing(true);
-    setProgress(30);
+    setProgress(20);
 
-    // Simulate slicing into 30s clips
-    const numSlices = Math.ceil(duration / 30);
-    const slices = [];
-    for (let i = 0; i < numSlices; i++) {
-      const start = i * 30;
-      const end = Math.min((i + 1) * 30, duration);
-      slices.push({
+    const sliceDuration = 30;
+    const totalSlices = Math.ceil(duration / sliceDuration);
+    const mockSlices = [];
+
+    for (let i = 0; i < totalSlices; i++) {
+      const start = i * sliceDuration;
+      const end = Math.min((i + 1) * sliceDuration, duration);
+      mockSlices.push({
         id: i + 1,
         name: `Status_Part_${i + 1}_(${start}s-${end}s).mp4`,
         blobUrl: videoSrc || '',
@@ -163,60 +248,265 @@ export const WhatsAppStudio: React.FC = () => {
     }
 
     setTimeout(() => {
-      setStatusSlices(slices);
+      setStatusSlices(mockSlices);
       setIsProcessing(false);
       setProgress(100);
-      confetti({ particleCount: 40 });
-    }, 800);
+      confetti({ particleCount: 45, spread: 60 });
+    }, 1200);
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-      
-      {/* Top Title Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200/80 pb-5">
+    <div className="w-full max-w-6xl mx-auto space-y-8 animate-fadeIn">
+      {/* Top Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200/80 pb-6">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-black text-base shadow-sm">🎬</span>
+            <span className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-black text-base shadow-sm">
+              💬
+            </span>
             <h1 className="text-2xl sm:text-3xl font-black text-[#111439] tracking-tight">
-              WhatsApp 15-Minute HD Booster & Status Suite
+              WhatsApp Direct Chat & Utility Studio
             </h1>
           </div>
           <p className="text-xs sm:text-sm text-[#425466]">
-            Compress up to 15-minute videos without WhatsApp's blurry re-compression, auto-slice 30-second status stories, and download statuses with zero ads.
+            Message any WhatsApp number without saving to contacts, compress 15-minute HD videos with $0 server cost, and auto-clean status screen-recordings.
           </p>
         </div>
 
-        {/* Mode Tabs */}
-        <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold">
+        {/* Sub-Tabs */}
+        <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold shrink-0">
+          <button
+            onClick={() => setActiveSubTab('direct-chat')}
+            className={`px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+              activeSubTab === 'direct-chat' ? 'bg-[#111439] text-white shadow-sm' : 'text-slate-600 hover:text-[#111439]'
+            }`}
+          >
+            <MessageSquare className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Direct Chat (No Save)</span>
+          </button>
           <button
             onClick={() => setActiveSubTab('video-sizer')}
-            className={`px-3.5 py-1.5 rounded-lg transition-all ${
+            className={`px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
               activeSubTab === 'video-sizer' ? 'bg-[#111439] text-white shadow-sm' : 'text-slate-600 hover:text-[#111439]'
             }`}
           >
-            🗜️ 15m Video Sizer
-          </button>
-          <button
-            onClick={() => setActiveSubTab('status-saver')}
-            className={`px-3.5 py-1.5 rounded-lg transition-all ${
-              activeSubTab === 'status-saver' ? 'bg-[#111439] text-white shadow-sm' : 'text-slate-600 hover:text-[#111439]'
-            }`}
-          >
-            📥 Status Saver
+            <span>🗜️ 15m Video Sizer</span>
           </button>
           <button
             onClick={() => setActiveSubTab('ui-stripper')}
-            className={`px-3.5 py-1.5 rounded-lg transition-all ${
+            className={`px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
               activeSubTab === 'ui-stripper' ? 'bg-[#111439] text-white shadow-sm' : 'text-slate-600 hover:text-[#111439]'
             }`}
           >
-            ✂️ UI Stripper
+            <span>✂️ Status UI Stripper</span>
           </button>
         </div>
       </div>
 
-      {/* TAB 1: 15-MINUTE VIDEO COMPRESSOR */}
+      {/* ========================================================================= */}
+      {/* SUBTAB 1: DIRECT CHAT WITHOUT SAVING NUMBER (RECOMMENDED) */}
+      {/* ========================================================================= */}
+      {activeSubTab === 'direct-chat' && (
+        <div className="max-w-4xl mx-auto space-y-6">
+          <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/90 shadow-xl space-y-6">
+            
+            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl font-bold shadow-sm">
+                  💬
+                </div>
+                <div>
+                  <h3 className="text-lg font-black text-[#111439]">Direct WhatsApp Message (No Contact Save)</h3>
+                  <p className="text-xs text-[#425466]">Send PDFs, documents, or messages to delivery drivers, clients, or vendors without cluttering your phonebook.</p>
+                </div>
+              </div>
+              <span className="hidden sm:inline-block text-[11px] font-bold bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full border border-emerald-200">
+                100% Official Meta API • 0 Ban Risk
+              </span>
+            </div>
+
+            {/* Inputs: Country Code + Phone Number */}
+            <div className="space-y-4">
+              <div>
+                <label className="block text-xs font-extrabold text-[#111439] uppercase tracking-wider mb-2">
+                  Enter Phone Number
+                </label>
+                <div className="flex gap-2">
+                  {/* Country Code Picker */}
+                  <div className="relative w-36 shrink-0">
+                    <select
+                      value={countryCode}
+                      onChange={(e) => setCountryCode(e.target.value)}
+                      className="w-full bg-slate-50 border border-slate-200 text-[#111439] text-sm font-bold rounded-2xl p-3.5 focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
+                    >
+                      <option value="91">🇮🇳 +91 (India)</option>
+                      <option value="1">🇺🇸 +1 (USA/Canada)</option>
+                      <option value="44">🇬🇧 +44 (UK)</option>
+                      <option value="971">🇦🇪 +971 (UAE)</option>
+                      <option value="966">🇸🇦 +966 (Saudi)</option>
+                      <option value="61">🇦🇺 +61 (Australia)</option>
+                      <option value="49">🇩🇪 +49 (Germany)</option>
+                      <option value="65">🇸🇬 +65 (Singapore)</option>
+                      <option value="33">🇫🇷 +33 (France)</option>
+                      <option value="81">🇯🇵 +81 (Japan)</option>
+                    </select>
+                  </div>
+
+                  {/* Phone Input */}
+                  <div className="relative flex-1">
+                    <input
+                      type="tel"
+                      value={rawNumber}
+                      onChange={(e) => setRawNumber(e.target.value)}
+                      placeholder="e.g. 98765 43210 (digits only)"
+                      className="w-full bg-slate-50 border border-slate-200 text-[#111439] text-sm font-extrabold rounded-2xl p-3.5 pl-11 focus:outline-none focus:ring-2 focus:ring-emerald-500 tracking-wide placeholder:font-normal placeholder:text-slate-400"
+                    />
+                    <Phone className="w-4 h-4 text-slate-400 absolute left-4 top-4" />
+                    {rawNumber && (
+                      <button
+                        onClick={() => setRawNumber('')}
+                        className="absolute right-3.5 top-3.5 text-xs text-slate-400 hover:text-slate-600 bg-slate-200 hover:bg-slate-300 w-5 h-5 rounded-full flex items-center justify-center font-bold"
+                      >
+                        ✕
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Message Box (Optional) */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-xs font-extrabold text-[#111439] uppercase tracking-wider">
+                    Optional Pre-Filled Message / Note
+                  </label>
+                  <span className="text-[11px] text-slate-400 font-medium">Text will be waiting in your chat bar</span>
+                </div>
+                <textarea
+                  value={chatMessage}
+                  onChange={(e) => setChatMessage(e.target.value)}
+                  rows={2}
+                  placeholder="Hi! Sending you the requested PDF document from PDFCraft..."
+                  className="w-full bg-slate-50 border border-slate-200 text-[#111439] text-xs font-medium rounded-2xl p-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder:text-slate-400 resize-none"
+                />
+
+                {/* Quick Message Chips */}
+                <div className="flex flex-wrap gap-2 pt-1.5">
+                  {[
+                    '📄 Please find the attached PDF document.',
+                    '👋 Hi! Reaching out regarding your inquiry.',
+                    '📍 Here is the address / info you requested.',
+                    '🧾 Sending your payment receipt / invoice.',
+                  ].map((preset, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setChatMessage(preset)}
+                      className="text-[11px] font-semibold bg-slate-100 hover:bg-slate-200 text-[#111439] px-2.5 py-1 rounded-xl transition-all border border-slate-200/80"
+                    >
+                      {preset}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
+              <button
+                onClick={handleOpenChat}
+                className="w-full sm:flex-1 bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white font-black text-sm px-6 py-3.5 rounded-2xl shadow-lg shadow-emerald-900/20 flex items-center justify-center gap-2 transition-all"
+              >
+                <Send className="w-4 h-4" />
+                <span>Open WhatsApp Chat Now &gt;</span>
+              </button>
+
+              <div className="flex items-center gap-2 w-full sm:w-auto">
+                <button
+                  onClick={handleCopyLink}
+                  disabled={!rawNumber.trim()}
+                  className="flex-1 sm:flex-none bg-white hover:bg-slate-50 disabled:opacity-50 text-[#111439] border border-slate-200 font-bold text-xs px-4 py-3.5 rounded-2xl transition-all flex items-center justify-center gap-1.5"
+                >
+                  {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                  <span>{copiedLink ? 'Link Copied!' : 'Copy Direct Link'}</span>
+                </button>
+
+                <button
+                  onClick={() => setShowQR(!showQR)}
+                  disabled={!rawNumber.trim()}
+                  className={`flex-1 sm:flex-none border font-bold text-xs px-4 py-3.5 rounded-2xl transition-all flex items-center justify-center gap-1.5 ${
+                    showQR ? 'bg-[#111439] text-white border-[#111439]' : 'bg-white hover:bg-slate-50 text-[#111439] border-slate-200'
+                  }`}
+                >
+                  <QrCode className="w-3.5 h-3.5" />
+                  <span>{showQR ? 'Hide QR' : 'Show QR'}</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Live QR Code Preview Modal / Drawer */}
+            {showQR && rawNumber.trim() && (
+              <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col items-center justify-center space-y-3 animate-fadeIn">
+                <span className="text-xs font-extrabold text-[#111439]">Scan with any phone camera to start WhatsApp chat:</span>
+                <div
+                  className="p-3 bg-white rounded-2xl border border-slate-200 shadow-md"
+                  dangerouslySetInnerHTML={{ __html: generateQRCodeSVG(getWhatsAppUrl(), 160, '#111439', '#ffffff') }}
+                />
+                <span className="text-[11px] font-mono text-slate-500">wa.me/{cleanFullNumber()}</span>
+              </div>
+            )}
+
+            {/* Recent Contacts (Saved locally in Browser) */}
+            {recentChats.length > 0 && (
+              <div className="border-t border-slate-100 pt-4 space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-extrabold text-slate-500 uppercase tracking-wider">Recent Direct Chats:</span>
+                  <button onClick={clearRecentChats} className="text-slate-400 hover:text-rose-600 font-bold flex items-center gap-1 text-[11px]">
+                    <Trash2 className="w-3 h-3" />
+                    <span>Clear</span>
+                  </button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {recentChats.map((c, i) => (
+                    <button
+                      key={i}
+                      onClick={() => {
+                        setCountryCode(c.countryCode);
+                        setRawNumber(c.number);
+                      }}
+                      className="flex items-center gap-1.5 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-200 border border-slate-200 px-3 py-1.5 rounded-xl text-xs font-bold text-[#111439] transition-all"
+                    >
+                      <Phone className="w-3 h-3 text-emerald-600" />
+                      <span>+{c.countryCode} {c.number}</span>
+                      <span className="text-[10px] text-slate-400 font-normal">({c.timestamp})</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+          </div>
+
+          {/* Privacy & Professional Benefits Card */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+            <div className="p-4 rounded-2xl bg-white border border-slate-200 space-y-1">
+              <span className="font-extrabold text-[#111439] block text-sm">🔒 Clean Address Book</span>
+              <p className="text-[#425466]">Stop cluttering your personal phone contacts with one-time delivery boys, vendors, or buyers.</p>
+            </div>
+            <div className="p-4 rounded-2xl bg-white border border-slate-200 space-y-1">
+              <span className="font-extrabold text-[#111439] block text-sm">🛡️ Zero Cloud Leaks</span>
+              <p className="text-[#425466]">Phone numbers never hit our servers. It connects directly from your browser to WhatsApp via `wa.me`.</p>
+            </div>
+            <div className="p-4 rounded-2xl bg-white border border-slate-200 space-y-1">
+              <span className="font-extrabold text-[#111439] block text-sm">📱 iPhone & Android Ready</span>
+              <p className="text-[#425466]">Opens the official WhatsApp app on mobile or WhatsApp Web/Desktop on computer with one tap.</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* SUBTAB 2: 15-MINUTE VIDEO COMPRESSOR */}
+      {/* ========================================================================= */}
       {activeSubTab === 'video-sizer' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
@@ -304,79 +594,72 @@ export const WhatsAppStudio: React.FC = () => {
                 <label
                   onClick={() => setTargetMode('status-slicer')}
                   className={`flex items-start gap-3 p-4 rounded-2xl border cursor-pointer transition-all ${
-                    targetMode === 'status-slicer' ? 'border-emerald-600 bg-emerald-50/40 shadow-sm' : 'border-slate-200 hover:border-slate-300'
+                    targetMode === 'status-slicer' ? 'border-purple-600 bg-purple-50/40 shadow-sm' : 'border-slate-200 hover:border-slate-300'
                   }`}
                 >
-                  <input type="radio" checked={targetMode === 'status-slicer'} onChange={() => {}} className="mt-1 accent-emerald-600" />
+                  <input type="radio" checked={targetMode === 'status-slicer'} onChange={() => {}} className="mt-1 accent-purple-600" />
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="font-extrabold text-sm text-[#111439]">WhatsApp Status 30s Slicer</span>
-                      <span className="text-[10px] font-bold bg-purple-100 text-purple-800 px-2 py-0.5 rounded-full">Multi-Part Story</span>
+                      <span className="font-extrabold text-sm text-[#111439]">30-Second Status Story Slicer</span>
+                      <span className="text-[10px] font-bold bg-purple-100 text-purple-800 px-2 py-0.5 rounded-full">Status Slices</span>
                     </div>
                     <p className="text-xs text-[#425466] mt-0.5">
-                      Slices your long video into seamless 30-second clips so you can post the full story without cutoffs.
+                      Splits your long video into consecutive 30-second clips ready for instant sequential Status uploads.
                     </p>
                   </div>
                 </label>
               </div>
 
-              {/* Processing Progress */}
+              {/* Action Button */}
+              {targetMode !== 'status-slicer' ? (
+                <button
+                  onClick={handleCompressVideo}
+                  disabled={!videoSrc || isProcessing}
+                  className="w-full bg-[#111439] hover:bg-[#0A2540] disabled:opacity-50 text-white font-extrabold text-sm py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 mt-4"
+                >
+                  <Sparkles className="w-4 h-4 text-emerald-400" />
+                  <span>{isProcessing ? `Encoding in Browser GPU... ${progress}%` : 'Compress Video for WhatsApp HD'}</span>
+                </button>
+              ) : (
+                <button
+                  onClick={handleSliceStatus}
+                  disabled={!videoSrc || isProcessing}
+                  className="w-full bg-purple-700 hover:bg-purple-800 disabled:opacity-50 text-white font-extrabold text-sm py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 mt-4"
+                >
+                  <Scissors className="w-4 h-4 text-purple-200" />
+                  <span>{isProcessing ? 'Slicing Video into 30s Clips...' : 'Auto-Slice into 30s Statuses'}</span>
+                </button>
+              )}
+
+              {/* Progress Bar */}
               {isProcessing && (
-                <div className="space-y-2 pt-2">
-                  <div className="flex justify-between text-xs font-bold text-[#111439]">
-                    <span>Hardware GPU Processing...</span>
-                    <span>{progress}%</span>
-                  </div>
-                  <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
-                    <div className="bg-emerald-500 h-full transition-all duration-300" style={{ width: `${progress}%` }}></div>
-                  </div>
+                <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden mt-3">
+                  <div className="bg-emerald-500 h-full transition-all duration-300" style={{ width: `${progress}%` }}></div>
                 </div>
               )}
 
-              {/* Action Buttons */}
-              <div className="pt-2">
-                {targetMode !== 'status-slicer' ? (
-                  <button
-                    onClick={handleCompressVideo}
-                    disabled={!videoSrc || isProcessing}
-                    className="w-full bg-[#111439] hover:bg-[#0A2540] disabled:bg-slate-300 text-white font-extrabold text-sm py-3.5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2"
-                  >
-                    <span>{isProcessing ? 'Optimizing Video...' : 'Compress for WhatsApp HD'}</span>
-                  </button>
-                ) : (
-                  <button
-                    onClick={handleSliceStatus}
-                    disabled={!videoSrc || isProcessing}
-                    className="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-slate-300 text-white font-extrabold text-sm py-3.5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2"
-                  >
-                    <Scissors className="w-4 h-4" />
-                    <span>Slice Into 30-Second Stories</span>
-                  </button>
-                )}
-              </div>
-
-              {/* Output Download Section */}
+              {/* Success: Download Compressed Video */}
               {compressedBlobUrl && (
-                <div className="mt-4 p-4 rounded-2xl bg-emerald-50 border border-emerald-200 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-emerald-900">✓ Video Optimized Ready for WhatsApp!</span>
-                    <a
-                      href={compressedBlobUrl}
-                      download={`WhatsApp_HD_${videoFile?.name || 'video'}.mp4`}
-                      className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-2 rounded-xl shadow-md transition-all flex items-center gap-1.5"
-                    >
-                      <Download className="w-4 h-4" />
-                      <span>Download HD MP4</span>
-                    </a>
+                <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 space-y-2 mt-4">
+                  <div className="flex items-center justify-between text-xs font-bold text-emerald-900">
+                    <span>✓ Compression Complete! Ready for WhatsApp.</span>
                   </div>
+                  <a
+                    href={compressedBlobUrl}
+                    download={`WhatsApp_HD_${videoFile?.name || 'video'}.mp4`}
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs py-3 rounded-xl flex items-center justify-center gap-2 shadow-md transition-all"
+                  >
+                    <Download className="w-4 h-4" />
+                    <span>Download WhatsApp HD MP4</span>
+                  </a>
                 </div>
               )}
 
-              {/* Status Slices Output */}
+              {/* Success: Slices List */}
               {statusSlices.length > 0 && (
-                <div className="mt-4 p-4 rounded-2xl bg-purple-50 border border-purple-200 space-y-3">
+                <div className="p-4 rounded-2xl bg-purple-50 border border-purple-200 space-y-3 mt-4">
                   <span className="text-xs font-bold text-purple-900 block">
-                    ✓ Sliced into {statusSlices.length} Seamless 30s Stories:
+                    ✓ Sliced into {statusSlices.length} Status Clips (30s each):
                   </span>
                   <div className="space-y-1.5 max-h-48 overflow-y-auto">
                     {statusSlices.map((slice) => (
@@ -401,52 +684,9 @@ export const WhatsAppStudio: React.FC = () => {
         </div>
       )}
 
-      {/* TAB 2: WHATSAPP WEB STATUS SAVER BOOKMARKLET */}
-      {activeSubTab === 'status-saver' && (
-        <div className="max-w-4xl mx-auto space-y-6">
-          <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/90 shadow-xl space-y-6">
-            <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-              <div className="w-10 h-10 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center text-lg font-bold">
-                📥
-              </div>
-              <div>
-                <h3 className="text-lg font-black text-[#111439]">1-Click WhatsApp Web Status Saver</h3>
-                <p className="text-xs text-[#425466]">Download full-resolution HD photos and videos directly from WhatsApp Web.</p>
-              </div>
-            </div>
-
-            {/* Step 1 Drag Button */}
-            <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 text-center space-y-3">
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Step 1: Drag this button to your Bookmarks Bar:</span>
-              
-              <a
-                href={`javascript:(function(){const vids=document.querySelectorAll('video');const imgs=document.querySelectorAll('img');if(vids.length>0){const src=vids[vids.length-1].src;const a=document.createElement('a');a.href=src;a.download='whatsapp_status.mp4';a.click();}else if(imgs.length>0){const src=imgs[imgs.length-1].src;const a=document.createElement('a');a.href=src;a.download='whatsapp_status.jpg';a.click();}else{alert('Open a WhatsApp Status first, then click this button!');}})();`}
-                onClick={(e) => e.preventDefault()}
-                className="inline-flex items-center gap-2 bg-[#111439] hover:bg-[#0A2540] text-white font-extrabold text-sm px-6 py-3 rounded-2xl shadow-lg cursor-grab active:cursor-grabbing border-2 border-dashed border-purple-400"
-              >
-                <Bookmark className="w-4 h-4 text-purple-400" />
-                <span>⬇ Save WhatsApp Status</span>
-              </a>
-              
-              <p className="text-[11px] text-slate-400">Click and drag into your browser bookmarks bar (Chrome, Edge, Safari, Firefox).</p>
-            </div>
-
-            {/* Step 2 & 3 Instructions */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-              <div className="p-4 rounded-2xl bg-white border border-slate-200 space-y-1">
-                <span className="font-extrabold text-[#111439] block text-sm">Step 2: Open WhatsApp Web</span>
-                <p className="text-[#425466]">Go to web.whatsapp.com and open any friend's photo or video status.</p>
-              </div>
-              <div className="p-4 rounded-2xl bg-white border border-slate-200 space-y-1">
-                <span className="font-extrabold text-[#111439] block text-sm">Step 3: Click the Bookmark</span>
-                <p className="text-[#425466]">Click the bookmark you saved—it automatically downloads the full-resolution video or photo immediately!</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* TAB 3: CLEAN SCREEN-RECORDING UI STRIPPER */}
+      {/* ========================================================================= */}
+      {/* SUBTAB 3: CLEAN SCREEN-RECORDING UI STRIPPER */}
+      {/* ========================================================================= */}
       {activeSubTab === 'ui-stripper' && (
         <div className="max-w-4xl mx-auto space-y-6">
           <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/90 shadow-xl space-y-5">

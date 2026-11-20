@@ -15,6 +15,7 @@ import {
   UploadCloud,
   Play,
   Video,
+  MessageSquare,
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -61,7 +62,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const tabs = [
     { id: 'postercraft', label: 'PosterCraft', shortLabel: 'Posters', icon: Sparkles, badge: 'Viral' },
-    { id: 'whatsapp-studio', label: 'WhatsApp HD', shortLabel: 'WhatsApp', icon: Video, badge: '15m' },
+    { id: 'whatsapp-studio', label: 'WhatsApp Direct', shortLabel: 'WhatsApp', icon: MessageSquare, badge: 'No Save' },
     { id: 'sign-edit', label: 'Edit & Sign', shortLabel: 'Sign & Edit', icon: FileSignature },
     { id: 'organize', label: 'Merge & Organize', shortLabel: 'Merge', icon: Layers },
     { id: 'convert', label: 'Convert', shortLabel: 'Convert', icon: ArrowLeftRight },

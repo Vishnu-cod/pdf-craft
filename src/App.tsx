@@ -79,6 +79,7 @@ import {
   Play,
   Video,
   DownloadCloud,
+  MessageSquare,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -322,12 +323,12 @@ export const App: React.FC = () => {
       action: () => navigateToTab('whatsapp-studio'),
     },
     {
-      id: 'status-saver',
-      name: 'WhatsApp Status Saver',
-      badge: '100% Free',
-      icon: DownloadCloud,
-      bg: 'from-blue-600 to-cyan-600',
-      desc: '1-Click WhatsApp Web status downloader and clean screen-record UI stripper with zero ads.',
+      id: 'whatsapp-direct',
+      name: 'WhatsApp Direct Chat',
+      badge: 'No Save Needed',
+      icon: MessageSquare,
+      bg: 'from-emerald-600 to-teal-600',
+      desc: 'Message any WhatsApp number directly without saving to contacts + 15m video compressor & UI stripper.',
       category: ['all', 'popular'],
       action: () => navigateToTab('whatsapp-studio'),
     },

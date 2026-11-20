@@ -151,24 +151,6 @@ export const App: React.FC = () => {
     document.title = 'PDFCraft — 100% Free & Private PDF Editor, Signer & Tools (Zero Cloud Leaks)';
   };
 
-  if (mobileSessionId) {
-    return (
-      <Suspense fallback={<ViewSkeleton />}>
-        <MobileSignPad sessionId={mobileSessionId} />
-      </Suspense>
-    );
-  }
-
-  if (activeTab === 'photocraft') {
-    return (
-      <ErrorBoundary fallbackTitle="Could Not Initialize PhotoCraft Studio">
-        <Suspense fallback={<ViewSkeleton />}>
-          <PhotoCraftStudio onBackToHome={handleResetFile} />
-        </Suspense>
-      </ErrorBoundary>
-    );
-  }
-
   // Comprehensive SEO Route & URL sync handler for all canonical tools
   const navigateToTab = (
     tab: ActiveTab,
@@ -513,6 +495,24 @@ export const App: React.FC = () => {
       action: () => handleLaunchTool('convert', undefined, 'images-to-pdf'),
     },
   ];
+
+  if (mobileSessionId) {
+    return (
+      <Suspense fallback={<ViewSkeleton />}>
+        <MobileSignPad sessionId={mobileSessionId} />
+      </Suspense>
+    );
+  }
+
+  if (activeTab === 'photocraft') {
+    return (
+      <ErrorBoundary fallbackTitle="Could Not Initialize PhotoCraft Studio">
+        <Suspense fallback={<ViewSkeleton />}>
+          <PhotoCraftStudio onBackToHome={handleResetFile} />
+        </Suspense>
+      </ErrorBoundary>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col text-slate-100 relative overflow-x-clip selection:bg-indigo-500 selection:text-white">

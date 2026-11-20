@@ -491,6 +491,60 @@ const pages = [
       { q: 'Is any data stored or sent to the cloud?', a: 'Zero data is sent anywhere. All computation happens entirely within your browser runtime.' },
     ],
   },
+  {
+    slug: 'postercraft',
+    title: 'PosterCraft — Free Pinterest Aesthetic Editorial Poster Studio (Zero Watermark) | PDFCraft',
+    description: '1-Click Pinterest aesthetic editorial poster creator. Add 3D typography behind subjects, 35mm grain, folded paper crease textures, and barcodes in 4K with 100% free client-side privacy.',
+    keywords: 'pinterest aesthetic poster maker, editorial poster generator, text behind subject free, typography poster editor, aesthetic magazine cover maker, y2k poster generator, 4k poster designer online free',
+    toolName: 'PosterCraft — Editorial Aesthetic Studio',
+    howToName: 'How to create Pinterest aesthetic editorial posters with 3D text behind subjects in under 60 seconds',
+    steps: [
+      { name: 'Upload Your Photo', text: 'Select or drag your portrait, street photo, or fashion shot into PosterCraft. Zero images are ever uploaded to a server.' },
+      { name: 'Pick a Pinterest Editorial Preset', text: 'Choose Vogue Editorial, Swiss Minimalist, A24 Indie Film, Y2K Cyber, Vinyl Album Cover, or Art Gallery.' },
+      { name: 'Enable 3D Text & Textures & Export 4K', text: 'Toggle "Text Behind Subject", add 35mm film grain and folded paper textures, then click "Export 4K Poster".' },
+    ],
+    faqs: [
+      { q: 'Can I place bold typography behind the subject like Canva Pro without paying?', a: 'Yes! PosterCraft uses instant canvas masking algorithms to layer typography behind your foreground subject with zero subscription or paywalls.' },
+      { q: 'Are there any watermarks or export limits?', a: 'Zero watermarks and completely unlimited. You can export ultra-high-resolution 4K posters (up to 3840px) ready for Instagram, Pinterest, and physical printing.' },
+      { q: 'Does PosterCraft upload my photos to any server?', a: 'Never. All image processing, filters, textures, and canvas rendering happen 100% locally on your device GPU via HTML5 Canvas.' },
+    ],
+  },
+  {
+    slug: 'whatsapp-hd',
+    title: 'WhatsApp 15-Minute HD Video Booster & 30s Status Slicer | PDFCraft',
+    description: 'Compress up to 15-minute videos strictly under 16MB or 64MB without WhatsApp blurry re-compression, plus auto 30s status slicer. 100% private in-browser GPU processing.',
+    keywords: 'whatsapp video compressor 15 min, compress video for whatsapp status without losing quality, whatsapp 16mb video limit compressor, whatsapp 64mb document video, split video into 30 second parts for whatsapp status',
+    toolName: 'WhatsApp 15-Min HD Sizer & Slicer',
+    howToName: 'How to compress long videos for WhatsApp Status and split into 30-second clips',
+    steps: [
+      { name: 'Select or Drop Any Video', text: 'Upload videos of any length (even 15+ minutes) directly into your browser with zero cloud storage needed.' },
+      { name: 'Choose WhatsApp Target Ceiling', text: 'Select 16MB (WhatsApp Media limit) or 64MB (WhatsApp Document limit) with smart hardware-calculated bitrate.' },
+      { name: 'Slice or Compress Instantly', text: 'Download the compressed HD video or export sequential 30-second clips ready for instant Status upload.' },
+    ],
+    faqs: [
+      { q: 'How does this prevent WhatsApp from making my video blurry?', a: 'WhatsApp heavily downsamples videos with excessive bitrates. By pre-encoding your video to WhatsApp\'s exact target bitrates and container specs, WhatsApp passes the video through without aggressive re-compression.' },
+      { q: 'Can I compress a 10 or 15-minute video under WhatsApp limits?', a: 'Yes. The dynamic bitrate optimizer calculates exact audio/video allocation so even long 15-minute tutorials, vlogs, or songs fit within WhatsApp\'s 16MB or 64MB limit.' },
+      { q: 'Is my personal video uploaded anywhere?', a: 'No! Processing runs completely client-side in your web browser using HTML5 Canvas, MediaRecorder, and WebCodecs.' },
+    ],
+  },
+  {
+    slug: 'status-saver',
+    title: 'WhatsApp Status Saver & Screen-Recording UI Stripper | PDFCraft',
+    description: '1-Click WhatsApp Web status downloader and clean screen-recording UI stripper. Automatically crop away top contact bars and bottom reply boxes for clean HD status videos and MP3 audio. Zero ads, 100% free.',
+    keywords: 'whatsapp status saver web online, save whatsapp status without app, whatsapp status video cropper, remove ui from screen recording whatsapp, extract mp3 from whatsapp status',
+    toolName: 'WhatsApp Status Saver & Clean UI Stripper',
+    howToName: 'How to save WhatsApp Status videos and clean screen recordings online for free',
+    steps: [
+      { name: 'Select Status Video or Screen Recording', text: 'Open your saved status or screen-recorded clip in the browser studio.' },
+      { name: 'Auto-Crop UI Overlays', text: 'Click "Auto Strip WhatsApp UI" to instantly crop away the top header name bar and bottom reply input box.' },
+      { name: 'Export Clean HD Video or MP3 Audio', text: 'Save a pristine, distraction-free vertical 9:16 video or extract pure MP3 audio with one click.' },
+    ],
+    faqs: [
+      { q: 'How do I download statuses directly from WhatsApp Web?', a: 'Use our instant 1-Click WhatsApp Web bookmarklet button, or right-click any opened status story on web.whatsapp.com to save the source MP4 or JPEG directly.' },
+      { q: 'Why is the Screen Recording UI Stripper so useful?', a: 'Many mobile users screen-record friend\'s statuses which includes their name, timestamp, and reply box. The UI stripper automatically crops these out, leaving only the clean original video.' },
+      { q: 'Do I need to install any sketchy Android APKs or apps with ads?', a: 'No. Traditional Play Store status savers are filled with invasive ads and trackers. PDFCraft works safely in your browser with zero installation, zero tracking, and zero ads.' },
+    ],
+  },
 ];
 
 for (const page of pages) {

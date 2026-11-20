@@ -1,11 +1,11 @@
 {
-  "name": "PDFCraft — 100% Free & Private PDF Studio",
+  "name": "PDFCraft — Create. Convert. Customize.",
   "short_name": "PDFCraft",
-  "description": "Edit, sign, convert, enhance, and organize PDFs completely free with 100% client-side privacy.",
+  "description": "Create, convert, customize, edit, and sign PDFs completely free with 100% client-side privacy.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#020617",
-  "theme_color": "#4f46e5",
+  "theme_color": "#164881",
   "orientation": "any",
   "icons": [
     {
@@ -13,6 +13,16 @@
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ]
 }

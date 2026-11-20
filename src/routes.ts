@@ -13,6 +13,26 @@ export interface RouteConfig {
 }
 
 export const APP_ROUTES: RouteConfig[] = [
+  // 0. Creative Studio (PosterCraft & WhatsApp HD)
+  {
+    path: '/postercraft',
+    tab: 'postercraft',
+    title: 'PosterCraft — Free Pinterest Aesthetic Editorial Poster Studio (Zero Watermark) | PDFCraft',
+    description: '1-Click Pinterest aesthetic editorial poster creator. Add 3D typography behind subjects, 35mm grain, and folded paper textures in 4K.',
+  },
+  {
+    path: '/whatsapp-hd',
+    tab: 'whatsapp-studio',
+    title: 'WhatsApp 15-Minute HD Video Booster & 30s Status Slicer | PDFCraft',
+    description: 'Compress up to 15-minute videos under 16MB or 64MB without WhatsApp blurry re-compression, plus auto 30s status slicer.',
+  },
+  {
+    path: '/status-saver',
+    tab: 'whatsapp-studio',
+    title: 'WhatsApp Status Saver & Screen-Recording UI Stripper | PDFCraft',
+    description: '1-Click WhatsApp Web status downloader and clean screen-recording UI stripper. Zero ads, 100% free.',
+  },
+
   // 1. Home / Sign & Edit
   {
     path: '/',

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDFCraft — Official Brand Identity & Posting Gallery</title>
+  <style>
+    :root {
+      --bg: #070b16;
+      --card-bg: rgba(15, 23, 42, 0.85);
+      --border: rgba(59, 130, 246, 0.25);
+      --navy: #164881;
+      --orange: #ed8c2a;
+      --slate: #0f172a;
+      --cyan: #06b6d4;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #070b16 70%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .header {
+      text-align: center;
+      max-width: 800px;
+      margin-bottom: 36px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(237, 140, 42, 0.15);
+      border: 1px solid rgba(237, 140, 42, 0.4);
+      color: #fb923c;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+    }
+    .header h1 {
+      font-size: 34px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff 30%, #93c5fd 70%, #fdba74 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+    .header p {
+      color: var(--text-muted);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      max-width: 1140px;
+      width: 100%;
+      margin-bottom: 36px;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #f1f5f9;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+    .preview-box {
+      border-radius: 14px;
+      padding: 30px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 180px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+    .preview-box.light {
+      background: #ffffff;
+    }
+    .preview-box.dark {
+      background: #090d16;
+      background-image: radial-gradient(rgba(59, 130, 246, 0.15) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+    .preview-box.navy {
+      background: #164881;
+    }
+    .preview-img {
+      max-width: 100%;
+      max-height: 120px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+      margin-top: auto;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #164881, #ed8c2a);
+      color: white;
+    }
+    .btn-primary:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(237, 140, 42, 0.4);
+    }
+    /* Color Palette Bar */
+    .palette-container {
+      max-width: 1140px;
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 36px;
+    }
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .color-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 14px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .color-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(237, 140, 42, 0.5);
+    }
+    .swatch {
+      height: 60px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .color-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #f1f5f9;
+    }
+    .color-hex {
+      font-family: monospace;
+      font-size: 13px;
+      color: #94a3b8;
+      margin-top: 2px;
+    }
+    /* Mockup Showcase */
+    .mockup-container {
+      max-width: 1140px;
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 36px;
+    }
+    .mockup-img {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 16px;
+    }
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #ed8c2a;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      pointer-events: none;
+      z-index: 100;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="badge">✨ Official Master Brand Identity</div>
+    <h1>PDFCraft Brand & Posting Gallery</h1>
+    <p>The definitive brand asset suite for PDFCraft. Featuring the origami folded "P" document emblem, signature dual-tone typography, and the official tagline: <strong>CREATE. CONVERT. CUSTOMIZE.</strong></p>
+  </div>
+
+  <!-- Color Palette Section -->
+  <div class="palette-container">
+    <h2 style="font-size: 20px; font-weight: 700;">🎨 Official Brand Palette (Click to Copy Hex)</h2>
+    <div class="palette-grid">
+      <div class="color-card" onclick="copyHex('#164881')">
+        <div class="swatch" style="background: #164881;"></div>
+        <div class="color-name">PDF Navy</div>
+        <div class="color-hex">#164881</div>
+      </div>
+      <div class="color-card" onclick="copyHex('#ED8C2A')">
+        <div class="swatch" style="background: #ED8C2A;"></div>
+        <div class="color-name">Craft Amber / Orange</div>
+        <div class="color-hex">#ED8C2A</div>
+      </div>
+      <div class="color-card" onclick="copyHex('#0F172A')">
+        <div class="swatch" style="background: #0F172A;"></div>
+        <div class="color-name">Slate Navy (Tagline)</div>
+        <div class="color-hex">#0F172A</div>
+      </div>
+      <div class="color-card" onclick="copyHex('#06B6D4')">
+        <div class="swatch" style="background: #06B6D4;"></div>
+        <div class="color-name">Electric Cyan (Glow)</div>
+        <div class="color-hex">#06B6D4</div>
+      </div>
+      <div class="color-card" onclick="copyHex('#FFFFFF')">
+        <div class="swatch" style="background: #FFFFFF;"></div>
+        <div class="color-name">Document White</div>
+        <div class="color-hex">#FFFFFF</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logo Variations Grid -->
+  <div class="grid">
+    <!-- Card 1: Master Light Logo -->
+    <div class="card">
+      <div class="card-title">☀️ Master Logo (Light / Transparent)</div>
+      <div class="card-desc">For white backdrops, documents, letterheads, and print.</div>
+      <div class="preview-box light">
+        <img src="pdfcraft-official-logo.png" alt="PDFCraft Official Logo" class="preview-img">
+      </div>
+      <a href="pdfcraft-official-logo.png" download="pdfcraft-official-logo.png" class="btn btn-primary">
+        ⬇️ Download Light PNG
+      </a>
+    </div>
+
+    <!-- Card 2: Master Dark Logo -->
+    <div class="card">
+      <div class="card-title">🌙 Master Logo (Dark Theme)</div>
+      <div class="card-desc">For the website header, dark-mode apps, and YouTube thumbnails.</div>
+      <div class="preview-box dark">
+        <img src="pdfcraft-official-logo-dark.png" alt="PDFCraft Dark Logo" class="preview-img">
+      </div>
+      <a href="pdfcraft-official-logo-dark.png" download="pdfcraft-official-logo-dark.png" class="btn btn-primary">
+        ⬇️ Download Dark PNG
+      </a>
+    </div>
+
+    <!-- Card 3: Standalone App Icon -->
+    <div class="card">
+      <div class="card-title">📱 Standalone "P" Icon Mark</div>
+      <div class="card-desc">Master 512x512 PWA icon, browser tab favicon, and social avatar.</div>
+      <div class="preview-box dark">
+        <img src="icon.png" alt="PDFCraft Icon" style="max-height: 100px;">
+      </div>
+      <a href="icon.png" download="pdfcraft-icon-512.png" class="btn btn-primary">
+        ⬇️ Download 512x512 Icon
+      </a>
+    </div>
+
+    <!-- Card 4: Solid White Card Logo -->
+    <div class="card">
+      <div class="card-title">📄 Solid White Card Edition</div>
+      <div class="card-desc">Self-contained raster asset with built-in margins for quick posting.</div>
+      <div class="preview-box light">
+        <img src="pdfcraft-official-logo-white.png" alt="PDFCraft White Card" class="preview-img">
+      </div>
+      <a href="pdfcraft-official-logo-white.png" download="pdfcraft-official-logo-white.png" class="btn btn-primary">
+        ⬇️ Download White Card
+      </a>
+    </div>
+
+    <!-- Card 5: Mobile PWA 192x192 -->
+    <div class="card">
+      <div class="card-title">⚡ Mobile Home Screen (192px)</div>
+      <div class="card-desc">Crisp resolution for iOS/Android home screen shortcuts.</div>
+      <div class="preview-box dark">
+        <img src="icon-192.png" alt="PDFCraft 192px Icon" style="max-height: 80px;">
+      </div>
+      <a href="icon-192.png" download="pdfcraft-icon-192.png" class="btn btn-primary">
+        ⬇️ Download 192px Icon
+      </a>
+    </div>
+
+    <!-- Card 6: Vector SVG Icon -->
+    <div class="card">
+      <div class="card-title">📐 Vector Scalable SVG Icon</div>
+      <div class="card-desc">Infinite sharpness for high-DPI displays and vector design.</div>
+      <div class="preview-box dark">
+        <img src="icon.svg" alt="PDFCraft SVG Icon" style="max-height: 80px;">
+      </div>
+      <a href="icon.svg" download="icon.svg" class="btn btn-primary">
+        ⬇️ Download SVG Vector
+      </a>
+    </div>
+  </div>
+
+  <!-- Social Media Open Graph Showcase -->
+  <div class="mockup-container">
+    <h2 style="font-size: 20px; font-weight: 700;">🌐 Official Social Media Share Banner (1200×630)</h2>
+    <p style="color: var(--text-muted); font-size: 14px; margin-top: 4px;">Automatically surfaces when sharing PDFCraft on WhatsApp, LinkedIn, X, Facebook, and Slack:</p>
+    <img src="og-image.png" alt="PDFCraft Open Graph Social Card" class="mockup-img">
+    <div style="margin-top: 16px; display: flex; gap: 12px;">
+      <a href="og-image.png" download="pdfcraft-og-image-1200x630.png" class="btn btn-primary">
+        ⬇️ Download Social Banner (1200×630)
+      </a>
+    </div>
+  </div>
+
+  <div id="toast" class="toast">Copied to clipboard!</div>
+
+  <script>
+    function copyHex(hex) {
+      navigator.clipboard.writeText(hex).then(() => {
+        showToast("Copied " + hex + " to clipboard!");
+      });
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2000);
+    }
+  </script>
+</body>
+</html>

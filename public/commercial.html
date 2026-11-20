@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDFCraft — Official Google Flow Video (Original & Pure)</title>
+  <link rel="icon" type="image/png" href="icon.png">
+  <style>
+    :root {
+      --bg: #070b16;
+      --card-bg: rgba(15, 23, 42, 0.85);
+      --border: rgba(59, 130, 246, 0.3);
+      --navy: #164881;
+      --orange: #ed8c2a;
+      --cyan: #06b6d4;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #070b16 70%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .header {
+      text-align: center;
+      max-width: 860px;
+      margin-bottom: 32px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(6, 182, 212, 0.15);
+      border: 1px solid rgba(6, 182, 212, 0.4);
+      color: #38bdf8;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+    }
+    .header h1 {
+      font-size: 34px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff 30%, #93c5fd 70%, #fdba74 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+    .header p {
+      color: var(--text-muted);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    .main-player-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 32px;
+      max-width: 960px;
+      width: 100%;
+      margin-bottom: 40px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .player-container {
+      position: relative;
+      width: 100%;
+      max-width: 360px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 15px 40px rgba(6, 182, 212, 0.35);
+      border: 2px solid rgba(59, 130, 246, 0.4);
+      background: #000;
+      aspect-ratio: 9 / 16;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      background: #000;
+    }
+    .video-actions {
+      margin-top: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: center;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 14px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #2563eb, #06b6d4);
+      color: white;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
+    }
+    .btn-secondary {
+      background: rgba(30, 41, 59, 0.8);
+      color: #e2e8f0;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+    }
+    .btn-secondary:hover {
+      background: rgba(51, 65, 85, 0.9);
+      color: white;
+      transform: translateY(-2px);
+    }
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      width: 100%;
+      margin-top: 28px;
+    }
+    .spec-item {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 14px;
+      padding: 14px 18px;
+      text-align: left;
+    }
+    .spec-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .spec-value {
+      font-size: 15px;
+      font-weight: 700;
+      color: #38bdf8;
+    }
+    .clips-section {
+      max-width: 1040px;
+      width: 100%;
+      margin-bottom: 40px;
+    }
+    .section-title {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      text-align: center;
+      background: linear-gradient(135deg, #ffffff 40%, #fdba74 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .section-desc {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    .clips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+    .clip-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+    .clip-player {
+      width: 100%;
+      max-width: 220px;
+      aspect-ratio: 9 / 16;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      background: #000;
+    }
+    .clip-info {
+      width: 100%;
+      text-align: left;
+    }
+    .clip-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .clip-badge {
+      background: rgba(237, 140, 42, 0.15);
+      border: 1px solid rgba(237, 140, 42, 0.3);
+      color: #fb923c;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .clip-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 4px;
+    }
+    .clip-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .clip-btn {
+      width: 100%;
+      justify-content: center;
+      padding: 8px 16px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="badge">🎬 Pure Google Flow Video Output</div>
+    <h1>PDFCraft Google Flow Video (As Generated)</h1>
+    <p>100% original video generated directly with Google Flow (Gemini Omni 1.2 Flash at 360p). Zero artificial overlays, zero text pills, zero post-processing graphics.</p>
+  </div>
+
+  <!-- Primary Master Video: Continuous 30s Pure Flow Reel -->
+  <div class="main-player-card">
+    <div class="player-container">
+      <video controls playsinline preload="metadata">
+        <source src="google_flow_original_master_30s.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <div class="video-actions">
+      <a href="google_flow_original_master_30s.mp4" download="google_flow_original_master_30s.mp4" class="btn btn-primary">
+        ⬇️ Download Complete Flow Video (30s MP4)
+      </a>
+      <a href="/" class="btn btn-secondary">
+        🚀 Launch PDFCraft Website
+      </a>
+      <a href="brand-gallery.html" class="btn btn-secondary">
+        🎨 Brand Assets Gallery
+      </a>
+    </div>
+
+    <div class="specs-grid">
+      <div class="spec-item">
+        <div class="spec-label">Model & Engine</div>
+        <div class="spec-value">Gemini Omni 1.2 Flash</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-label">Resolution & Ratio</div>
+        <div class="spec-value">360p (360×640, 9:16)</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-label">Credits Used / Remaining</div>
+        <div class="spec-value">30 Consumed / 20 Remaining</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-label">Generation Mode</div>
+        <div class="spec-value">100% Raw Flow Video</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- All 6 Individual Raw Flow Video Clips -->
+  <div class="clips-section">
+    <h2 class="section-title">🎥 All 6 Individual Google Flow Clips (Raw Downloads)</h2>
+    <p class="section-desc">Each 5-second video clip exactly as generated and downloaded from Google Flow project canvas:</p>
+
+    <div class="clips-grid">
+
+      <!-- Clip 1 -->
+      <div class="clip-card">
+        <div class="clip-player">
+          <video controls playsinline preload="metadata">
+            <source src="flow_shot_1_problem.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="clip-info">
+          <div class="clip-header">
+            <span class="clip-badge">Shot 1 • 5.0s</span>
+            <span style="font-size: 11px; color: #94a3b8;">1.75 MB</span>
+          </div>
+          <div class="clip-title">1. The Document Struggle</div>
+          <div class="clip-desc">Middle-aged Indian professional rubbing his temples late at night under office desk lamp with red error glows.</div>
+        </div>
+        <a href="flow_shot_1_problem.mp4" download="flow_shot_1_problem.mp4" class="btn btn-secondary clip-btn">
+          ⬇️ Download Shot 1 (MP4)
+        </a>
+      </div>
+
+      <!-- Clip 2 -->
+      <div class="clip-card">
+        <div class="clip-player">
+          <video controls playsinline preload="metadata">
+            <source src="flow_shot_2_discovery.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="clip-info">
+          <div class="clip-header">
+            <span class="clip-badge">Shot 2 • 5.0s</span>
+            <span style="font-size: 11px; color: #94a3b8;">2.33 MB</span>
+          </div>
+          <div class="clip-title">2. Holographic Discovery</div>
+          <div class="clip-desc">Scattered PDF documents dissolving into electric-blue and gold luminous energy particles assembling the workspace.</div>
+        </div>
+        <a href="flow_shot_2_discovery.mp4" download="flow_shot_2_discovery.mp4" class="btn btn-secondary clip-btn">
+          ⬇️ Download Shot 2 (MP4)
+        </a>
+      </div>
+
+      <!-- Clip 3 -->
+      <div class="clip-card">
+        <div class="clip-player">
+          <video controls playsinline preload="metadata">
+            <source src="flow_shot_3_tools.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="clip-info">
+          <div class="clip-header">
+            <span class="clip-badge">Shot 3 • 5.0s</span>
+            <span style="font-size: 11px; color: #94a3b8;">2.09 MB</span>
+          </div>
+          <div class="clip-title">3. Core PDF Tools</div>
+          <div class="clip-desc">Three translucent PDFs slam together, merge instantly, convert into Word/Excel, and undergo 95% compression.</div>
+        </div>
+        <a href="flow_shot_3_tools.mp4" download="flow_shot_3_tools.mp4" class="btn btn-secondary clip-btn">
+          ⬇️ Download Shot 3 (MP4)
+        </a>
+      </div>
+
+      <!-- Clip 4 -->
+      <div class="clip-card">
+        <div class="clip-player">
+          <video controls playsinline preload="metadata">
+            <source src="flow_shot_4_sign.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="clip-info">
+          <div class="clip-header">
+            <span class="clip-badge">Shot 4 • 5.0s</span>
+            <span style="font-size: 11px; color: #94a3b8;">1.51 MB</span>
+          </div>
+          <div class="clip-title">4. Legal Digital Signature</div>
+          <div class="clip-desc">Macro Dutch angle of fountain pen actively tracing a radiant cursive blue signature with glowing green verified stamp.</div>
+        </div>
+        <a href="flow_shot_4_sign.mp4" download="flow_shot_4_sign.mp4" class="btn btn-secondary clip-btn">
+          ⬇️ Download Shot 4 (MP4)
+        </a>
+      </div>
+
+      <!-- Clip 5 -->
+      <div class="clip-card">
+        <div class="clip-player">
+          <video controls playsinline preload="metadata">
+            <source src="flow_shot_5_payoff.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="clip-info">
+          <div class="clip-header">
+            <span class="clip-badge">Shot 5 • 5.0s</span>
+            <span style="font-size: 11px; color: #94a3b8;">1.63 MB</span>
+          </div>
+          <div class="clip-title">5. ATS Resume & Victory</div>
+          <div class="clip-desc">The same middle-aged Indian professional smiling with coffee mug in bright sunlit tech office, 98% ATS resume scanner.</div>
+        </div>
+        <a href="flow_shot_5_payoff.mp4" download="flow_shot_5_payoff.mp4" class="btn btn-secondary clip-btn">
+          ⬇️ Download Shot 5 (MP4)
+        </a>
+      </div>
+
+      <!-- Clip 6 -->
+      <div class="clip-card">
+        <div class="clip-player">
+          <video controls playsinline preload="metadata">
+            <source src="flow_shot_6_brand.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="clip-info">
+          <div class="clip-header">
+            <span class="clip-badge">Shot 6 • 5.0s</span>
+            <span style="font-size: 11px; color: #94a3b8;">1.69 MB</span>
+          </div>
+          <div class="clip-title">6. 3D Origami Brand Climax</div>
+          <div class="clip-desc">Luminous blue and amber ribbons folding with origami precision into the 3D 'P' logo emblem in cosmic space with light rays.</div>
+        </div>
+        <a href="flow_shot_6_brand.mp4" download="flow_shot_6_brand.mp4" class="btn btn-secondary clip-btn">
+          ⬇️ Download Shot 6 (MP4)
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>

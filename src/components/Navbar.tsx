@@ -13,6 +13,8 @@ import {
   Lock,
   Search,
   UploadCloud,
+  Play,
+  Video,
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -58,6 +60,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   const tabs = [
+    { id: 'postercraft', label: 'PosterCraft', shortLabel: 'Posters', icon: Sparkles, badge: 'Viral' },
+    { id: 'whatsapp-studio', label: 'WhatsApp HD', shortLabel: 'WhatsApp', icon: Video, badge: '15m' },
     { id: 'sign-edit', label: 'Edit & Sign', shortLabel: 'Sign & Edit', icon: FileSignature },
     { id: 'organize', label: 'Merge & Organize', shortLabel: 'Merge', icon: Layers },
     { id: 'convert', label: 'Convert', shortLabel: 'Convert', icon: ArrowLeftRight },
@@ -68,14 +72,14 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <>
-      <header className="border-b border-slate-800 bg-slate-900/90 backdrop-blur-md sticky top-0 z-50">
+      <header className="border-b border-slate-200/90 bg-white/90 backdrop-blur-xl sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
           {/* Logo & Brand */}
           <div
             role="button"
             tabIndex={0}
             aria-label="PDFCraft Home"
-            className="flex items-center gap-2 sm:gap-2.5 cursor-pointer shrink-0 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-xl p-1"
+            className="flex items-center gap-2 sm:gap-2.5 cursor-pointer shrink-0 focus:outline-none focus:ring-2 focus:ring-purple-500 rounded-xl p-1"
             onClick={onResetFile}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
@@ -84,28 +88,34 @@ export const Navbar: React.FC<NavbarProps> = ({
               }
             }}
           >
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/30">
-              <span className="text-white font-black text-lg sm:text-xl tracking-tighter">P</span>
+            <div className="relative w-9 h-9 sm:w-10 sm:h-10 shrink-0 flex items-center justify-center">
+              <img
+                src="/icon.png"
+                alt="PDFCraft Official Logo"
+                className="w-full h-full object-contain filter drop-shadow-[0_2px_8px_rgba(147,51,234,0.35)] transition-transform duration-200 hover:scale-105"
+              />
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-bold text-base sm:text-lg text-white tracking-tight">PDFCraft</span>
-                <span className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 px-1.5 py-0.5 rounded-full">
-                  Zero Cost
+                <span className="font-black text-base sm:text-lg tracking-tight text-[#111439]">
+                  PDF<span className="text-purple-600">CRAFT</span>
+                </span>
+                <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-purple-50 text-purple-700 border border-purple-200 px-1.5 py-0.5 rounded-full">
+                  100% Free
                 </span>
               </div>
               <p
                 onClick={onOpenPrivacyModal}
-                className="text-[10px] sm:text-[11px] text-slate-400 font-normal hidden sm:block cursor-pointer hover:text-emerald-400 transition"
+                className="text-[9px] sm:text-[10px] text-slate-500 font-semibold tracking-wider uppercase hidden sm:block cursor-pointer hover:text-purple-600 transition"
               >
-                100% Client-Side Privacy
+                Zero Cloud Uploads • Private GPU
               </p>
             </div>
           </div>
 
           {/* Desktop Navigation Tabs & Search (Hidden on mobile) */}
           <div className="hidden md:flex items-center gap-1.5 lg:gap-2 min-w-0">
-            <nav aria-label="Main Navigation" className="flex items-center gap-0.5 sm:gap-1 bg-slate-950/80 p-1 rounded-2xl border border-slate-800 shadow-inner overflow-x-auto scrollbar-none">
+            <nav aria-label="Main Navigation" className="flex items-center gap-0.5 sm:gap-1 bg-slate-100/90 p-1 rounded-2xl border border-slate-200 shadow-inner overflow-x-auto scrollbar-none">
               {tabs.map((tab) => {
                 const Icon = tab.icon;
                 const isActive = activeTab === tab.id || (tab.id === 'organize' && activeTab === 'split') || (tab.id === 'security-studio' && activeTab === 'security');
@@ -114,10 +124,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id as ActiveTab)}
                     aria-label={tab.label}
-                    className={`flex items-center gap-1.5 sm:gap-2 px-2.5 lg:px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all whitespace-nowrap cursor-pointer ${
+                    className={`flex items-center gap-1.5 sm:gap-2 px-2.5 lg:px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all whitespace-nowrap cursor-pointer ${
                       isActive
-                        ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md shadow-indigo-600/30 font-semibold scale-[1.02]'
-                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                        ? 'bg-[#111439] text-white shadow-md font-bold scale-[1.02]'
+                        : 'text-[#425466] hover:text-[#111439] hover:bg-slate-200/60'
                     }`}
                   >
                     <Icon className="w-4 h-4 shrink-0" />
@@ -126,11 +136,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                     {tab.badge && (
                       <span
                         className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider border shrink-0 ${
-                          tab.badge === 'AI Radar'
-                            ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
+                          tab.badge === 'Viral'
+                            ? 'bg-purple-100 text-purple-800 border-purple-200'
+                            : tab.badge === '15m'
+                            ? 'bg-emerald-100 text-emerald-800 border-emerald-200'
                             : tab.badge === 'New'
-                            ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                            : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
+                            ? 'bg-blue-100 text-blue-800 border-blue-200'
+                            : 'bg-slate-200 text-slate-700 border-slate-300'
                         }`}
                       >
                         {tab.badge}
@@ -229,6 +241,16 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                   <span>100% Client-Side</span>
                 </button>
+                <a
+                  href="/commercial.html"
+                  aria-label="Watch Official Google Flow Video"
+                  className="flex items-center gap-1.5 text-xs text-amber-300 hover:text-white bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 px-2.5 py-1.5 rounded-xl shrink-0 whitespace-nowrap transition cursor-pointer font-semibold shadow-sm"
+                  title="Watch Official Google Flow Video"
+                >
+                  <Play className="w-3 h-3 fill-amber-400 text-amber-400 shrink-0" />
+                  <span className="hidden lg:inline">Watch Video</span>
+                  <span className="lg:hidden">Video</span>
+                </a>
               </div>
             )}
           </div>
@@ -385,6 +407,20 @@ export const Navbar: React.FC<NavbarProps> = ({
               </button>
             )}
 
+            {/* Watch Commercial Link */}
+            <a
+              href="/commercial.html"
+              className="w-full flex items-center justify-between p-3 rounded-2xl bg-gradient-to-r from-amber-950/60 via-orange-950/60 to-amber-950/60 border border-amber-500/40 text-xs font-bold text-amber-200 hover:text-white shadow-lg cursor-pointer"
+            >
+              <span className="flex items-center gap-2">
+                <Play className="w-4 h-4 fill-amber-400 text-amber-400" />
+                <span>🎬 Watch Official Google Flow Video</span>
+              </span>
+              <span className="text-[10px] bg-amber-500/30 text-amber-300 px-2 py-0.5 rounded-full font-bold">
+                30s
+              </span>
+            </a>
+
             <div className="space-y-1">
               {tabs.map((tab) => {
                 const Icon = tab.icon;
@@ -448,9 +484,9 @@ export const Navbar: React.FC<NavbarProps> = ({
         )}
       </header>
 
-      {/* Mobile Sticky Bottom Navigation Bar (Thumb Friendly) */}
-      <nav aria-label="Mobile Navigation" className="fixed bottom-0 inset-x-0 z-40 bg-slate-950/95 backdrop-blur-xl border-t border-slate-800/80 md:hidden print:hidden px-2 py-1.5 flex items-center justify-around shadow-2xl safe-area-pb">
-        {tabs.map((tab) => {
+      {/* Mobile Sticky Bottom Navigation Bar (Thumb Friendly Stripe Theme) */}
+      <nav aria-label="Mobile Navigation" className="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-2xl border-t border-slate-200/90 md:hidden print:hidden px-1.5 py-1.5 flex items-center justify-around shadow-2xl safe-area-pb">
+        {tabs.slice(0, 5).map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id || (tab.id === 'organize' && activeTab === 'split') || (tab.id === 'tools' && activeTab === 'security');
           return (
@@ -461,28 +497,28 @@ export const Navbar: React.FC<NavbarProps> = ({
                 setMobileMenuOpen(false);
               }}
               aria-label={tab.label}
-              className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl transition relative min-w-[56px] min-h-[44px] ${
+              className={`flex flex-col items-center justify-center py-1 px-1 rounded-xl transition relative min-w-[54px] min-h-[44px] ${
                 isActive
-                  ? 'text-indigo-400 font-bold'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'text-purple-600 font-bold'
+                  : 'text-slate-500 hover:text-[#111439]'
               }`}
             >
               {/* Active Indicator Pip */}
               {isActive && (
-                <span className="absolute -top-1.5 w-6 h-1 rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 shadow-sm shadow-indigo-500" />
+                <span className="absolute -top-1.5 w-6 h-1 rounded-full bg-[#111439] shadow-sm" />
               )}
               
               <div className="relative">
-                <Icon className={`w-5 h-5 transition-transform ${isActive ? 'scale-110 text-indigo-400' : 'text-slate-400'}`} />
+                <Icon className={`w-5 h-5 transition-transform ${isActive ? 'scale-110 text-purple-600' : 'text-slate-500'}`} />
                 {tab.badge && (
                   <span
                     className={`absolute -top-1 -right-2 w-2 h-2 rounded-full ${
-                      tab.badge === 'AI Radar' ? 'bg-rose-500' : 'bg-emerald-400'
+                      tab.badge === 'Viral' ? 'bg-purple-600' : 'bg-emerald-500'
                     }`}
                   />
                 )}
               </div>
-              <span className={`text-[10px] mt-1 tracking-tight truncate max-w-[64px] ${isActive ? 'text-white font-bold' : 'text-slate-400'}`}>
+              <span className={`text-[10px] mt-1 tracking-tight truncate max-w-[62px] ${isActive ? 'text-[#111439] font-bold' : 'text-slate-500'}`}>
                 {tab.shortLabel}
               </span>
             </button>

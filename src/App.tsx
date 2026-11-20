@@ -40,6 +40,8 @@ const MobileSignPad = safeLazy(() => import('./components/MobileSignPad'), 'Mobi
 const SplitPanel = safeLazy(() => import('./components/SplitPanel'), 'SplitPanel');
 const SecurityPanel = safeLazy(() => import('./components/SecurityPanel'), 'SecurityPanel');
 const SecurityPrivacyStudio = safeLazy(() => import('./components/SecurityPrivacyStudio'), 'SecurityPrivacyStudio');
+const PosterCraft = safeLazy(() => import('./components/PosterCraft'), 'PosterCraft');
+const WhatsAppStudio = safeLazy(() => import('./components/WhatsAppStudio'), 'WhatsAppStudio');
 
 const ViewSkeleton: React.FC = () => (
   <div className="flex-1 flex flex-col items-center justify-center min-h-[350px] text-slate-400 gap-3 py-16 animate-pulse">
@@ -74,6 +76,9 @@ import {
   EyeOff,
   FileCheck2,
   Unlock,
+  Play,
+  Video,
+  DownloadCloud,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -297,6 +302,36 @@ export const App: React.FC = () => {
 
   const homeTools = [
     {
+      id: 'postercraft',
+      name: 'PosterCraft (Pinterest)',
+      badge: 'Brand Ambassador',
+      icon: Sparkles,
+      bg: 'from-purple-600 to-indigo-600',
+      desc: '1-Click Pinterest aesthetic editorial poster creator with 3D text behind subjects & 35mm grain.',
+      category: ['all', 'popular', 'edit'],
+      action: () => navigateToTab('postercraft'),
+    },
+    {
+      id: 'whatsapp-hd',
+      name: 'WhatsApp 15m HD Sizer',
+      badge: '15-Min Ready',
+      icon: Video,
+      bg: 'from-emerald-600 to-teal-600',
+      desc: 'Compress up to 15-minute videos into under 16MB/64MB without blur + 30s status slicer.',
+      category: ['all', 'popular'],
+      action: () => navigateToTab('whatsapp-studio'),
+    },
+    {
+      id: 'status-saver',
+      name: 'WhatsApp Status Saver',
+      badge: '100% Free',
+      icon: DownloadCloud,
+      bg: 'from-blue-600 to-cyan-600',
+      desc: '1-Click WhatsApp Web status downloader and clean screen-record UI stripper with zero ads.',
+      category: ['all', 'popular'],
+      action: () => navigateToTab('whatsapp-studio'),
+    },
+    {
       id: 'edit-sign',
       name: 'Edit & Sign PDF',
       badge: 'Touch Sync',
@@ -481,62 +516,128 @@ export const App: React.FC = () => {
 
       {/* Main Content Area */}
       <main className={`flex-1 flex flex-col ${activeTab === 'sign-edit' && currentBytes ? 'pb-0' : 'pb-20 md:pb-0'}`}>
-        {/* If no file loaded and on sign-edit home, show the Hero Showcase + Uploader */}
+        {/* If no file loaded and on sign-edit home, show the Stripe-Inspired Hero Showcase + Uploader */}
         {!currentBytes && activeTab === 'sign-edit' ? (
-          <div className="flex-1 flex flex-col justify-center items-center py-8 sm:py-12 px-4">
+          <div className="flex-1 flex flex-col justify-center items-center py-6 sm:py-10 px-4">
             
-            {/* Hero Heading */}
-            <div className="text-center max-w-3xl mx-auto mb-8 space-y-4">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-indigo-500/10 via-violet-500/10 to-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-[11px] sm:text-xs font-semibold shadow-inner">
-                <Sparkles className="w-3.5 h-3.5 text-indigo-400 animate-pulse shrink-0" />
-                <span>Zero Server Uploads • 100% Free Client-Side PDF Powerhouse</span>
+            {/* Stripe-Style Flowing Hero Banner */}
+            <div className="w-full max-w-6xl mx-auto stripe-hero-mesh p-6 sm:p-12 rounded-3xl border border-slate-200/90 shadow-xl mb-10">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                
+                <div className="lg:col-span-7 space-y-4 text-left">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/90 border border-slate-200 text-[#111439] text-[11px] sm:text-xs font-bold shadow-sm">
+                      <Sparkles className="w-3.5 h-3.5 text-purple-600 animate-pulse shrink-0" />
+                      <span>Zero Cloud Uploads • Hardware GPU Accelerated</span>
+                    </div>
+                    <a
+                      href="/commercial.html"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-900 text-[11px] sm:text-xs font-bold transition shadow-sm"
+                    >
+                      <Play className="w-3 h-3 fill-amber-600 text-amber-600" />
+                      <span>🎬 Watch 30s Video</span>
+                    </a>
+                  </div>
+
+                  <h1 className="text-4xl sm:text-6xl font-black text-[#111439] tracking-tight leading-[1.08]">
+                    Creative suite <br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#111439] via-purple-700 to-pink-600">
+                      to elevate your media.
+                    </span>
+                  </h1>
+
+                  <p className="text-sm sm:text-base text-[#425466] leading-relaxed max-w-xl font-normal">
+                    Generate high-fashion Pinterest aesthetic posters with 3D text behind subjects, optimize 15-minute WhatsApp video stories in full HD, and sign private PDFs with zero server uploads.
+                  </p>
+
+                  <div className="flex flex-wrap items-center gap-3 pt-2">
+                    <button
+                      onClick={() => navigateToTab('postercraft')}
+                      className="bg-[#111439] hover:bg-[#0A2540] text-white font-black text-xs sm:text-sm px-5 py-3 rounded-xl shadow-lg transition-all flex items-center gap-2"
+                    >
+                      <span>🌟 Open PosterCraft (Pinterest)</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => navigateToTab('whatsapp-studio')}
+                      className="bg-white hover:bg-slate-50 text-[#111439] border border-slate-200 font-extrabold text-xs sm:text-sm px-5 py-3 rounded-xl shadow-sm transition-all flex items-center gap-2"
+                    >
+                      <Video className="w-4 h-4 text-emerald-600" />
+                      <span>🎬 WhatsApp 15m Sizer</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Floating Stripe-Style Mockup Showcase */}
+                <div className="lg:col-span-5 flex justify-center">
+                  <div className="relative w-full max-w-sm">
+                    <div className="bg-white rounded-3xl p-5 shadow-2xl border border-slate-100 space-y-3.5">
+                      <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                        <span className="text-xs font-black text-[#111439]">FEATURE SPOTLIGHT</span>
+                        <span className="text-[10px] font-mono bg-purple-50 text-purple-700 font-extrabold px-2 py-0.5 rounded-full border border-purple-200">
+                          BRAND AMBASSADOR
+                        </span>
+                      </div>
+
+                      <div className="relative aspect-[3/4] rounded-2xl bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-700 p-4 text-white flex flex-col justify-between overflow-hidden shadow-inner">
+                        <div className="flex justify-between items-center text-[10px] font-mono text-white/80">
+                          <span>VOL. 04 // 2026</span>
+                          <span>LAT: 34.0522° N</span>
+                        </div>
+                        <div className="text-center my-auto">
+                          <span className="text-xs font-serif italic tracking-widest block text-white/90">AESTHETIC</span>
+                          <span className="text-2xl font-black tracking-tight leading-none">HEAVEN</span>
+                        </div>
+                        <div className="flex justify-between items-center text-[9px] font-mono border-t border-white/20 pt-1.5">
+                          <span>|||| | |||| ||</span>
+                          <span className="bg-white text-black px-1.5 py-0.5 rounded font-extrabold text-[8px]">Pinterest Pin</span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between text-xs text-slate-500 pt-1">
+                        <span className="font-semibold">✦ 3D Text Behind Subject</span>
+                        <span className="text-purple-600 font-bold">1-Click 4K</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
               </div>
-
-              <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-tight">
-                All The Pro PDF Tools. <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400">
-                  Zero Paywalls. Zero Cloud Leaks.
-                </span>
-              </h1>
-
-              <p className="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-                Edit, sign, mask Aadhaar &amp; IDs, compress to exact KB, merge, split, and convert directly in your browser with zero server uploads.
-              </p>
             </div>
 
             {/* Universal Uploader Drop Box */}
-            <FileUploader onFileLoaded={handleFileLoaded} title="Drop any PDF here to edit immediately, or select a tool below" />
+            <FileUploader onFileLoaded={handleFileLoaded} title="Drop any PDF or Image here to edit immediately, or select a tool below" />
 
-            {/* All 16 Tools Open Visual Grid */}
+            {/* All Tools Open Visual Grid (Stripe Style) */}
             <div className="max-w-6xl mx-auto px-4 mt-10 pb-16 w-full">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
                 <div>
-                  <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-                    <Zap className="w-5 h-5 text-amber-400" />
-                    <span>All 16 PDF Super-Tools</span>
-                    <span className="text-[10px] font-semibold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full">
+                  <h2 className="text-base sm:text-lg font-bold text-[#111439] flex items-center gap-2">
+                    <Zap className="w-5 h-5 text-purple-600" />
+                    <span>All Creative &amp; PDF Tools</span>
+                    <span className="text-[10px] font-semibold uppercase tracking-wider bg-purple-50 text-purple-700 border border-purple-200 px-2 py-0.5 rounded-full">
                       100% Free
                     </span>
                   </h2>
-                  <p className="text-xs text-slate-400 mt-0.5">Click any tool to launch instantly in your browser — zero accounts required</p>
+                  <p className="text-xs text-[#425466] mt-0.5">Click any tool to launch instantly in your browser — zero accounts required</p>
                 </div>
 
                 {/* Filter Pills */}
                 <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-1">
                   {[
-                    { id: 'all', label: 'All 16 Tools' },
+                    { id: 'all', label: 'All Tools' },
                     { id: 'popular', label: '⭐ Popular' },
                     { id: 'security', label: '🛡️ Protect & Mask' },
                     { id: 'convert', label: '🔄 Converters' },
-                    { id: 'edit', label: '✍️ Edit & Organize' },
+                    { id: 'edit', label: '✍️ Edit & Creative' },
                   ].map((f) => (
                     <button
                       key={f.id}
                       onClick={() => setBentoFilter(f.id as any)}
                       className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition cursor-pointer ${
                         bentoFilter === f.id
-                          ? 'bg-indigo-600 text-white shadow-md'
-                          : 'bg-slate-900 hover:bg-slate-800 text-slate-400 border border-slate-800'
+                          ? 'bg-[#111439] text-white shadow-md'
+                          : 'bg-white hover:bg-slate-100 text-[#425466] border border-slate-200'
                       }`}
                     >
                       {f.label}
@@ -545,7 +646,7 @@ export const App: React.FC = () => {
                 </div>
               </div>
 
-              {/* Responsive 4-Column Grid */}
+              {/* Responsive 4-Column Grid (Stripe Cards) */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {homeTools
                   .filter((t) => bentoFilter === 'all' || t.category.includes(bentoFilter))
@@ -558,22 +659,22 @@ export const App: React.FC = () => {
                           tool.action();
                           confetti({ particleCount: 35, spread: 50 });
                         }}
-                        className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800/80 hover:border-indigo-500/50 hover:bg-slate-800/60 transition cursor-pointer group shadow-sm flex flex-col justify-between hover:scale-[1.02]"
+                        className="stripe-card p-4 rounded-2xl cursor-pointer group flex flex-col justify-between"
                       >
                         <div>
                           <div className="flex items-center justify-between mb-3">
                             <div className={`w-9 h-9 rounded-xl bg-gradient-to-tr ${tool.bg} flex items-center justify-center text-white shadow-md shadow-indigo-500/20 group-hover:scale-105 transition`}>
                               <Icon className="w-4 h-4" />
                             </div>
-                            <span className="text-[10px] font-semibold uppercase tracking-wider bg-slate-800 text-slate-300 border border-slate-700/60 px-2 py-0.5 rounded-full">
+                            <span className="text-[10px] font-semibold uppercase tracking-wider bg-slate-100 text-slate-700 border border-slate-200 px-2 py-0.5 rounded-full">
                               {tool.badge}
                             </span>
                           </div>
-                          <h3 className="text-sm font-bold text-white group-hover:text-indigo-300 transition flex items-center gap-1">
+                          <h3 className="text-sm font-bold text-[#111439] group-hover:text-purple-700 transition flex items-center gap-1">
                             <span>{tool.name}</span>
-                            <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition -translate-x-1 group-hover:translate-x-0 text-indigo-400" />
+                            <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition -translate-x-1 group-hover:translate-x-0 text-purple-600" />
                           </h3>
-                          <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
+                          <p className="text-xs text-[#425466] mt-1.5 leading-relaxed">
                             {tool.desc}
                           </p>
                         </div>
@@ -795,6 +896,14 @@ export const App: React.FC = () => {
 
                 {activeTab === 'resume' && (
                   <ResumeBuilder />
+                )}
+
+                {activeTab === 'postercraft' && (
+                  <PosterCraft />
+                )}
+
+                {activeTab === 'whatsapp-studio' && (
+                  <WhatsAppStudio />
                 )}
               </Suspense>
             </ErrorBoundary>
@@ -1114,12 +1223,13 @@ export const App: React.FC = () => {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-slate-900 bg-slate-950/80 backdrop-blur-md py-5 text-xs text-slate-400 mb-16 md:mb-0">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
-          <div className="flex items-center gap-2 justify-center">
-            <span className="font-bold text-slate-300">PDFCraft</span>
-            <span>•</span>
-            <span>Zero-Cost Client-Side PDF Powerhouse</span>
+      <footer className="border-t border-slate-900 bg-slate-950/80 backdrop-blur-md py-6 text-xs text-slate-400 mb-16 md:mb-0">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+          <div className="flex items-center gap-2.5 justify-center">
+            <img src="/icon.png" alt="PDFCraft Logo" className="w-5 h-5 object-contain" />
+            <span className="font-black text-white tracking-tight">PDF<span className="text-[#ED8C2A]">CRAFT</span></span>
+            <span className="text-slate-600">•</span>
+            <span className="text-slate-300 font-medium tracking-wide text-[11px]">CREATE. CONVERT. CUSTOMIZE.</span>
           </div>
           <div className="flex items-center gap-4 text-[11px] text-slate-400 justify-center">
             <button

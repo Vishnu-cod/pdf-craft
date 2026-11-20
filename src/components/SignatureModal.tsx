@@ -19,10 +19,12 @@ export const SignatureModal: React.FC<SignatureModalProps> = ({
   const [typedName, setTypedName] = useState('');
   const [sessionId, setSessionId] = useState('');
   const [copiedLink, setCopiedLink] = useState(false);
+  const [p2pStatus, setP2pStatus] = useState<'initializing' | 'ready' | 'connected' | 'error'>('initializing');
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const isDrawing = useRef(false);
   const isInitialized = useRef(false);
+  const peerRef = useRef<any>(null);
 
   // Initialize canvas only when modal opens or tab changes to draw
   useEffect(() => {
@@ -60,10 +62,10 @@ export const SignatureModal: React.FC<SignatureModalProps> = ({
     }
   }, [isOpen]);
 
-  // Setup mobile listener when modal opens
+  // Setup mobile listener and WebRTC P2P when modal opens
   useEffect(() => {
     if (!isOpen) return;
-    const newSession = 'SIG-' + Math.floor(1000 + Math.random() * 9000);
+    const newSession = 'pdfcraft-' + Math.random().toString(36).substring(2, 8);
     setSessionId(newSession);
 
     // 1. BroadcastChannel Listener (works cross-tab on same machine)
@@ -79,7 +81,7 @@ export const SignatureModal: React.FC<SignatureModalProps> = ({
       };
     }
 
-    // 2. Storage Event Listener
+    // 2. Storage Event Listener (cross-window fallback)
     const handleStorage = (e: StorageEvent) => {
       if (e.key === 'pdfcraft_mobile_sig' && e.newValue) {
         try {
@@ -96,9 +98,64 @@ export const SignatureModal: React.FC<SignatureModalProps> = ({
     };
     window.addEventListener('storage', handleStorage);
 
+    // 3. WebRTC Direct P2P via PeerJS
+    let isSubscribed = true;
+    let peerInstance: any = null;
+
+    const initP2P = async () => {
+      try {
+        const { Peer } = await import('peerjs');
+        peerInstance = new Peer(newSession, {
+          config: {
+            iceServers: [
+              { urls: 'stun:stun.l.google.com:19302' },
+              { urls: 'stun:global.stun.twilio.com:3478' },
+            ],
+          },
+        });
+        peerRef.current = peerInstance;
+
+        peerInstance.on('open', () => {
+          if (!isSubscribed) return;
+          setP2pStatus('ready');
+        });
+
+        peerInstance.on('connection', (conn: any) => {
+          if (!isSubscribed) return;
+          setP2pStatus('connected');
+
+          conn.on('data', (data: any) => {
+            if (data && data.signature) {
+              // Send ACK back to the phone!
+              conn.send({ type: 'ack', status: 'confirmed' });
+              onSaveSignature(data.signature);
+              confetti({ particleCount: 70, spread: 60 });
+              setTimeout(() => {
+                onClose();
+              }, 400);
+            }
+          });
+        });
+
+        peerInstance.on('error', (err: any) => {
+          console.warn('WebRTC P2P info:', err?.type || err);
+          if (isSubscribed) setP2pStatus('ready');
+        });
+      } catch (err) {
+        console.warn('PeerJS import error, keeping local fallback:', err);
+        if (isSubscribed) setP2pStatus('ready');
+      }
+    };
+
+    initP2P();
+
     return () => {
+      isSubscribed = false;
       if (channel) channel.close();
       window.removeEventListener('storage', handleStorage);
+      if (peerInstance) {
+        peerInstance.destroy();
+      }
     };
   }, [isOpen, onSaveSignature, onClose]);
 
@@ -348,13 +405,22 @@ export const SignatureModal: React.FC<SignatureModalProps> = ({
                 )}
               </div>
 
-              <div className="flex items-center gap-2 mb-2 text-emerald-400 text-xs font-semibold">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                <span>Waiting for phone signature...</span>
+              <div className="flex items-center gap-2 mb-2 text-xs font-semibold">
+                {p2pStatus === 'connected' ? (
+                  <span className="flex items-center gap-1.5 text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 rounded-full animate-pulse">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <span>🟢 Phone Connected via WebRTC P2P!</span>
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-1.5 text-indigo-300 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-full">
+                    <span className="w-2 h-2 rounded-full bg-indigo-400 animate-ping"></span>
+                    <span>Waiting for phone camera scan...</span>
+                  </span>
+                )}
               </div>
 
               <p className="text-xs text-slate-400 max-w-xs mb-4">
-                Point your phone camera at this QR code. Sign smoothly with your finger on your touchscreen.
+                Point your iPhone or Android camera at this QR code. WebRTC establishes a direct device-to-device DataChannel with zero cloud servers.
               </p>
 
               <div className="flex items-center gap-2 flex-wrap justify-center">

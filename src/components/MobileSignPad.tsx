@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { PenTool, Eraser, CheckCircle2, Laptop, Download, Info } from 'lucide-react';
+import { PenTool, Eraser, CheckCircle2, Laptop, Download, Info, Radio, ShieldCheck, Loader2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 interface MobileSignPadProps {
@@ -10,8 +10,71 @@ export const MobileSignPad: React.FC<MobileSignPadProps> = ({ sessionId }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const isDrawing = useRef(false);
   const isInitialized = useRef(false);
+  const connRef = useRef<any>(null);
+
   const [penColor, setPenColor] = useState('#0f172a');
   const [isSent, setIsSent] = useState(false);
+  const [p2pConnected, setP2pConnected] = useState(false);
+  const [isSending, setIsSending] = useState(false);
+  const [desktopConfirmed, setDesktopConfirmed] = useState(false);
+
+  // Initialize WebRTC P2P connection to desktop
+  useEffect(() => {
+    if (!sessionId) return;
+    let peerInstance: any = null;
+    let isSubscribed = true;
+
+    const connectP2P = async () => {
+      try {
+        const { Peer } = await import('peerjs');
+        peerInstance = new Peer({
+          config: {
+            iceServers: [
+              { urls: 'stun:stun.l.google.com:19302' },
+              { urls: 'stun:global.stun.twilio.com:3478' },
+            ],
+          },
+        });
+
+        peerInstance.on('open', () => {
+          if (!isSubscribed) return;
+          const conn = peerInstance.connect(sessionId, { reliable: true });
+          connRef.current = conn;
+
+          conn.on('open', () => {
+            if (!isSubscribed) return;
+            setP2pConnected(true);
+          });
+
+          conn.on('data', (data: any) => {
+            if (data && data.type === 'ack') {
+              setDesktopConfirmed(true);
+              setIsSent(true);
+              setIsSending(false);
+              confetti({ particleCount: 60, spread: 70 });
+            }
+          });
+
+          conn.on('close', () => {
+            if (isSubscribed) setP2pConnected(false);
+          });
+        });
+
+        peerInstance.on('error', (err: any) => {
+          console.warn('WebRTC P2P mobile connection note:', err?.type || err);
+        });
+      } catch (err) {
+        console.warn('PeerJS import error on mobile, using local channel:', err);
+      }
+    };
+
+    connectP2P();
+
+    return () => {
+      isSubscribed = false;
+      if (peerInstance) peerInstance.destroy();
+    };
+  }, [sessionId]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -97,21 +160,35 @@ export const MobileSignPad: React.FC<MobileSignPadProps> = ({ sessionId }) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const dataUrl = canvas.toDataURL('image/png');
+    setIsSending(true);
 
-    // 1. BroadcastChannel (instant for cross-tab/local)
+    // 1. Direct WebRTC P2P transmission
+    if (connRef.current && p2pConnected) {
+      try {
+        connRef.current.send({ signature: dataUrl, sessionId });
+      } catch (err) {
+        console.warn('Error sending over WebRTC:', err);
+      }
+    }
+
+    // 2. BroadcastChannel (instant for cross-tab/local)
     if ('BroadcastChannel' in window) {
       const channel = new BroadcastChannel('pdfcraft_signature_channel');
       channel.postMessage({ sessionId, signature: dataUrl });
     }
 
-    // 2. LocalStorage event (fallback for cross-window)
+    // 3. LocalStorage event (fallback for cross-window)
     localStorage.setItem(
       'pdfcraft_mobile_sig',
       JSON.stringify({ sessionId, signature: dataUrl, time: Date.now() })
     );
 
-    setIsSent(true);
-    confetti({ particleCount: 50, spread: 60 });
+    // Fallback timer if ACK takes more than 1.8 seconds or WebRTC is offline
+    setTimeout(() => {
+      setIsSending(false);
+      setIsSent(true);
+      confetti({ particleCount: 50, spread: 60 });
+    }, 1800);
   };
 
   const handleDownloadSignature = () => {
@@ -128,33 +205,59 @@ export const MobileSignPad: React.FC<MobileSignPadProps> = ({ sessionId }) => {
     <div className="min-h-[100dvh] bg-slate-950 text-white flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-lg bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl">
         {/* Header */}
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 rounded-xl bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center">
-            <Laptop className="w-5 h-5" />
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center">
+              <Laptop className="w-5 h-5" />
+            </div>
+            <div>
+              <h2 className="text-base font-bold text-white">Mobile Touch Signature</h2>
+              <p className="text-xs text-slate-400 font-mono">Session: {sessionId.slice(0, 12)}...</p>
+            </div>
           </div>
+
           <div>
-            <h2 className="text-base font-bold text-white">Mobile Touch Signature</h2>
-            <p className="text-xs text-slate-400 font-mono">Session ID: {sessionId}</p>
+            {p2pConnected ? (
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-[11px] font-semibold shadow-sm shadow-emerald-500/20">
+                <Radio className="w-3 h-3 animate-pulse" />
+                <span>WebRTC Linked</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-800/80 border border-slate-700 text-slate-400 text-[11px]">
+                <Radio className="w-3 h-3 text-slate-500" />
+                <span>Pairing...</span>
+              </div>
+            )}
           </div>
         </div>
 
         {isSent ? (
           <div className="py-8 flex flex-col items-center text-center space-y-4">
-            <CheckCircle2 className="w-16 h-16 text-emerald-400 animate-bounce" />
+            <div className="relative">
+              <CheckCircle2 className="w-16 h-16 text-emerald-400 animate-bounce" />
+              {desktopConfirmed && (
+                <ShieldCheck className="w-6 h-6 text-indigo-400 absolute -bottom-1 -right-1 bg-slate-900 rounded-full p-0.5" />
+              )}
+            </div>
+
             <div>
-              <h3 className="text-xl font-bold text-white mb-1">Signature Transmitted!</h3>
+              <h3 className="text-xl font-bold text-white mb-1">
+                {desktopConfirmed ? 'Confirmed Placed on Laptop PDF!' : 'Signature Transmitted!'}
+              </h3>
               <p className="text-xs text-slate-300 max-w-xs leading-relaxed">
-                If your desktop window is open in this browser, your signature is now placed directly onto the PDF.
+                {desktopConfirmed
+                  ? 'Your desktop browser acknowledged receipt in real-time via WebRTC. The signature is now placed directly onto your document.'
+                  : 'If your desktop window is open, your signature was sent directly to it. Check your desktop screen.'}
               </p>
             </div>
 
             <div className="p-3.5 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-xs text-slate-300 text-left max-w-xs space-y-2">
               <div className="flex items-center gap-1.5 font-semibold text-indigo-300">
                 <Info className="w-4 h-4 text-indigo-400 shrink-0" />
-                <span>Separate Device Fallback</span>
+                <span>Need a manual file copy?</span>
               </div>
               <p className="text-[11px] text-slate-400 leading-relaxed">
-                If you are on a different physical device, tap the button below to download the crisp transparent PNG and drop it onto PDFCraft.
+                You can also download your signature as a transparent PNG to save or insert anywhere.
               </p>
               <button
                 onClick={handleDownloadSignature}
@@ -166,7 +269,10 @@ export const MobileSignPad: React.FC<MobileSignPadProps> = ({ sessionId }) => {
             </div>
 
             <button
-              onClick={() => setIsSent(false)}
+              onClick={() => {
+                setIsSent(false);
+                setDesktopConfirmed(false);
+              }}
               className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 font-medium transition"
             >
               Sign Again
@@ -232,10 +338,24 @@ export const MobileSignPad: React.FC<MobileSignPadProps> = ({ sessionId }) => {
             <div className="mt-6 space-y-2">
               <button
                 onClick={handleSendToDesktop}
-                className="w-full py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2 transition"
+                disabled={isSending}
+                className={`w-full py-3.5 rounded-2xl font-bold text-sm shadow-lg flex items-center justify-center gap-2 transition ${
+                  isSending
+                    ? 'bg-indigo-700 text-indigo-200 cursor-wait'
+                    : 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-indigo-600/30'
+                }`}
               >
-                <Laptop className="w-4 h-4" />
-                <span>Transmit Signature to Laptop</span>
+                {isSending ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Transmitting to Laptop...</span>
+                  </>
+                ) : (
+                  <>
+                    <Laptop className="w-4 h-4" />
+                    <span>{p2pConnected ? 'Transmit via WebRTC P2P' : 'Transmit Signature to Laptop'}</span>
+                  </>
+                )}
               </button>
 
               <button

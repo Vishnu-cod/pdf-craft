@@ -336,91 +336,413 @@ export class AIService {
 
     // Category-specific procedural rendering
     switch (category.toLowerCase()) {
+      case 'studio_minimal':
       case 'studio': {
-        // High-end cyclorama photo studio with top spotlight
-        const grad = ctx.createRadialGradient(width / 2, height * 0.35, 80, width / 2, height / 2, width * 0.7);
-        grad.addColorStop(0, '#EAECEF');
-        grad.addColorStop(0.5, '#BDC3C7');
-        grad.addColorStop(1, '#2C3E50');
+        // High-end cyclorama photo studio with top spotlight & soft floor drop
+        const grad = ctx.createRadialGradient(width * 0.5, height * 0.28, 40, width * 0.5, height * 0.45, width * 0.75);
+        grad.addColorStop(0, '#FFFFFF');
+        grad.addColorStop(0.35, '#F1F5F9');
+        grad.addColorStop(0.7, '#CBD5E1');
+        grad.addColorStop(1, '#64748B');
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, width, height);
 
         // Ground shadow plane
-        const floorGrad = ctx.createLinearGradient(0, height * 0.65, 0, height);
-        floorGrad.addColorStop(0, 'rgba(0,0,0,0.05)');
-        floorGrad.addColorStop(1, 'rgba(0,0,0,0.4)');
+        const floorGrad = ctx.createLinearGradient(0, height * 0.62, 0, height);
+        floorGrad.addColorStop(0, 'rgba(15, 23, 42, 0.02)');
+        floorGrad.addColorStop(1, 'rgba(15, 23, 42, 0.28)');
         ctx.fillStyle = floorGrad;
-        ctx.fillRect(0, height * 0.65, width, height * 0.35);
+        ctx.fillRect(0, height * 0.62, width, height * 0.38);
+
+        // Spotlight highlight pool
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+        ctx.beginPath();
+        ctx.ellipse(width * 0.5, height * 0.65, width * 0.38, height * 0.08, 0, 0, Math.PI * 2);
+        ctx.fill();
         break;
       }
 
+      case 'cyberpunk_neon':
+      case 'cinematic': {
+        // Cyberpunk neon electric grid & dual glow
+        ctx.fillStyle = '#06070E';
+        ctx.fillRect(0, 0, width, height);
+
+        // Horizon perspective grid
+        const horizonY = height * 0.55;
+        const gridGrad = ctx.createLinearGradient(0, horizonY, 0, height);
+        gridGrad.addColorStop(0, 'rgba(0, 240, 255, 0.5)');
+        gridGrad.addColorStop(1, 'rgba(0, 240, 255, 0.05)');
+        ctx.strokeStyle = gridGrad;
+        ctx.lineWidth = 1.5;
+
+        // Radiating perspective lines
+        const vpX = width * 0.5;
+        for (let i = -8; i <= 8; i++) {
+          ctx.beginPath();
+          ctx.moveTo(vpX, horizonY);
+          ctx.lineTo(vpX + i * (width / 8) * 1.5, height);
+          ctx.stroke();
+        }
+        // Horizontal grid lines
+        for (let y = horizonY; y <= height; y += Math.max(8, (y - horizonY) * 0.25)) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(width, y);
+          ctx.stroke();
+        }
+
+        // Left Cyan Glow
+        const cyan = ctx.createRadialGradient(0, height * 0.45, 20, 0, height * 0.45, width * 0.65);
+        cyan.addColorStop(0, 'rgba(0, 240, 255, 0.45)');
+        cyan.addColorStop(0.6, 'rgba(0, 160, 255, 0.15)');
+        cyan.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = cyan;
+        ctx.fillRect(0, 0, width, height);
+
+        // Right Magenta Neon Glow
+        const magenta = ctx.createRadialGradient(width, height * 0.35, 20, width, height * 0.35, width * 0.65);
+        magenta.addColorStop(0, 'rgba(255, 0, 128, 0.5)');
+        magenta.addColorStop(0.5, 'rgba(168, 85, 247, 0.2)');
+        magenta.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = magenta;
+        ctx.fillRect(0, 0, width, height);
+        break;
+      }
+
+      case 'luxury_gold':
       case 'luxury': {
         // Dark gold obsidian luxury backdrop
         const grad = ctx.createLinearGradient(0, 0, width, height);
-        grad.addColorStop(0, '#0D0D11');
-        grad.addColorStop(0.4, '#1B1A24');
-        grad.addColorStop(0.8, '#2D283E');
-        grad.addColorStop(1, '#0F0E17');
+        grad.addColorStop(0, '#09080E');
+        grad.addColorStop(0.4, '#15131C');
+        grad.addColorStop(0.8, '#252030');
+        grad.addColorStop(1, '#0C0B12');
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, width, height);
 
         // Gold luxury ambient flares
-        const flare = ctx.createRadialGradient(width * 0.8, height * 0.2, 20, width * 0.8, height * 0.2, width * 0.5);
-        flare.addColorStop(0, 'rgba(255, 215, 0, 0.45)');
-        flare.addColorStop(0.5, 'rgba(218, 165, 32, 0.15)');
+        const flare = ctx.createRadialGradient(width * 0.8, height * 0.2, 20, width * 0.8, height * 0.2, width * 0.55);
+        flare.addColorStop(0, 'rgba(255, 215, 0, 0.55)');
+        flare.addColorStop(0.4, 'rgba(234, 179, 8, 0.25)');
         flare.addColorStop(1, 'rgba(0, 0, 0, 0)');
         ctx.fillStyle = flare;
         ctx.fillRect(0, 0, width, height);
-        break;
-      }
 
-      case 'office': {
-        // Modern blurred corporate architectural bokeh
-        const grad = ctx.createLinearGradient(0, 0, 0, height);
-        grad.addColorStop(0, '#1E293B');
-        grad.addColorStop(0.5, '#334155');
-        grad.addColorStop(1, '#0F172A');
-        ctx.fillStyle = grad;
+        // Diagonal champagne silk sheen
+        const sheen = ctx.createLinearGradient(0, 0, width, height);
+        sheen.addColorStop(0.3, 'rgba(255, 236, 179, 0)');
+        sheen.addColorStop(0.5, 'rgba(255, 215, 0, 0.15)');
+        sheen.addColorStop(0.7, 'rgba(255, 236, 179, 0)');
+        ctx.fillStyle = sheen;
         ctx.fillRect(0, 0, width, height);
 
-        // Modern office window mullions and bokeh circles
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
-        for (let i = 0; i < 8; i++) {
+        // Floating gold sparkles / embers
+        for (let i = 0; i < 40; i++) {
+          const px = (Math.sin(i * 123.45) * 0.5 + 0.5) * width;
+          const py = (Math.cos(i * 67.89) * 0.5 + 0.5) * height;
+          const pr = 1.5 + (i % 5);
+          ctx.fillStyle = `rgba(255, ${200 + (i % 55)}, 0, ${0.2 + (i % 6) * 0.12})`;
           ctx.beginPath();
-          ctx.arc(
-            (width / 8) * i + 40,
-            (height / 4) + (i % 2) * 80,
-            60 + (i % 3) * 30,
-            0,
-            Math.PI * 2
-          );
+          ctx.arc(px, py, pr, 0, Math.PI * 2);
           ctx.fill();
         }
         break;
       }
 
-      case 'cinematic': {
-        // Cyberpunk neon teal & magenta volumetric atmosphere
+      case 'sunset_coastal': {
+        // Warm sunset over ocean
+        const skyGrad = ctx.createLinearGradient(0, 0, 0, height * 0.65);
+        skyGrad.addColorStop(0, '#1E1B4B');
+        skyGrad.addColorStop(0.3, '#581C87');
+        skyGrad.addColorStop(0.6, '#BE185D');
+        skyGrad.addColorStop(0.85, '#EA580C');
+        skyGrad.addColorStop(1, '#FBBF24');
+        ctx.fillStyle = skyGrad;
+        ctx.fillRect(0, 0, width, height * 0.65);
+
+        // Sun disc
+        const sun = ctx.createRadialGradient(width * 0.5, height * 0.62, 10, width * 0.5, height * 0.62, width * 0.35);
+        sun.addColorStop(0, 'rgba(255, 255, 240, 0.95)');
+        sun.addColorStop(0.2, 'rgba(254, 215, 170, 0.7)');
+        sun.addColorStop(0.5, 'rgba(249, 115, 22, 0.3)');
+        sun.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = sun;
+        ctx.fillRect(0, 0, width, height);
+
+        // Ocean reflection surface
+        const seaGrad = ctx.createLinearGradient(0, height * 0.65, 0, height);
+        seaGrad.addColorStop(0, '#7C2D12');
+        seaGrad.addColorStop(0.3, '#431407');
+        seaGrad.addColorStop(1, '#0C0A09');
+        ctx.fillStyle = seaGrad;
+        ctx.fillRect(0, height * 0.65, width, height * 0.35);
+
+        // Shimmering horizontal wave lines
+        for (let y = height * 0.66; y < height; y += 6) {
+          const wAlpha = Math.max(0.05, 0.45 - (y - height * 0.66) / (height * 0.35) * 0.4);
+          ctx.fillStyle = `rgba(251, 191, 36, ${wAlpha})`;
+          const waveW = width * (0.6 - (y - height * 0.66) / (height * 0.35) * 0.3);
+          ctx.fillRect((width - waveW) / 2, y, waveW, 2);
+        }
+        break;
+      }
+
+      case 'moody_cinematic': {
+        // Hollywood teal & orange cinematic lighting
         const grad = ctx.createLinearGradient(0, 0, width, height);
-        grad.addColorStop(0, '#090A0F');
-        grad.addColorStop(0.5, '#16192B');
-        grad.addColorStop(1, '#0B0D14');
+        grad.addColorStop(0, '#021526');
+        grad.addColorStop(0.5, '#06283D');
+        grad.addColorStop(1, '#021526');
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, width, height);
 
-        // Teal left glow
-        const teal = ctx.createRadialGradient(0, height * 0.7, 50, 0, height * 0.7, width * 0.6);
-        teal.addColorStop(0, 'rgba(0, 240, 255, 0.4)');
-        teal.addColorStop(1, 'rgba(0, 0, 0, 0)');
-        ctx.fillStyle = teal;
+        // Directional warm amber light beam from top-left
+        const amberBeam = ctx.createLinearGradient(0, 0, width * 0.75, height * 0.75);
+        amberBeam.addColorStop(0, 'rgba(245, 158, 11, 0.45)');
+        amberBeam.addColorStop(0.5, 'rgba(245, 158, 11, 0.12)');
+        amberBeam.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = amberBeam;
         ctx.fillRect(0, 0, width, height);
 
-        // Magenta right glow
-        const magenta = ctx.createRadialGradient(width, height * 0.3, 50, width, height * 0.3, width * 0.6);
-        magenta.addColorStop(0, 'rgba(255, 0, 128, 0.4)');
-        magenta.addColorStop(1, 'rgba(0, 0, 0, 0)');
-        ctx.fillStyle = magenta;
+        // Cyan anamorphic horizontal flare streak across center
+        const flareY = height * 0.52;
+        const flare = ctx.createLinearGradient(0, flareY, width, flareY);
+        flare.addColorStop(0, 'rgba(0, 240, 255, 0)');
+        flare.addColorStop(0.4, 'rgba(0, 240, 255, 0.3)');
+        flare.addColorStop(0.5, 'rgba(255, 255, 255, 0.85)');
+        flare.addColorStop(0.6, 'rgba(0, 240, 255, 0.3)');
+        flare.addColorStop(1, 'rgba(0, 240, 255, 0)');
+        ctx.fillStyle = flare;
+        ctx.fillRect(0, flareY - 3, width, 6);
+
+        // Deep cinematic corner vignette
+        const vig = ctx.createRadialGradient(width / 2, height / 2, width * 0.3, width / 2, height / 2, width * 0.75);
+        vig.addColorStop(0, 'rgba(0,0,0,0)');
+        vig.addColorStop(1, 'rgba(0,0,0,0.65)');
+        ctx.fillStyle = vig;
         ctx.fillRect(0, 0, width, height);
+        break;
+      }
+
+      case 'architectural_modern':
+      case 'office': {
+        // Modern architectural limestone concrete wall
+        const grad = ctx.createLinearGradient(0, 0, width, height);
+        grad.addColorStop(0, '#F5F5F4');
+        grad.addColorStop(0.5, '#E7E5E4');
+        grad.addColorStop(1, '#A8A29E');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, width, height);
+
+        // Diagonal shadow slats from modern window blinds
+        ctx.save();
+        ctx.rotate(-22 * Math.PI / 180);
+        ctx.fillStyle = 'rgba(28, 25, 23, 0.18)';
+        for (let x = -width; x < width * 2; x += 90) {
+          ctx.fillRect(x, -height, 45, height * 3);
+        }
+        ctx.restore();
+
+        // Warm ambient sunlight overlay
+        const sun = ctx.createRadialGradient(width * 0.3, height * 0.3, 50, width * 0.3, height * 0.3, width * 0.6);
+        sun.addColorStop(0, 'rgba(254, 243, 199, 0.45)');
+        sun.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = sun;
+        ctx.fillRect(0, 0, width, height);
+        break;
+      }
+
+      case 'abstract_pastel': {
+        // Dreamy fluid pastel aesthetic
+        ctx.fillStyle = '#FAF5FF';
+        ctx.fillRect(0, 0, width, height);
+
+        const drawPastelOrb = (ox: number, oy: number, r: number, c1: string, c2: string) => {
+          const g = ctx.createRadialGradient(ox, oy, 10, ox, oy, r);
+          g.addColorStop(0, c1);
+          g.addColorStop(1, c2);
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(ox, oy, r, 0, Math.PI * 2);
+          ctx.fill();
+        };
+
+        drawPastelOrb(width * 0.2, height * 0.25, width * 0.4, 'rgba(192, 132, 252, 0.55)', 'rgba(192, 132, 252, 0)');
+        drawPastelOrb(width * 0.8, height * 0.3, width * 0.42, 'rgba(253, 186, 116, 0.55)', 'rgba(253, 186, 116, 0)');
+        drawPastelOrb(width * 0.3, height * 0.75, width * 0.45, 'rgba(110, 231, 183, 0.5)', 'rgba(110, 231, 183, 0)');
+        drawPastelOrb(width * 0.75, height * 0.8, width * 0.45, 'rgba(125, 211, 252, 0.55)', 'rgba(125, 211, 252, 0)');
+        drawPastelOrb(width * 0.5, height * 0.5, width * 0.35, 'rgba(244, 114, 182, 0.4)', 'rgba(244, 114, 182, 0)');
+        break;
+      }
+
+      case 'dark_scifi': {
+        // Dark Sci-Fi HUD Command Center
+        const grad = ctx.createLinearGradient(0, 0, 0, height);
+        grad.addColorStop(0, '#020617');
+        grad.addColorStop(1, '#0B1329');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, width, height);
+
+        // Circular HUD rings
+        const cx = width * 0.5;
+        const cy = height * 0.48;
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.25)';
+        ctx.lineWidth = 1.5;
+
+        [80, 160, 240, 320].forEach((rad, idx) => {
+          ctx.beginPath();
+          if (idx % 2 === 1) {
+            ctx.setLineDash([8, 12]);
+          } else {
+            ctx.setLineDash([]);
+          }
+          ctx.arc(cx, cy, rad, 0, Math.PI * 2);
+          ctx.stroke();
+        });
+        ctx.setLineDash([]);
+
+        // Crosshairs
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.2)';
+        ctx.beginPath();
+        ctx.moveTo(cx - 360, cy);
+        ctx.lineTo(cx + 360, cy);
+        ctx.moveTo(cx, cy - 360);
+        ctx.lineTo(cx, cy + 360);
+        ctx.stroke();
+
+        // Core cyan energy glow at center
+        const core = ctx.createRadialGradient(cx, cy, 20, cx, cy, 220);
+        core.addColorStop(0, 'rgba(56, 189, 248, 0.6)');
+        core.addColorStop(0.4, 'rgba(14, 165, 233, 0.2)');
+        core.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = core;
+        ctx.fillRect(0, 0, width, height);
+        break;
+      }
+
+      case 'cozy_wood': {
+        // Cozy wood & fireplace warmth
+        const grad = ctx.createLinearGradient(0, 0, width, height);
+        grad.addColorStop(0, '#1C0A00');
+        grad.addColorStop(0.4, '#451A03');
+        grad.addColorStop(0.8, '#78350F');
+        grad.addColorStop(1, '#2E1005');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, width, height);
+
+        // Subtle horizontal timber grain lines
+        for (let y = 0; y < height; y += 14) {
+          ctx.fillStyle = (y % 28 === 0) ? 'rgba(0,0,0,0.14)' : 'rgba(255,255,255,0.03)';
+          ctx.fillRect(0, y, width, 4);
+        }
+
+        // Fireplace glow from bottom-left corner
+        const fire = ctx.createRadialGradient(0, height, 50, 0, height, width * 0.85);
+        fire.addColorStop(0, 'rgba(251, 146, 60, 0.65)');
+        fire.addColorStop(0.35, 'rgba(234, 88, 12, 0.35)');
+        fire.addColorStop(0.7, 'rgba(154, 52, 18, 0.15)');
+        fire.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = fire;
+        ctx.fillRect(0, 0, width, height);
+        break;
+      }
+
+      case 'gradient_mesh': {
+        // Modern Stripe / Apple vibrant multi-point gradient mesh
+        const baseGrad = ctx.createLinearGradient(0, 0, width, height);
+        baseGrad.addColorStop(0, '#FF416C');
+        baseGrad.addColorStop(0.5, '#8A2387');
+        baseGrad.addColorStop(1, '#00F2FE');
+        ctx.fillStyle = baseGrad;
+        ctx.fillRect(0, 0, width, height);
+
+        // Flowing color pools
+        const p1 = ctx.createRadialGradient(width * 0.15, height * 0.2, 50, width * 0.15, height * 0.2, width * 0.6);
+        p1.addColorStop(0, 'rgba(255, 75, 75, 0.9)');
+        p1.addColorStop(1, 'rgba(255, 75, 75, 0)');
+        ctx.fillStyle = p1;
+        ctx.fillRect(0, 0, width, height);
+
+        const p2 = ctx.createRadialGradient(width * 0.85, height * 0.85, 50, width * 0.85, height * 0.85, width * 0.65);
+        p2.addColorStop(0, 'rgba(63, 94, 251, 0.9)');
+        p2.addColorStop(1, 'rgba(63, 94, 251, 0)');
+        ctx.fillStyle = p2;
+        ctx.fillRect(0, 0, width, height);
+
+        const p3 = ctx.createRadialGradient(width * 0.5, height * 0.5, 40, width * 0.5, height * 0.5, width * 0.5);
+        p3.addColorStop(0, 'rgba(121, 40, 202, 0.85)');
+        p3.addColorStop(1, 'rgba(121, 40, 202, 0)');
+        ctx.fillStyle = p3;
+        ctx.fillRect(0, 0, width, height);
+        break;
+      }
+
+      case 'soft_bokeh': {
+        // Deep night navy with glowing floating bokeh spheres
+        const grad = ctx.createLinearGradient(0, 0, 0, height);
+        grad.addColorStop(0, '#030712');
+        grad.addColorStop(0.6, '#0F172A');
+        grad.addColorStop(1, '#1E1B4B');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, width, height);
+
+        // 35+ glowing bokeh light spheres
+        const bokehColors = [
+          'rgba(244, 114, 182, 0.35)', // pink
+          'rgba(251, 191, 36, 0.35)',  // amber
+          'rgba(56, 189, 248, 0.35)',  // cyan
+          'rgba(167, 139, 250, 0.35)', // violet
+          'rgba(255, 255, 255, 0.45)', // white
+        ];
+
+        for (let i = 0; i < 38; i++) {
+          const bx = (Math.sin(i * 91.2) * 0.5 + 0.5) * width;
+          const by = (Math.cos(i * 47.3) * 0.5 + 0.5) * height;
+          const br = 25 + (i % 7) * 15;
+          const col = bokehColors[i % bokehColors.length];
+
+          const bGrad = ctx.createRadialGradient(bx, by, br * 0.1, bx, by, br);
+          bGrad.addColorStop(0, col);
+          bGrad.addColorStop(0.7, col.replace(/[\d\.]+\)$/, '0.15)'));
+          bGrad.addColorStop(1, 'rgba(0,0,0,0)');
+          ctx.fillStyle = bGrad;
+          ctx.beginPath();
+          ctx.arc(bx, by, br, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Delicate ring outline on some
+          if (i % 3 === 0) {
+            ctx.strokeStyle = col.replace(/[\d\.]+\)$/, '0.4)');
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.arc(bx, by, br, 0, Math.PI * 2);
+            ctx.stroke();
+          }
+        }
+        break;
+      }
+
+      case 'high_fashion_editorial': {
+        // Monochrome high-contrast theatrical spotlight
+        ctx.fillStyle = '#050507';
+        ctx.fillRect(0, 0, width, height);
+
+        // Overhead circular spotlight cone
+        const spot = ctx.createRadialGradient(width * 0.5, height * 0.3, 10, width * 0.5, height * 0.45, width * 0.55);
+        spot.addColorStop(0, '#FFFFFF');
+        spot.addColorStop(0.25, '#D4D4D8');
+        spot.addColorStop(0.55, '#52525B');
+        spot.addColorStop(0.85, '#18181B');
+        spot.addColorStop(1, 'rgba(5, 5, 7, 0)');
+        ctx.fillStyle = spot;
+        ctx.fillRect(0, 0, width, height);
+
+        // Floor spotlight oval reflection
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+        ctx.beginPath();
+        ctx.ellipse(width * 0.5, height * 0.88, width * 0.38, height * 0.08, 0, 0, Math.PI * 2);
+        ctx.fill();
         break;
       }
 

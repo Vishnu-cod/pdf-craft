@@ -21,19 +21,19 @@ interface AIToolsModalProps {
   onCommitHistory: () => void;
 }
 
-const AI_STYLES: Array<{ id: AIBackgroundStyle; label: string; desc: string }> = [
-  { id: 'studio_minimal', label: 'Studio Minimal', desc: 'Soft lighting, clean backdrop' },
-  { id: 'cyberpunk_neon', label: 'Cyberpunk Neon', desc: 'Vibrant neon beams and dark grid' },
-  { id: 'luxury_gold', label: 'Luxury Gold', desc: 'Champagne silk and golden ambient sheen' },
-  { id: 'sunset_coastal', label: 'Sunset Coastal', desc: 'Warm golden hour ocean sunset' },
-  { id: 'moody_cinematic', label: 'Moody Cinematic', desc: 'Deep teal, dramatic directional shadows' },
-  { id: 'architectural_modern', label: 'Modern Architecture', desc: 'Minimal concrete angles and light lines' },
-  { id: 'abstract_pastel', label: 'Pastel Fluid', desc: 'Gentle pastel orbs and aesthetic flow' },
-  { id: 'dark_scifi', label: 'Dark Sci-Fi', desc: 'Subtle high-tech HUD grid and cyan glows' },
-  { id: 'cozy_wood', label: 'Cozy Wood & Warmth', desc: 'Earthy wood tones and fireplace warmth' },
-  { id: 'gradient_mesh', label: 'Modern Gradient Mesh', desc: 'Multi-point vibrant modern gradient' },
-  { id: 'soft_bokeh', label: 'Soft Bokeh Lights', desc: 'Dreamy floating light spheres' },
-  { id: 'high_fashion_editorial', label: 'High Fashion Editorial', desc: 'Monochrome elegance and spotlights' },
+const AI_STYLES: Array<{ id: AIBackgroundStyle; label: string; desc: string; swatch: string }> = [
+  { id: 'studio_minimal', label: 'Studio Minimal', desc: 'Soft lighting, clean backdrop', swatch: 'from-slate-100 to-slate-400' },
+  { id: 'cyberpunk_neon', label: 'Cyberpunk Neon', desc: 'Vibrant neon beams and dark grid', swatch: 'from-cyan-400 via-purple-600 to-pink-500' },
+  { id: 'luxury_gold', label: 'Luxury Gold', desc: 'Champagne silk and golden ambient sheen', swatch: 'from-amber-600 via-yellow-400 to-amber-700' },
+  { id: 'sunset_coastal', label: 'Sunset Coastal', desc: 'Warm golden hour ocean sunset', swatch: 'from-indigo-900 via-orange-500 to-amber-300' },
+  { id: 'moody_cinematic', label: 'Moody Cinematic', desc: 'Deep teal, dramatic directional shadows', swatch: 'from-sky-950 via-teal-800 to-amber-600' },
+  { id: 'architectural_modern', label: 'Modern Architecture', desc: 'Minimal concrete angles and light lines', swatch: 'from-stone-200 to-stone-500' },
+  { id: 'abstract_pastel', label: 'Pastel Fluid', desc: 'Gentle pastel orbs and aesthetic flow', swatch: 'from-purple-300 via-pink-200 to-teal-200' },
+  { id: 'dark_scifi', label: 'Dark Sci-Fi', desc: 'Subtle high-tech HUD grid and cyan glows', swatch: 'from-slate-950 via-cyan-900 to-sky-400' },
+  { id: 'cozy_wood', label: 'Cozy Wood & Warmth', desc: 'Earthy wood tones and fireplace warmth', swatch: 'from-amber-950 via-amber-800 to-orange-500' },
+  { id: 'gradient_mesh', label: 'Modern Gradient Mesh', desc: 'Multi-point vibrant modern gradient', swatch: 'from-rose-500 via-purple-600 to-cyan-400' },
+  { id: 'soft_bokeh', label: 'Soft Bokeh Lights', desc: 'Dreamy floating light spheres', swatch: 'from-indigo-950 via-fuchsia-900 to-amber-400' },
+  { id: 'high_fashion_editorial', label: 'High Fashion Editorial', desc: 'Monochrome elegance and spotlights', swatch: 'from-black via-zinc-400 to-white' },
 ];
 
 export const AIToolsModal: React.FC<AIToolsModalProps> = ({
@@ -83,6 +83,9 @@ export const AIToolsModal: React.FC<AIToolsModalProps> = ({
       if (tool === 'eraser') {
         initEraserMask(imageSrc);
       }
+    }
+    if (tool === 'bg_gen') {
+      handleGenerateBackground(selectedStyle);
     }
   }, [tool, imageSrc]);
 
@@ -218,11 +221,12 @@ export const AIToolsModal: React.FC<AIToolsModalProps> = ({
   };
 
   // Run AI Background Generator
-  const handleGenerateBackground = async () => {
+  const handleGenerateBackground = async (styleOverride?: AIBackgroundStyle) => {
+    const styleToUse = styleOverride || selectedStyle;
     setIsProcessing(true);
-    setProgressText(`Rendering procedural ${selectedStyle.replace(/_/g, ' ')} backdrop...`);
+    setProgressText(`Rendering procedural ${styleToUse.replace(/_/g, ' ')} backdrop...`);
     try {
-      const bgData = await generateAIBackground(canvasWidth, canvasHeight, selectedStyle);
+      const bgData = await generateAIBackground(canvasWidth, canvasHeight, styleToUse);
       setResultImg(bgData);
       setProgressText('High-resolution backdrop rendered!');
     } catch (err) {
@@ -231,6 +235,11 @@ export const AIToolsModal: React.FC<AIToolsModalProps> = ({
     } finally {
       setIsProcessing(false);
     }
+  };
+
+  const handleSelectStyle = (style: AIBackgroundStyle) => {
+    setSelectedStyle(style);
+    handleGenerateBackground(style);
   };
 
   // Apply Changes
@@ -573,33 +582,49 @@ export const AIToolsModal: React.FC<AIToolsModalProps> = ({
               {/* BACKGROUND GENERATOR CONTROLS */}
               {tool === 'bg_gen' && (
                 <div className="space-y-3">
-                  <label className="text-xs font-semibold text-slate-300 block">
-                    Choose Studio Theme
-                  </label>
-                  <div className="max-h-56 overflow-y-auto space-y-1.5 pr-1">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-semibold text-slate-300 block">
+                      Choose Studio Theme
+                    </label>
+                    <span className="text-[10px] text-indigo-400 font-mono">12 Distinct Styles</span>
+                  </div>
+                  <div className="max-h-60 overflow-y-auto space-y-1.5 pr-1">
                     {AI_STYLES.map((st) => (
                       <button
                         key={st.id}
-                        onClick={() => setSelectedStyle(st.id)}
-                        className={`w-full p-2.5 rounded-xl border text-left transition-all ${
+                        onClick={() => handleSelectStyle(st.id)}
+                        className={`w-full p-2 rounded-xl border text-left transition-all flex items-center space-x-2.5 cursor-pointer ${
                           selectedStyle === st.id
-                            ? 'bg-indigo-600/30 border-indigo-500 text-white shadow-sm'
+                            ? 'bg-indigo-600/30 border-indigo-500 text-white shadow-sm ring-1 ring-indigo-500/50'
                             : 'bg-slate-900/60 border-slate-800 text-slate-300 hover:bg-slate-800/60'
                         }`}
                       >
-                        <div className="font-semibold text-xs">{st.label}</div>
-                        <div className="text-[10px] text-slate-400">{st.desc}</div>
+                        <div
+                          className={`w-8 h-8 rounded-lg bg-gradient-to-br ${st.swatch} shrink-0 shadow-sm border border-white/10`}
+                        />
+                        <div className="flex-1 min-w-0">
+                          <div className="font-semibold text-xs truncate flex items-center justify-between">
+                            <span>{st.label}</span>
+                            {selectedStyle === st.id && (
+                              <span className="text-[10px] text-indigo-400 font-bold ml-1">Active ✓</span>
+                            )}
+                          </div>
+                          <div className="text-[10px] text-slate-400 truncate">{st.desc}</div>
+                        </div>
                       </button>
                     ))}
                   </div>
 
                   <button
-                    onClick={handleGenerateBackground}
+                    onClick={() => handleGenerateBackground(selectedStyle)}
                     disabled={isProcessing}
-                    className="w-full py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 disabled:opacity-40 text-white font-semibold text-xs rounded-xl shadow-lg transition-all"
+                    className="w-full py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 disabled:opacity-40 text-white font-semibold text-xs rounded-xl shadow-lg transition-all cursor-pointer"
                   >
-                    ✨ Render Backdrop
+                    ✨ Re-render / Regenerate Variation
                   </button>
+                  <p className="text-[10px] text-slate-400 text-center">
+                    Click any theme above to preview its procedural lighting in real time.
+                  </p>
                 </div>
               )}
             </div>

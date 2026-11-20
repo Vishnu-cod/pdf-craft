@@ -13,7 +13,19 @@ export interface RouteConfig {
 }
 
 export const APP_ROUTES: RouteConfig[] = [
-  // 0. Creative Studio (PosterCraft & WhatsApp HD)
+  // 0. Creative Studio (PhotoCraft, PosterCraft & WhatsApp HD)
+  {
+    path: '/photo-editor',
+    tab: 'photocraft',
+    title: 'PhotoCraft — Free Canva-Inspired Online Photo Editor & AI Studio (Zero Watermark) | PDFCraft',
+    description: 'Free Canva-inspired online graphic design and photo editor. Magic Eraser object removal, AI Background Remover, Magic Grab subject extraction, and 4K export with zero paywalls.',
+  },
+  {
+    path: '/photocraft',
+    tab: 'photocraft',
+    title: 'PhotoCraft — Free Canva-Inspired Online Photo Editor & AI Studio (Zero Watermark) | PDFCraft',
+    description: 'Free Canva-inspired online graphic design and photo editor. Magic Eraser object removal, AI Background Remover, Magic Grab subject extraction, and 4K export with zero paywalls.',
+  },
   {
     path: '/postercraft',
     tab: 'postercraft',
@@ -271,6 +283,9 @@ export function matchRoute(pathname: string): RouteConfig {
   if (exact) return exact;
 
   // Fuzzy prefix matching
+  if (normalized.includes('photo-editor') || normalized.includes('photocraft') || normalized.includes('canva')) {
+    return APP_ROUTES.find((r) => r.path === '/photo-editor')!;
+  }
   if (normalized.includes('50kb')) return APP_ROUTES.find((r) => r.path === '/compress-pdf-50kb')!;
   if (normalized.includes('100kb')) return APP_ROUTES.find((r) => r.path === '/compress-pdf-100kb')!;
   if (normalized.includes('300kb')) return APP_ROUTES.find((r) => r.path === '/compress-pdf-300kb')!;

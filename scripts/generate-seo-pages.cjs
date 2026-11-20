@@ -13,6 +13,24 @@ const baseHtml = fs.readFileSync(indexHtmlPath, 'utf-8');
 
 const pages = [
   {
+    slug: 'photo-editor',
+    title: 'PhotoCraft — Free Canva-Inspired Online Photo Editor & AI Studio (Zero Watermark) | PDFCraft',
+    description: 'Free Canva-inspired graphic design and photo editor in your browser. Magic Eraser object removal, AI Background Remover, Magic Grab subject extraction, and 4K export with zero subscriptions or watermarks.',
+    keywords: 'free canva alternative, free online photo editor, canva free alternative no watermark, magic eraser online free, ai background remover free, photo editor with layers online',
+    toolName: 'PhotoCraft AI Graphic Design Studio',
+    howToName: 'How to create professional graphic designs and edit photos free online with PhotoCraft',
+    steps: [
+      { name: 'Choose Template or Upload Image', text: 'Pick from curated social media templates or upload any JPG, PNG, or WebP photo into the workspace.' },
+      { name: 'Edit, Layer & Transform', text: 'Add headlines, stylish shapes, stickers, and apply one-click filters or fine-tune brightness, contrast, and warmth.' },
+      { name: 'Use AI Magic Tools & Export', text: 'Run Magic Eraser to remove unwanted objects or 1-click Background Remover, then download lossless PNG, JPG, or WebP in up to 3x resolution.' },
+    ],
+    faqs: [
+      { q: 'Is PhotoCraft really 100% free with no watermarks or subscriptions?', a: 'Yes! PhotoCraft is completely free with zero watermarks, zero credits, and zero paywalls. Everything runs locally in your browser memory.' },
+      { q: 'What AI tools are included in PhotoCraft?', a: 'PhotoCraft includes Magic Eraser (unwanted object removal), AI Background Remover, Magic Grab (subject separation and background fill), Magic Layers (3-way photo decomposition), and AI Background Generator.' },
+      { q: 'Can I save my projects and continue editing later?', a: 'Yes! All designs can be saved to your browser local storage or exported as .photocraft JSON files to resume anytime.' },
+    ],
+  },
+  {
     slug: 'compress-pdf-50kb',
     title: 'Compress PDF to 50KB Online Free (Photo, Signature & Govt Portal Cap) | PDFCraft',
     description: 'Compress PDF files strictly under 50KB online for free. Ideal for Indian exam applications, UPSC, SSC, NEET, state PSC, passport signature, and certificate uploads. 100% client-side privacy.',

@@ -42,6 +42,7 @@ const SecurityPanel = safeLazy(() => import('./components/SecurityPanel'), 'Secu
 const SecurityPrivacyStudio = safeLazy(() => import('./components/SecurityPrivacyStudio'), 'SecurityPrivacyStudio');
 const PosterCraft = safeLazy(() => import('./components/PosterCraft'), 'PosterCraft');
 const WhatsAppStudio = safeLazy(() => import('./components/WhatsAppStudio'), 'WhatsAppStudio');
+const PhotoCraftStudio = safeLazy(() => import('./features/photocraft/components/PhotoCraftStudio'), 'PhotoCraftStudio');
 
 const ViewSkeleton: React.FC = () => (
   <div className="flex-1 flex flex-col items-center justify-center min-h-[350px] text-slate-400 gap-3 py-16 animate-pulse">
@@ -135,14 +136,6 @@ export const App: React.FC = () => {
     return () => window.removeEventListener('keydown', handleGlobalKey);
   }, []);
 
-  if (mobileSessionId) {
-    return (
-      <Suspense fallback={<ViewSkeleton />}>
-        <MobileSignPad sessionId={mobileSessionId} />
-      </Suspense>
-    );
-  }
-
   const handleFileLoaded = (file: File, bytes: ArrayBuffer) => {
     setCurrentFile(file);
     setCurrentBytes(bytes);
@@ -157,6 +150,24 @@ export const App: React.FC = () => {
     }
     document.title = 'PDFCraft — 100% Free & Private PDF Editor, Signer & Tools (Zero Cloud Leaks)';
   };
+
+  if (mobileSessionId) {
+    return (
+      <Suspense fallback={<ViewSkeleton />}>
+        <MobileSignPad sessionId={mobileSessionId} />
+      </Suspense>
+    );
+  }
+
+  if (activeTab === 'photocraft') {
+    return (
+      <ErrorBoundary fallbackTitle="Could Not Initialize PhotoCraft Studio">
+        <Suspense fallback={<ViewSkeleton />}>
+          <PhotoCraftStudio onBackToHome={handleResetFile} />
+        </Suspense>
+      </ErrorBoundary>
+    );
+  }
 
   // Comprehensive SEO Route & URL sync handler for all canonical tools
   const navigateToTab = (
@@ -259,6 +270,15 @@ export const App: React.FC = () => {
         path = '/contract-risk-radar';
         title = 'AI Contract Risk Radar — Detect Predatory Clauses Free | PDFCraft';
       }
+    } else if (tab === 'photocraft') {
+      path = '/photo-editor';
+      title = 'PhotoCraft — Free Canva-Inspired Online Photo Editor & AI Studio (Zero Watermark) | PDFCraft';
+    } else if (tab === 'postercraft') {
+      path = '/postercraft';
+      title = 'PosterCraft — Free Pinterest Aesthetic Editorial Poster Studio (Zero Watermark) | PDFCraft';
+    } else if (tab === 'whatsapp-studio') {
+      path = '/whatsapp-hd';
+      title = 'WhatsApp 15-Minute HD Video Booster & 30s Status Slicer | PDFCraft';
     }
 
     if (window.location.pathname !== path) {
@@ -302,6 +322,16 @@ export const App: React.FC = () => {
   };
 
   const homeTools = [
+    {
+      id: 'photocraft',
+      name: 'PhotoCraft (Canva Studio)',
+      badge: 'Free Canva Alternative',
+      icon: Wand2,
+      bg: 'from-fuchsia-600 to-indigo-600',
+      desc: 'Free Canva-inspired photo editor & graphic design studio. Magic Eraser, AI Background Remover, Magic Grab, and templates.',
+      category: ['all', 'popular', 'edit'],
+      action: () => navigateToTab('photocraft'),
+    },
     {
       id: 'postercraft',
       name: 'PosterCraft (Pinterest)',

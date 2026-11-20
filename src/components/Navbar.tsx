@@ -61,6 +61,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   const tabs = [
+    { id: 'photocraft', label: 'PhotoCraft', shortLabel: 'Photo Editor', icon: Sparkles, badge: 'AI Canva' },
     { id: 'postercraft', label: 'PosterCraft', shortLabel: 'Posters', icon: Sparkles, badge: 'Viral' },
     { id: 'whatsapp-studio', label: 'WhatsApp HD', shortLabel: 'WhatsApp', icon: Video, badge: '15m' },
     { id: 'sign-edit', label: 'Edit & Sign', shortLabel: 'Sign & Edit', icon: FileSignature },

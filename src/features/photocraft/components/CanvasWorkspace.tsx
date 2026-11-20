@@ -734,7 +734,7 @@ export const CanvasWorkspace: React.FC<CanvasWorkspaceProps> = ({
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onWheel={handleWheel}
-      className={`relative flex-1 overflow-hidden select-none bg-[#090d16] flex items-center justify-center ${
+      className={`relative flex-1 min-w-0 overflow-hidden select-none bg-[#090d16] flex items-center justify-center ${
         spacePressed || isPanning ? 'cursor-grab active:cursor-grabbing' : drawingMode ? 'cursor-crosshair' : 'cursor-default'
       }`}
     >

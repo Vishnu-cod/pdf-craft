@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ChevronRight, ChevronLeft, Sliders, Layers } from 'lucide-react';
 import {
   CanvasElement,
   CanvasBackground,
@@ -90,6 +91,12 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
   const [activeTab, setActiveTab] = useState<'properties' | 'layers'>('properties');
   const [customW, setCustomW] = useState(canvasWidth);
   const [customH, setCustomH] = useState(canvasHeight);
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 1100) {
+      return true; // auto-collapse on narrow screens (< 1100px) so canvas gets ample room!
+    }
+    return false;
+  });
 
   const selectedElement = elements.find((el) => el.id === selectedId);
 
@@ -158,10 +165,51 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
   // Sort elements reversed for layers list (top layers on top)
   const sortedLayers = [...elements].sort((a, b) => b.zIndex - a.zIndex);
 
+  if (isCollapsed) {
+    return (
+      <aside className="w-12 bg-[#0f172a] border-l border-slate-800 flex flex-col items-center py-3 gap-4 text-slate-400 select-none shrink-0 z-20">
+        <button
+          onClick={() => setIsCollapsed(false)}
+          title="Open Properties & Layers Inspector"
+          className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
+        >
+          <ChevronLeft className="w-4 h-4" />
+        </button>
+        <button
+          onClick={() => {
+            setIsCollapsed(false);
+            setActiveTab('properties');
+          }}
+          title="Properties"
+          className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
+        >
+          <Sliders className="w-4 h-4" />
+        </button>
+        <button
+          onClick={() => {
+            setIsCollapsed(false);
+            setActiveTab('layers');
+          }}
+          title={`Layers (${elements.length})`}
+          className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer relative"
+        >
+          <Layers className="w-4 h-4" />
+          <span className="absolute -top-1 -right-1 text-[8px] font-black bg-purple-600 text-white rounded-full px-1">
+            {elements.length}
+          </span>
+        </button>
+        <div className="flex-1" />
+        <span className="rotate-90 text-[9px] font-mono tracking-widest text-slate-500 uppercase whitespace-nowrap mb-6">
+          Inspector
+        </span>
+      </aside>
+    );
+  }
+
   return (
-    <aside className="w-80 bg-[#0f172a] border-l border-slate-800 flex flex-col h-full text-slate-200 select-none overflow-hidden z-20">
+    <aside className="w-80 bg-[#0f172a] border-l border-slate-800 flex flex-col h-full text-slate-200 select-none overflow-hidden z-20 shrink-0">
       {/* Top Tabs: Properties vs Layers */}
-      <div className="flex border-b border-slate-800 bg-[#0b1120]">
+      <div className="flex items-center border-b border-slate-800 bg-[#0b1120] pr-2">
         <button
           onClick={() => setActiveTab('properties')}
           className={`flex-1 py-3 text-xs font-semibold uppercase tracking-wider transition-colors border-b-2 ${
@@ -184,6 +232,13 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
           <span className="text-[10px] bg-slate-800 px-1.5 py-0.5 rounded-full text-slate-400">
             {elements.length}
           </span>
+        </button>
+        <button
+          onClick={() => setIsCollapsed(true)}
+          title="Collapse Inspector to expand canvas"
+          className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+        >
+          <ChevronRight className="w-4 h-4" />
         </button>
       </div>
 

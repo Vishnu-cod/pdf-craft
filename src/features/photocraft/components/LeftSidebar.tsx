@@ -23,6 +23,8 @@ import {
   Eraser,
   RefreshCw,
   Sliders,
+  ChevronLeft,
+  X,
 } from 'lucide-react';
 import {
   CanvasElement,
@@ -106,6 +108,12 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({
 }) => {
   const [templateFilter, setTemplateFilter] = useState<string>('all');
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+  const [drawerOpen, setDrawerOpen] = useState<boolean>(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 1100) {
+      return false; // auto-collapse secondary drawer on narrow screens so canvas gets ample room
+    }
+    return true;
+  });
   const [photoSearch, setPhotoSearch] = useState<string>('');
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -149,16 +157,21 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({
             <button
               key={item.id}
               onClick={() => {
-                onSelectTab(item.id);
+                if (activeTab === item.id) {
+                  setDrawerOpen(!drawerOpen);
+                } else {
+                  onSelectTab(item.id);
+                  setDrawerOpen(true);
+                }
                 if (item.id === 'draw' && !isDrawingMode) {
                   onToggleDrawingMode(true);
                 } else if (item.id !== 'draw' && isDrawingMode) {
                   onToggleDrawingMode(false);
                 }
               }}
-              title={item.label}
+              title={`${item.label} (Click to toggle)`}
               className={`w-16 h-14 rounded-xl flex flex-col items-center justify-center gap-1 transition-all relative ${
-                isActive
+                isActive && drawerOpen
                   ? 'bg-purple-50 text-purple-700 font-extrabold shadow-sm'
                   : 'text-slate-500 hover:text-[#111439] hover:bg-slate-50'
               }`}
@@ -176,7 +189,20 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({
       </nav>
 
       {/* 2. Secondary Panel Content (Width ~300px) */}
-      <div className="w-72 sm:w-80 h-full bg-[#FAFBFD] overflow-y-auto p-4 flex flex-col gap-4 border-r border-slate-200/80">
+      {drawerOpen && (
+        <div className="w-72 sm:w-80 h-full bg-[#FAFBFD] overflow-y-auto p-4 flex flex-col gap-4 border-r border-slate-200/80 relative animate-in slide-in-from-left-2 duration-150">
+          <div className="flex items-center justify-between pb-2 border-b border-slate-200/60">
+            <span className="text-[11px] font-black uppercase text-purple-700 tracking-wider flex items-center gap-1.5">
+              <span>✦</span> {navItems.find((n) => n.id === activeTab)?.label || 'Panel'}
+            </span>
+            <button
+              onClick={() => setDrawerOpen(false)}
+              title="Collapse panel to expand canvas"
+              className="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200/70 transition-colors cursor-pointer"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+          </div>
         
         {/* TAB 1: TEMPLATES */}
         {activeTab === 'templates' && (
@@ -732,7 +758,8 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({
           </div>
         )}
 
-      </div>
+        </div>
+      )}
     </aside>
   );
 };

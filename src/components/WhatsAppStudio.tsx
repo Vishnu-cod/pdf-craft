@@ -22,6 +22,10 @@ import {
   Trash2,
   ExternalLink,
   Share2,
+  DownloadCloud,
+  CheckCircle2,
+  Eye,
+  Info,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { generateQRCodeSVG } from '../utils/qrGenerator';
@@ -33,7 +37,44 @@ interface RecentChat {
 }
 
 export const WhatsAppStudio: React.FC = () => {
-  const [activeSubTab, setActiveSubTab] = useState<'direct-chat' | 'video-sizer' | 'ui-stripper'>('direct-chat');
+  const [activeSubTab, setActiveSubTab] = useState<'status-downloader' | 'direct-chat' | 'video-sizer' | 'ui-stripper'>('status-downloader');
+
+  // --- SIMULATOR STATE ---
+  const [simIndex, setSimIndex] = useState<number>(0);
+  const [simDownloaded, setSimDownloaded] = useState<boolean>(false);
+
+  const mockStatuses = [
+    {
+      author: 'Maya Lin',
+      time: '14m ago',
+      type: 'photo',
+      media: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
+      caption: 'Golden hour in Tokyo 🌇✨',
+    },
+    {
+      author: 'David Chen',
+      time: '42m ago',
+      type: 'photo',
+      media: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+      caption: 'Weekend vibes 🌊🌴',
+    },
+  ];
+
+  const handleSimDownload = () => {
+    setSimDownloaded(true);
+    confetti({ particleCount: 45, spread: 60, origin: { y: 0.7 } });
+
+    // Trigger sample download
+    const a = document.createElement('a');
+    a.href = mockStatuses[simIndex].media;
+    a.target = '_blank';
+    a.download = `WhatsApp_Status_${mockStatuses[simIndex].author.replace(' ', '_')}.jpg`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    setTimeout(() => setSimDownloaded(false), 2500);
+  };
 
   // --- 1. DIRECT CHAT (NO NUMBER SAVE) STATE ---
   const [countryCode, setCountryCode] = useState<string>('91');
@@ -43,7 +84,6 @@ export const WhatsAppStudio: React.FC = () => {
   const [showQR, setShowQR] = useState<boolean>(false);
   const [recentChats, setRecentChats] = useState<RecentChat[]>([]);
 
-  // Load recent numbers from localStorage
   useEffect(() => {
     try {
       const saved = localStorage.getItem('pdfcraft_recent_whatsapp');
@@ -262,19 +302,28 @@ export const WhatsAppStudio: React.FC = () => {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-black text-base shadow-sm">
-              💬
+              📥
             </span>
             <h1 className="text-2xl sm:text-3xl font-black text-[#111439] tracking-tight">
-              WhatsApp Direct Chat & Utility Studio
+              WhatsApp Status Saver & Utility Studio
             </h1>
           </div>
           <p className="text-xs sm:text-sm text-[#425466]">
-            Message any WhatsApp number without saving to contacts, compress 15-minute HD videos with $0 server cost, and auto-clean status screen-recordings.
+            1-Click Download button on WhatsApp Web statuses, message numbers without saving contacts, and compress 15m HD videos.
           </p>
         </div>
 
         {/* Sub-Tabs */}
         <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold shrink-0">
+          <button
+            onClick={() => setActiveSubTab('status-downloader')}
+            className={`px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+              activeSubTab === 'status-downloader' ? 'bg-[#111439] text-white shadow-sm' : 'text-slate-600 hover:text-[#111439]'
+            }`}
+          >
+            <DownloadCloud className="w-3.5 h-3.5 text-emerald-400" />
+            <span>📥 Status Downloader</span>
+          </button>
           <button
             onClick={() => setActiveSubTab('direct-chat')}
             className={`px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
@@ -298,13 +347,175 @@ export const WhatsAppStudio: React.FC = () => {
               activeSubTab === 'ui-stripper' ? 'bg-[#111439] text-white shadow-sm' : 'text-slate-600 hover:text-[#111439]'
             }`}
           >
-            <span>✂️ Status UI Stripper</span>
+            <span>✂️ Mobile UI Stripper</span>
           </button>
         </div>
       </div>
 
       {/* ========================================================================= */}
-      {/* SUBTAB 1: DIRECT CHAT WITHOUT SAVING NUMBER (RECOMMENDED) */}
+      {/* SUBTAB 0: WHATSAPP WEB STATUS DOWNLOADER (BIG STATUS DOWNLOADER TOOL) */}
+      {/* ========================================================================= */}
+      {activeSubTab === 'status-downloader' && (
+        <div className="space-y-8 animate-fadeIn">
+          
+          {/* Hero Banner with Download & Install Options */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            
+            {/* Left: What it does & One-Click Download */}
+            <div className="lg:col-span-7 bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/90 shadow-xl space-y-6 flex flex-col justify-between">
+              <div className="space-y-3">
+                <div className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-800 text-[11px] font-extrabold px-3 py-1 rounded-full border border-emerald-200">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  Official WhatsApp Web Status Downloader Engine
+                </div>
+                
+                <h2 className="text-2xl sm:text-3xl font-black text-[#111439] tracking-tight leading-snug">
+                  Adds a floating <span className="text-emerald-600">"Download HD"</span> button directly over WhatsApp Web statuses.
+                </h2>
+                
+                <p className="text-xs sm:text-sm text-[#425466] leading-relaxed">
+                  Just like the 500,000+ user Chrome Web Store tools, this runs 100% inside your browser on <strong>web.whatsapp.com</strong>. Whenever you view any contact's status story, an instant green <strong>Download HD Status</strong> button appears on the screen.
+                </p>
+              </div>
+
+              {/* 2 Primary Action Cards: Extension ZIP & Userscript */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                
+                {/* Option 1: Chrome Extension ZIP */}
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-between space-y-3">
+                  <div>
+                    <span className="text-[10px] font-black uppercase tracking-wider text-slate-500 block mb-1">For Chrome, Edge & Brave</span>
+                    <span className="text-sm font-black text-[#111439] block">PDFCraft Extension (.ZIP)</span>
+                    <span className="text-[11px] text-slate-500 block mt-0.5">Manifest V3 • Zero Permissions Leak</span>
+                  </div>
+                  <a
+                    href="/pdfcraft-status-downloader.zip"
+                    download="pdfcraft-status-downloader.zip"
+                    onClick={() => confetti({ particleCount: 30, spread: 50 })}
+                    className="w-full bg-[#111439] hover:bg-[#0A2540] text-white font-extrabold text-xs py-2.5 rounded-xl shadow-md flex items-center justify-center gap-1.5 transition-all"
+                  >
+                    <Download className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Download Extension .ZIP</span>
+                  </a>
+                </div>
+
+                {/* Option 2: 1-Click Userscript */}
+                <div className="p-4 rounded-2xl bg-emerald-50/50 border border-emerald-200 flex flex-col justify-between space-y-3">
+                  <div>
+                    <span className="text-[10px] font-black uppercase tracking-wider text-emerald-700 block mb-1">1-Click Install</span>
+                    <span className="text-sm font-black text-[#111439] block">Tampermonkey Userscript</span>
+                    <span className="text-[11px] text-slate-500 block mt-0.5">Auto-installs in 1 tap</span>
+                  </div>
+                  <a
+                    href="/extension/pdfcraft-status-saver.user.js"
+                    target="_blank"
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs py-2.5 rounded-xl shadow-md flex items-center justify-center gap-1.5 transition-all"
+                  >
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>Install Userscript &gt;</span>
+                  </a>
+                </div>
+
+              </div>
+
+              {/* 3 Step Quick Setup Guide */}
+              <div className="border-t border-slate-100 pt-4">
+                <span className="text-xs font-black text-[#111439] block mb-2">How to install in 15 seconds (Chrome & Edge):</span>
+                <ol className="text-xs text-slate-600 space-y-1 list-decimal list-inside font-medium">
+                  <li>Unzip <code>pdfcraft-status-downloader.zip</code> on your computer.</li>
+                  <li>Go to <code>chrome://extensions</code> and turn on <strong>Developer mode</strong> (top right).</li>
+                  <li>Click <strong>Load unpacked</strong> and select the unzipped folder. That's it!</li>
+                </ol>
+              </div>
+
+            </div>
+
+            {/* Right: Interactive Live Simulator (Experience it right now!) */}
+            <div className="lg:col-span-5 bg-[#0f172a] p-5 sm:p-6 rounded-3xl border border-slate-800 shadow-2xl text-white flex flex-col justify-between">
+              
+              <div className="space-y-2">
+                <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span className="text-xs font-bold text-slate-300">LIVE WHATSAPP WEB SIMULATOR</span>
+                  </div>
+                  <span className="text-[10px] font-mono text-emerald-400 font-bold bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">
+                    STATUS STORY
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between text-xs pt-1">
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-full bg-slate-700 flex items-center justify-center font-bold text-xs">
+                      {mockStatuses[simIndex].author[0]}
+                    </div>
+                    <div>
+                      <span className="font-extrabold block text-white text-xs">{mockStatuses[simIndex].author}</span>
+                      <span className="text-[10px] text-slate-400">{mockStatuses[simIndex].time}</span>
+                    </div>
+                  </div>
+                  <div className="flex gap-1">
+                    <button
+                      onClick={() => setSimIndex((prev) => (prev === 0 ? 1 : 0))}
+                      className="text-[10px] font-bold bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded"
+                    >
+                      Next Status ❯
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Status Media Viewport */}
+              <div className="relative my-4 aspect-[4/5] rounded-2xl overflow-hidden bg-black border border-slate-800 flex items-center justify-center">
+                <img
+                  src={mockStatuses[simIndex].media}
+                  alt="Status"
+                  className="w-full h-full object-cover"
+                />
+
+                <div className="absolute bottom-3 left-3 right-3 text-center bg-black/60 backdrop-blur-md p-2 rounded-xl text-xs text-slate-200">
+                  {mockStatuses[simIndex].caption}
+                </div>
+
+                {/* THE INJECTED DOWNLOAD BUTTON (Simulating Extension) */}
+                <button
+                  onClick={handleSimDownload}
+                  className="absolute bottom-16 right-3 bg-[#25D366] hover:bg-[#20bd5a] active:scale-95 text-white font-extrabold text-xs px-4 py-2.5 rounded-full shadow-[0_10px_25px_rgba(37,211,102,0.5)] flex items-center gap-2 transition-all cursor-pointer border border-emerald-300"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>{simDownloaded ? '✓ Downloaded!' : 'Download HD Status'}</span>
+                </button>
+              </div>
+
+              <div className="text-center text-[11px] text-slate-400">
+                👆 Click the green <strong className="text-emerald-400">Download HD Status</strong> button to test downloading directly!
+              </div>
+
+            </div>
+
+          </div>
+
+          {/* 3 Pillars of Security & $0 Cost */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs">
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 space-y-1.5 shadow-sm">
+              <span className="text-emerald-600 font-extrabold text-sm block">🛡️ 100% Zero Ban Risk</span>
+              <p className="text-[#425466]">Runs natively inside your regular WhatsApp Web session. It does not use any unauthorized bots or third-party servers.</p>
+            </div>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 space-y-1.5 shadow-sm">
+              <span className="text-purple-600 font-extrabold text-sm block">🔒 Total Local Privacy</span>
+              <p className="text-[#425466]">Media downloads directly from your browser memory to your computer hard drive. Zero bytes are ever sent to our servers.</p>
+            </div>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 space-y-1.5 shadow-sm">
+              <span className="text-blue-600 font-extrabold text-sm block">📱 Need Mobile Status Saving?</span>
+              <p className="text-[#425466]">On iPhone & Android, use our <strong>Mobile UI Stripper</strong> tab to screen-record any status and auto-crop the contact name and reply bar!</p>
+            </div>
+          </div>
+
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* SUBTAB 1: DIRECT CHAT WITHOUT SAVING NUMBER */}
       {/* ========================================================================= */}
       {activeSubTab === 'direct-chat' && (
         <div className="max-w-4xl mx-auto space-y-6">
@@ -484,22 +695,6 @@ export const WhatsAppStudio: React.FC = () => {
               </div>
             )}
 
-          </div>
-
-          {/* Privacy & Professional Benefits Card */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-            <div className="p-4 rounded-2xl bg-white border border-slate-200 space-y-1">
-              <span className="font-extrabold text-[#111439] block text-sm">🔒 Clean Address Book</span>
-              <p className="text-[#425466]">Stop cluttering your personal phone contacts with one-time delivery boys, vendors, or buyers.</p>
-            </div>
-            <div className="p-4 rounded-2xl bg-white border border-slate-200 space-y-1">
-              <span className="font-extrabold text-[#111439] block text-sm">🛡️ Zero Cloud Leaks</span>
-              <p className="text-[#425466]">Phone numbers never hit our servers. It connects directly from your browser to WhatsApp via `wa.me`.</p>
-            </div>
-            <div className="p-4 rounded-2xl bg-white border border-slate-200 space-y-1">
-              <span className="font-extrabold text-[#111439] block text-sm">📱 iPhone & Android Ready</span>
-              <p className="text-[#425466]">Opens the official WhatsApp app on mobile or WhatsApp Web/Desktop on computer with one tap.</p>
-            </div>
           </div>
         </div>
       )}

@@ -1,0 +1,32 @@
+/* PDFCraft Status Downloader Floating Button */
+#pdfcraft-status-download-btn {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 9999999;
+  background-color: #25D366;
+  color: #FFFFFF;
+  border: none;
+  outline: none;
+  border-radius: 9999px;
+  padding: 12px 22px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 10px 25px -3px rgba(37, 211, 102, 0.45), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#pdfcraft-status-download-btn:hover {
+  background-color: #20bd5a;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 14px 28px -3px rgba(37, 211, 102, 0.55), 0 6px 10px -2px rgba(0, 0, 0, 0.15);
+}
+
+#pdfcraft-status-download-btn:active {
+  transform: translateY(0) scale(0.98);
+}

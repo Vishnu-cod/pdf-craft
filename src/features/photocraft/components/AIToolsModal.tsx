@@ -56,9 +56,11 @@ export const AIToolsModal: React.FC<AIToolsModalProps> = ({
 
   // Magic Eraser brush state
   const maskCanvasRef = useRef<HTMLCanvasElement>(null);
-  const [brushSize, setBrushSize] = useState(25);
+  const [brushSize, setBrushSize] = useState(24);
   const [isPaintingMask, setIsPaintingMask] = useState(false);
   const [maskHasStrokes, setMaskHasStrokes] = useState(false);
+  const lastPointRef = useRef<{ x: number; y: number } | null>(null);
+  const [cursorPos, setCursorPos] = useState<{ x: number; y: number } | null>(null);
 
   // Background Generator state
   const [selectedStyle, setSelectedStyle] = useState<AIBackgroundStyle>('studio_minimal');
@@ -162,37 +164,75 @@ export const AIToolsModal: React.FC<AIToolsModalProps> = ({
     };
   };
 
-  // Draw on mask
+  const getCanvasCoords = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const canvas = maskCanvasRef.current;
+    if (!canvas) return { x: 0, y: 0, scale: 1 };
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    return {
+      x: (e.clientX - rect.left) * scaleX,
+      y: (e.clientY - rect.top) * scaleY,
+      scale: scaleX,
+    };
+  };
+
+  // Draw on mask with smooth continuous strokes
   const handleMaskMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
     setIsPaintingMask(true);
-    drawMaskDot(e);
+    const canvas = maskCanvasRef.current;
+    if (!canvas) return;
+    const { x, y, scale } = getCanvasCoords(e);
+    lastPointRef.current = { x, y };
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.fillStyle = 'rgba(239, 68, 68, 0.75)';
+    ctx.beginPath();
+    ctx.arc(x, y, (brushSize * scale) / 2, 0, Math.PI * 2);
+    ctx.fill();
+    setMaskHasStrokes(true);
   };
 
   const handleMaskMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const canvas = maskCanvasRef.current;
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    setCursorPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+
     if (!isPaintingMask) return;
-    drawMaskDot(e);
+    const { x, y, scale } = getCanvasCoords(e);
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    ctx.strokeStyle = 'rgba(239, 68, 68, 0.75)';
+    ctx.fillStyle = 'rgba(239, 68, 68, 0.75)';
+    ctx.lineWidth = brushSize * scale;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+
+    ctx.beginPath();
+    if (lastPointRef.current) {
+      ctx.moveTo(lastPointRef.current.x, lastPointRef.current.y);
+      ctx.lineTo(x, y);
+      ctx.stroke();
+    } else {
+      ctx.arc(x, y, (brushSize * scale) / 2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    lastPointRef.current = { x, y };
+    setMaskHasStrokes(true);
   };
 
   const handleMaskMouseUp = () => {
     setIsPaintingMask(false);
+    lastPointRef.current = null;
   };
 
-  const drawMaskDot = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    const canvas = maskCanvasRef.current;
-    if (!canvas) return;
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-    const x = (e.clientX - rect.left) * scaleX;
-    const y = (e.clientY - rect.top) * scaleY;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    ctx.fillStyle = 'rgba(239, 68, 68, 0.75)'; // Red semi-transparent mask
-    ctx.beginPath();
-    ctx.arc(x, y, brushSize * scaleX, 0, Math.PI * 2);
-    ctx.fill();
-    setMaskHasStrokes(true);
+  const handleMaskMouseLeave = () => {
+    setIsPaintingMask(false);
+    lastPointRef.current = null;
+    setCursorPos(null);
   };
 
   const handleClearMask = () => {
@@ -643,13 +683,27 @@ export const AIToolsModal: React.FC<AIToolsModalProps> = ({
                   className="max-w-full max-h-[450px] object-contain rounded-lg block"
                 />
                 {!resultImg && (
-                  <canvas
-                    ref={maskCanvasRef}
-                    onMouseDown={handleMaskMouseDown}
-                    onMouseMove={handleMaskMouseMove}
-                    onMouseUp={handleMaskMouseUp}
-                    className="absolute inset-0 w-full h-full cursor-crosshair rounded-lg touch-none"
-                  />
+                  <>
+                    <canvas
+                      ref={maskCanvasRef}
+                      onMouseDown={handleMaskMouseDown}
+                      onMouseMove={handleMaskMouseMove}
+                      onMouseUp={handleMaskMouseUp}
+                      onMouseLeave={handleMaskMouseLeave}
+                      className="absolute inset-0 w-full h-full cursor-none rounded-lg touch-none"
+                    />
+                    {cursorPos && (
+                      <div
+                        className="pointer-events-none absolute rounded-full border-2 border-red-500 bg-red-500/25 shadow-sm -translate-x-1/2 -translate-y-1/2 transition-none z-30"
+                        style={{
+                          left: cursorPos.x,
+                          top: cursorPos.y,
+                          width: brushSize,
+                          height: brushSize,
+                        }}
+                      />
+                    )}
+                  </>
                 )}
               </div>
             )}

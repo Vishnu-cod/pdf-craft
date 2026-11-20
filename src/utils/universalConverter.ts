@@ -62,6 +62,12 @@ export async function convertPDFToExcelAllPages(
     if (onProgress) onProgress(p, totalPages);
   }
 
+  if (workbook.SheetNames.length === 0) {
+    throw new Error(
+      'SCANNED_PDF_DETECTED: This document contains raster scanned images without extractable digital text or table cells. Client-side conversion requires digital text streams. Transcribing scanned tables requires an OCR engine.'
+    );
+  }
+
   const exportName = fileName.replace(/\.pdf$/i, '') + '.xlsx';
   XLSX.writeFile(workbook, exportName);
 }
@@ -123,6 +129,12 @@ export async function convertPDFToWordDocx(
     }
 
     if (onProgress) onProgress(p, totalPages);
+  }
+
+  if (!bodyXml || bodyXml.trim() === '') {
+    throw new Error(
+      'SCANNED_PDF_DETECTED: This document contains raster scanned images rather than selectable digital text. Client-side conversion requires digital text streams. Transcribing scanned paper documents requires an Optical Character Recognition (OCR) engine. You can use the "PDF to Images" tool to extract the pages as high-resolution images.'
+    );
   }
 
   // Construct valid OpenXML DOCX archive

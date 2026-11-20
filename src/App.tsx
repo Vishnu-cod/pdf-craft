@@ -4,6 +4,8 @@ import { Navbar } from './components/Navbar';
 import { FileUploader } from './components/FileUploader';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { FeatureDirectoryModal } from './components/FeatureDirectoryModal';
+import { PrivacyModal } from './components/PrivacyModal';
+import { matchRoute } from './routes';
 
 // Resilient self-healing lazy loader for PWA and desktop apps
 function safeLazy<P extends object = any>(
@@ -35,6 +37,8 @@ const ConvertPanel = safeLazy(() => import('./components/ConvertPanel'), 'Conver
 const ToolsPanel = safeLazy(() => import('./components/ToolsPanel'), 'ToolsPanel');
 const ResumeBuilder = safeLazy(() => import('./components/ResumeBuilder'), 'ResumeBuilder');
 const MobileSignPad = safeLazy(() => import('./components/MobileSignPad'), 'MobileSignPad');
+const SplitPanel = safeLazy(() => import('./components/SplitPanel'), 'SplitPanel');
+const SecurityPanel = safeLazy(() => import('./components/SecurityPanel'), 'SecurityPanel');
 
 const ViewSkeleton: React.FC = () => (
   <div className="flex-1 flex flex-col items-center justify-center min-h-[350px] text-slate-400 gap-3 py-16 animate-pulse">
@@ -64,6 +68,8 @@ import {
   FileSpreadsheet,
   FileImage,
   ChevronDown,
+  Scissors,
+  KeyRound,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -75,6 +81,8 @@ export const App: React.FC = () => {
 
   // Global Feature Hub / Command Palette Modal
   const [isFeatureModalOpen, setIsFeatureModalOpen] = useState(false);
+  const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
+  const [securityMode, setSecurityMode] = useState<'protect' | 'unlock'>('protect');
   const [targetSubTool, setTargetSubTool] = useState<
     'risk-radar' | 'size-squeezer' | 'diff' | 'table-extract' | 'doctor'
   >('risk-radar');
@@ -139,11 +147,19 @@ export const App: React.FC = () => {
     document.title = 'PDFCraft — 100% Free & Private PDF Editor, Signer & Tools (Zero Cloud Leaks)';
   };
 
-  // Comprehensive SEO Route & URL sync handler for all 12 High-Intent Tools
-  const navigateToTab = (tab: ActiveTab, subTool?: any, converter?: any) => {
+  // Comprehensive SEO Route & URL sync handler for all 26 canonical tools
+  const navigateToTab = (
+    tab: ActiveTab,
+    subTool?: any,
+    converter?: any,
+    targetSize?: number,
+    security?: 'protect' | 'unlock'
+  ) => {
     setActiveTab(tab);
     if (subTool) setTargetSubTool(subTool);
     if (converter) setTargetConverter(converter);
+    if (targetSize) setTargetKB(targetSize);
+    if (security) setSecurityMode(security);
 
     let path = '/';
     let title = 'PDFCraft — 100% Free & Private PDF Editor, Signer & Tools (Zero Cloud Leaks)';
@@ -156,10 +172,24 @@ export const App: React.FC = () => {
         path = '/sign-pdf';
         title = 'Sign PDF Free No Account Required (Zero Cloud Leaks) | PDFCraft';
       }
+    } else if (tab === 'split') {
+      path = '/split-pdf';
+      title = 'Split PDF Pages & Extract Sheets Free Offline | PDFCraft';
+    } else if (tab === 'security') {
+      if (security === 'unlock') {
+        path = '/unlock-pdf';
+        title = 'Unlock & Remove PDF Password Online Free | PDFCraft';
+      } else {
+        path = '/protect-pdf';
+        title = 'Password Protect PDF Online Free (Military-Grade AES-256) | PDFCraft';
+      }
     } else if (tab === 'organize') {
-      if (subTool === 'split') {
-        path = '/split-pdf';
-        title = 'Split PDF Pages & Extract Sheets Free Offline | PDFCraft';
+      if (subTool === 'rotate') {
+        path = '/rotate-pdf';
+        title = 'Rotate PDF Pages Permanently Online Free (Zero Uploads) | PDFCraft';
+      } else if (subTool === 'delete') {
+        path = '/delete-pdf-pages';
+        title = 'Delete Pages from PDF Online Free (Visual Page Selector) | PDFCraft';
       } else {
         path = '/merge-pdf';
         title = 'Organize, Rotate & Merge PDF Offline Free | PDFCraft';
@@ -183,13 +213,25 @@ export const App: React.FC = () => {
       path = '/resume-builder';
       title = 'Free ATS Resume Builder 60s (Zero Paywall & Vector PDF) | PDFCraft';
     } else if (tab === 'tools') {
-      if (subTool === 'size-squeezer-100kb') {
+      if (subTool === 'size-squeezer-100kb' || targetSize === 95 || targetSize === 100) {
         path = '/compress-pdf-100kb';
         setTargetKB(95);
         title = 'Compress PDF to 100KB Online Free (Govt & UPSC Portal Cap) | PDFCraft';
+      } else if (subTool === 'size-squeezer-50kb' || targetSize === 48 || targetSize === 50) {
+        path = '/compress-pdf-50kb';
+        setTargetKB(48);
+        title = 'Compress PDF to 50KB Online Free (Photo, Signature & Govt Portal Cap) | PDFCraft';
+      } else if (subTool === 'size-squeezer-300kb' || targetSize === 295 || targetSize === 300) {
+        path = '/compress-pdf-300kb';
+        setTargetKB(295);
+        title = 'Compress PDF Under 300KB Free Online (Visa, Job & College Portal) | PDFCraft';
+      } else if (subTool === 'size-squeezer-500kb' || targetSize === 495 || targetSize === 500) {
+        path = '/compress-pdf-500kb';
+        setTargetKB(495);
+        title = 'Compress PDF Under 500KB Free (Email & Thesis Attachment Limit) | PDFCraft';
       } else if (subTool === 'size-squeezer' || subTool === 'size-squeezer-200kb') {
         path = '/compress-pdf-200kb';
-        setTargetKB(195);
+        setTargetKB(targetSize || 195);
         title = 'Compress PDF Under 200KB Free & Private (Zero Cloud Leaks) | PDFCraft';
       } else {
         path = '/contract-risk-radar';
@@ -203,90 +245,20 @@ export const App: React.FC = () => {
     document.title = title;
   };
 
-  // SEO Route sync on load & browser popstate for all 22 high-intent landing pages
+  // Centralized Route Sync with matchRoute for initial load & browser popstate
   useEffect(() => {
     const handleRoute = () => {
-      const path = window.location.pathname.toLowerCase();
-      if (path.includes('50kb')) {
-        setActiveTab('tools');
-        setTargetSubTool('size-squeezer');
-        setTargetKB(48);
-        document.title = 'Compress PDF to 50KB Online Free (Photo, Signature & Govt Portal Cap) | PDFCraft';
-      } else if (path.includes('100kb')) {
-        setActiveTab('tools');
-        setTargetSubTool('size-squeezer');
-        setTargetKB(95);
-        document.title = 'Compress PDF to 100KB Online Free (Govt & UPSC Portal Cap) | PDFCraft';
-      } else if (path.includes('300kb')) {
-        setActiveTab('tools');
-        setTargetSubTool('size-squeezer');
-        setTargetKB(295);
-        document.title = 'Compress PDF Under 300KB Free Online (Visa, Job & College Portal) | PDFCraft';
-      } else if (path.includes('500kb')) {
-        setActiveTab('tools');
-        setTargetSubTool('size-squeezer');
-        setTargetKB(495);
-        document.title = 'Compress PDF Under 500KB Free (Email & Thesis Attachment Limit) | PDFCraft';
-      } else if (path.includes('compress') || path.includes('squeezer') || path.includes('200kb')) {
-        setActiveTab('tools');
-        setTargetSubTool('size-squeezer');
-        setTargetKB(195);
-        document.title = 'Compress PDF Under 200KB Free & Private (Zero Cloud Leaks) | PDFCraft';
-      } else if (path.includes('excel')) {
-        setActiveTab('convert');
-        setTargetConverter('pdf-to-excel');
-        document.title = 'Convert PDF to Excel (.xlsx) Free Without Email | PDFCraft';
-      } else if (path.includes('png-to-pdf')) {
-        setActiveTab('convert');
-        setTargetConverter('images-to-pdf');
-        document.title = 'Convert PNG to PDF Online Free (Preserve Transparent Alpha) | PDFCraft';
-      } else if (path.includes('jpg-to-pdf') || path.includes('images-to-pdf')) {
-        setActiveTab('convert');
-        setTargetConverter('images-to-pdf');
-        document.title = 'Convert JPG & PNG Images to PDF Free Online | PDFCraft';
-      } else if (path.includes('extract-images') || path.includes('extract-pdf-images') || path.includes('pdf-to-jpg') || path.includes('pdf-to-images')) {
-        setActiveTab('convert');
-        setTargetConverter('pdf-to-images');
-        document.title = 'Convert PDF to JPG Images High Resolution Free | PDFCraft';
-      } else if (path.includes('word') || path.includes('convert')) {
-        setActiveTab('convert');
-        setTargetConverter('pdf-to-word');
-        document.title = 'Convert PDF to Word (.docx) Free Offline (Zero Uploads) | PDFCraft';
-      } else if (path.includes('redact')) {
-        setActiveTab('sign-edit');
-        document.title = 'Redact & Black Out PDF Free Online (Permanent Zero-Leak) | PDFCraft';
-      } else if (path.includes('sign')) {
-        setActiveTab('sign-edit');
-        document.title = 'Sign PDF Free No Account Required (Zero Cloud Leaks) | PDFCraft';
-      } else if (path.includes('rotate')) {
-        setActiveTab('organize');
-        document.title = 'Rotate PDF Pages Permanently Online Free (Zero Uploads) | PDFCraft';
-      } else if (path.includes('delete') || path.includes('remove-pages')) {
-        setActiveTab('organize');
-        document.title = 'Delete Pages from PDF Online Free (Visual Page Selector) | PDFCraft';
-      } else if (path.includes('split')) {
-        setActiveTab('organize');
-        document.title = 'Split PDF Pages & Extract Sheets Free Offline | PDFCraft';
-      } else if (path.includes('merge') || path.includes('organize')) {
-        setActiveTab('organize');
-        document.title = 'Organize, Rotate & Merge PDF Offline Free | PDFCraft';
-      } else if (path.includes('resume') || path.includes('cv')) {
-        setActiveTab('resume');
-        document.title = 'Free ATS Resume Builder 60s (Zero Paywall & Vector PDF) | PDFCraft';
-      } else if (path.includes('ilovepdf')) {
-        setActiveTab('tools');
-        document.title = 'Free iLovePDF Alternative — 100% Client-Side With Zero Server Leaks | PDFCraft';
-      } else if (path.includes('smallpdf')) {
-        setActiveTab('tools');
-        document.title = 'Free Smallpdf Alternative — Unlimited Files & Zero Paywalls | PDFCraft';
-      } else if (path.includes('docusign')) {
-        setActiveTab('sign-edit');
-        document.title = 'Free DocuSign Alternative — Zero-Account Vector Document E-Signing | PDFCraft';
-      } else if (path.includes('protect') || path.includes('unlock') || path.includes('contract') || path.includes('radar') || path.includes('clause')) {
-        setActiveTab('tools');
-        setTargetSubTool('risk-radar');
-        document.title = 'AI Contract Risk Radar — Detect Predatory Clauses Free | PDFCraft';
+      const path = window.location.pathname;
+      if (path.toLowerCase() === '/privacy') {
+        setIsPrivacyModalOpen(true);
       }
+      const route = matchRoute(path);
+      setActiveTab(route.tab);
+      if (route.subTool) setTargetSubTool(route.subTool);
+      if (route.converter) setTargetConverter(route.converter);
+      if (route.targetKB) setTargetKB(route.targetKB);
+      if (route.securityMode) setSecurityMode(route.securityMode);
+      document.title = route.title;
     };
 
     handleRoute();
@@ -294,8 +266,14 @@ export const App: React.FC = () => {
     return () => window.removeEventListener('popstate', handleRoute);
   }, []);
 
-  const handleLaunchTool = (tab: ActiveTab, subTool?: string, converter?: any) => {
-    navigateToTab(tab, subTool, converter);
+  const handleLaunchTool = (
+    tab: ActiveTab,
+    subTool?: string,
+    converter?: any,
+    securityMode?: 'protect' | 'unlock',
+    targetKB?: number
+  ) => {
+    navigateToTab(tab, subTool, converter, targetKB, securityMode);
   };
 
   return (
@@ -315,6 +293,7 @@ export const App: React.FC = () => {
         fileName={currentFile?.name}
         onResetFile={handleResetFile}
         onOpenToolsModal={() => setIsFeatureModalOpen(true)}
+        onOpenPrivacyModal={() => setIsPrivacyModalOpen(true)}
         onFileLoaded={handleFileLoaded}
       />
 
@@ -642,6 +621,74 @@ export const App: React.FC = () => {
                     </div>
                   </div>
                 )}
+
+                {/* 7. Dedicated Split PDF */}
+                {(bentoFilter === 'all' || bentoFilter === 'edit') && (
+                  <div
+                    onClick={() => {
+                      navigateToTab('split');
+                      confetti({ particleCount: 40, spread: 50 });
+                    }}
+                    className="p-5 rounded-3xl bg-slate-900/60 border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900 transition cursor-pointer group shadow-lg flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center border border-amber-500/20 group-hover:scale-105 transition">
+                          <Scissors className="w-5 h-5" />
+                        </div>
+                        <span className="text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded-full font-bold">
+                          4 Split Modes
+                        </span>
+                      </div>
+                      <h3 className="text-sm font-bold text-white mb-1 group-hover:text-amber-300 transition flex items-center gap-1">
+                        <span>Split PDF & Extract Pages</span>
+                        <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition -translate-x-1 group-hover:translate-x-0" />
+                      </h3>
+                      <p className="text-xs text-slate-400 leading-relaxed">
+                        Split into single sheets, custom page ranges (e.g. 1-3, 4-6), chunks of N pages, or visual picker with 1-click ZIP download.
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5 pt-4 text-[10px] font-semibold text-amber-400">
+                      <span>• Single Pages</span>
+                      <span>• Page Ranges</span>
+                      <span>• Batch ZIP</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* 8. Military-Grade AES-256 PDF Protect & Unlock */}
+                {(bentoFilter === 'all' || bentoFilter === 'legal') && (
+                  <div
+                    onClick={() => {
+                      navigateToTab('security');
+                      confetti({ particleCount: 40, spread: 50 });
+                    }}
+                    className="p-5 rounded-3xl bg-slate-900/60 border border-slate-800 hover:border-indigo-500/50 hover:bg-slate-900 transition cursor-pointer group shadow-lg flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="w-10 h-10 rounded-2xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center border border-indigo-500/20 group-hover:scale-105 transition">
+                          <Lock className="w-5 h-5" />
+                        </div>
+                        <span className="text-[10px] bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2 py-0.5 rounded-full font-bold">
+                          AES-256 Crypto
+                        </span>
+                      </div>
+                      <h3 className="text-sm font-bold text-white mb-1 group-hover:text-indigo-300 transition flex items-center gap-1">
+                        <span>Protect & Unlock PDF</span>
+                        <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition -translate-x-1 group-hover:translate-x-0" />
+                      </h3>
+                      <p className="text-xs text-slate-400 leading-relaxed">
+                        Encrypt PDFs with standard AES-256 password protection and permission flags, or unlock protected documents you legitimately own.
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5 pt-4 text-[10px] font-semibold text-indigo-400">
+                      <span>• Password Encrypt</span>
+                      <span>• Decrypt & Unlock</span>
+                      <span>• Pure In-Browser</span>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -808,6 +855,23 @@ export const App: React.FC = () => {
                       <FileUploader onFileLoaded={handleFileLoaded} title="Drop PDF to Organize, Rotate & Merge" />
                     </div>
                   )
+                )}
+
+                {activeTab === 'split' && (
+                  <SplitPanel
+                    pdfBytes={currentBytes || undefined}
+                    fileName={currentFile?.name}
+                    onFileLoaded={handleFileLoaded}
+                  />
+                )}
+
+                {activeTab === 'security' && (
+                  <SecurityPanel
+                    pdfBytes={currentBytes || undefined}
+                    fileName={currentFile?.name}
+                    initialMode={securityMode}
+                    onFileLoaded={handleFileLoaded}
+                  />
                 )}
 
                 {activeTab === 'convert' && (
@@ -1028,7 +1092,7 @@ export const App: React.FC = () => {
                 <li>
                   <a
                     href="/split-pdf"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('organize', 'split'); }}
+                    onClick={(e) => { e.preventDefault(); navigateToTab('split'); }}
                     className="hover:text-blue-300 transition block hover:translate-x-0.5"
                   >
                     Split PDF Pages &amp; Extract
@@ -1083,7 +1147,7 @@ export const App: React.FC = () => {
                 <li>
                   <a
                     href="/protect-pdf"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'risk-radar'); }}
+                    onClick={(e) => { e.preventDefault(); navigateToTab('security', undefined, undefined, undefined, 'protect'); }}
                     className="hover:text-indigo-300 transition block hover:translate-x-0.5"
                   >
                     Password Protect &amp; Encrypt PDF
@@ -1092,7 +1156,7 @@ export const App: React.FC = () => {
                 <li>
                   <a
                     href="/unlock-pdf"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'risk-radar'); }}
+                    onClick={(e) => { e.preventDefault(); navigateToTab('security', undefined, undefined, undefined, 'unlock'); }}
                     className="hover:text-indigo-300 transition block hover:translate-x-0.5"
                   >
                     Unlock &amp; Remove PDF Password
@@ -1140,10 +1204,26 @@ export const App: React.FC = () => {
             <span>Zero-Cost Client-Side PDF Powerhouse</span>
           </div>
           <div className="flex items-center gap-4 text-[11px] text-slate-400 justify-center">
-            <span className="flex items-center gap-1">
+            <button
+              onClick={() => {
+                window.history.pushState(null, '', '/privacy');
+                setIsPrivacyModalOpen(true);
+              }}
+              className="flex items-center gap-1 hover:text-emerald-400 transition cursor-pointer"
+            >
               <Lock className="w-3 h-3 text-emerald-400" />
-              100% Private (No Cloud Uploads)
-            </span>
+              <span>100% Private (No Cloud Uploads)</span>
+            </button>
+            <span>•</span>
+            <button
+              onClick={() => {
+                window.history.pushState(null, '', '/privacy');
+                setIsPrivacyModalOpen(true);
+              }}
+              className="text-slate-400 hover:text-white transition cursor-pointer"
+            >
+              Privacy Policy
+            </button>
             <span>•</span>
             <span className="text-emerald-400 font-semibold">Free Forever</span>
           </div>
@@ -1158,6 +1238,17 @@ export const App: React.FC = () => {
           onSelectTool={handleLaunchTool}
         />
       )}
+
+      {/* Zero-Cloud Architecture & Privacy Guarantee Modal */}
+      <PrivacyModal
+        isOpen={isPrivacyModalOpen}
+        onClose={() => {
+          setIsPrivacyModalOpen(false);
+          if (window.location.pathname === '/privacy') {
+            window.history.pushState(null, '', '/');
+          }
+        }}
+      />
     </div>
   );
 };

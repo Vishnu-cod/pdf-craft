@@ -483,51 +483,44 @@ export const ToolsPanel: React.FC<ToolsPanelProps> = ({
                 </div>
               )}
 
-              <div className="flex items-center gap-1 bg-slate-950 px-2.5 py-1.5 rounded-xl border border-slate-800 text-xs">
-                <button
-                  onClick={() => setTablePage((p) => Math.max(1, p - 1))}
-                  disabled={tablePage <= 1}
-                  className="p-1 rounded hover:bg-slate-800 disabled:opacity-30 text-slate-300"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-                <span className="text-slate-300 font-mono px-2">
-                  Page {tablePage} of {totalPages}
-                </span>
-                <button
-                  onClick={() => setTablePage((p) => Math.min(totalPages, p + 1))}
-                  disabled={tablePage >= totalPages}
-                  className="p-1 rounded hover:bg-slate-800 disabled:opacity-30 text-slate-300"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
-
               {extractedData && extractedData.headers.length > 0 && extractedData.rows.length > 0 && (
                 <>
                   <button
                     onClick={handleCopyCSV}
-                    className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition cursor-pointer"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition cursor-pointer"
                   >
                     {isCopied ? (
                       <Check className="w-3.5 h-3.5 text-emerald-400" />
                     ) : (
                       <Copy className="w-3.5 h-3.5" />
                     )}
-                    <span>{isCopied ? 'Copied CSV!' : 'Copy CSV'}</span>
+                    <span>{isCopied ? 'Copied!' : 'Copy CSV'}</span>
+                  </button>
+
+                  <button
+                    onClick={() =>
+                      exportTableToCSV(
+                        extractedData,
+                        `${activeFileName.replace(/\.pdf$/i, '')}_page${tablePage}_table.csv`
+                      )
+                    }
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 text-xs font-semibold border border-emerald-500/30 transition cursor-pointer"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>Download CSV</span>
                   </button>
 
                   <button
                     onClick={() =>
                       exportTableToExcel(
                         extractedData,
-                        `${fileName.replace(/\.pdf$/i, '')}_page${tablePage}_table.xlsx`
+                        `${activeFileName.replace(/\.pdf$/i, '')}_page${tablePage}_table.xlsx`
                       )
                     }
-                    className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow-lg shadow-emerald-600/30 transition cursor-pointer"
+                    className="flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow-lg shadow-emerald-600/30 transition cursor-pointer"
                   >
                     <Download className="w-3.5 h-3.5" />
-                    <span>Export to Excel (.xlsx)</span>
+                    <span>Export Excel (.xlsx)</span>
                   </button>
                 </>
               )}

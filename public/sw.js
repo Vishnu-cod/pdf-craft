@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pdfcraft-v3';
+const CACHE_NAME = 'pdfcraft-v4';
 const STATIC_ASSETS = [
   '/',
   '/index.html',

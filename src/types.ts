@@ -1,4 +1,4 @@
-export type ActiveTab = 'sign-edit' | 'organize' | 'convert' | 'tools' | 'resume';
+export type ActiveTab = 'sign-edit' | 'organize' | 'convert' | 'tools' | 'resume' | 'split' | 'security';
 
 export type ToolSubTab = 'table-extract' | 'doctor' | 'diff';
 export type ConvertSubTab = 'images-to-pdf' | 'pdf-to-images' | 'extract-images';

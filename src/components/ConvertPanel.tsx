@@ -24,6 +24,7 @@ import {
   UploadCloud,
   ArrowRight,
   CheckCircle,
+  AlertTriangle,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -72,6 +73,7 @@ export const ConvertPanel: React.FC<ConvertPanelProps> = ({
 
   const [isLoading, setIsLoading] = useState(false);
   const [progressText, setProgressText] = useState('');
+  const [conversionError, setConversionError] = useState<{ isScanned: boolean; message: string } | null>(null);
 
   // Sample generator for testing conversions
   const handleLoadSamplePdf = async () => {
@@ -163,6 +165,7 @@ export const ConvertPanel: React.FC<ConvertPanelProps> = ({
       alert('Please upload or load a PDF first!');
       return;
     }
+    setConversionError(null);
     setIsLoading(true);
     setProgressText('Extracting text and compiling OpenXML Word (.docx)...');
     try {
@@ -170,7 +173,9 @@ export const ConvertPanel: React.FC<ConvertPanelProps> = ({
       confetti({ particleCount: 70, spread: 60 });
     } catch (err: any) {
       console.error(err);
-      alert('Failed to convert to Word: ' + err?.message);
+      const isScanned = err?.message?.includes('SCANNED_PDF_DETECTED');
+      const msg = err?.message?.replace('SCANNED_PDF_DETECTED: ', '') || 'Failed to convert to Word document.';
+      setConversionError({ isScanned, message: msg });
     } finally {
       setIsLoading(false);
       setProgressText('');
@@ -183,6 +188,7 @@ export const ConvertPanel: React.FC<ConvertPanelProps> = ({
       alert('Please upload or load a PDF first!');
       return;
     }
+    setConversionError(null);
     setIsLoading(true);
     setProgressText('Scanning document coordinates into multi-page Excel workbook...');
     try {
@@ -190,7 +196,9 @@ export const ConvertPanel: React.FC<ConvertPanelProps> = ({
       confetti({ particleCount: 70, spread: 60 });
     } catch (err: any) {
       console.error(err);
-      alert('Failed to convert to Excel: ' + err?.message);
+      const isScanned = err?.message?.includes('SCANNED_PDF_DETECTED');
+      const msg = err?.message?.replace('SCANNED_PDF_DETECTED: ', '') || 'Failed to convert to Excel spreadsheet.';
+      setConversionError({ isScanned, message: msg });
     } finally {
       setIsLoading(false);
       setProgressText('');
@@ -319,6 +327,38 @@ export const ConvertPanel: React.FC<ConvertPanelProps> = ({
 
       {/* Active Converter Card */}
       <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 max-w-2xl mx-auto shadow-xl">
+        {/* Scanned PDF or Conversion Notice Alert */}
+        {conversionError && (
+          <div
+            className={`p-4 rounded-2xl border flex items-start gap-3 mb-6 animate-in fade-in ${
+              conversionError.isScanned
+                ? 'bg-amber-950/30 border-amber-500/40 text-amber-200'
+                : 'bg-rose-950/30 border-rose-500/40 text-rose-200'
+            }`}
+          >
+            <AlertTriangle className="w-5 h-5 shrink-0 mt-0.5 text-amber-400" />
+            <div className="space-y-1 text-xs">
+              <p className="font-bold text-white">
+                {conversionError.isScanned ? 'Scanned PDF Detected (OCR Required)' : 'Conversion Notice'}
+              </p>
+              <p className="text-slate-300 leading-relaxed">{conversionError.message}</p>
+              {conversionError.isScanned && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveConverter('pdf-to-images');
+                    setConversionError(null);
+                  }}
+                  className="mt-2 px-3 py-1.5 rounded-lg bg-amber-600/30 hover:bg-amber-600/50 border border-amber-500/40 text-amber-200 text-xs font-semibold cursor-pointer transition flex items-center gap-1.5"
+                >
+                  <FileImage className="w-3.5 h-3.5" />
+                  <span>Extract Pages as High-Res Images (.zip) &rarr;</span>
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Case 1: PDF to Word */}
         {activeConverter === 'pdf-to-word' && (
           <div>

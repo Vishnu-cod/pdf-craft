@@ -22,6 +22,7 @@ interface NavbarProps {
   fileName?: string;
   onResetFile: () => void;
   onOpenToolsModal?: () => void;
+  onOpenPrivacyModal?: () => void;
   onFileLoaded?: (file: File, bytes: ArrayBuffer) => void;
 }
 
@@ -32,6 +33,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   fileName,
   onResetFile,
   onOpenToolsModal,
+  onOpenPrivacyModal,
   onFileLoaded,
 }) => {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
@@ -91,7 +93,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                   Zero Cost
                 </span>
               </div>
-              <p className="text-[10px] sm:text-[11px] text-slate-400 font-normal hidden sm:block">
+              <p
+                onClick={onOpenPrivacyModal}
+                className="text-[10px] sm:text-[11px] text-slate-400 font-normal hidden sm:block cursor-pointer hover:text-emerald-400 transition"
+              >
                 100% Client-Side Privacy
               </p>
             </div>
@@ -102,7 +107,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <nav aria-label="Main Navigation" className="flex items-center gap-0.5 sm:gap-1 bg-slate-950/80 p-1 rounded-2xl border border-slate-800 shadow-inner overflow-x-auto scrollbar-none">
               {tabs.map((tab) => {
                 const Icon = tab.icon;
-                const isActive = activeTab === tab.id;
+                const isActive = activeTab === tab.id || (tab.id === 'organize' && activeTab === 'split') || (tab.id === 'tools' && activeTab === 'security');
                 return (
                   <button
                     key={tab.id}
@@ -213,10 +218,14 @@ export const Navbar: React.FC<NavbarProps> = ({
                     }}
                   />
                 </label>
-                <div className="hidden xl:flex items-center gap-1.5 text-xs text-slate-400 bg-slate-950/40 border border-slate-800 px-2.5 py-1.5 rounded-lg shrink-0 whitespace-nowrap">
+                <button
+                  onClick={onOpenPrivacyModal}
+                  aria-label="View Privacy Architecture"
+                  className="hidden xl:flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 bg-slate-950/40 hover:bg-slate-900 border border-slate-800 px-2.5 py-1.5 rounded-lg shrink-0 whitespace-nowrap transition cursor-pointer"
+                >
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                   <span>100% Client-Side</span>
-                </div>
+                </button>
               </div>
             )}
           </div>
@@ -411,10 +420,16 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
 
             <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
-              <span className="flex items-center gap-1.5">
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenPrivacyModal?.();
+                }}
+                className="flex items-center gap-1.5 hover:text-emerald-400 transition cursor-pointer"
+              >
                 <Lock className="w-3.5 h-3.5 text-emerald-400" />
                 <span>100% Client-Side Privacy</span>
-              </span>
+              </button>
               {deferredPrompt && (
                 <button
                   onClick={handleInstallPWA}
@@ -432,7 +447,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       <nav aria-label="Mobile Navigation" className="fixed bottom-0 inset-x-0 z-40 bg-slate-950/95 backdrop-blur-xl border-t border-slate-800/80 md:hidden print:hidden px-2 py-1.5 flex items-center justify-around shadow-2xl safe-area-pb">
         {tabs.map((tab) => {
           const Icon = tab.icon;
-          const isActive = activeTab === tab.id;
+          const isActive = activeTab === tab.id || (tab.id === 'organize' && activeTab === 'split') || (tab.id === 'tools' && activeTab === 'security');
           return (
             <button
               key={tab.id}

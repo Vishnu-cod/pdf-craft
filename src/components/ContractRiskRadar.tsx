@@ -19,6 +19,7 @@ import {
   Info,
   Scale,
   Zap,
+  Download,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -103,6 +104,34 @@ export const ContractRiskRadar: React.FC<ContractRiskRadarProps> = ({
     setCopiedId(issue.id);
     confetti({ particleCount: 25, spread: 40 });
     setTimeout(() => setCopiedId(null), 2500);
+  };
+
+  const handleExportFullReport = () => {
+    if (!report) return;
+    const highRisks = report.issues.filter((i) => i.severity === 'high').length;
+    let md = `# Contract Risk Radar Audit Report\n\n`;
+    md += `**Document:** ${docName}\n`;
+    md += `**Contract Health Score:** ${report.safetyScore}/100 (${report.grade})\n`;
+    md += `**Total Words:** ${report.wordCount} | **High Severity Flags:** ${highRisks}\n\n`;
+    md += `## Detected Clauses & Counter-Proposals\n\n`;
+    report.issues.forEach((iss, idx) => {
+      md += `### ${idx + 1}. [${iss.severity.toUpperCase()}] ${iss.title}\n`;
+      md += `- **Original Clause Excerpt:** "${iss.excerpt}"\n`;
+      md += `- **Plain-English Translation:** ${iss.plainEnglish}\n`;
+      md += `- **Recommended Counter-Proposal:**\n> ${iss.counterProposal}\n\n`;
+    });
+    md += `---\n*Generated 100% client-side in browser memory by PDFCraft Contract Risk Radar. Does not constitute formal legal advice.*\n`;
+
+    const blob = new Blob([md], { type: 'text/markdown;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${docName.replace(/\.pdf$/i, '')}_risk_audit.md`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    confetti({ particleCount: 40, spread: 50 });
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -200,6 +229,18 @@ export const ContractRiskRadar: React.FC<ContractRiskRadarProps> = ({
             <RotateCcw className="w-3.5 h-3.5 text-amber-400" />
             <span>Test Sample Agreement</span>
           </button>
+
+          {report && (
+            <button
+              type="button"
+              onClick={handleExportFullReport}
+              className="px-3.5 py-2.5 sm:py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition cursor-pointer shadow-md shadow-rose-600/30 w-full sm:w-auto"
+              title="Download Full Risk Audit Report as Markdown"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>Export Audit (.md)</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -389,6 +430,20 @@ export const ContractRiskRadar: React.FC<ContractRiskRadarProps> = ({
                     </div>
                   ))
                 )}
+              </div>
+
+              {/* Legal Notice & Technical Methodology */}
+              <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 text-xs space-y-2">
+                <div className="flex items-center gap-2 text-white font-bold">
+                  <Scale className="w-4 h-4 text-indigo-400" />
+                  <span>Legal Disclaimer &amp; Technical Methodology</span>
+                </div>
+                <p className="text-[11px] leading-relaxed text-slate-400">
+                  <strong>Deterministic Heuristics:</strong> Analysis runs 100% in local browser memory using statutory clause matching, identifying unbounded liability, IP forfeiture overreach, non-compete durations, and one-sided termination penalties without sending contract text to any remote server.
+                </p>
+                <p className="text-[11px] leading-relaxed text-slate-500">
+                  <strong>Notice:</strong> This automated utility provides heuristic pattern flags and educational drafting suggestions only. It does not constitute formal legal counsel, representation, or an attorney-client relationship. Review critical contracts with a qualified attorney in your jurisdiction.
+                </p>
               </div>
             </>
           )}

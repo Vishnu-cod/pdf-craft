@@ -31,6 +31,7 @@ interface PageItem {
   rotationDelta: number;
   previewUrl?: string;
   sourceBuffer: ArrayBuffer;
+  sourceFileName: string;
 }
 
 export const OrganizeGrid: React.FC<OrganizeGridProps> = ({
@@ -41,6 +42,7 @@ export const OrganizeGrid: React.FC<OrganizeGridProps> = ({
   const [pages, setPages] = useState<PageItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   useEffect(() => {
     let isCancelled = false;
@@ -55,6 +57,7 @@ export const OrganizeGrid: React.FC<OrganizeGridProps> = ({
             rotationDelta: 0,
             previewUrl: m.previewUrl,
             sourceBuffer: pdfBytes,
+            sourceFileName: fileName || 'Document 1',
           }));
           setPages(items);
         }
@@ -68,7 +71,7 @@ export const OrganizeGrid: React.FC<OrganizeGridProps> = ({
     return () => {
       isCancelled = true;
     };
-  }, [pdfBytes]);
+  }, [pdfBytes, fileName]);
 
   const rotatePage = (index: number) => {
     setPages((prev) =>
@@ -96,42 +99,51 @@ export const OrganizeGrid: React.FC<OrganizeGridProps> = ({
 
   const handleMergeAdditionalPDF = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
-    const file = e.target.files[0];
-    const newBytes = await file.arrayBuffer();
+    const files = Array.from(e.target.files);
 
     setIsLoading(true);
     try {
-      const newMeta = await getDocumentPagesMeta(newBytes);
-      const newItems: PageItem[] = newMeta.map((m, idx) => ({
-        id: `merged_${idx}_${Date.now()}`,
-        originalIndex: idx,
-        rotationDelta: 0,
-        previewUrl: m.previewUrl,
-        sourceBuffer: newBytes,
-      }));
-      setPages((prev) => [...prev, ...newItems]);
+      const allNewItems: PageItem[] = [];
+      for (const file of files) {
+        const newBytes = await file.arrayBuffer();
+        const newMeta = await getDocumentPagesMeta(newBytes);
+        const newItems: PageItem[] = newMeta.map((m, idx) => ({
+          id: `merged_${idx}_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+          originalIndex: idx,
+          rotationDelta: 0,
+          previewUrl: m.previewUrl,
+          sourceBuffer: newBytes,
+          sourceFileName: file.name,
+        }));
+        allNewItems.push(...newItems);
+      }
+      setPages((prev) => [...prev, ...allNewItems]);
     } catch (err) {
       console.error('Error merging PDF', err);
-      alert('Could not merge the selected PDF.');
+      alert('Could not process one or more selected PDFs. Please check the files and try again.');
     } finally {
       setIsLoading(false);
+      e.target.value = '';
     }
   };
 
   const handleSaveAndDownload = async () => {
     if (pages.length === 0) return;
     setIsSaving(true);
+    setSuccessMessage(null);
     try {
-      // Group pages by sourceBuffer or process directly
+      // Build full multi-source page configuration
       const pageConfigs = pages.map((p) => ({
+        sourceBuffer: p.sourceBuffer,
         originalPageIndex: p.originalIndex,
         rotationDelta: p.rotationDelta,
       }));
 
       const newPdfBytes = await saveOrganizedPages(pdfBytes, pageConfigs);
-      const downloadName = fileName.replace(/\.pdf$/i, '') + '_organized.pdf';
+      const downloadName = fileName.replace(/\.pdf$/i, '') + '_merged_organized.pdf';
       downloadBlob(newPdfBytes, downloadName);
 
+      setSuccessMessage(`Exported successfully! Verified ${pages.length} pages in order.`);
       confetti({
         particleCount: 70,
         spread: 60,
@@ -139,7 +151,7 @@ export const OrganizeGrid: React.FC<OrganizeGridProps> = ({
       });
     } catch (err) {
       console.error('Failed to export organized PDF', err);
-      alert('Failed to save organized PDF. If multiple merged files were used, please try again.');
+      alert('Failed to save organized PDF. Please ensure all documents are accessible and try again.');
     } finally {
       setIsSaving(false);
     }
@@ -183,10 +195,11 @@ export const OrganizeGrid: React.FC<OrganizeGridProps> = ({
           {/* Append PDF Button */}
           <label className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 cursor-pointer transition shadow-sm">
             <Plus className="w-4 h-4 text-emerald-400" />
-            <span>Append Another PDF</span>
+            <span>Append PDF(s)</span>
             <input
               type="file"
               accept=".pdf"
+              multiple
               onChange={handleMergeAdditionalPDF}
               className="hidden"
             />
@@ -239,6 +252,22 @@ export const OrganizeGrid: React.FC<OrganizeGridProps> = ({
         </div>
       </div>
 
+      {/* Success Notification Banner */}
+      {successMessage && (
+        <div className="mt-4 p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-between text-xs text-emerald-300">
+          <div className="flex items-center gap-2">
+            <FileCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+            <span>{successMessage}</span>
+          </div>
+          <button
+            onClick={() => setSuccessMessage(null)}
+            className="text-emerald-400 hover:text-emerald-200 font-bold px-2 py-0.5"
+          >
+            ×
+          </button>
+        </div>
+      )}
+
       {/* Pages Grid */}
       {isLoading ? (
         <div className="py-24 flex flex-col items-center justify-center">
@@ -252,8 +281,8 @@ export const OrganizeGrid: React.FC<OrganizeGridProps> = ({
               key={page.id}
               className="group relative bg-slate-900 border border-slate-800 hover:border-indigo-500/60 rounded-2xl p-3 flex flex-col items-center transition shadow-lg hover:shadow-indigo-500/10"
             >
-              {/* Page Number Pill */}
-              <div className="w-full flex items-center justify-between mb-2">
+              {/* Page Number Pill & Source Badge */}
+              <div className="w-full flex items-center justify-between mb-1.5 gap-1">
                 <span className="text-[11px] font-mono font-semibold text-slate-400 px-2 py-0.5 rounded-md bg-slate-950 border border-slate-800">
                   Page {index + 1}
                 </span>
@@ -263,6 +292,11 @@ export const OrganizeGrid: React.FC<OrganizeGridProps> = ({
                   </span>
                 )}
               </div>
+              {page.sourceFileName && (
+                <div className="w-full text-[10px] text-slate-400 truncate mb-2 font-mono text-center px-1" title={page.sourceFileName}>
+                  {page.sourceFileName}
+                </div>
+              )}
 
               {/* Thumbnail Container */}
               <div className="w-full aspect-[3/4] bg-white rounded-xl overflow-hidden flex items-center justify-center p-2 border border-slate-700/50 relative shadow-inner">

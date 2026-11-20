@@ -1,6 +1,7 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { X, Eraser, Check, PenTool, Type, Smartphone, ExternalLink, Loader2, Sparkles } from 'lucide-react';
+import React, { useRef, useState, useEffect, useMemo } from 'react';
+import { X, Eraser, Check, PenTool, Type, Smartphone, ExternalLink, Loader2, Sparkles, Copy, CheckCheck } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { generateQRCodeSVG } from '../utils/qrGenerator';
 
 interface SignatureModalProps {
   isOpen: boolean;
@@ -17,12 +18,13 @@ export const SignatureModal: React.FC<SignatureModalProps> = ({
   const [penColor, setPenColor] = useState('#0f172a');
   const [typedName, setTypedName] = useState('');
   const [sessionId, setSessionId] = useState('');
-  const [waitingForMobile, setWaitingForMobile] = useState(false);
+  const [copiedLink, setCopiedLink] = useState(false);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const isDrawing = useRef(false);
+  const isInitialized = useRef(false);
 
-  // Initialize canvas when drawing
+  // Initialize canvas only when modal opens or tab changes to draw
   useEffect(() => {
     if (isOpen && tab === 'draw') {
       const canvas = canvasRef.current;
@@ -30,22 +32,41 @@ export const SignatureModal: React.FC<SignatureModalProps> = ({
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
 
-      canvas.width = 500;
-      canvas.height = 200;
+      if (!isInitialized.current) {
+        const dpr = window.devicePixelRatio || 1;
+        const cssWidth = 500;
+        const cssHeight = 200;
+        canvas.width = cssWidth * dpr;
+        canvas.height = cssHeight * dpr;
+        canvas.style.width = `${cssWidth}px`;
+        canvas.style.height = `${cssHeight}px`;
+
+        ctx.scale(dpr, dpr);
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.lineWidth = 2.5;
+        isInitialized.current = true;
+      }
+
+      // Always update stroke color without clearing existing strokes!
       ctx.strokeStyle = penColor;
-      ctx.lineWidth = 2.5;
-      ctx.lineCap = 'round';
-      ctx.lineJoin = 'round';
     }
   }, [isOpen, tab, penColor]);
 
-  // Setup mobile listener when modal opens on 'mobile' tab
+  // Reset initialized flag when modal closes
+  useEffect(() => {
+    if (!isOpen) {
+      isInitialized.current = false;
+    }
+  }, [isOpen]);
+
+  // Setup mobile listener when modal opens
   useEffect(() => {
     if (!isOpen) return;
     const newSession = 'SIG-' + Math.floor(1000 + Math.random() * 9000);
     setSessionId(newSession);
 
-    // 1. BroadcastChannel Listener
+    // 1. BroadcastChannel Listener (works cross-tab on same machine)
     let channel: BroadcastChannel | null = null;
     if ('BroadcastChannel' in window) {
       channel = new BroadcastChannel('pdfcraft_signature_channel');
@@ -81,12 +102,31 @@ export const SignatureModal: React.FC<SignatureModalProps> = ({
     };
   }, [isOpen, onSaveSignature, onClose]);
 
+  const mobileUrl = typeof window !== 'undefined' ? `${window.location.origin}/#sign-session=${sessionId}` : '';
+  
+  // Generate QR code client-side locally with zero external API calls!
+  const qrSvg = useMemo(() => {
+    if (!mobileUrl) return '';
+    return generateQRCodeSVG(mobileUrl, 160, '#0f172a', '#ffffff');
+  }, [mobileUrl]);
+
   if (!isOpen) return null;
 
-  const mobileUrl = `${window.location.origin}/#sign-session=${sessionId}`;
-  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(
-    mobileUrl
-  )}`;
+  const getCanvasCoords = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return { x: 0, y: 0 };
+    const rect = canvas.getBoundingClientRect();
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    
+    // Convert DOM client coordinates into CSS canvas pixels
+    const scaleX = 500 / rect.width;
+    const scaleY = 200 / rect.height;
+    return {
+      x: (clientX - rect.left) * scaleX,
+      y: (clientY - rect.top) * scaleY,
+    };
+  };
 
   const startDrawing = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     isDrawing.current = true;
@@ -95,12 +135,10 @@ export const SignatureModal: React.FC<SignatureModalProps> = ({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const rect = canvas.getBoundingClientRect();
-    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
-
+    ctx.strokeStyle = penColor;
+    const { x, y } = getCanvasCoords(e);
     ctx.beginPath();
-    ctx.moveTo(clientX - rect.left, clientY - rect.top);
+    ctx.moveTo(x, y);
   };
 
   const draw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
@@ -110,11 +148,8 @@ export const SignatureModal: React.FC<SignatureModalProps> = ({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const rect = canvas.getBoundingClientRect();
-    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
-
-    ctx.lineTo(clientX - rect.left, clientY - rect.top);
+    const { x, y } = getCanvasCoords(e);
+    ctx.lineTo(x, y);
     ctx.stroke();
   };
 
@@ -127,7 +162,15 @@ export const SignatureModal: React.FC<SignatureModalProps> = ({
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const dpr = window.devicePixelRatio || 1;
+    ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+  };
+
+  const handleCopyLink = () => {
+    if (!mobileUrl) return;
+    navigator.clipboard.writeText(mobileUrl);
+    setCopiedLink(true);
+    setTimeout(() => setCopiedLink(false), 2000);
   };
 
   const handleSave = () => {
@@ -136,86 +179,87 @@ export const SignatureModal: React.FC<SignatureModalProps> = ({
       if (!canvas) return;
       const dataUrl = canvas.toDataURL('image/png');
       onSaveSignature(dataUrl);
+      onClose();
     } else if (tab === 'type') {
-      if (!typedName.trim()) return;
-      const canvas = document.createElement('canvas');
-      canvas.width = 500;
-      canvas.height = 200;
-      const ctx = canvas.getContext('2d');
+      if (!typedName.trim()) {
+        alert('Please type your name before placing.');
+        return;
+      }
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = 600;
+      tempCanvas.height = 180;
+      const ctx = tempCanvas.getContext('2d');
       if (ctx) {
         ctx.fillStyle = penColor;
-        ctx.font = 'italic 52px "Brush Script MT", "Caveat", "Segoe Script", cursive';
+        ctx.font = 'italic 52px "Caveat", "Brush Script MT", cursive, sans-serif';
         ctx.textBaseline = 'middle';
-        ctx.fillText(typedName, 40, 100);
-        onSaveSignature(canvas.toDataURL('image/png'));
+        ctx.textAlign = 'center';
+        ctx.fillText(typedName, 300, 90);
+        onSaveSignature(tempCanvas.toDataURL('image/png'));
+        onClose();
       }
     }
-    onClose();
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl">
+    <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+      <div className="w-full max-w-lg bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800">
+        <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="font-semibold text-slate-100">Create Signature</span>
-            <span className="text-[10px] bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 px-2 py-0.5 rounded-full font-mono">
-              $0
-            </span>
+            <PenTool className="w-4 h-4 text-indigo-400" />
+            <h3 className="font-bold text-white text-sm">Add Signature</h3>
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-200 p-1 rounded-lg hover:bg-slate-800 transition"
+            className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Tab Switcher */}
-        <div className="px-6 pt-4 flex gap-2 flex-wrap">
+        {/* Tab Selector */}
+        <div className="grid grid-cols-3 p-2 bg-slate-950/60 border-b border-slate-800/80 gap-1">
           <button
             onClick={() => setTab('draw')}
-            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition ${
+            className={`py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition ${
               tab === 'draw'
-                ? 'bg-indigo-600 text-white'
-                : 'bg-slate-800 text-slate-400 hover:text-slate-200'
+                ? 'bg-indigo-600 text-white shadow'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
             }`}
           >
             <PenTool className="w-3.5 h-3.5" />
             <span>Draw</span>
           </button>
-
           <button
             onClick={() => setTab('type')}
-            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition ${
+            className={`py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition ${
               tab === 'type'
-                ? 'bg-indigo-600 text-white'
-                : 'bg-slate-800 text-slate-400 hover:text-slate-200'
+                ? 'bg-indigo-600 text-white shadow'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
             }`}
           >
             <Type className="w-3.5 h-3.5" />
-            <span>Type Name</span>
+            <span>Type</span>
           </button>
-
           <button
             onClick={() => setTab('mobile')}
-            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition ${
+            className={`py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition ${
               tab === 'mobile'
-                ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
-                : 'bg-slate-800 text-slate-400 hover:text-slate-200'
+                ? 'bg-indigo-600 text-white shadow'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
             }`}
           >
-            <Smartphone className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Mobile Phone QR</span>
+            <Smartphone className="w-3.5 h-3.5" />
+            <span>Phone QR</span>
           </button>
         </div>
 
-        {/* Content Area */}
+        {/* Modal Content */}
         <div className="p-6">
           {tab === 'draw' && (
             <div>
-              <div className="relative border-2 border-dashed border-slate-700 rounded-2xl bg-white overflow-hidden shadow-inner">
+              <div className="relative border-2 border-dashed border-slate-700 bg-white rounded-2xl overflow-hidden shadow-inner">
                 <canvas
                   ref={canvasRef}
                   onMouseDown={startDrawing}
@@ -225,7 +269,7 @@ export const SignatureModal: React.FC<SignatureModalProps> = ({
                   onTouchStart={startDrawing}
                   onTouchMove={draw}
                   onTouchEnd={stopDrawing}
-                  className="w-full h-44 cursor-crosshair touch-none"
+                  className="touch-none cursor-crosshair w-full block"
                 />
                 <div className="absolute bottom-2 left-4 pointer-events-none">
                   <span className="text-[10px] text-slate-400 uppercase tracking-widest font-mono">
@@ -238,7 +282,7 @@ export const SignatureModal: React.FC<SignatureModalProps> = ({
               {/* Color choices & Clear */}
               <div className="mt-4 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-slate-400">Ink Color:</span>
+                  <span className="text-xs text-slate-400 font-medium">Ink Color:</span>
                   {[
                     { label: 'Black', value: '#0f172a' },
                     { label: 'Blue', value: '#1d4ed8' },
@@ -249,7 +293,7 @@ export const SignatureModal: React.FC<SignatureModalProps> = ({
                       onClick={() => setPenColor(c.value)}
                       className={`w-6 h-6 rounded-full border-2 transition ${
                         penColor === c.value
-                          ? 'border-white scale-110 shadow-md'
+                          ? 'border-white scale-110 shadow-md ring-2 ring-indigo-500/50'
                           : 'border-transparent'
                       }`}
                       style={{ backgroundColor: c.value }}
@@ -260,7 +304,7 @@ export const SignatureModal: React.FC<SignatureModalProps> = ({
 
                 <button
                   onClick={clearCanvas}
-                  className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 transition"
+                  className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-rose-400 transition"
                 >
                   <Eraser className="w-3.5 h-3.5" />
                   <span>Clear</span>
@@ -276,7 +320,7 @@ export const SignatureModal: React.FC<SignatureModalProps> = ({
                 placeholder="Type your full name..."
                 value={typedName}
                 onChange={(e) => setTypedName(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 text-xs"
               />
               <div className="h-32 bg-white rounded-2xl flex items-center justify-center p-4 border border-slate-300">
                 <span
@@ -291,12 +335,17 @@ export const SignatureModal: React.FC<SignatureModalProps> = ({
 
           {tab === 'mobile' && (
             <div className="flex flex-col items-center text-center p-2">
-              <div className="p-3 bg-white rounded-2xl shadow-xl mb-4 border border-slate-700">
-                <img
-                  src={qrCodeUrl}
-                  alt="Scan to Sign on Phone"
-                  className="w-40 h-40 object-contain rounded-lg"
-                />
+              <div className="p-3 bg-white rounded-2xl shadow-xl mb-4 border border-slate-700 inline-block">
+                {qrSvg ? (
+                  <div
+                    dangerouslySetInnerHTML={{ __html: qrSvg }}
+                    className="w-40 h-40 flex items-center justify-center"
+                  />
+                ) : (
+                  <div className="w-40 h-40 flex items-center justify-center text-slate-400">
+                    <Loader2 className="w-6 h-6 animate-spin" />
+                  </div>
+                )}
               </div>
 
               <div className="flex items-center gap-2 mb-2 text-emerald-400 text-xs font-semibold">
@@ -305,19 +354,28 @@ export const SignatureModal: React.FC<SignatureModalProps> = ({
               </div>
 
               <p className="text-xs text-slate-400 max-w-xs mb-4">
-                Point your phone camera at this QR code. Sign smoothly with your finger on your touch screen, and it will appear here instantly!
+                Point your phone camera at this QR code. Sign smoothly with your finger on your touchscreen.
               </p>
 
-              {/* Test button for instant laptop testing */}
-              <a
-                href={mobileUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700 transition"
-              >
-                <ExternalLink className="w-3.5 h-3.5 text-indigo-400" />
-                <span>Test in New Tab (Simulate Phone)</span>
-              </a>
+              <div className="flex items-center gap-2 flex-wrap justify-center">
+                <button
+                  onClick={handleCopyLink}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700 transition"
+                >
+                  {copiedLink ? <CheckCheck className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                  <span>{copiedLink ? 'Link Copied!' : 'Copy Direct Link'}</span>
+                </button>
+
+                <a
+                  href={mobileUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700 transition"
+                >
+                  <ExternalLink className="w-3.5 h-3.5 text-indigo-400" />
+                  <span>Test in New Tab</span>
+                </a>
+              </div>
             </div>
           )}
         </div>

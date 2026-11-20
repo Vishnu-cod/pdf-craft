@@ -1,5 +1,10 @@
-import React, { useState } from 'react';
-import { squeezePDFToTargetKB, SqueezeResult } from '../utils/sizeSqueezer';
+import React, { useState, useRef } from 'react';
+import {
+  squeezePDFToTargetKB,
+  compressPDFVectorPreserve,
+  SqueezeResult,
+  CompressionStrategy,
+} from '../utils/sizeSqueezer';
 import { downloadBlob } from '../utils/pdfEngine';
 import {
   Shrink,
@@ -12,6 +17,9 @@ import {
   FileCheck,
   Zap,
   ArrowRight,
+  AlertTriangle,
+  FileText,
+  XCircle,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -28,6 +36,7 @@ export const SizeSqueezer: React.FC<SizeSqueezerProps> = ({
   initialTargetKB = 195,
   onFileLoaded,
 }) => {
+  const [strategy, setStrategy] = useState<CompressionStrategy>('target-squeeze');
   const [targetKB, setTargetKB] = useState<number>(initialTargetKB);
   const [pdfBytes, setPdfBytes] = useState<ArrayBuffer | null>(initialPdfBytes || null);
   const [fileName, setFileName] = useState<string>(initialFileName);
@@ -48,11 +57,15 @@ export const SizeSqueezer: React.FC<SizeSqueezerProps> = ({
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [progressText, setProgressText] = useState<string>('');
   const [result, setResult] = useState<SqueezeResult | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const isCancelledRef = useRef<boolean>(false);
 
   const presets = [
-    { label: '100 KB', value: 95, desc: 'UPSC, SSC, Govt Exam Portals' },
-    { label: '200 KB', value: 195, desc: 'TCS, Infosys, State Job Portals' },
-    { label: '500 KB', value: 490, desc: 'US Visa DS-160, Schengen Portals' },
+    { label: '50 KB', value: 48, desc: 'Photo, Signature & Exam Portal Cap' },
+    { label: '100 KB', value: 95, desc: 'UPSC, SSC, State Govt Job Portals' },
+    { label: '200 KB', value: 195, desc: 'TCS, Infosys, College Admissions' },
+    { label: '300 KB', value: 295, desc: 'Visa & Scholarship Application Limit' },
+    { label: '500 KB', value: 490, desc: 'US Visa DS-160, Schengen Limit' },
     { label: '1 MB', value: 980, desc: 'Corporate Email & Upload Limits' },
   ];
 
@@ -64,6 +77,7 @@ export const SizeSqueezer: React.FC<SizeSqueezerProps> = ({
     setPdfBytes(arrayBuffer);
     setFileName(file.name);
     setResult(null);
+    setErrorMessage(null);
     onFileLoaded?.(file, arrayBuffer);
   };
 
@@ -74,236 +88,336 @@ export const SizeSqueezer: React.FC<SizeSqueezerProps> = ({
     }
 
     setIsProcessing(true);
+    isCancelledRef.current = false;
+    setErrorMessage(null);
+    setResult(null);
     setProgressText('Analyzing pages and calculating optimal compression curve...');
 
     try {
-      const res = await squeezePDFToTargetKB(
-        pdfBytes,
-        targetKB,
-        (current, total, msg) => {
+      let res: SqueezeResult;
+      if (strategy === 'vector-preserve') {
+        res = await compressPDFVectorPreserve(pdfBytes, (_c, _t, msg) => {
           setProgressText(msg);
-        }
-      );
+        });
+      } else {
+        res = await squeezePDFToTargetKB(
+          pdfBytes,
+          targetKB,
+          (_curr, _total, msg) => {
+            setProgressText(msg);
+          },
+          () => isCancelledRef.current
+        );
+      }
+
       setResult(res);
       confetti({ particleCount: 50, spread: 60 });
     } catch (err: any) {
-      alert('Compression error: ' + (err.message || 'Unknown error'));
+      if (err?.message?.includes('cancelled')) {
+        setErrorMessage('Compression was cancelled by user.');
+      } else {
+        setErrorMessage('Compression error: ' + (err.message || 'Unknown error'));
+      }
     } finally {
       setIsProcessing(false);
+      setProgressText('');
     }
+  };
+
+  const handleCancel = () => {
+    isCancelledRef.current = true;
+    setProgressText('Cancelling...');
   };
 
   const handleDownload = () => {
     if (!result) return;
     const baseName = fileName.replace(/\.[^/.]+$/, '');
-    const outName = `${baseName}_squeezed_${result.compressedSizeKB}kb.pdf`;
-    const blob = new Blob([result.compressedBytes.buffer as ArrayBuffer], { type: 'application/pdf' });
-    downloadBlob(blob, outName);
-    confetti({ particleCount: 60, spread: 70 });
+    const outName = `${baseName}_compressed_${result.compressedSizeKB}kb.pdf`;
+    downloadBlob(result.compressedBytes, outName);
   };
 
-  const currentOriginalKB = pdfBytes ? Math.round(pdfBytes.byteLength / 1024) : 0;
+  const originalKB = pdfBytes ? Math.round(pdfBytes.byteLength / 1024) : 0;
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto">
-      {/* Top Banner Guide */}
+    <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
+      {/* Top Banner */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-slate-800">
         <div>
-          <div className="flex items-center gap-2.5">
-            <span className="p-2 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-600/30 shrink-0">
-              <Shrink className="w-5 h-5" />
+          <h2 className="text-xl font-bold text-white flex items-center gap-2">
+            <Shrink className="w-5 h-5 text-emerald-400" />
+            <span>Target Size Squeezer &amp; Compressor</span>
+            <span className="text-xs bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full font-mono">
+              Verified Limits
             </span>
-            <div>
-              <div className="flex flex-wrap items-center gap-2">
-                <h2 className="text-xl font-black text-white">Target Size Squeezer (Portal Cruncher)</h2>
-                <span className="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold">
-                  Guaranteed Under Portal Limit • Free $0
-                </span>
-              </div>
-              <p className="text-xs text-slate-400 mt-0.5 leading-relaxed">
-                Never get rejected by 200 KB or 500 KB portal caps again. Downscales resolution and compresses to fit strictly under your chosen KB limit.
-              </p>
-            </div>
-          </div>
+          </h2>
+          <p className="text-xs text-slate-400 mt-1">
+            Compress PDFs to meet strict government portal, visa, and exam upload caps. 100% in-browser memory.
+          </p>
         </div>
 
-        {/* Upload Button */}
-        <label className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold transition cursor-pointer shadow-md w-full sm:w-auto">
-          <UploadCloud className="w-4 h-4 text-emerald-400" />
-          <span>Upload PDF Document</span>
+        {pdfBytes && (
+          <label className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 cursor-pointer transition shadow-sm">
+            <UploadCloud className="w-4 h-4 text-emerald-400" />
+            <span>Change PDF</span>
+            <input type="file" accept=".pdf" className="hidden" onChange={handleFileUpload} />
+          </label>
+        )}
+      </div>
+
+      {/* Upload Zone when no document is active */}
+      {!pdfBytes ? (
+        <div className="border-2 border-dashed border-slate-800 hover:border-emerald-500/50 rounded-3xl p-12 text-center bg-slate-900/60 transition group cursor-pointer relative shadow-xl">
           <input
             type="file"
             accept=".pdf"
-            className="hidden"
             onChange={handleFileUpload}
+            className="absolute inset-0 opacity-0 cursor-pointer z-10"
           />
-        </label>
-      </div>
-
-      {/* Main Control Card */}
-      <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl space-y-6">
-        
-        {/* Document Status */}
-        <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800/80 flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400 font-bold text-xs">
-              PDF
-            </div>
-            <div>
-              <h4 className="text-xs font-bold text-white truncate max-w-[280px]">{fileName}</h4>
-              <p className="text-[11px] text-slate-400">
-                Original Size: <strong className="text-slate-200">{currentOriginalKB} KB</strong> ({((currentOriginalKB / 1024)).toFixed(2)} MB)
-              </p>
-            </div>
+          <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto mb-4 border border-emerald-500/20 group-hover:scale-110 transition">
+            <Shrink className="w-8 h-8" />
           </div>
-
-          <div className="text-xs text-right">
-            <span className="text-slate-400">Selected Target Ceiling:</span>
-            <p className="text-sm font-black text-emerald-400">Under {targetKB} KB</p>
-          </div>
+          <h3 className="text-lg font-bold text-white mb-2">Drop your PDF here to compress</h3>
+          <p className="text-xs text-slate-400 max-w-sm mx-auto mb-6">
+            Dial in a strict target ceiling (50KB, 100KB, 200KB) or use lossless vector compression.
+          </p>
+          <button className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs transition shadow-lg shadow-emerald-600/30 inline-flex items-center gap-2">
+            <UploadCloud className="w-4 h-4" />
+            <span>Select PDF Document</span>
+          </button>
         </div>
-
-        {/* Target Presets */}
-        <div>
-          <label className="block text-xs font-bold text-slate-300 mb-2 uppercase tracking-wider flex items-center gap-1.5">
-            <Zap className="w-3.5 h-3.5 text-amber-400" />
-            <span>Select Common Government & Job Portal Limits</span>
-          </label>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {presets.map((p) => (
-              <button
-                key={p.label}
-                type="button"
-                onClick={() => setTargetKB(p.value)}
-                className={`p-3.5 rounded-2xl border text-left transition cursor-pointer flex flex-col justify-between ${
-                  targetKB === p.value
-                    ? 'bg-emerald-500/20 text-white border-emerald-500 font-bold shadow-md shadow-emerald-500/10'
-                    : 'bg-slate-950 border-slate-800 text-slate-300 hover:bg-slate-800'
-                }`}
-              >
-                <div>
-                  <span className="text-base font-black block">{p.label}</span>
-                  <span className="text-[10px] text-slate-400 leading-tight block mt-1">{p.desc}</span>
-                </div>
-                <span className="text-[10px] text-emerald-400 font-mono mt-2 font-semibold">Target: ≤ {p.value} KB</span>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Custom Target Slider */}
-        <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800 space-y-2">
-          <div className="flex justify-between items-center text-xs font-semibold">
-            <span className="text-slate-300 flex items-center gap-1.5">
-              <Sliders className="w-3.5 h-3.5 text-indigo-400" />
-              <span>Or Custom Target Ceiling:</span>
-            </span>
-            <span className="text-emerald-400 font-bold font-mono">{targetKB} KB</span>
-          </div>
-          <input
-            type="range"
-            min="60"
-            max="1500"
-            step="15"
-            value={targetKB}
-            onChange={(e) => setTargetKB(parseInt(e.target.value, 10))}
-            className="w-full accent-emerald-500 cursor-pointer"
-          />
-          <div className="flex justify-between text-[10px] text-slate-500 font-mono">
-            <span>60 KB (Extreme)</span>
-            <span>200 KB</span>
-            <span>500 KB</span>
-            <span>1000 KB (1 MB)</span>
-            <span>1500 KB</span>
-          </div>
-        </div>
-
-        {/* Action Button */}
-        <button
-          type="button"
-          onClick={handleRunSqueeze}
-          disabled={isProcessing}
-          className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-xl shadow-emerald-600/30 flex items-center justify-center gap-2 transition cursor-pointer"
-        >
-          {isProcessing ? (
-            <>
-              <Loader2 className="w-4 h-4 animate-spin" />
-              <span>{progressText || 'Crunching PDF to target size...'}</span>
-            </>
-          ) : (
-            <>
-              <Shrink className="w-4 h-4" />
-              <span>Squeeze PDF Strictly Under {targetKB} KB ✨</span>
-            </>
-          )}
-        </button>
-      </div>
-
-      {/* Results View */}
-      {result && (
-        <div className="p-6 rounded-3xl bg-slate-900 border border-emerald-500/40 shadow-2xl space-y-5 animate-in fade-in duration-300">
-          <div className="flex items-center gap-3">
-            <span className="p-2 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-              <CheckCircle2 className="w-6 h-6" />
-            </span>
-            <div>
-              <h3 className="text-base font-black text-white">Squeeze Succeeded! Guaranteed Portal Safe</h3>
-              <p className="text-xs text-slate-400">
-                Your file is now <strong className="text-emerald-300">{result.compressedSizeKB} KB</strong> (safely under your {targetKB} KB target).
-              </p>
-            </div>
-          </div>
-
-          {/* Stat Comparison Strip */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-center">
-              <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Original Size</span>
-              <p className="text-xl font-black text-rose-400 mt-1">{result.originalSizeKB} KB</p>
+      ) : (
+        <div className="space-y-6">
+          {/* File Card & Strategy Selector */}
+          <div className="p-5 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-xl space-y-5">
+            <div className="flex items-center justify-between text-xs border-b border-slate-800 pb-4">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <FileText className="w-4 h-4 text-indigo-400 shrink-0" />
+                <span className="font-semibold text-white truncate max-w-xs">{fileName}</span>
+              </div>
+              <span className="font-mono text-slate-400 bg-slate-800 px-2.5 py-1 rounded-lg">
+                Original Size: {originalKB} KB
+              </span>
             </div>
 
-            <div className="p-4 rounded-2xl bg-slate-950 border border-emerald-500/30 text-center shadow-inner">
-              <span className="text-[10px] uppercase font-bold text-emerald-400 tracking-wider">New Optimized Size</span>
-              <p className="text-xl font-black text-emerald-400 mt-1">{result.compressedSizeKB} KB</p>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-center">
-              <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Space Saved</span>
-              <p className="text-xl font-black text-white mt-1">-{result.reductionPercentage}%</p>
-            </div>
-          </div>
-
-          {/* First Page Preview & Download */}
-          <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-6">
-            {result.firstPagePreviewUrl && (
-              <div className="flex items-center gap-4">
-                <div className="w-20 h-28 border border-slate-700 rounded-lg overflow-hidden shadow-lg bg-white shrink-0">
-                  <img
-                    src={result.firstPagePreviewUrl}
-                    alt="Page 1 Preview"
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-                <div className="text-xs space-y-1">
-                  <h5 className="font-bold text-white flex items-center gap-1.5">
-                    <FileCheck className="w-4 h-4 text-emerald-400" />
-                    <span>Visual Clarity Verified</span>
-                  </h5>
-                  <p className="text-slate-400 text-[11px] leading-relaxed max-w-sm">
-                    Text, signatures, and stamps were smoothed with bicubic filtering to remain legible for portal officers.
+            {/* Strategy Modes */}
+            <div className="space-y-2">
+              <label className="text-xs font-bold text-slate-300">Compression Strategy:</label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => setStrategy('target-squeeze')}
+                  className={`p-3.5 rounded-2xl border text-left transition ${
+                    strategy === 'target-squeeze'
+                      ? 'bg-emerald-500/10 border-emerald-500 text-white shadow-md'
+                      : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700'
+                  }`}
+                >
+                  <p className="text-xs font-bold text-white flex items-center gap-1.5">
+                    <Zap className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Strict Target Size Squeezer</span>
                   </p>
+                  <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">
+                    Adaptive scaling strictly tailored to government, college, or job portal limits (50KB, 100KB, 200KB).
+                  </p>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setStrategy('vector-preserve')}
+                  className={`p-3.5 rounded-2xl border text-left transition ${
+                    strategy === 'vector-preserve'
+                      ? 'bg-indigo-500/10 border-indigo-500 text-white shadow-md'
+                      : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700'
+                  }`}
+                >
+                  <p className="text-xs font-bold text-white flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+                    <span>High Quality (Vector Preserved)</span>
+                  </p>
+                  <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">
+                    Optimizes internal streams and object tables without rasterizing. Keeps 100% vector fonts, selectable text &amp; links.
+                  </p>
+                </button>
+              </div>
+            </div>
+
+            {/* Target KB Presets & Slider (Active in Target Squeezer Mode) */}
+            {strategy === 'target-squeeze' && (
+              <div className="space-y-4 pt-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                    <Sliders className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Select Target Size Limit:</span>
+                  </label>
+                  <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-lg">
+                    Target: {targetKB} KB
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                  {presets.map((p) => (
+                    <button
+                      key={p.value}
+                      type="button"
+                      onClick={() => setTargetKB(p.value)}
+                      className={`p-2.5 rounded-xl border text-left transition ${
+                        targetKB === p.value
+                          ? 'bg-emerald-500/20 border-emerald-400 text-white shadow'
+                          : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200'
+                      }`}
+                    >
+                      <div className="text-xs font-bold text-white font-mono">{p.label}</div>
+                      <div className="text-[10px] text-slate-400 truncate mt-0.5">{p.desc}</div>
+                    </button>
+                  ))}
+                </div>
+
+                {/* Range Slider */}
+                <div className="pt-2">
+                  <input
+                    type="range"
+                    min="40"
+                    max={Math.max(1000, originalKB)}
+                    step="10"
+                    value={targetKB}
+                    onChange={(e) => setTargetKB(parseInt(e.target.value, 10))}
+                    className="w-full h-2 bg-slate-950 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                  />
+                  <div className="flex justify-between text-[10px] font-mono text-slate-500 mt-1">
+                    <span>40 KB (Extreme)</span>
+                    <span>200 KB (Govt Cap)</span>
+                    <span>500 KB</span>
+                    <span>{Math.max(1000, originalKB)} KB</span>
+                  </div>
                 </div>
               </div>
             )}
 
-            <button
-              type="button"
-              onClick={handleDownload}
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs flex items-center gap-2 shadow-lg shadow-emerald-600/30 transition cursor-pointer shrink-0"
-            >
-              <Download className="w-4 h-4" />
-              <span>Download Squeezed PDF ({result.compressedSizeKB} KB)</span>
-            </button>
+            {/* Execute Button */}
+            <div className="flex items-center gap-3 pt-2">
+              <button
+                onClick={handleRunSqueeze}
+                disabled={isProcessing}
+                className="flex-1 sm:flex-none px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs transition shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 disabled:opacity-50"
+              >
+                {isProcessing ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Compressing...</span>
+                  </>
+                ) : (
+                  <>
+                    <Shrink className="w-4 h-4" />
+                    <span>Compress PDF to Target</span>
+                  </>
+                )}
+              </button>
+
+              {isProcessing && (
+                <button
+                  onClick={handleCancel}
+                  className="px-4 py-3 rounded-xl bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 font-semibold text-xs border border-rose-500/30 transition flex items-center gap-1.5"
+                >
+                  <XCircle className="w-4 h-4" />
+                  <span>Cancel</span>
+                </button>
+              )}
+            </div>
+
+            {progressText && (
+              <p className="text-xs text-slate-400 font-mono flex items-center gap-2">
+                <Loader2 className="w-3.5 h-3.5 animate-spin text-emerald-400" />
+                <span>{progressText}</span>
+              </p>
+            )}
+
+            {errorMessage && (
+              <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 shrink-0" />
+                <span>{errorMessage}</span>
+              </div>
+            )}
           </div>
+
+          {/* Results Summary Box */}
+          {result && (
+            <div className="p-6 rounded-3xl bg-slate-900 border border-emerald-500/40 shadow-2xl space-y-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
+                    <CheckCircle2 className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                      <span>Compression Complete</span>
+                      {result.targetAchieved ? (
+                        <span className="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full font-mono">
+                          Verified Under Target
+                        </span>
+                      ) : (
+                        <span className="text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded-full font-mono">
+                          Best Effort
+                        </span>
+                      )}
+                    </h3>
+                    <p className="text-xs text-slate-400">
+                      Original: {result.originalSizeKB} KB ➔ Compressed: <strong className="text-emerald-400">{result.compressedSizeKB} KB</strong> ({result.reductionPercentage}% reduction)
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={handleDownload}
+                  className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 transition"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Download Compressed PDF</span>
+                </button>
+              </div>
+
+              {/* Warning if target exceeded */}
+              {result.warning && (
+                <div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs flex items-start gap-2">
+                  <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
+                  <span>{result.warning}</span>
+                </div>
+              )}
+
+              {/* Verified Metrics Cards */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                <div className="p-3 rounded-xl bg-slate-950 border border-slate-800">
+                  <p className="text-[10px] text-slate-500 uppercase font-mono">Initial Size</p>
+                  <p className="text-sm font-bold text-slate-300 mt-0.5 font-mono">{result.originalSizeKB} KB</p>
+                </div>
+                <div className="p-3 rounded-xl bg-slate-950 border border-slate-800">
+                  <p className="text-[10px] text-slate-500 uppercase font-mono">Export Size</p>
+                  <p className="text-sm font-bold text-emerald-400 mt-0.5 font-mono">{result.compressedSizeKB} KB</p>
+                </div>
+                <div className="p-3 rounded-xl bg-slate-950 border border-slate-800">
+                  <p className="text-[10px] text-slate-500 uppercase font-mono">Reduction</p>
+                  <p className="text-sm font-bold text-white mt-0.5 font-mono">-{result.reductionPercentage}%</p>
+                </div>
+                <div className="p-3 rounded-xl bg-slate-950 border border-slate-800">
+                  <p className="text-[10px] text-slate-500 uppercase font-mono">Total Pages</p>
+                  <p className="text-sm font-bold text-indigo-400 mt-0.5 font-mono">{result.numPages} Pages</p>
+                </div>
+              </div>
+
+              {/* First Page Visual Preview */}
+              {result.firstPagePreviewUrl && (
+                <div className="pt-2">
+                  <p className="text-xs text-slate-400 font-medium mb-2">Compressed Page Preview:</p>
+                  <div className="max-w-[200px] aspect-[3/4] bg-white rounded-xl overflow-hidden border border-slate-700 p-2 shadow-inner">
+                    <img
+                      src={result.firstPagePreviewUrl}
+                      alt="Compressed Preview"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>

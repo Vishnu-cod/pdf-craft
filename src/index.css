@@ -7,7 +7,38 @@
     @apply bg-slate-950 text-slate-100 antialiased selection:bg-indigo-500 selection:text-white;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     overflow-x: hidden;
+    min-height: 100dvh;
   }
+
+  button, a, input, select, textarea, [role="button"] {
+    touch-action: manipulation;
+  }
+}
+
+/* Safe area insets for notches and Android navigation gestures */
+.safe-area-pb {
+  padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px));
+}
+.safe-area-pt {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* Touch canvas protection for signature drawing */
+.touch-none, canvas.touch-drawing {
+  touch-action: none !important;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Momentum scrolling for iOS & Android Chrome overflow containers */
+.momentum-scroll {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Minimum accessible touch target utility */
+.min-touch-target {
+  min-height: 44px;
+  min-width: 44px;
 }
 
 /* Hide scrollbar utility for mobile rails */

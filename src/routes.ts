@@ -17,8 +17,8 @@ export const APP_ROUTES: RouteConfig[] = [
   {
     path: '/',
     tab: 'sign-edit',
-    title: 'PDFCraft — Free In-Browser PDF Editor, Signer & Tools',
-    description: 'Free private PDF tools in your browser. Edit, sign, compress under 200KB, merge, split, and convert with 100% client-side privacy.',
+    title: 'Free Online PDF Editor — Edit, Sign & Compress PDFs Privately | PDFCraft',
+    description: 'Free online PDF editor and private PDF suite. Edit, sign, compress under 200KB, merge, and convert PDFs 100% in your browser with zero cloud uploads. Try it free now.',
   },
   {
     path: '/sign-pdf',

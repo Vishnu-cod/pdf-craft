@@ -146,7 +146,7 @@ export const App: React.FC = () => {
     if (window.location.pathname !== '/') {
       window.history.pushState(null, '', '/');
     }
-    document.title = 'PDFCraft — 100% Free & Private PDF Editor, Signer & Tools (Zero Cloud Leaks)';
+    document.title = 'Free Online PDF Editor — Edit, Sign & Compress PDFs Privately | PDFCraft';
   };
 
   // Comprehensive SEO Route & URL sync handler for all canonical tools
@@ -166,7 +166,7 @@ export const App: React.FC = () => {
     if (studioTab) setSecurityStudioSubTab(studioTab);
 
     let path = '/';
-    let title = 'PDFCraft — Free In-Browser PDF Editor, Signer & Tools';
+    let title = 'Free Online PDF Editor — Edit, Sign & Compress PDFs Privately | PDFCraft';
 
     if (tab === 'sign-edit') {
       if (subTool === 'redact') {
@@ -1097,7 +1097,7 @@ export const App: React.FC = () => {
               </ul>
             </div>
 
-            {/* Column 3: Edit, Sign & Organize */}
+            {/* Column 3: Edit, Sign & Merge */}
             <div className="space-y-3">
               <h3 className="font-bold text-white uppercase text-[11px] tracking-wider text-blue-400 flex items-center gap-1.5">
                 <FileSignature className="w-3.5 h-3.5" />

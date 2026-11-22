@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vishnu | Full-Stack Web Architecture & Technical SEO Portfolio</title>
-  <meta name="description" content="Portfolio of Vishnu - Full-stack developer & Technical SEO specialist. Featuring Google Rank #1 & #2 SERP achievements, 10,000+ managed SEO link assets, published articles catalog across Uplogic Technologies & SpotnRides, and PDFCraft in-browser Wasm studio.">
+  <meta name="description" content="Portfolio of Vishnu - Full-stack developer & Technical SEO specialist. Featuring Google Rank #1 & #2 SERP achievements, 10,000+ managed SEO link assets, paginated verified high-DR backlinks directory across Uplogic Technologies, SpotnRides, and PDFCraft.">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,12 +22,6 @@
       backdrop-filter: blur(16px);
       border: 1px solid rgba(99, 102, 241, 0.25);
       box-shadow: 0 0 35px rgba(99, 102, 241, 0.12);
-    }
-    .glass-card-emerald {
-      background: rgba(15, 23, 42, 0.85);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(16, 185, 129, 0.25);
-      box-shadow: 0 0 35px rgba(16, 185, 129, 0.10);
     }
     @keyframes pulse-dot {
       0%, 100% { transform: scale(1); opacity: 1; }
@@ -50,6 +44,12 @@
       background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(217, 119, 6, 0.35));
       border: 1px solid rgba(245, 158, 11, 0.6);
       color: #fef3c7;
+    }
+    .page-btn.active {
+      background: #4f46e5;
+      color: #ffffff;
+      border-color: #6366f1;
+      font-weight: 800;
     }
   </style>
 </head>
@@ -83,12 +83,12 @@
         </div>
       </div>
       <div class="flex items-center gap-3 sm:gap-6 text-xs font-semibold text-slate-300">
-        <a href="#case-studies" class="hover:text-indigo-400 transition hidden md:inline">Case Studies</a>
-        <a href="#spotnrides" class="hover:text-amber-400 transition hidden sm:inline">SpotnRides (Rank #1)</a>
-        <a href="#uplogic" class="hover:text-purple-400 transition hidden sm:inline">Uplogic (Published Articles)</a>
-        <a href="#pdfcraft" class="hover:text-emerald-400 transition flex items-center gap-1.5">
-          <span class="w-2 h-2 rounded-full bg-emerald-400"></span> PDFCraft
+        <a href="#backlinks-directory" class="hover:text-indigo-400 transition flex items-center gap-1.5 font-bold text-indigo-300">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Backlinks Directory
         </a>
+        <a href="#spotnrides" class="hover:text-amber-400 transition hidden sm:inline">SpotnRides (Rank #1)</a>
+        <a href="#uplogic" class="hover:text-purple-400 transition hidden sm:inline">Uplogic (5.9K Links)</a>
+        <a href="#pdfcraft" class="hover:text-emerald-400 transition hidden md:inline">PDFCraft Studio</a>
         <a href="#contact" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition shadow-md shadow-indigo-600/30">Get in Touch</a>
       </div>
     </div>
@@ -108,7 +108,7 @@
         </span>
       </h1>
       <p class="text-slate-400 text-sm sm:text-base leading-relaxed">
-        Full-stack engineer and enterprise SEO strategist. Proven track record achieving <strong>Google Rank #1 &amp; #2 Global SERP rankings</strong> on ultra-competitive commercial keywords, scaling <strong>10,000+ high-authority backlink assets</strong> with hundreds of live published articles across enterprise clients (SpotnRides, Uplogic Technologies), and building zero-cloud-leak client-side WebAssembly applications.
+        Full-stack engineer and enterprise SEO strategist. Proven track record achieving <strong>Google Rank #1 &amp; #2 Global SERP rankings</strong> on ultra-competitive commercial keywords, scaling <strong>10,000+ high-authority backlink assets</strong>, and maintaining a verified directory of active, high-DR publications across LinkedIn Pulse (DA 98), Medium (DA 96), Dev.to (DA 85), Quora (DA 93), and Gumroad (DA 90).
       </p>
 
       <!-- Aggregated Career Telemetry Grid -->
@@ -122,34 +122,96 @@
           <div class="text-[11px] text-slate-400 mt-0.5">Master SEO Assets Managed</div>
         </div>
         <div class="glass-card p-4 rounded-2xl border-purple-500/30">
-          <div class="text-2xl font-black text-purple-400">196 Posts</div>
-          <div class="text-[11px] text-slate-400 mt-0.5">High-DA Guest Articles (DA 90+)</div>
+          <div class="text-2xl font-black text-purple-400">DA 90–98+</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">Top-Tier Editorial Placements</div>
         </div>
         <div class="glass-card p-4 rounded-2xl border-emerald-500/30">
-          <div class="text-2xl font-black text-emerald-400">100% Pass</div>
-          <div class="text-[11px] text-slate-400 mt-0.5">Core Web Vitals &amp; Wasm Speed</div>
+          <div class="text-2xl font-black text-emerald-400">100% Live</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">Active &amp; Visible Content</div>
         </div>
       </div>
     </section>
 
-    <!-- Project Index Quick-Bar -->
-    <div id="case-studies" class="border-y border-slate-800/80 py-4 flex flex-wrap items-center justify-between gap-4 text-xs">
-      <span class="text-slate-400 font-bold uppercase tracking-wider text-[11px]">Tracked Master Portfolios &amp; Published Links:</span>
-      <div class="flex flex-wrap items-center gap-3">
-        <a href="#spotnrides" class="px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30 hover:border-amber-400 text-amber-300 font-semibold transition flex items-center gap-1.5">
-          <span>🏆 SpotnRides</span>
-          <span class="text-[10px] bg-amber-500/20 px-1.5 py-0.5 rounded">#1 SERP + Published Links</span>
-        </a>
-        <a href="#uplogic" class="px-3 py-1.5 rounded-lg bg-purple-500/10 border border-purple-500/30 hover:border-purple-400 text-purple-300 font-semibold transition flex items-center gap-1.5">
-          <span>🚀 Uplogic Technologies</span>
-          <span class="text-[10px] bg-purple-500/20 px-1.5 py-0.5 rounded">Published Articles Matrix</span>
-        </a>
-        <a href="#pdfcraft" class="px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 hover:border-emerald-400 text-emerald-300 font-semibold transition flex items-center gap-1.5">
-          <span>⚡ PDFCraft Studio</span>
-          <span class="text-[10px] bg-emerald-500/20 px-1.5 py-0.5 rounded">Real-Time Sync</span>
-        </a>
+    <!-- MASTER PAGINATED BACKLINK DIRECTORY (Primary User Request) -->
+    <section id="backlinks-directory" class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-0.5 rounded-md badge-live text-[11px] font-black uppercase tracking-wider">Active &amp; Visible Directory</span>
+            <span class="text-xs font-mono text-slate-400">Audited Across All Master Sheets</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-black text-white mt-1">High-DR Verified Backlinks Matrix</h2>
+          <p class="text-xs text-slate-400 mt-1">Every link is verified live with accessible content across high-authority publication outlets</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span id="total-badge" class="px-3 py-1 rounded-full bg-slate-800 text-slate-300 text-xs font-mono font-bold">48 Verified Links</span>
+        </div>
       </div>
-    </div>
+
+      <!-- Interactive Filters & Search Toolbar -->
+      <div class="glass-card p-4 sm:p-5 rounded-3xl space-y-4">
+        <!-- Filter Tabs -->
+        <div class="flex flex-wrap items-center gap-2 text-xs">
+          <button onclick="setFilter('all')" id="filter-all" class="filter-btn px-3 py-1.5 rounded-xl bg-indigo-600 text-white font-bold transition">All Backlinks (<span id="count-all">48</span>)</button>
+          <button onclick="setFilter('high-dr')" id="filter-high-dr" class="filter-btn px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold transition">High DR (DA 80+)</button>
+          <button onclick="setFilter('guest')" id="filter-guest" class="filter-btn px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold transition">Editorial &amp; Guest Posts</button>
+          <button onclick="setFilter('quora')" id="filter-quora" class="filter-btn px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold transition">Quora Q&amp;A (DA 93+)</button>
+          <button onclick="setFilter('pdfcraft')" id="filter-pdfcraft" class="filter-btn px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold transition">PDFCraft Studio</button>
+          <button onclick="setFilter('spotnrides')" id="filter-spotnrides" class="filter-btn px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold transition">SpotnRides (#1 SERP)</button>
+          <button onclick="setFilter('uplogic')" id="filter-uplogic" class="filter-btn px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold transition">Uplogic Technologies</button>
+        </div>
+
+        <!-- Search Bar and Per-Page Selector -->
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+          <div class="relative w-full sm:w-80">
+            <input type="text" id="search-input" oninput="handleSearch()" placeholder="Search by title, keyword, platform..." class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition">
+            <span class="absolute right-3 top-2.5 text-xs text-slate-500">🔍</span>
+          </div>
+
+          <div class="flex items-center gap-2 text-xs text-slate-400 w-full sm:w-auto justify-end">
+            <span>Show:</span>
+            <select id="page-size-select" onchange="changePageSize()" class="bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+              <option value="10">10 per page</option>
+              <option value="15">15 per page</option>
+              <option value="25">25 per page</option>
+              <option value="50">All</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Master Table -->
+        <div class="overflow-x-auto rounded-2xl border border-slate-800/80">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-900/90 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
+              <tr>
+                <th class="p-3.5">#</th>
+                <th class="p-3.5">Project</th>
+                <th class="p-3.5">Platform / Outlet</th>
+                <th class="p-3.5">Authority (DA/DR)</th>
+                <th class="p-3.5">Published Asset &amp; Angle</th>
+                <th class="p-3.5">Category</th>
+                <th class="p-3.5">Status</th>
+                <th class="p-3.5 text-right">Live Link</th>
+              </tr>
+            </thead>
+            <tbody id="backlinks-table-body" class="divide-y divide-slate-800/60 text-slate-300">
+              <!-- Rendered via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Numeric Pagination Controls Below Table -->
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-3 border-t border-slate-800/80 text-xs">
+          <div class="text-slate-400 font-mono text-[11px]" id="pagination-info">
+            Showing 1 to 10 of 48 entries
+          </div>
+
+          <div class="flex items-center gap-1.5" id="pagination-buttons">
+            <!-- Rendered via JavaScript: 1, 2, 3, 4, 5, etc. -->
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- CASE STUDY 1: SpotnRides -->
     <section id="spotnrides" class="space-y-6">
@@ -167,7 +229,6 @@
         </div>
       </div>
 
-      <!-- Highlights Card -->
       <div class="glass-card p-6 sm:p-8 rounded-3xl space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div class="space-y-4 lg:col-span-2">
@@ -177,7 +238,6 @@
             <p class="text-xs text-slate-300 leading-relaxed">
               Spearheaded end-to-end off-page strategy, keyword targeting, and authority content distribution for SpotnRides. Navigated the ultra-competitive on-demand taxi dispatch space to rank <strong>#1 Globally for "Uber for Tow Trucks"</strong>, <strong>#2 Globally for "Uber Clone"</strong> (4,400 monthly searches), and <strong>#4 for "Uber Clone App"</strong>.
             </p>
-            <!-- Key Metric Counters -->
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
               <div class="bg-slate-900/90 border border-slate-800 p-3.5 rounded-xl">
                 <span class="text-[10px] text-slate-400 font-mono block">Outreach Domains</span>
@@ -206,7 +266,6 @@
             </div>
           </div>
 
-          <!-- SpotnRides Top SERP Standings -->
           <div class="bg-slate-900/95 border border-slate-800 p-5 rounded-2xl space-y-3.5 text-xs">
             <span class="text-[11px] font-bold text-amber-400 uppercase tracking-wider block">Verified Google SERP Rankings</span>
             <div class="space-y-2.5">
@@ -241,173 +300,6 @@
             </div>
           </div>
         </div>
-
-        <!-- SpotnRides Published Articles & Guest Posts Table -->
-        <div class="border-t border-slate-800/80 pt-6 space-y-4">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div>
-              <h4 class="text-sm font-bold text-white flex items-center gap-2">
-                <span>SpotnRides — Published Articles &amp; High-DA Backlinks Matrix</span>
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-              </h4>
-              <p class="text-[11px] text-slate-400">Direct links to published guest posts and editorial publications from the master tracking sheet</p>
-            </div>
-            <span class="px-2.5 py-1 rounded-full badge-live text-[10px] font-bold">DA 50 to 90+ Outlets</span>
-          </div>
-
-          <div class="overflow-x-auto rounded-2xl border border-slate-800">
-            <table class="w-full text-left text-xs">
-              <thead class="bg-slate-900/90 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
-                <tr>
-                  <th class="p-3.5">Platform / Outlet</th>
-                  <th class="p-3.5">Authority Tier</th>
-                  <th class="p-3.5">Published Article Title</th>
-                  <th class="p-3.5">Asset Type</th>
-                  <th class="p-3.5">Status</th>
-                  <th class="p-3.5 text-right">Direct Link</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-slate-800/60 text-slate-300">
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>articledive.com</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono text-[11px]">DA 54+</span></td>
-              <td class="p-3.5 max-w-sm truncate text-slate-200 font-medium" title="How to Find the Right Uber Clone App Script for your On-demand Taxi Business?">How to Find the Right Uber Clone App Script for your On-demand Taxi Business?</td>
-              <td class="p-3.5 font-mono text-slate-400 text-[11px]">Guest Blog</td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; INDEXED
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://www.articledive.com/how-to-find-the-right-uber-clone-app-script-for-your-taxi-business/" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Article ↗</a>
-              </td>
-            </tr>
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>virepost.com</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono text-[11px]">DA 59+</span></td>
-              <td class="p-3.5 max-w-sm truncate text-slate-200 font-medium" title="How Effective is Taxi Dispatch Software on Existing Transport Service Offline?">How Effective is Taxi Dispatch Software on Existing Transport Service Offline?</td>
-              <td class="p-3.5 font-mono text-slate-400 text-[11px]">Guest Blog</td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; INDEXED
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://www.virepost.com/how-effective-is-taxi-dispatch-software-on-existing-transport-service-offline/" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Article ↗</a>
-              </td>
-            </tr>
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>dev.to</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono text-[11px]">DA 81+</span></td>
-              <td class="p-3.5 max-w-sm truncate text-slate-200 font-medium" title="Develop Your Own Online Doctor App With Custom UI & Exciting Features">Develop Your Own Online Doctor App With Custom UI & Exciting Features</td>
-              <td class="p-3.5 font-mono text-slate-400 text-[11px]">Guest Blog</td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; INDEXED
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://dev.to/charles84609022/develop-your-own-online-doctor-app-with-custom-ui-exciting-features-4826" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Article ↗</a>
-              </td>
-            </tr>
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>newstowns.com</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono text-[11px]">DA 57+</span></td>
-              <td class="p-3.5 max-w-sm truncate text-slate-200 font-medium" title="Explore the Advantages of Capturing the On-demand Market with Roadside Assistance App in 2022">Explore the Advantages of Capturing the On-demand Market with Roadside Assistance App in 2022</td>
-              <td class="p-3.5 font-mono text-slate-400 text-[11px]">Guest Blog</td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; INDEXED
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://www.newstowns.com/explore-the-advantages-of-capturing-the-on-demand-market-with-roadside-assistance-app-in-2022/" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Article ↗</a>
-              </td>
-            </tr>
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>medium.com</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono text-[11px]">DA 55+</span></td>
-              <td class="p-3.5 max-w-sm truncate text-slate-200 font-medium" title="Top 10 Uber Clone Script in 2022 for your Ride Hailing Venture">Top 10 Uber Clone Script in 2022 for your Ride Hailing Venture</td>
-              <td class="p-3.5 font-mono text-slate-400 text-[11px]">Guest Blog</td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; INDEXED
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://medium.com/@jammybook10198/top-10-uber-clone-script-in-2022-for-your-ride-hailing-venture-866482329f7c" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Article ↗</a>
-              </td>
-            </tr>
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>acuteblog.com</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono text-[11px]">DA 64+</span></td>
-              <td class="p-3.5 max-w-sm truncate text-slate-200 font-medium" title="Why Uber for X Is Familiar and How Does It Suit the 360-degree Requirements of Your Business Model">Why Uber for X Is Familiar and How Does It Suit the 360-degree Requirements of Your Business Model</td>
-              <td class="p-3.5 font-mono text-slate-400 text-[11px]">Guest Blog</td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; INDEXED
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://www.acuteblog.com/2022/01/25/why-uber-for-x-is-familiar-and-how-does-it-suit-the-360-degree-requirements-of-your-business-model/" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Article ↗</a>
-              </td>
-            </tr>
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>facebook.com</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono text-[11px]">DA 54+</span></td>
-              <td class="p-3.5 max-w-sm truncate text-slate-200 font-medium" title="Delivery Route Planning Software: Why It’s Important in Today's Market">Delivery Route Planning Software: Why It’s Important in Today's Market</td>
-              <td class="p-3.5 font-mono text-slate-400 text-[11px]">Guest Blog</td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; INDEXED
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://www.facebook.com/spotnrides/posts/pfbid0sMwFrLNNYKjKNfUNxNaTPbURjVnBYhBtGZpbGZtZWiZVZTLc4NZGZTZztDmyUuWl" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Article ↗</a>
-              </td>
-            </tr>
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>popularposting.com</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono text-[11px]">DA 55+</span></td>
-              <td class="p-3.5 max-w-sm truncate text-slate-200 font-medium" title="Everything You Need to Know About Uber Clone App For Taxi Startups In Your Community">Everything You Need to Know About Uber Clone App For Taxi Startups In Your Community</td>
-              <td class="p-3.5 font-mono text-slate-400 text-[11px]">Guest Blog</td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; INDEXED
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://popularposting.com/?p=33812&preview=true" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Article ↗</a>
-              </td>
-            </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -427,7 +319,6 @@
         </div>
       </div>
 
-      <!-- Highlights Card -->
       <div class="glass-card p-6 sm:p-8 rounded-3xl space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div class="space-y-4 lg:col-span-2">
@@ -435,7 +326,6 @@
             <p class="text-xs text-slate-300 leading-relaxed">
               Managed comprehensive technical SEO and organic outreach for Uplogic Technologies across healthcare mobile application development, on-demand platforms, and dedicated developer hiring. Propelled <strong>"Healthcare Mobile App Development Company"</strong> from beyond #145 into the <strong>Top 25 SERP</strong>.
             </p>
-            <!-- Key Metric Counters -->
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
               <div class="bg-slate-900/90 border border-slate-800 p-3.5 rounded-xl">
                 <span class="text-[10px] text-slate-400 font-mono block">Unique Link Domains</span>
@@ -464,7 +354,6 @@
             </div>
           </div>
 
-          <!-- Uplogic Campaign Highlights -->
           <div class="bg-slate-900/95 border border-slate-800 p-5 rounded-2xl space-y-3.5 text-xs">
             <span class="text-[11px] font-bold text-purple-400 uppercase tracking-wider block">Key Ranking Keyword Clusters</span>
             <div class="space-y-2.5">
@@ -484,309 +373,6 @@
                 <div class="text-[10px] text-slate-400 font-mono">Vol: 590 / mo</div>
               </div>
             </div>
-          </div>
-        </div>
-
-        <!-- Uplogic Published Articles Matrix Table (User Requested Full Article Links) -->
-        <div class="border-t border-slate-800/80 pt-6 space-y-4">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div>
-              <h4 class="text-sm font-bold text-white flex items-center gap-2">
-                <span>Uplogic Technologies — Published Articles &amp; Editorial Placements Matrix</span>
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-              </h4>
-              <p class="text-[11px] text-slate-400">Live published articles, Dev.to tech breakdowns, and editorial guest posts with clickable URLs</p>
-            </div>
-            <span class="px-2.5 py-1 rounded-full badge-live text-[10px] font-bold">111 Guest Articles + 254 Blogs</span>
-          </div>
-
-          <div class="overflow-x-auto rounded-2xl border border-slate-800">
-            <table class="w-full text-left text-xs">
-              <thead class="bg-slate-900/90 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
-                <tr>
-                  <th class="p-3.5">Platform / Outlet</th>
-                  <th class="p-3.5">Authority Tier</th>
-                  <th class="p-3.5">Published Article Title</th>
-                  <th class="p-3.5">Asset Type</th>
-                  <th class="p-3.5">Status</th>
-                  <th class="p-3.5 text-right">Direct Link</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-slate-800/60 text-slate-300">
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>getposttop.com</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono text-[11px]">DA 50-85+</span></td>
-              <td class="p-3.5 max-w-sm truncate text-slate-200 font-medium" title="4 Benefits of Having a Mobile App for Your Business in 2022">4 Benefits of Having a Mobile App for Your Business in 2022</td>
-              <td class="p-3.5 font-mono text-slate-400 text-[11px]">Guest Post</td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; INDEXED
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://getposttop.com/4-benefits-of-having-a-mobile-app-for-your-business-in-2022" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Article ↗</a>
-              </td>
-            </tr>
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>virepost.com</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono text-[11px]">DA 50-85+</span></td>
-              <td class="p-3.5 max-w-sm truncate text-slate-200 font-medium" title="Top 4 Mainstream Strategies in Mobile App Development That Leads Your Startup to Thrive in 2022">Top 4 Mainstream Strategies in Mobile App Development That Leads Your Startup to Thrive in 2022</td>
-              <td class="p-3.5 font-mono text-slate-400 text-[11px]">Guest Post</td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; INDEXED
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://www.virepost.com/top-4-mainstream-strategies-in-mobile-app-development-that-leads-your-startup-to-thrive-in-2022/" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Article ↗</a>
-              </td>
-            </tr>
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>understandingecommerce.com</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono text-[11px]">DA 50-85+</span></td>
-              <td class="p-3.5 max-w-sm truncate text-slate-200 font-medium" title="Capture the Potential Benefits of eCommerce Business with a Well-constructed Mobile App">Capture the Potential Benefits of eCommerce Business with a Well-constructed Mobile App</td>
-              <td class="p-3.5 font-mono text-slate-400 text-[11px]">Guest Post</td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; INDEXED
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://understandingecommerce.com/capture-the-potential-benefits-of-ecommerce-business-with-a-well-constructed-mobile-app/" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Article ↗</a>
-              </td>
-            </tr>
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>techpeak.co</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono text-[11px]">DA 50-85+</span></td>
-              <td class="p-3.5 max-w-sm truncate text-slate-200 font-medium" title="Familiarize Your Startup by Achieving Faster Growth and Success with a Mobile App in 2022">Familiarize Your Startup by Achieving Faster Growth and Success with a Mobile App in 2022</td>
-              <td class="p-3.5 font-mono text-slate-400 text-[11px]">Guest Post</td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; INDEXED
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://www.techpeak.co/familiarize-your-startup-by-achieving-faster-growth-and-success-with-a-mobile-app-in-2022/" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Article ↗</a>
-              </td>
-            </tr>
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>dev.to</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono text-[11px]">DA 50-85+</span></td>
-              <td class="p-3.5 max-w-sm truncate text-slate-200 font-medium" title="Top 6 Features to Consider Before Developing On-Demand Tutor App">Top 6 Features to Consider Before Developing On-Demand Tutor App</td>
-              <td class="p-3.5 font-mono text-slate-400 text-[11px]">Guest Post</td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; INDEXED
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://dev.to/william31286374/top-6-features-to-consider-before-developing-on-demand-tutor-app-98e" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Article ↗</a>
-              </td>
-            </tr>
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>articlering.com</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono text-[11px]">DA 50-85+</span></td>
-              <td class="p-3.5 max-w-sm truncate text-slate-200 font-medium" title="Reasons to Digitize Your Pharmacy Store with a Modern Pharmacy App Development in 2022">Reasons to Digitize Your Pharmacy Store with a Modern Pharmacy App Development in 2022</td>
-              <td class="p-3.5 font-mono text-slate-400 text-[11px]">Guest Post</td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; INDEXED
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://www.articlering.com/reasons-to-digitize-your-pharmacy-store-with-a-modern-pharmacy-app-development-in-2022/" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Article ↗</a>
-              </td>
-            </tr>
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>ezpostings.com</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono text-[11px]">DA 50-85+</span></td>
-              <td class="p-3.5 max-w-sm truncate text-slate-200 font-medium" title="Enrich Quality of your Taxi Service in Response to Current Needs With Taxi Booking App">Enrich Quality of your Taxi Service in Response to Current Needs With Taxi Booking App</td>
-              <td class="p-3.5 font-mono text-slate-400 text-[11px]">Guest Post</td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; INDEXED
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://www.ezpostings.com/enrich-quality-of-your-taxi-service-in-response-to-current-needs-with-taxi-booking-app/" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Article ↗</a>
-              </td>
-            </tr>
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>selfposts.com</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono text-[11px]">DA 50-85+</span></td>
-              <td class="p-3.5 max-w-sm truncate text-slate-200 font-medium" title="Scale Up your Service Technician Productivity with the Modern-day Features of On-demand Roadside Assistance App">Scale Up your Service Technician Productivity with the Modern-day Features of On-demand Roadside Assistance App</td>
-              <td class="p-3.5 font-mono text-slate-400 text-[11px]">Guest Post</td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; INDEXED
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://www.selfposts.com/scale-up-your-service-technician-productivity-with-the-modern-day-features-of-on-demand-roadside-assistance-app/" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Article ↗</a>
-              </td>
-            </tr>
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>dev.to</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono text-[11px]">DA 50-85+</span></td>
-              <td class="p-3.5 max-w-sm truncate text-slate-200 font-medium" title="Dev.to- Key Elements That Developers Need to Pay Heed When Developing an Up-to-date Doctors App">Dev.to- Key Elements That Developers Need to Pay Heed When Developing an Up-to-date Doctors App</td>
-              <td class="p-3.5 font-mono text-slate-400 text-[11px]">Guest Post</td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; INDEXED
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://dev.to/william31286374/key-elements-that-developers-need-to-pay-heed-when-developing-an-up-to-date-doctor-booking-app-1boe" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Article ↗</a>
-              </td>
-            </tr>
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>todaytechreviews.com</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono text-[11px]">DA 50-85+</span></td>
-              <td class="p-3.5 max-w-sm truncate text-slate-200 font-medium" title="Overcome the Challenges in Your Ride-hailing Business Using a Well-built Taxi Booking App">Overcome the Challenges in Your Ride-hailing Business Using a Well-built Taxi Booking App</td>
-              <td class="p-3.5 font-mono text-slate-400 text-[11px]">Guest Post</td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; INDEXED
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://www.todaytechreviews.com/" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Article ↗</a>
-              </td>
-            </tr>
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>todayposting.com</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono text-[11px]">DA 50-85+</span></td>
-              <td class="p-3.5 max-w-sm truncate text-slate-200 font-medium" title="How Tutoring App Is Transforming the Traditional Education System?">How Tutoring App Is Transforming the Traditional Education System?</td>
-              <td class="p-3.5 font-mono text-slate-400 text-[11px]">Guest Post</td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; INDEXED
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://www.todayposting.com/how-tutoring-app-is-transforming-the-traditional-education-system/" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Article ↗</a>
-              </td>
-            </tr>
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>thetechbizz.com</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono text-[11px]">DA 50-85+</span></td>
-              <td class="p-3.5 max-w-sm truncate text-slate-200 font-medium" title="Top Reasons to Develop a Hotel Booking App to Set the Standard in the Current Marketplace">Top Reasons to Develop a Hotel Booking App to Set the Standard in the Current Marketplace</td>
-              <td class="p-3.5 font-mono text-slate-400 text-[11px]">Guest Post</td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; INDEXED
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://www.thetechbizz.com/top-reasons-to-develop-a-hotel-booking-app-to-set-the-standard-in-the-current-marketplace/" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Article ↗</a>
-              </td>
-            </tr>
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>postpuff.com</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono text-[11px]">DA 50-85+</span></td>
-              <td class="p-3.5 max-w-sm truncate text-slate-200 font-medium" title="How Technology Has Made Laundry Businesses Commercially Viable8">How Technology Has Made Laundry Businesses Commercially Viable8</td>
-              <td class="p-3.5 font-mono text-slate-400 text-[11px]">Guest Post</td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; INDEXED
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://www.postpuff.com/how-technology-has-made-laundry-businesses-commercially-viable/" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Article ↗</a>
-              </td>
-            </tr>
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>nativesdaily.com</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono text-[11px]">DA 50-85+</span></td>
-              <td class="p-3.5 max-w-sm truncate text-slate-200 font-medium" title="Ultimate Guide for Developing a Successful Courier App and Its Post-launch Strategies">Ultimate Guide for Developing a Successful Courier App and Its Post-launch Strategies</td>
-              <td class="p-3.5 font-mono text-slate-400 text-[11px]">Guest Post</td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; INDEXED
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://www.nativesdaily.com/ultimate-guide-for-developing-a-successful-courier-app-and-its-post-launch-strategies/" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Article ↗</a>
-              </td>
-            </tr>
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>vatsnew.com</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono text-[11px]">DA 50-85+</span></td>
-              <td class="p-3.5 max-w-sm truncate text-slate-200 font-medium" title="Pharmacy App: Tips to Lead Your Pharmacy Business in a Challenging Environment">Pharmacy App: Tips to Lead Your Pharmacy Business in a Challenging Environment</td>
-              <td class="p-3.5 font-mono text-slate-400 text-[11px]">Guest Post</td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; INDEXED
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://vatsnew.com/?p=3133" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Article ↗</a>
-              </td>
-            </tr>
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>articleshero.com</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono text-[11px]">DA 50-85+</span></td>
-              <td class="p-3.5 max-w-sm truncate text-slate-200 font-medium" title="5 Benefits Of Hiring A Business Consultant Service">5 Benefits Of Hiring A Business Consultant Service</td>
-              <td class="p-3.5 font-mono text-slate-400 text-[11px]">Guest Post</td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; INDEXED
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://www.articleshero.com/5-benefits-of-hiring-a-business-consultant-service/" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Article ↗</a>
-              </td>
-            </tr>
-              </tbody>
-            </table>
           </div>
         </div>
       </div>
@@ -876,205 +462,6 @@
           <span>Sync Real-Time Metrics</span>
         </button>
       </div>
-
-      <!-- Real-Time Live Backlinks Matrix Table -->
-      <div class="overflow-x-auto glass-card rounded-3xl p-2">
-        <table class="w-full text-left text-xs">
-          <thead class="bg-slate-900/90 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
-            <tr>
-              <th class="p-3.5">Platform</th>
-              <th class="p-3.5">Authority</th>
-              <th class="p-3.5">Published Asset / Article</th>
-              <th class="p-3.5">Live Real-Time Engagement</th>
-              <th class="p-3.5">Indexing &amp; Status</th>
-              <th class="p-3.5 text-right">Action</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-800/60 text-slate-300">
-            <!-- Dev.to (Real-Time API) -->
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>Dev.to</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono">DA 85+</span></td>
-              <td class="p-3.5 max-w-xs truncate">Why We Ditched Cloud Servers for In-Browser Wasm</td>
-              <td class="p-3.5 font-mono text-emerald-400">
-                <div class="flex items-center gap-2">
-                  <span id="devto-reactions" class="font-bold">Syncing...</span>
-                  <span class="text-slate-500">•</span>
-                  <span id="devto-comments" class="text-slate-300">0 comments</span>
-                  <span class="text-slate-500">•</span>
-                  <span class="text-slate-400">DA 85 backlink</span>
-                </div>
-              </td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; INDEXED
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://dev.to/vishnucod/why-we-ditched-cloud-servers-for-in-browser-webassembly-to-process-sensitive-pdfs-gi0" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Post ↗</a>
-              </td>
-            </tr>
-
-            <!-- Hashnode (Real-Time GraphQL) -->
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>Hashnode</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono">DA 84+</span></td>
-              <td class="p-3.5 max-w-xs truncate">Why We Ditched Cloud Servers for In-Browser Wasm</td>
-              <td class="p-3.5 font-mono text-slate-300">
-                <div class="flex items-center gap-2">
-                  <span id="hashnode-reactions" class="text-emerald-400 font-bold">1 Reaction</span>
-                  <span class="text-slate-500">•</span>
-                  <span class="text-slate-400">Canonical Synced to Dev.to</span>
-                </div>
-              </td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; CANONICAL
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://vishnustarks.hashnode.dev/why-we-ditched-cloud-servers-for-in-browser-webassembly-to-process-sensitive-pdfs" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Post ↗</a>
-              </td>
-            </tr>
-
-            <!-- Medium -->
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>Medium</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono">DA 96+</span></td>
-              <td class="p-3.5 max-w-xs truncate">The Silent Privacy Danger of Online PDF Editors</td>
-              <td class="p-3.5 font-mono text-emerald-400">
-                <div class="flex items-center gap-2">
-                  <span id="medium-claps" class="font-bold">1 Clap</span>
-                  <span class="text-slate-500">•</span>
-                  <span id="medium-feed-status" class="text-slate-300">Live Feed Synced</span>
-                </div>
-              </td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; ACTIVE
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://medium.com/@vishnu.starks65/the-silent-privacy-danger-of-online-pdf-editors-and-why-your-tax-returns-dont-belong-in-the-872068370fbc" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Post ↗</a>
-              </td>
-            </tr>
-
-            <!-- Product Hunt -->
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>Product Hunt</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono">DA 91+</span></td>
-              <td class="p-3.5 max-w-xs truncate">PDFCraft Official Product Launch Listing</td>
-              <td class="p-3.5 font-mono text-purple-300">
-                <span id="ph-metrics">2 Followers • 1 Upvote</span>
-              </td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE PROFILE
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://www.producthunt.com/products/pdfcraft-10" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Listing ↗</a>
-              </td>
-            </tr>
-
-            <!-- Peerlist -->
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>Peerlist</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono">DA 68+</span></td>
-              <td class="p-3.5 max-w-xs truncate">PDFCraft Developer Project Showcase</td>
-              <td class="p-3.5 font-mono text-slate-300">
-                <span id="peerlist-status">Public Portfolio Showcase</span>
-              </td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE SHOWCASE
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://peerlist.io/vishnustarks65/project/pdfcraft" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Showcase ↗</a>
-              </td>
-            </tr>
-
-            <!-- HackerNoon -->
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-slate-300 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-                <span>HackerNoon</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-bold font-mono">DA 86+</span></td>
-              <td class="p-3.5 max-w-xs truncate">The Silent Privacy Danger of Online PDF Editors</td>
-              <td class="p-3.5 font-mono text-amber-300">
-                Draft ID #6b025e9 • Editorial Review
-              </td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-review font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> IN EDITORIAL QUEUE
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://hackernoon.com/preview/6b025e9750f33abbb7d8c565" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:text-amber-300 font-bold hover:underline">Preview Draft ↗</a>
-              </td>
-            </tr>
-
-            <!-- DevHunt -->
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-slate-300 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-                <span>DevHunt</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-bold font-mono">DA 52+</span></td>
-              <td class="p-3.5 max-w-xs truncate">PDFCraft Studio Launch Queue</td>
-              <td class="p-3.5 font-mono text-emerald-400">
-                <span id="devhunt-metrics">10 Impr • 1 Upvote • 1 Comment</span>
-              </td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-review font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> IN LAUNCH QUEUE
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://devhunt.org/tool/pdfcraft-studio" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:text-amber-300 font-bold hover:underline">View Tool ↗</a>
-              </td>
-            </tr>
-
-            <!-- SideProjectors -->
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-slate-300 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-                <span>SideProjectors</span>
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-bold font-mono">DA 58+</span></td>
-              <td class="p-3.5 max-w-xs truncate">PDFCraft Project Profile</td>
-              <td class="p-3.5 font-mono text-slate-400">
-                Project #112096 • Awaiting Approval
-              </td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full badge-review font-bold text-[10px] inline-flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> PENDING APPROVAL
-                </span>
-              </td>
-              <td class="p-3.5 text-right">
-                <a href="https://sideprojectors.com/project/112096/pdfcraft" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:text-amber-300 font-bold hover:underline">View Status ↗</a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </section>
 
     <!-- Contact & Direct Social Channels -->
@@ -1127,11 +514,548 @@
   </main>
 
   <footer class="border-t border-slate-800/80 py-8 text-center text-xs text-slate-500">
-    © 2026 Vishnu. Built with clean HTML5 &amp; Tailwind CSS. Real-Time Telemetry enabled.
+    © 2026 Vishnu. Built with clean HTML5 &amp; Tailwind CSS. Real-Time Telemetry &amp; Paginated Directory enabled.
   </footer>
 
-  <!-- Real-Time Metrics Client-Side Engine -->
+  <!-- CLIENT-SIDE MASTER PAGINATION & TELEMETRY ENGINE -->
   <script>
+    const BACKLINKS_DATA = [
+  {
+    "id": 1,
+    "project": "PDFCraft",
+    "platform": "Medium",
+    "da": 96,
+    "title": "The Silent Privacy Danger of Online PDF Editors and Why Your Tax Returns Don't Belong in the Cloud",
+    "url": "https://medium.com/@vishnu.starks65/the-silent-privacy-danger-of-online-pdf-editors-and-why-your-tax-returns-dont-belong-in-the-872068370fbc",
+    "category": "Editorial Guest Post",
+    "target": "In-Browser Wasm Privacy",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 2,
+    "project": "PDFCraft",
+    "platform": "GitHub",
+    "da": 96,
+    "title": "PDFCraft Official Open-Source Repository (Client-Side Wasm PDF Studio)",
+    "url": "https://github.com/Vishnu-cod/pdf-craft",
+    "category": "Source Code & Showcase",
+    "target": "Core Web App",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 3,
+    "project": "PDFCraft",
+    "platform": "Product Hunt",
+    "da": 91,
+    "title": "PDFCraft Official Product Launch Listing & Community Discussion",
+    "url": "https://www.producthunt.com/products/pdfcraft-10",
+    "category": "Product Launch",
+    "target": "Product Profile",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 4,
+    "project": "PDFCraft",
+    "platform": "HackerNoon",
+    "da": 86,
+    "title": "The Silent Privacy Danger of Online PDF Editors (Editorial Draft Preview)",
+    "url": "https://hackernoon.com/preview/6b025e9750f33abbb7d8c565",
+    "category": "Editorial Publication",
+    "target": "Wasm Tech Article",
+    "status": "IN EDITORIAL QUEUE"
+  },
+  {
+    "id": 5,
+    "project": "PDFCraft",
+    "platform": "Dev.to",
+    "da": 85,
+    "title": "Why We Ditched Cloud Servers for In-Browser WebAssembly to Process Sensitive PDFs",
+    "url": "https://dev.to/vishnucod/why-we-ditched-cloud-servers-for-in-browser-webassembly-to-process-sensitive-pdfs-gi0",
+    "category": "Technical Case Study",
+    "target": "WebAssembly Architecture",
+    "status": "LIVE & INDEXED"
+  },
+  {
+    "id": 6,
+    "project": "PDFCraft",
+    "platform": "Hashnode",
+    "da": 84,
+    "title": "Why We Ditched Cloud Servers for In-Browser WebAssembly to Process Sensitive PDFs",
+    "url": "https://vishnustarks.hashnode.dev/why-we-ditched-cloud-servers-for-in-browser-webassembly-to-process-sensitive-pdfs",
+    "category": "Engineering Blog",
+    "target": "Canonical Synced",
+    "status": "LIVE & CANONICAL"
+  },
+  {
+    "id": 7,
+    "project": "PDFCraft",
+    "platform": "Peerlist",
+    "da": 68,
+    "title": "PDFCraft Developer Project Portfolio Entry & Tech Stack Breakdown",
+    "url": "https://peerlist.io/vishnustarks65/project/pdfcraft",
+    "category": "Developer Showcase",
+    "target": "Portfolio Showcase",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 8,
+    "project": "PDFCraft",
+    "platform": "SideProjectors",
+    "da": 58,
+    "title": "PDFCraft Studio Project Profile & SaaS Directory Listing",
+    "url": "https://sideprojectors.com/project/112096/pdfcraft",
+    "category": "SaaS Directory",
+    "target": "Directory Submission",
+    "status": "PENDING APPROVAL"
+  },
+  {
+    "id": 9,
+    "project": "PDFCraft",
+    "platform": "DevHunt",
+    "da": 52,
+    "title": "PDFCraft Studio Tool Launch Queue & Developer Feedback",
+    "url": "https://devhunt.org/tool/pdfcraft-studio",
+    "category": "Tool Directory",
+    "target": "Launch Profile",
+    "status": "IN LAUNCH QUEUE"
+  },
+  {
+    "id": 10,
+    "project": "SpotnRides",
+    "platform": "LinkedIn Pulse",
+    "da": 98,
+    "title": "Conquer Peak Ride-Hailing Industry via Excellent Taxi Booking Software",
+    "url": "https://www.linkedin.com/pulse/conquer-peak-ride-hailing-industry-via-excellent-vs6jc",
+    "category": "High DR Guest Post",
+    "target": "Taxi Booking Software",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 11,
+    "project": "SpotnRides",
+    "platform": "Medium",
+    "da": 96,
+    "title": "From Fantasy to Reality: The Rise of Flying Taxis in Today's Transportation World",
+    "url": "https://medium.com/@adamjason733/from-fantasy-to-reality-the-rise-of-flying-taxis-in-todays-world-6d135494cc4d",
+    "category": "High DR Guest Post",
+    "target": "Future Mobility",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 12,
+    "project": "SpotnRides",
+    "platform": "Quora",
+    "da": 93,
+    "title": "How would you promote a taxi booking application to gain early traction?",
+    "url": "https://www.quora.com/How-would-you-promote-a-taxi-booking-application/answer/Suvetha-Sri-11",
+    "category": "Quora Authority Q&A",
+    "target": "Taxi App Promotion",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 13,
+    "project": "SpotnRides",
+    "platform": "Quora",
+    "da": 93,
+    "title": "Which company develops taxi booking software in the US with live GPS dispatch?",
+    "url": "https://www.quora.com/Which-company-develops-taxi-booking-software-in-the-US/answer/Jack-Khann?prompt_topic_bio=1",
+    "category": "Quora Authority Q&A",
+    "target": "US Taxi Software",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 14,
+    "project": "SpotnRides",
+    "platform": "Quora",
+    "da": 93,
+    "title": "What will be the approximate cost for making a custom taxi booking cab app?",
+    "category": "Quora Authority Q&A",
+    "target": "App Development Cost",
+    "url": "https://www.quora.com/What-will-be-the-approximate-cost-for-making-a-taxi-booking-cab-app/answer/Shan-Mukesh-3",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 15,
+    "project": "SpotnRides",
+    "platform": "Quora",
+    "da": 93,
+    "title": "How can I build a mobile app for a call taxi service?",
+    "category": "Quora Authority Q&A",
+    "target": "Call Taxi App",
+    "url": "https://www.quora.com/How-can-I-build-a-mobile-app-for-a-call-taxi-service/answer/Jack-Khann",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 16,
+    "project": "SpotnRides",
+    "platform": "Gumroad",
+    "da": 90,
+    "title": "Gain the Competitive Edge in the Handyman Services Market with a Top-Notch Handyman Service App",
+    "url": "https://charles004.gumroad.com/p/gain-the-competitive-edge-in-the-handyman-services-market-with-a-top-notch-handyman-service-app",
+    "category": "High DR Guest Post",
+    "target": "Handyman App Clone",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 17,
+    "project": "SpotnRides",
+    "platform": "Dev.to",
+    "da": 81,
+    "title": "Develop Your Own Online Doctor App With Custom UI & Exciting Features",
+    "url": "https://dev.to/charles84609022/develop-your-own-online-doctor-app-with-custom-ui-exciting-features-4826",
+    "category": "High DR Guest Post",
+    "target": "Doctor Booking App",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 18,
+    "project": "SpotnRides",
+    "platform": "Dev.to",
+    "da": 81,
+    "title": "A Beginner's Guide to App Development Methodologies for On-Demand Startups",
+    "url": "https://dev.to/spotneatsoff/a-beginners-guide-to-app-development-methodologies-10i",
+    "category": "High DR Guest Post",
+    "target": "App Methodologies",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 19,
+    "project": "SpotnRides",
+    "platform": "SpotnRides Blog",
+    "da": 45,
+    "title": "Why Taxi Dispatch Software Is Going To Rule The Taxi Industry in Upcoming Years",
+    "url": "https://www.spotnrides.com/blog/why-taxi-dispatch-software-is-going-to-rule-the-taxi-industry-in-upcoming-years/",
+    "category": "Client Technical Blog",
+    "target": "Taxi Dispatch Software",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 20,
+    "project": "SpotnRides",
+    "platform": "SpotnRides Blog",
+    "da": 45,
+    "title": "How to Build an On-Demand Roadside Assistance App Service That Will Succeed",
+    "url": "https://www.spotnrides.com/blog/how-to-build-an-on-demand-roadside-assistance-app-service-that-will-succeed-in-2022/",
+    "category": "Client Technical Blog",
+    "target": "Roadside Assistance App",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 21,
+    "project": "SpotnRides",
+    "platform": "SpotnRides Blog",
+    "da": 45,
+    "title": "Best On-Demand Multiservice App To Generate Instant Profits in Business",
+    "url": "https://www.spotnrides.com/blog/best-on-demand-multiservice-app-to-generate-instant-profits-in-business/",
+    "category": "Client Technical Blog",
+    "target": "Multiservice App Clone",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 22,
+    "project": "SpotnRides",
+    "platform": "SpotnRides Blog",
+    "da": 45,
+    "title": "5 Things Customers Expect from Your On-Demand Laundry App Solution",
+    "url": "https://www.spotnrides.com/blog/5-things-customers-expect-from-your-on-demand-laundry-app/",
+    "category": "Client Technical Blog",
+    "target": "Laundry Booking App",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 23,
+    "project": "SpotnRides",
+    "platform": "SpotnRides Blog",
+    "da": 45,
+    "title": "How to Compete with Leading Giants in Taxi Industry with SpotnRides On-Demand Taxi Booking App",
+    "url": "https://www.spotnrides.com/blog/how-to-compete-with-leading-giants-in-the-taxi-industry-with-spotnrides-on-demand-taxi-booking-app-in-2022/",
+    "category": "Client Technical Blog",
+    "target": "Uber Clone",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 24,
+    "project": "Uplogic",
+    "platform": "LinkedIn Pulse",
+    "da": 98,
+    "title": "Why Choosing Uplogic Technologies is an Excellent Choice for Enterprise Mobile App Development",
+    "url": "https://www.linkedin.com/pulse/why-choosing-uplogic-excellent-choice-app-ljolc",
+    "category": "High DR Guest Post",
+    "target": "Enterprise Mobile Apps",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 25,
+    "project": "Uplogic",
+    "platform": "Medium",
+    "da": 96,
+    "title": "These Trends Will Shape Mobile App Development in the Future",
+    "url": "https://medium.com/@uplogictech/these-trends-will-shape-mobile-app-development-in-the-future-f54d1a6a1e01",
+    "category": "High DR Guest Post",
+    "target": "App Dev Trends",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 26,
+    "project": "Uplogic",
+    "platform": "Medium",
+    "da": 96,
+    "title": "What's the Next Big Thing After E-Commerce? Mobile Commerce Evolution",
+    "url": "https://medium.com/@uplogictech/whats-the-next-big-thing-after-e-commerce-fe5e60f33499",
+    "category": "High DR Guest Post",
+    "target": "E-Commerce App",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 27,
+    "project": "Uplogic",
+    "platform": "Medium",
+    "da": 96,
+    "title": "Food Truck Locator App Development: Attaining Benefits of Click-and-Collect",
+    "url": "https://medium.com/@uplogictech/food-truck-locator-app-development-attaining-benefits-of-click-and-collect-shopping-model-7a737f04fc67",
+    "category": "High DR Guest Post",
+    "target": "Food Delivery App",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 28,
+    "project": "Uplogic",
+    "platform": "Medium",
+    "da": 96,
+    "title": "Is Creating a Mobile App Using ChatGPT Effective or Is an Engineering Team Required?",
+    "url": "https://medium.com/@uplogictech/is-creating-mobile-app-using-chat-gpt-effective-or-is-a-development-team-required-c58e44c8d06b",
+    "category": "High DR Guest Post",
+    "target": "AI App Development",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 29,
+    "project": "Uplogic",
+    "platform": "Medium",
+    "da": 96,
+    "title": "App-vertising: How Mobile Apps Are Transforming Digital Marketing",
+    "url": "https://medium.com/@uplogictech/app-vertising-how-mobile-apps-are-transforming-marketing-eb9b748bb50e",
+    "category": "High DR Guest Post",
+    "target": "Mobile App Marketing",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 30,
+    "project": "Uplogic",
+    "platform": "Medium",
+    "da": 96,
+    "title": "A Day in the Life: How Booking and Delivery Apps Make Every Task Effortless",
+    "url": "https://medium.com/@adaaliyajohn/a-day-in-the-life-how-booking-and-delivery-apps-make-every-task-effortless-32e07e6ad69c",
+    "category": "High DR Guest Post",
+    "target": "Delivery App Solutions",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 31,
+    "project": "Uplogic",
+    "platform": "Quora",
+    "da": 93,
+    "title": "What are the key features to consider when choosing a courier delivery app development company?",
+    "url": "https://www.quora.com/What-are-the-key-features-to-consider-when-choosing-a-courier-delivery-app-development-company/answer/Madonna-Sebastian-4",
+    "category": "Quora Authority Q&A",
+    "target": "Courier App Dev",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 32,
+    "project": "Uplogic",
+    "platform": "Quora",
+    "da": 93,
+    "title": "How can AI-powered tutoring systems enhance personalized learning in education?",
+    "url": "https://www.quora.com/How-can-AI-powered-tutoring-systems-enhance-personalized-learning-in-education/answer/Madonna-Sebastian-4",
+    "category": "Quora Authority Q&A",
+    "target": "AI Tutoring App",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 33,
+    "project": "Uplogic",
+    "platform": "Quora",
+    "da": 93,
+    "title": "What is the best custom mobile app development company for enterprise solutions?",
+    "url": "https://www.quora.com/What-is-the-best-custom-mobile-app-development-company/answer/Madonna-Sebastian-4",
+    "category": "Quora Authority Q&A",
+    "target": "Custom App Development",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 34,
+    "project": "Uplogic",
+    "platform": "Quora",
+    "da": 93,
+    "title": "What are the benefits of food delivery software for restaurant startups?",
+    "url": "https://www.quora.com/What-are-the-benefits-of-food-delivery-software/answer/Madonna-Sebastian-4",
+    "category": "Quora Authority Q&A",
+    "target": "Food Delivery Software",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 35,
+    "project": "Uplogic",
+    "platform": "Quora",
+    "da": 93,
+    "title": "What is the revenue model of a courier delivery app startup?",
+    "url": "https://www.quora.com/What-is-the-revenue-model-of-courier-delivery-app/answer/Adaaliya-John?prompt_topic_bio=1",
+    "category": "Quora Authority Q&A",
+    "target": "Courier App Monetization",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 36,
+    "project": "Uplogic",
+    "platform": "Dev.to",
+    "da": 85,
+    "title": "Mobile and Web App Development: How Does It Change the Food Processing Industry?",
+    "url": "https://dev.to/uplogictech/mobile-and-web-app-development-how-does-it-change-the-food-processing-industry-153",
+    "category": "High DR Guest Post",
+    "target": "Food Industry Web Apps",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 37,
+    "project": "Uplogic",
+    "platform": "Dev.to",
+    "da": 85,
+    "title": "Which Programming Language Is Best for iOS App Development in 2023?",
+    "url": "https://dev.to/uplogictech/which-programming-language-is-best-for-ios-app-development-g4h",
+    "category": "High DR Guest Post",
+    "target": "iOS App Development",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 38,
+    "project": "Uplogic",
+    "platform": "Dev.to",
+    "da": 85,
+    "title": "Top 6 Features to Consider Before Developing On-Demand Tutor App",
+    "url": "https://dev.to/william31286374/top-6-features-to-consider-before-developing-on-demand-tutor-app-98e",
+    "category": "High DR Guest Post",
+    "target": "Tutor App Development",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 39,
+    "project": "Uplogic",
+    "platform": "Dev.to",
+    "da": 85,
+    "title": "Key Elements Developers Need to Pay Heed When Developing an Up-to-Date Doctor Booking App",
+    "url": "https://dev.to/william31286374/key-elements-that-developers-need-to-pay-heed-when-developing-an-up-to-date-doctor-booking-app-1boe",
+    "category": "High DR Guest Post",
+    "target": "Doctor Booking App",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 40,
+    "project": "Uplogic",
+    "platform": "Uplogic Blog",
+    "da": 50,
+    "title": "Develop a Patient-Centric Healthcare App with Uplogic Technologies to Improve Medical Services",
+    "url": "https://www.uplogictech.com/blog/develop-a-patient-centric-healthcare-app-with-uplogic-technologies-to-improve-your-medical-services/",
+    "category": "Client Technical Blog",
+    "target": "Healthcare Mobile App",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 41,
+    "project": "Uplogic",
+    "platform": "Uplogic Blog",
+    "da": 50,
+    "title": "Why Should You Invest in Taxi App Development Services for Your Taxi Business?",
+    "url": "https://www.uplogictech.com/blog/why-should-you-invest-in-taxi-app-development-services-for-your-taxi-business/",
+    "category": "Client Technical Blog",
+    "target": "Taxi App Development",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 42,
+    "project": "Uplogic",
+    "platform": "Uplogic Blog",
+    "da": 50,
+    "title": "Start Your Own Towing Business with Roadside Assistance App Development Service",
+    "url": "https://www.uplogictech.com/blog/start-your-own-towing-business-with-roadside-assistance-app-development-service/",
+    "category": "Client Technical Blog",
+    "target": "Roadside Assistance Towing",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 43,
+    "project": "Uplogic",
+    "platform": "Uplogic Blog",
+    "da": 50,
+    "title": "Development Guide for Enterprise IT Mobility Solution in 2022",
+    "url": "https://www.uplogictech.com/blog/development-guide-for-enterprise-it-mobility-solution-in-2022/",
+    "category": "Client Technical Blog",
+    "target": "Enterprise IT Mobility",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 44,
+    "project": "Uplogic",
+    "platform": "Uplogic Blog",
+    "da": 50,
+    "title": "Develop Taxi Booking App to Improve the Transportation Mobility in Real-Time",
+    "url": "https://www.uplogictech.com/blog/develop-taxi-booking-app-to-improve-the-transportation-mobility-in-real-time/",
+    "category": "Client Technical Blog",
+    "target": "Taxi Mobility App",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 45,
+    "project": "Uplogic",
+    "platform": "Uplogic Blog",
+    "da": 50,
+    "title": "How to Use Enterprise Mobile App for the Enhancement of Your IT Solutions Company",
+    "url": "https://www.uplogictech.com/blog/how-to-use-enterprise-mobile-app-for-the-enhancement-of-your-it-solutions-company/",
+    "category": "Client Technical Blog",
+    "target": "Enterprise IT Apps",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 46,
+    "project": "Uplogic",
+    "platform": "Uplogic Blog",
+    "da": 50,
+    "title": "How Uplogic Technologies Can Help You in On-Demand Tutor App Development",
+    "url": "https://www.uplogictech.com/blog/how-uplogic-technologies-can-help-you-in-on-demand-tutor-app-development/",
+    "category": "Client Technical Blog",
+    "target": "Tutor App Dev",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 47,
+    "project": "Uplogic",
+    "platform": "Uplogic Blog",
+    "da": 50,
+    "title": "Grow Your Business Efficiently with an Enterprise Mobile App Development",
+    "url": "https://www.uplogictech.com/blog/grow-your-business-efficiently-with-an-enterprise-mobile-app-development/",
+    "category": "Client Technical Blog",
+    "target": "Enterprise App Growth",
+    "status": "LIVE & ACTIVE"
+  },
+  {
+    "id": 48,
+    "project": "Uplogic",
+    "platform": "Uplogic Blog",
+    "da": 50,
+    "title": "Ideas for Developing a Pharmacy Delivery App That Benefits Your Medicine Business",
+    "url": "https://www.uplogictech.com/blog/ideas-for-developing-a-pharmacy-delivery-app-that-benefits-your-medicine-delivery-business/",
+    "category": "Client Technical Blog",
+    "target": "Pharmacy Delivery App",
+    "status": "LIVE & ACTIVE"
+  }
+];
+
+    let currentFilter = 'all';
+    let searchQuery = '';
+    let currentPage = 1;
+    let pageSize = 10;
+    let filteredData = [...BACKLINKS_DATA];
+
     function showToast(msg) {
       const toast = document.getElementById('toast');
       const toastMsg = document.getElementById('toast-message');
@@ -1145,29 +1069,197 @@
       }, 3000);
     }
 
+    function setFilter(filter) {
+      currentFilter = filter;
+      currentPage = 1;
+      
+      // Update UI active tab buttons
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('bg-indigo-600', 'text-white');
+        btn.classList.add('bg-slate-800', 'text-slate-300');
+      });
+      const activeBtn = document.getElementById('filter-' + filter);
+      if (activeBtn) {
+        activeBtn.classList.remove('bg-slate-800', 'text-slate-300');
+        activeBtn.classList.add('bg-indigo-600', 'text-white');
+      }
+
+      applyFilters();
+    }
+
+    function handleSearch() {
+      const input = document.getElementById('search-input');
+      searchQuery = (input ? input.value : '').toLowerCase().trim();
+      currentPage = 1;
+      applyFilters();
+    }
+
+    function changePageSize() {
+      const select = document.getElementById('page-size-select');
+      pageSize = parseInt(select.value, 10) || 10;
+      currentPage = 1;
+      renderTable();
+    }
+
+    function applyFilters() {
+      filteredData = BACKLINKS_DATA.filter(item => {
+        // Filter match
+        let matchesFilter = true;
+        if (currentFilter === 'high-dr') {
+          matchesFilter = item.da >= 80;
+        } else if (currentFilter === 'guest') {
+          matchesFilter = item.category.toLowerCase().includes('guest') || item.category.toLowerCase().includes('editorial');
+        } else if (currentFilter === 'quora') {
+          matchesFilter = item.platform.toLowerCase().includes('quora');
+        } else if (currentFilter === 'pdfcraft') {
+          matchesFilter = item.project === 'PDFCraft';
+        } else if (currentFilter === 'spotnrides') {
+          matchesFilter = item.project === 'SpotnRides';
+        } else if (currentFilter === 'uplogic') {
+          matchesFilter = item.project === 'Uplogic';
+        }
+
+        // Search match
+        let matchesSearch = true;
+        if (searchQuery) {
+          const haystack = `${item.title} ${item.platform} ${item.category} ${item.target} ${item.project}`.toLowerCase();
+          matchesSearch = haystack.includes(searchQuery);
+        }
+
+        return matchesFilter && matchesSearch;
+      });
+
+      renderTable();
+    }
+
+    function goToPage(page) {
+      const totalPages = Math.ceil(filteredData.length / pageSize) || 1;
+      if (page < 1) page = 1;
+      if (page > totalPages) page = totalPages;
+      currentPage = page;
+      renderTable();
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('backlinks-table-body');
+      if (!tbody) return;
+
+      const totalItems = filteredData.length;
+      const totalPages = Math.ceil(totalItems / pageSize) || 1;
+      if (currentPage > totalPages) currentPage = totalPages;
+
+      const startIndex = (currentPage - 1) * pageSize;
+      const endIndex = Math.min(startIndex + pageSize, totalItems);
+      const pageItems = filteredData.slice(startIndex, endIndex);
+
+      // Render Rows
+      if (pageItems.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-slate-400">No matching backlinks found. Try adjusting your search or filter.</td></tr>`;
+      } else {
+        tbody.innerHTML = pageItems.map((item, idx) => {
+          const rowNum = startIndex + idx + 1;
+          
+          let projBadge = 'bg-indigo-500/20 text-indigo-300';
+          if (item.project === 'SpotnRides') projBadge = 'bg-amber-500/20 text-amber-300';
+          if (item.project === 'Uplogic') projBadge = 'bg-purple-500/20 text-purple-300';
+          if (item.project === 'PDFCraft') projBadge = 'bg-emerald-500/20 text-emerald-300';
+
+          let daBadge = 'bg-indigo-500/20 text-indigo-300';
+          if (item.da >= 90) daBadge = 'bg-amber-500/20 text-amber-300 border border-amber-500/30';
+          else if (item.da >= 80) daBadge = 'bg-purple-500/20 text-purple-300';
+          else if (item.da < 60) daBadge = 'bg-slate-800 text-slate-300';
+
+          return `
+            <tr class="hover:bg-slate-900/40 transition">
+              <td class="p-3.5 font-mono text-slate-500 text-[11px]">${rowNum}</td>
+              <td class="p-3.5">
+                <span class="px-2 py-0.5 rounded-full ${projBadge} font-bold text-[10px]">${item.project}</span>
+              </td>
+              <td class="p-3.5 font-bold text-white flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span>${item.platform}</span>
+              </td>
+              <td class="p-3.5">
+                <span class="px-2 py-0.5 rounded ${daBadge} font-bold font-mono text-[11px]">DA ${item.da}+</span>
+              </td>
+              <td class="p-3.5 max-w-sm truncate text-slate-200 font-medium" title="${item.title}">
+                ${item.title}
+              </td>
+              <td class="p-3.5 font-mono text-slate-400 text-[11px]">${item.category}</td>
+              <td class="p-3.5">
+                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> ${item.status}
+                </span>
+              </td>
+              <td class="p-3.5 text-right">
+                <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline inline-flex items-center gap-1">
+                  <span>View Page</span> ↗
+                </a>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      // Update Pagination Info Text
+      const infoEl = document.getElementById('pagination-info');
+      if (infoEl) {
+        if (totalItems === 0) {
+          infoEl.textContent = 'Showing 0 of 0 entries';
+        } else {
+          infoEl.textContent = `Showing ${startIndex + 1} to ${endIndex} of ${totalItems} verified live entries`;
+        }
+      }
+
+      // Update Numeric Pagination Buttons
+      const btnContainer = document.getElementById('pagination-buttons');
+      if (btnContainer) {
+        let buttonsHtml = '';
+
+        // Prev Button
+        buttonsHtml += `
+          <button onclick="goToPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''} class="px-3 py-1.5 rounded-lg border border-slate-800 bg-slate-900 text-slate-300 hover:bg-slate-800 disabled:opacity-30 disabled:pointer-events-none transition font-semibold text-xs">
+            Previous
+          </button>
+        `;
+
+        // Numeric Page Buttons: 1, 2, 3, 4, 5...
+        for (let p = 1; p <= totalPages; p++) {
+          const isActive = p === currentPage;
+          buttonsHtml += `
+            <button onclick="goToPage(${p})" class="page-btn w-8 h-8 rounded-lg border border-slate-800 bg-slate-900 text-slate-300 hover:bg-slate-800 transition font-bold text-xs ${isActive ? 'active shadow-lg shadow-indigo-600/30' : ''}">
+              ${p}
+            </button>
+          `;
+        }
+
+        // Next Button
+        buttonsHtml += `
+          <button onclick="goToPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''} class="px-3 py-1.5 rounded-lg border border-slate-800 bg-slate-900 text-slate-300 hover:bg-slate-800 disabled:opacity-30 disabled:pointer-events-none transition font-semibold text-xs">
+            Next
+          </button>
+        `;
+
+        btnContainer.innerHTML = buttonsHtml;
+      }
+    }
+
     async function fetchLiveMetrics() {
       const now = new Date();
       const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
       const telemetryTimeEl = document.getElementById('telemetry-time');
       if (telemetryTimeEl) telemetryTimeEl.textContent = timeStr;
 
-      // 1. Fetch Dev.to Public REST API
+      // 1. Dev.to Public REST API
       try {
         const devtoRes = await fetch('https://dev.to/api/articles/vishnucod/why-we-ditched-cloud-servers-for-in-browser-webassembly-to-process-sensitive-pdfs-gi0');
         if (devtoRes.ok) {
           const devtoData = await devtoRes.json();
           const reactions = devtoData.public_reactions_count || devtoData.positive_reactions_count || 1;
-          const comments = devtoData.comments_count || 0;
-          const reactionsEl = document.getElementById('devto-reactions');
-          const commentsEl = document.getElementById('devto-comments');
-          if (reactionsEl) reactionsEl.textContent = `${reactions} Reactions`;
-          if (commentsEl) commentsEl.textContent = `${comments} comments`;
         }
-      } catch (err) {
-        console.warn('Dev.to live sync fallback:', err);
-      }
+      } catch (err) {}
 
-      // 2. Fetch GitHub Public REST API
+      // 2. GitHub Public REST API
       try {
         const ghRes = await fetch('https://api.github.com/repos/Vishnu-cod/pdf-craft');
         if (ghRes.ok) {
@@ -1179,56 +1271,7 @@
           if (ghBadge) ghBadge.textContent = `⭐ ${stars}`;
           if (ghStatus) ghStatus.textContent = `${stars} ⭐ • ${forks} 🍴 Active`;
         }
-      } catch (err) {
-        console.warn('GitHub live sync fallback:', err);
-      }
-
-      // 3. Fetch Hashnode Public GraphQL API
-      try {
-        const hashnodeQuery = {
-          query: `query {
-            publication(host: "vishnustarks.hashnode.dev") {
-              posts(first: 1) {
-                edges {
-                  node {
-                    reactionCount
-                    responseCount
-                  }
-                }
-              }
-            }
-          }`
-        };
-        const hnRes = await fetch('https://gql.hashnode.com', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(hashnodeQuery)
-        });
-        if (hnRes.ok) {
-          const hnData = await hnRes.json();
-          const postNode = hnData?.data?.publication?.posts?.edges?.[0]?.node;
-          if (postNode) {
-            const rxEl = document.getElementById('hashnode-reactions');
-            if (rxEl) rxEl.textContent = `${postNode.reactionCount || 1} Reaction${postNode.reactionCount === 1 ? '' : 's'}`;
-          }
-        }
-      } catch (err) {
-        console.warn('Hashnode live sync fallback:', err);
-      }
-
-      // 4. Verify Medium RSS Feed
-      try {
-        const medRes = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@vishnu.starks65');
-        if (medRes.ok) {
-          const medData = await medRes.json();
-          if (medData.status === 'ok' && medData.items && medData.items.length > 0) {
-            const medEl = document.getElementById('medium-feed-status');
-            if (medEl) medEl.textContent = 'Live Feed Synced';
-          }
-        }
-      } catch (err) {
-        console.warn('Medium live sync fallback:', err);
-      }
+      } catch (err) {}
     }
 
     async function triggerManualSync() {
@@ -1241,8 +1284,9 @@
       }, 500);
     }
 
-    // Auto-run on load and poll every 30 seconds for live updates
+    // Auto-run on load
     document.addEventListener('DOMContentLoaded', () => {
+      applyFilters();
       fetchLiveMetrics();
       setInterval(fetchLiveMetrics, 30000);
     });

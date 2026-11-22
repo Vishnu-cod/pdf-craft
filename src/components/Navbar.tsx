@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ActiveTab } from '../types';
 import {
   FileSignature,
@@ -13,9 +13,8 @@ import {
   Lock,
   Search,
   UploadCloud,
-  Play,
-  Video,
   MessageSquare,
+  ChevronDown,
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -41,6 +40,18 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [moreMenuOpen, setMoreMenuOpen] = useState(false);
+  const moreMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (moreMenuRef.current && !moreMenuRef.current.contains(event.target as Node)) {
+        setMoreMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   useEffect(() => {
     const handleBeforeInstall = (e: any) => {
@@ -60,22 +71,47 @@ export const Navbar: React.FC<NavbarProps> = ({
     }
   };
 
-  const tabs = [
-    { id: 'photocraft', label: 'PhotoCraft', shortLabel: 'Photo Editor', icon: Sparkles, badge: 'AI Canva' },
-    { id: 'postercraft', label: 'PosterCraft', shortLabel: 'Posters', icon: Sparkles, badge: 'Viral' },
-    { id: 'whatsapp-studio', label: 'WhatsApp HD', shortLabel: 'WhatsApp', icon: Video, badge: '15m' },
-    { id: 'sign-edit', label: 'Edit & Sign', shortLabel: 'Sign & Edit', icon: FileSignature },
-    { id: 'organize', label: 'Merge & Organize', shortLabel: 'Merge', icon: Layers },
+  const primaryTabs = [
+    { id: 'sign-edit', label: 'Edit & Sign', shortLabel: 'Edit & Sign', icon: FileSignature },
+    { id: 'organize', label: 'Merge & Organize', shortLabel: 'Organize', icon: Layers },
     { id: 'convert', label: 'Convert', shortLabel: 'Convert', icon: ArrowLeftRight },
     { id: 'security-studio', label: 'Protect & Mask', shortLabel: 'Protect', icon: ShieldCheck, badge: 'New' },
-    { id: 'tools', label: 'Pro Tools', shortLabel: 'Tools', icon: Sparkles, badge: 'AI Tools' },
-    { id: 'resume', label: 'Resume Builder', shortLabel: 'Resume', icon: GraduationCap, badge: '60s' },
   ];
+
+  const secondaryTabs = [
+    { id: 'tools', label: 'Pro Tools', shortLabel: 'Tools', icon: Sparkles },
+    { id: 'resume', label: 'Resume Builder', shortLabel: 'Resume', icon: GraduationCap, badge: 'Free' },
+  ];
+
+  const allTabs = [...primaryTabs, ...secondaryTabs];
+
+  const isSecondaryActive = secondaryTabs.some(
+    (t) => activeTab === t.id || (t.id === 'organize' && activeTab === 'split') || (t.id === 'security-studio' && activeTab === 'security')
+  );
+  const activeSecondaryTab = secondaryTabs.find(
+    (t) => activeTab === t.id || (t.id === 'organize' && activeTab === 'split') || (t.id === 'security-studio' && activeTab === 'security')
+  );
+
+  const getBadgeStyle = (badge: string, isActive: boolean) => {
+    if (badge === 'New') {
+      return isActive
+        ? 'bg-blue-300 text-slate-950 border-blue-200 font-bold'
+        : 'bg-blue-100 text-blue-800 border-blue-200';
+    }
+    if (badge === 'Free' || badge === '60s') {
+      return isActive
+        ? 'bg-emerald-300 text-slate-950 border-emerald-200 font-bold'
+        : 'bg-emerald-100 text-emerald-800 border-emerald-200';
+    }
+    return isActive
+      ? 'bg-slate-300 text-slate-950 border-slate-200 font-bold'
+      : 'bg-slate-100 text-slate-700 border-slate-200';
+  };
 
   return (
     <>
       <header className="border-b border-slate-200/90 bg-white/90 backdrop-blur-xl sticky top-0 z-50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4 sm:gap-6">
           {/* Logo & Brand */}
           <div
             role="button"
@@ -102,50 +138,48 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span className="font-black text-base sm:text-lg tracking-tight text-[#111439]">
                   PDF<span className="text-purple-600">CRAFT</span>
                 </span>
-                <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-purple-50 text-purple-700 border border-purple-200 px-1.5 py-0.5 rounded-full">
+                <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-purple-50 text-purple-700 border border-purple-200 px-1.5 py-0.5 rounded-full hidden xl:inline-block">
                   100% Free
                 </span>
               </div>
               <p
                 onClick={onOpenPrivacyModal}
-                className="text-[9px] sm:text-[10px] text-slate-500 font-semibold tracking-wider uppercase hidden sm:block cursor-pointer hover:text-purple-600 transition"
+                className="text-[9px] sm:text-[10px] text-slate-500 font-semibold tracking-wider uppercase hidden xl:block cursor-pointer hover:text-purple-600 transition"
               >
                 Zero Cloud Uploads • Private GPU
               </p>
             </div>
           </div>
 
-          {/* Desktop Navigation Tabs & Search (Hidden on mobile) */}
-          <div className="hidden md:flex items-center gap-1.5 lg:gap-2 min-w-0">
-            <nav aria-label="Main Navigation" className="flex items-center gap-0.5 sm:gap-1 bg-slate-100/90 p-1 rounded-2xl border border-slate-200 shadow-inner overflow-x-auto scrollbar-none">
-              {tabs.map((tab) => {
+          {/* Desktop Navigation Tabs (Visible on lg and up) */}
+          <div className="hidden lg:flex items-center justify-center min-w-0">
+            <nav aria-label="Main Navigation" className="flex items-center gap-0.5 sm:gap-1 bg-slate-100/90 p-1 rounded-2xl border border-slate-200 shadow-inner shrink-0">
+              {primaryTabs.map((tab) => {
                 const Icon = tab.icon;
-                const isActive = activeTab === tab.id || (tab.id === 'organize' && activeTab === 'split') || (tab.id === 'security-studio' && activeTab === 'security');
+                const isActive = activeTab === tab.id || (tab.id === 'organize' && activeTab === 'split');
                 return (
                   <button
                     key={tab.id}
-                    onClick={() => setActiveTab(tab.id as ActiveTab)}
+                    onClick={() => {
+                      setActiveTab(tab.id as ActiveTab);
+                      setMoreMenuOpen(false);
+                    }}
                     aria-label={tab.label}
-                    className={`flex items-center gap-1.5 sm:gap-2 px-2.5 lg:px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all whitespace-nowrap cursor-pointer ${
+                    className={`flex items-center gap-1.5 px-2 xl:px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all whitespace-nowrap cursor-pointer ${
                       isActive
                         ? 'bg-[#111439] text-white shadow-md font-bold scale-[1.02]'
                         : 'text-[#425466] hover:text-[#111439] hover:bg-slate-200/60'
                     }`}
                   >
                     <Icon className="w-4 h-4 shrink-0" />
-                    <span className="hidden lg:inline">{tab.label}</span>
-                    <span className="lg:hidden">{tab.shortLabel}</span>
+                    <span className="hidden xl:inline">{tab.label}</span>
+                    <span className="xl:hidden">{tab.shortLabel}</span>
                     {tab.badge && (
                       <span
-                        className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider border shrink-0 ${
-                          tab.badge === 'Viral'
-                            ? 'bg-purple-100 text-purple-800 border-purple-200'
-                            : tab.badge === '15m'
-                            ? 'bg-emerald-100 text-emerald-800 border-emerald-200'
-                            : tab.badge === 'New'
-                            ? 'bg-blue-100 text-blue-800 border-blue-200'
-                            : 'bg-slate-200 text-slate-700 border-slate-300'
-                        }`}
+                        className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider border shrink-0 hidden xl:inline-block ${getBadgeStyle(
+                          tab.badge,
+                          isActive
+                        )}`}
                       >
                         {tab.badge}
                       </span>
@@ -153,28 +187,101 @@ export const Navbar: React.FC<NavbarProps> = ({
                   </button>
                 );
               })}
-            </nav>
 
-            {/* Quick Explore Tools Command Palette Trigger */}
-            {onOpenToolsModal && (
-              <button
-                onClick={onOpenToolsModal}
-                aria-label="Search and launch all 16 tools (Ctrl+K)"
-                className="flex items-center gap-1.5 px-2.5 lg:px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700/80 text-xs font-semibold text-slate-300 hover:text-white transition cursor-pointer shadow-sm shrink-0 whitespace-nowrap"
-                title="Search and launch all 16 tools (Ctrl+K)"
-              >
-                <Search className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
-                <span className="whitespace-nowrap hidden lg:inline">Tools Hub</span>
-                <span className="whitespace-nowrap lg:hidden">Hub</span>
-                <kbd className="hidden xl:inline text-[9px] bg-slate-900 border border-slate-700 px-1 py-0.5 rounded text-slate-400 font-mono">
-                  ⌘K
-                </kbd>
-              </button>
-            )}
+              {/* "More Tools" Dropdown */}
+              <div className="relative" ref={moreMenuRef}>
+                <button
+                  onClick={() => setMoreMenuOpen(!moreMenuOpen)}
+                  aria-expanded={moreMenuOpen}
+                  aria-label="More PDF and creative tools"
+                  className={`flex items-center gap-1.5 px-2 xl:px-2.5 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all whitespace-nowrap cursor-pointer ${
+                    isSecondaryActive
+                      ? 'bg-[#111439] text-white shadow-md font-bold'
+                      : 'text-[#425466] hover:text-[#111439] hover:bg-slate-200/60'
+                  }`}
+                >
+                  {activeSecondaryTab ? (
+                    <>
+                      <activeSecondaryTab.icon className="w-4 h-4 shrink-0" />
+                      <span className="hidden xl:inline">{activeSecondaryTab.label}</span>
+                      <span className="xl:hidden">{activeSecondaryTab.shortLabel}</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="hidden xl:inline">More Tools</span>
+                      <span className="xl:hidden">More</span>
+                    </>
+                  )}
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform ${moreMenuOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {moreMenuOpen && (
+                  <div className="absolute right-0 top-full mt-2 w-60 bg-white rounded-2xl shadow-2xl border border-slate-200 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                    <div className="px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100">
+                      Additional Pro Tools
+                    </div>
+                    {secondaryTabs.map((tab) => {
+                      const Icon = tab.icon;
+                      const isActive = activeTab === tab.id || (tab.id === 'security-studio' && activeTab === 'security');
+                      return (
+                        <button
+                          key={tab.id}
+                          onClick={() => {
+                            setActiveTab(tab.id as ActiveTab);
+                            setMoreMenuOpen(false);
+                          }}
+                          className={`w-full flex items-center justify-between px-3.5 py-2.5 text-xs font-semibold transition cursor-pointer text-left ${
+                            isActive
+                              ? 'bg-purple-50 text-purple-700 font-bold'
+                              : 'text-slate-700 hover:bg-slate-50 hover:text-[#111439]'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2.5">
+                            <Icon className={`w-4 h-4 ${isActive ? 'text-purple-600' : 'text-slate-500'}`} />
+                            <span>{tab.label}</span>
+                          </div>
+                          {tab.badge && (
+                            <span
+                              className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider border ${getBadgeStyle(
+                                tab.badge,
+                                false
+                              )}`}
+                            >
+                              {tab.badge}
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
+
+                    {onOpenToolsModal && (
+                      <>
+                        <div className="border-t border-slate-100 my-1"></div>
+                        <button
+                          onClick={() => {
+                            setMoreMenuOpen(false);
+                            onOpenToolsModal();
+                          }}
+                          className="w-full flex items-center justify-between px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-purple-50 hover:text-purple-700 transition cursor-pointer text-left"
+                        >
+                          <div className="flex items-center gap-2.5">
+                            <Search className="w-4 h-4 text-purple-600" />
+                            <span>All 16 Tools Hub</span>
+                          </div>
+                          <kbd className="text-[9px] bg-slate-100 border border-slate-200 px-1.5 py-0.5 rounded text-slate-500 font-mono">
+                            ⌘K
+                          </kbd>
+                        </button>
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
+            </nav>
           </div>
 
-          {/* Desktop / Tablet Privacy Pill & Active File Status (Visible on md and up!) */}
-          <div className="hidden md:flex items-center gap-2 shrink-0">
+          {/* Desktop Right Action Buttons (Visible on lg and up) */}
+          <div className="hidden lg:flex items-center gap-2 shrink-0">
             {deferredPrompt && (
               <button
                 onClick={handleInstallPWA}
@@ -238,27 +345,17 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <button
                   onClick={onOpenPrivacyModal}
                   aria-label="View Privacy Architecture"
-                  className="hidden xl:flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 bg-slate-950/40 hover:bg-slate-900 border border-slate-800 px-2.5 py-1.5 rounded-lg shrink-0 whitespace-nowrap transition cursor-pointer"
+                  className="flex items-center gap-1.5 text-xs text-emerald-800 hover:text-emerald-950 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300/80 px-2.5 py-1.5 rounded-xl shrink-0 whitespace-nowrap transition cursor-pointer font-bold shadow-sm"
                 >
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                   <span>100% Client-Side</span>
                 </button>
-                <a
-                  href="/commercial.html"
-                  aria-label="Watch Official Google Flow Video"
-                  className="flex items-center gap-1.5 text-xs text-amber-300 hover:text-white bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 px-2.5 py-1.5 rounded-xl shrink-0 whitespace-nowrap transition cursor-pointer font-semibold shadow-sm"
-                  title="Watch Official Google Flow Video"
-                >
-                  <Play className="w-3 h-3 fill-amber-400 text-amber-400 shrink-0" />
-                  <span className="hidden lg:inline">Watch Video</span>
-                  <span className="lg:hidden">Video</span>
-                </a>
               </div>
             )}
           </div>
 
           {/* Mobile Right Action Bar (Search, Direct Upload, Hamburger & Active File status) */}
-          <div className="flex md:hidden items-center gap-1.5">
+          <div className="flex lg:hidden items-center gap-1.5">
             {/* Quick Mobile Upload button if no file */}
             {!hasFile && (
               <label
@@ -331,7 +428,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Mobile Slide-down Menu Drawer */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-slate-800 bg-slate-900/98 px-4 py-4 space-y-3 shadow-2xl animate-in slide-in-from-top-2 duration-150">
+          <div className="lg:hidden border-t border-slate-800 bg-slate-900/98 px-4 py-4 space-y-3 shadow-2xl animate-in slide-in-from-top-2 duration-150">
             {/* Mobile Direct Upload & File Status */}
             {hasFile && fileName ? (
               <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between gap-2">
@@ -397,36 +494,22 @@ export const Navbar: React.FC<NavbarProps> = ({
                   setMobileMenuOpen(false);
                   onOpenToolsModal();
                 }}
-                className="w-full flex items-center justify-between p-3 rounded-2xl bg-gradient-to-r from-indigo-950 via-violet-950 to-indigo-950 border border-indigo-500/40 text-xs font-bold text-white shadow-lg cursor-pointer"
+                className="w-full flex items-center justify-between p-3 rounded-2xl bg-gradient-to-r from-purple-900/80 via-indigo-900/80 to-purple-900/80 border border-purple-500/40 text-xs font-bold text-white shadow-lg cursor-pointer"
               >
                 <span className="flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-indigo-400" />
-                  <span>🔍 Explore All 16 Super-Tools</span>
+                  <Sparkles className="w-4 h-4 text-purple-300" />
+                  <span>🔍 Explore All 16 Creative &amp; PDF Tools</span>
                 </span>
-                <span className="text-[10px] bg-indigo-500/30 text-indigo-300 px-2 py-0.5 rounded-full font-bold">
+                <span className="text-[10px] bg-purple-500/30 text-purple-200 px-2 py-0.5 rounded-full font-bold">
                   Free
                 </span>
               </button>
             )}
 
-            {/* Watch Commercial Link */}
-            <a
-              href="/commercial.html"
-              className="w-full flex items-center justify-between p-3 rounded-2xl bg-gradient-to-r from-amber-950/60 via-orange-950/60 to-amber-950/60 border border-amber-500/40 text-xs font-bold text-amber-200 hover:text-white shadow-lg cursor-pointer"
-            >
-              <span className="flex items-center gap-2">
-                <Play className="w-4 h-4 fill-amber-400 text-amber-400" />
-                <span>🎬 Watch Official Google Flow Video</span>
-              </span>
-              <span className="text-[10px] bg-amber-500/30 text-amber-300 px-2 py-0.5 rounded-full font-bold">
-                30s
-              </span>
-            </a>
-
             <div className="space-y-1">
-              {tabs.map((tab) => {
+              {allTabs.map((tab) => {
                 const Icon = tab.icon;
-                const isActive = activeTab === tab.id;
+                const isActive = activeTab === tab.id || (tab.id === 'organize' && activeTab === 'split') || (tab.id === 'security-studio' && activeTab === 'security');
                 return (
                   <button
                     key={tab.id}
@@ -436,22 +519,20 @@ export const Navbar: React.FC<NavbarProps> = ({
                     }}
                     className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition ${
                       isActive
-                        ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md'
-                        : 'text-slate-300 hover:bg-slate-800'
+                        ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md font-bold'
+                        : 'text-slate-200 hover:bg-slate-800 hover:text-white'
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <Icon className="w-4 h-4 text-indigo-400" />
+                      <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-indigo-400'}`} />
                       <span>{tab.label}</span>
                     </div>
                     {tab.badge && (
                       <span
-                        className={`text-[9px] px-2 py-0.5 rounded-full font-bold uppercase ${
-                          tab.badge === 'AI Radar'
-                            ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
-                            : tab.badge === 'New'
-                            ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
-                            : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                        className={`text-[9px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${
+                          tab.badge === 'New'
+                            ? 'bg-blue-500/30 text-blue-200 border border-blue-500/40'
+                            : 'bg-emerald-500/30 text-emerald-200 border border-emerald-500/40'
                         }`}
                       >
                         {tab.badge}
@@ -487,8 +568,8 @@ export const Navbar: React.FC<NavbarProps> = ({
       </header>
 
       {/* Mobile Sticky Bottom Navigation Bar (Thumb Friendly Stripe Theme) */}
-      <nav aria-label="Mobile Navigation" className="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-2xl border-t border-slate-200/90 md:hidden print:hidden px-1.5 py-1.5 flex items-center justify-around shadow-2xl safe-area-pb">
-        {tabs.slice(0, 5).map((tab) => {
+      <nav aria-label="Mobile Navigation" className="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-2xl border-t border-slate-200/90 lg:hidden print:hidden px-1.5 py-1.5 flex items-center justify-around shadow-2xl safe-area-pb">
+        {allTabs.slice(0, 5).map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id || (tab.id === 'organize' && activeTab === 'split') || (tab.id === 'tools' && activeTab === 'security');
           return (
@@ -515,7 +596,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {tab.badge && (
                   <span
                     className={`absolute -top-1 -right-2 w-2 h-2 rounded-full ${
-                      tab.badge === 'Viral' ? 'bg-purple-600' : 'bg-emerald-500'
+                      tab.badge === 'New' ? 'bg-blue-600' : 'bg-emerald-500'
                     }`}
                   />
                 )}

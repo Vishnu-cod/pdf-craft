@@ -7,61 +7,35 @@ export interface RouteConfig {
   converter?: 'pdf-to-word' | 'pdf-to-excel' | 'pdf-to-images' | 'images-to-pdf' | 'word-to-pdf' | 'word-to-images';
   targetKB?: number;
   securityMode?: 'protect' | 'unlock';
-  securityStudioSubTab?: 'pii_masker' | 'signature_validator';
+  securityStudioSubTab?: 'pii_masker' | 'signature_validator' | 'leak_checker';
   title: string;
   description: string;
 }
 
 export const APP_ROUTES: RouteConfig[] = [
-  // 0. Creative Studio (PhotoCraft, PosterCraft & WhatsApp HD)
-  {
-    path: '/photo-editor',
-    tab: 'photocraft',
-    title: 'PhotoCraft — Free Canva-Inspired Online Photo Editor & AI Studio (Zero Watermark) | PDFCraft',
-    description: 'Free Canva-inspired online graphic design and photo editor. Magic Eraser object removal, AI Background Remover, Magic Grab subject extraction, and 4K export with zero paywalls.',
-  },
-  {
-    path: '/photocraft',
-    tab: 'photocraft',
-    title: 'PhotoCraft — Free Canva-Inspired Online Photo Editor & AI Studio (Zero Watermark) | PDFCraft',
-    description: 'Free Canva-inspired online graphic design and photo editor. Magic Eraser object removal, AI Background Remover, Magic Grab subject extraction, and 4K export with zero paywalls.',
-  },
-  {
-    path: '/postercraft',
-    tab: 'postercraft',
-    title: 'PosterCraft — Free Pinterest Aesthetic Editorial Poster Studio (Zero Watermark) | PDFCraft',
-    description: '1-Click Pinterest aesthetic editorial poster creator. Add 3D typography behind subjects, 35mm grain, and folded paper textures in 4K.',
-  },
-  {
-    path: '/whatsapp-hd',
-    tab: 'whatsapp-studio',
-    title: 'WhatsApp 15-Minute HD Video Booster & 30s Status Slicer | PDFCraft',
-    description: 'Compress up to 15-minute videos under 16MB or 64MB without WhatsApp blurry re-compression, plus auto 30s status slicer.',
-  },
-
   // 1. Home / Sign & Edit
   {
     path: '/',
     tab: 'sign-edit',
-    title: 'PDFCraft — 100% Free & Private PDF Editor, Signer & Tools (Zero Cloud Leaks)',
+    title: 'PDFCraft — Free In-Browser PDF Editor, Signer & Tools',
     description: 'Free private PDF tools in your browser. Edit, sign, compress under 200KB, merge, split, and convert with 100% client-side privacy.',
   },
   {
     path: '/sign-pdf',
     tab: 'sign-edit',
-    title: 'Sign PDF Free No Account Required (Zero Cloud Leaks) | PDFCraft',
+    title: 'Sign PDF Free Online — No Account Required | PDFCraft',
     description: 'Sign PDF documents online for free without creating an account. Add smooth vector signatures with touch sync from your phone.',
   },
   {
     path: '/sign-pdf-no-account',
     tab: 'sign-edit',
-    title: 'Sign PDF Free No Account Required (Zero Cloud Leaks) | PDFCraft',
+    title: 'Sign PDF Free Online — No Account Required | PDFCraft',
     description: 'Sign PDF documents online for free without creating an account. Add smooth vector signatures with touch sync from your phone.',
   },
   {
     path: '/redact-pdf',
     tab: 'sign-edit',
-    title: 'Redact & Black Out PDF Free Online (Permanent Zero-Leak) | PDFCraft',
+    title: 'Redact & Black Out Sensitive Text in PDF Online | PDFCraft',
     description: 'Permanently redact sensitive text, emails, and SSNs from PDFs. Purges underlying text streams and metadata.',
   },
   {
@@ -163,7 +137,7 @@ export const APP_ROUTES: RouteConfig[] = [
     tab: 'tools',
     subTool: 'size-squeezer',
     targetKB: 195,
-    title: 'Compress PDF Under 200KB Free & Private (Zero Cloud Leaks) | PDFCraft',
+    title: 'Compress PDF Under 200KB Free & Private | PDFCraft',
     description: 'Compress PDF files under 200KB for college admissions, job applications, and government portal ceilings.',
   },
   {
@@ -196,8 +170,8 @@ export const APP_ROUTES: RouteConfig[] = [
     path: '/protect-pdf',
     tab: 'security',
     securityMode: 'protect',
-    title: 'Password Protect PDF Online Free (Military-Grade AES-256) | PDFCraft',
-    description: 'Encrypt your PDF with standard AES-256 military-grade password protection. 100% in-browser security.',
+    title: 'Password Protect PDF Online Free (AES-256) | PDFCraft',
+    description: 'Encrypt your PDF with standard AES-256 password protection. 100% in-browser security.',
   },
   {
     path: '/unlock-pdf',
@@ -270,6 +244,84 @@ export const APP_ROUTES: RouteConfig[] = [
     title: 'Validate Digital Signature Certificate (DSC) Online Free | PDFCraft',
     description: 'Free in-browser Digital Signature Certificate validator for India and global PKI. Check certificate validity and document tampering without uploading.',
   },
+
+  // 8b. Privacy & Leak Checker
+  {
+    path: '/pdf-leak-checker',
+    tab: 'security-studio',
+    securityStudioSubTab: 'leak_checker',
+    title: 'PDF Privacy & Metadata Leak Checker — Audit Hidden Tracking Data Free | PDFCraft',
+    description: 'Inspect PDF documents in your browser for hidden author names, creation software, raw XMP telemetry GUIDs, embedded tracking links, and JavaScript exploits. 1-click client-side sanitization.',
+  },
+  {
+    path: '/check-pdf-privacy',
+    tab: 'security-studio',
+    securityStudioSubTab: 'leak_checker',
+    title: 'Check PDF Privacy & Strip Metadata Online Free (Zero Server Leaks) | PDFCraft',
+    description: 'Audit PDF privacy scores, inspect dictionary byte streams, and strip metadata before emailing sensitive legal or financial documents. 100% private in-browser.',
+  },
+
+  // 9. Exam & Visa Portal Programmatic SEO Compressors
+  {
+    path: '/upsc-pdf-compressor',
+    tab: 'tools',
+    subTool: 'size-squeezer',
+    targetKB: 195,
+    title: 'UPSC PDF Compressor Under 200KB Free (Civil Services Portal Safe) | PDFCraft',
+    description: 'Compress PDF certificates, ID proofs, and documents strictly under 200KB for UPSC Civil Services, NDA, and CDS online application portals. Retains razor-sharp text clarity.',
+  },
+  {
+    path: '/ssc-cgl-signature-photo-compressor',
+    tab: 'tools',
+    subTool: 'size-squeezer',
+    targetKB: 48,
+    title: 'SSC CGL Signature & Photo PDF Compressor Under 50KB | PDFCraft',
+    description: 'Compress signatures, photos, and caste certificates strictly under 50KB (48KB safe preset) for SSC CGL, CHSL, and MTS portals with zero server uploads.',
+  },
+  {
+    path: '/gate-exam-pdf-compressor',
+    tab: 'tools',
+    subTool: 'size-squeezer',
+    targetKB: 195,
+    title: 'GATE Exam PDF Compressor Under 200KB (IIT GOAPS Portal Safe) | PDFCraft',
+    description: 'Compress category certificates, PwD documents, and college mark sheets under 200KB for IIT GATE GOAPS registration portal. 100% client-side privacy.',
+  },
+  {
+    path: '/uscis-visa-pdf-compressor',
+    tab: 'tools',
+    subTool: 'size-squeezer',
+    targetKB: 495,
+    title: 'USCIS Visa PDF Compressor Under 500KB / 2MB Free (Zero Uploads) | PDFCraft',
+    description: 'Compress tax transcripts, passport scans, and affidavits for USCIS, CEAC, and DS-160 immigration portals. Never upload passport copies to cloud servers.',
+  },
+  {
+    path: '/neet-application-pdf-compressor',
+    tab: 'tools',
+    subTool: 'size-squeezer',
+    targetKB: 195,
+    title: 'NEET Application PDF Compressor Under 200KB (NTA Compliant) | PDFCraft',
+    description: 'Compress 10th pass certificates, citizenship proof, and category certificates strictly under 200KB for NTA NEET UG application portal.',
+  },
+
+  // 10. Contrarian Competitor Comparisons
+  {
+    path: '/compare/pdfcraft-vs-ilovepdf',
+    tab: 'sign-edit',
+    title: 'PDFCraft vs iLovePDF — In-Browser Client-Side vs Cloud Upload Comparison | PDFCraft',
+    description: 'Honest architectural comparison of PDFCraft vs iLovePDF. Zero cloud uploads, zero daily task limits, and true offline capability vs cloud server processing.',
+  },
+  {
+    path: '/compare/pdfcraft-vs-smallpdf',
+    tab: 'sign-edit',
+    title: 'PDFCraft vs Smallpdf — Zero Paywall vs 2-Task Daily Limit Comparison | PDFCraft',
+    description: 'Compare PDFCraft and Smallpdf. Unlimited free in-browser PDF tools without paywalls, email requirements, or 2-task daily limits.',
+  },
+  {
+    path: '/compare/pdfcraft-vs-adobe',
+    tab: 'sign-edit',
+    title: 'PDFCraft vs Adobe Acrobat — Free In-Browser Offline Tools vs $239/yr Subscription | PDFCraft',
+    description: 'In-depth comparison of PDFCraft vs Adobe Acrobat Pro. When to use 100% free private browser tools vs enterprise Acrobat subscriptions.',
+  },
 ];
 
 /**
@@ -283,9 +335,25 @@ export function matchRoute(pathname: string): RouteConfig {
   if (exact) return exact;
 
   // Fuzzy prefix matching
-  if (normalized.includes('photo-editor') || normalized.includes('photocraft') || normalized.includes('canva')) {
-    return APP_ROUTES.find((r) => r.path === '/photo-editor')!;
+  if (normalized.includes('leak-checker') || normalized.includes('check-pdf-privacy') || normalized.includes('metadata-leak')) {
+    return APP_ROUTES.find((r) => r.path === '/pdf-leak-checker')!;
   }
+  if (normalized.includes('upsc')) return APP_ROUTES.find((r) => r.path === '/upsc-pdf-compressor')!;
+  if (normalized.includes('ssc')) return APP_ROUTES.find((r) => r.path === '/ssc-cgl-signature-photo-compressor')!;
+  if (normalized.includes('gate')) return APP_ROUTES.find((r) => r.path === '/gate-exam-pdf-compressor')!;
+  if (normalized.includes('uscis') || normalized.includes('visa-pdf')) return APP_ROUTES.find((r) => r.path === '/uscis-visa-pdf-compressor')!;
+  if (normalized.includes('neet')) return APP_ROUTES.find((r) => r.path === '/neet-application-pdf-compressor')!;
+  if (normalized.includes('vs-ilovepdf') || normalized.includes('pdfcraft-vs-ilovepdf')) {
+    return APP_ROUTES.find((r) => r.path === '/compare/pdfcraft-vs-ilovepdf')!;
+  }
+  if (normalized.includes('vs-smallpdf') || normalized.includes('pdfcraft-vs-smallpdf')) {
+    return APP_ROUTES.find((r) => r.path === '/compare/pdfcraft-vs-smallpdf')!;
+  }
+  if (normalized.includes('vs-adobe') || normalized.includes('pdfcraft-vs-adobe')) {
+    return APP_ROUTES.find((r) => r.path === '/compare/pdfcraft-vs-adobe')!;
+  }
+
+  // Fuzzy prefix matching
   if (normalized.includes('50kb')) return APP_ROUTES.find((r) => r.path === '/compress-pdf-50kb')!;
   if (normalized.includes('100kb')) return APP_ROUTES.find((r) => r.path === '/compress-pdf-100kb')!;
   if (normalized.includes('300kb')) return APP_ROUTES.find((r) => r.path === '/compress-pdf-300kb')!;

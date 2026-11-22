@@ -430,14 +430,18 @@
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-2">
-        <!-- Email -->
+        <!-- Email (Gmail Web Direct) -->
         <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-800 hover:border-indigo-500/50 transition space-y-2 group">
           <div class="flex items-center justify-between">
-            <span class="text-[10px] font-mono text-indigo-400 uppercase tracking-widest font-bold">Email Address</span>
+            <span class="text-[10px] font-mono text-indigo-400 uppercase tracking-widest font-bold">Email (Gmail Direct)</span>
             <span class="text-xs text-slate-500 group-hover:text-indigo-400 transition">✉</span>
           </div>
-          <a href="mailto:vishnu.starks65@gmail.com" class="text-sm font-bold text-white group-hover:text-indigo-300 transition block truncate">vishnu.starks65@gmail.com</a>
-          <span class="text-[11px] text-slate-400 block">Click to send direct email</span>
+          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=vishnu.starks65@gmail.com" target="_blank" rel="noopener noreferrer" class="text-sm font-bold text-white group-hover:text-indigo-300 transition block truncate">vishnu.starks65@gmail.com</a>
+          <div class="flex items-center gap-3 pt-1 text-[11px]">
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=vishnu.starks65@gmail.com" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:underline">Compose in Gmail ↗</a>
+            <span class="text-slate-600">•</span>
+            <button onclick="navigator.clipboard.writeText('vishnu.starks65@gmail.com'); showToast('📋 Email copied to clipboard!');" class="text-slate-400 hover:text-slate-200 hover:underline">Copy</button>
+          </div>
         </div>
 
         <!-- Mobile Phone -->
@@ -589,4 +593,4 @@
     });
   </script>
 </body>
-                                                                    </html>
+</html>

@@ -5,6 +5,7 @@ import { FileUploader } from './components/FileUploader';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { FeatureDirectoryModal } from './components/FeatureDirectoryModal';
 import { PrivacyModal } from './components/PrivacyModal';
+import { ComparisonModal, CompetitorId } from './components/ComparisonModal';
 import { matchRoute } from './routes';
 
 // Resilient self-healing lazy loader for PWA and desktop apps
@@ -40,9 +41,6 @@ const MobileSignPad = safeLazy(() => import('./components/MobileSignPad'), 'Mobi
 const SplitPanel = safeLazy(() => import('./components/SplitPanel'), 'SplitPanel');
 const SecurityPanel = safeLazy(() => import('./components/SecurityPanel'), 'SecurityPanel');
 const SecurityPrivacyStudio = safeLazy(() => import('./components/SecurityPrivacyStudio'), 'SecurityPrivacyStudio');
-const PosterCraft = safeLazy(() => import('./components/PosterCraft'), 'PosterCraft');
-const WhatsAppStudio = safeLazy(() => import('./components/WhatsAppStudio'), 'WhatsAppStudio');
-const PhotoCraftStudio = safeLazy(() => import('./features/photocraft/components/PhotoCraftStudio'), 'PhotoCraftStudio');
 
 const ViewSkeleton: React.FC = () => (
   <div className="flex-1 flex flex-col items-center justify-center min-h-[350px] text-slate-400 gap-3 py-16 animate-pulse">
@@ -77,8 +75,6 @@ import {
   EyeOff,
   FileCheck2,
   Unlock,
-  Play,
-  Video,
   DownloadCloud,
   MessageSquare,
 } from 'lucide-react';
@@ -93,8 +89,10 @@ export const App: React.FC = () => {
   // Global Feature Hub / Command Palette Modal
   const [isFeatureModalOpen, setIsFeatureModalOpen] = useState(false);
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
+  const [isComparisonModalOpen, setIsComparisonModalOpen] = useState(false);
+  const [comparisonCompetitor, setComparisonCompetitor] = useState<CompetitorId>('ilovepdf');
   const [securityMode, setSecurityMode] = useState<'protect' | 'unlock'>('protect');
-  const [securityStudioSubTab, setSecurityStudioSubTab] = useState<'pii_masker' | 'signature_validator'>('pii_masker');
+  const [securityStudioSubTab, setSecurityStudioSubTab] = useState<'pii_masker' | 'signature_validator' | 'leak_checker'>('pii_masker');
   const [targetSubTool, setTargetSubTool] = useState<
     'risk-radar' | 'size-squeezer' | 'diff' | 'table-extract' | 'doctor'
   >('risk-radar');
@@ -158,7 +156,7 @@ export const App: React.FC = () => {
     converter?: any,
     targetSize?: number,
     security?: 'protect' | 'unlock',
-    studioTab?: 'pii_masker' | 'signature_validator'
+    studioTab?: 'pii_masker' | 'signature_validator' | 'leak_checker'
   ) => {
     setActiveTab(tab);
     if (subTool) setTargetSubTool(subTool);
@@ -168,15 +166,15 @@ export const App: React.FC = () => {
     if (studioTab) setSecurityStudioSubTab(studioTab);
 
     let path = '/';
-    let title = 'PDFCraft — 100% Free & Private PDF Editor, Signer & Tools (Zero Cloud Leaks)';
+    let title = 'PDFCraft — Free In-Browser PDF Editor, Signer & Tools';
 
     if (tab === 'sign-edit') {
       if (subTool === 'redact') {
         path = '/redact-pdf';
-        title = 'Redact & Black Out PDF Free Online (Permanent Zero-Leak) | PDFCraft';
+        title = 'Redact & Black Out Sensitive Text in PDF Online | PDFCraft';
       } else {
         path = '/sign-pdf';
-        title = 'Sign PDF Free No Account Required (Zero Cloud Leaks) | PDFCraft';
+        title = 'Sign PDF Free Online — No Account Required | PDFCraft';
       }
     } else if (tab === 'split') {
       path = '/split-pdf';
@@ -186,6 +184,9 @@ export const App: React.FC = () => {
       if (activeStudio === 'signature_validator') {
         path = '/verify-signature';
         title = 'Verify PDF Digital Signature Free (CCA India & Adobe AATL PKI) | PDFCraft';
+      } else if (activeStudio === 'leak_checker') {
+        path = '/pdf-leak-checker';
+        title = 'PDF Privacy & Metadata Leak Checker — Audit Hidden Tracking Data Free | PDFCraft';
       } else {
         path = '/mask-aadhaar';
         title = 'Mask Aadhaar Card PDF Free (1-Click Client-Side Auto-Redact) | PDFCraft';
@@ -196,7 +197,7 @@ export const App: React.FC = () => {
         title = 'Unlock & Remove PDF Password Online Free | PDFCraft';
       } else {
         path = '/protect-pdf';
-        title = 'Password Protect PDF Online Free (Military-Grade AES-256) | PDFCraft';
+        title = 'Password Protect PDF Online Free (AES-256) | PDFCraft';
       }
     } else if (tab === 'organize') {
       if (subTool === 'rotate') {
@@ -228,7 +229,27 @@ export const App: React.FC = () => {
       path = '/resume-builder';
       title = 'Free ATS Resume Builder 60s (Zero Paywall & Vector PDF) | PDFCraft';
     } else if (tab === 'tools') {
-      if (subTool === 'size-squeezer-100kb' || targetSize === 95 || targetSize === 100) {
+      if (subTool === 'upsc' || subTool === 'upsc-pdf-compressor') {
+        path = '/upsc-pdf-compressor';
+        setTargetKB(195);
+        title = 'UPSC PDF Compressor Under 200KB Free (Civil Services Portal Safe) | PDFCraft';
+      } else if (subTool === 'ssc' || subTool === 'ssc-cgl-signature-photo-compressor') {
+        path = '/ssc-cgl-signature-photo-compressor';
+        setTargetKB(48);
+        title = 'SSC CGL Signature & Photo PDF Compressor Under 50KB | PDFCraft';
+      } else if (subTool === 'gate' || subTool === 'gate-exam-pdf-compressor') {
+        path = '/gate-exam-pdf-compressor';
+        setTargetKB(195);
+        title = 'GATE Exam PDF Compressor Under 200KB (IIT GOAPS Portal Safe) | PDFCraft';
+      } else if (subTool === 'uscis' || subTool === 'uscis-visa-pdf-compressor') {
+        path = '/uscis-visa-pdf-compressor';
+        setTargetKB(495);
+        title = 'USCIS Visa PDF Compressor Under 500KB / 2MB Free (Zero Uploads) | PDFCraft';
+      } else if (subTool === 'neet' || subTool === 'neet-application-pdf-compressor') {
+        path = '/neet-application-pdf-compressor';
+        setTargetKB(195);
+        title = 'NEET Application PDF Compressor Under 200KB (NTA Compliant) | PDFCraft';
+      } else if (subTool === 'size-squeezer-100kb' || targetSize === 95 || targetSize === 100) {
         path = '/compress-pdf-100kb';
         setTargetKB(95);
         title = 'Compress PDF to 100KB Online Free (Govt & UPSC Portal Cap) | PDFCraft';
@@ -252,15 +273,6 @@ export const App: React.FC = () => {
         path = '/contract-risk-radar';
         title = 'AI Contract Risk Radar — Detect Predatory Clauses Free | PDFCraft';
       }
-    } else if (tab === 'photocraft') {
-      path = '/photo-editor';
-      title = 'PhotoCraft — Free Canva-Inspired Online Photo Editor & AI Studio (Zero Watermark) | PDFCraft';
-    } else if (tab === 'postercraft') {
-      path = '/postercraft';
-      title = 'PosterCraft — Free Pinterest Aesthetic Editorial Poster Studio (Zero Watermark) | PDFCraft';
-    } else if (tab === 'whatsapp-studio') {
-      path = '/whatsapp-hd';
-      title = 'WhatsApp 15-Minute HD Video Booster & 30s Status Slicer | PDFCraft';
     }
 
     if (window.location.pathname !== path) {
@@ -275,6 +287,16 @@ export const App: React.FC = () => {
       const path = window.location.pathname;
       if (path.toLowerCase() === '/privacy') {
         setIsPrivacyModalOpen(true);
+      }
+      if (path.toLowerCase().includes('/compare/')) {
+        if (path.toLowerCase().includes('smallpdf')) {
+          setComparisonCompetitor('smallpdf');
+        } else if (path.toLowerCase().includes('adobe')) {
+          setComparisonCompetitor('adobe');
+        } else {
+          setComparisonCompetitor('ilovepdf');
+        }
+        setIsComparisonModalOpen(true);
       }
       const route = matchRoute(path);
       setActiveTab(route.tab);
@@ -297,43 +319,13 @@ export const App: React.FC = () => {
     converter?: any,
     securityMode?: 'protect' | 'unlock',
     targetKB?: number,
-    securityStudioSubTab?: 'pii_masker' | 'signature_validator'
+    securityStudioSubTab?: 'pii_masker' | 'signature_validator' | 'leak_checker'
   ) => {
     if (securityStudioSubTab) setSecurityStudioSubTab(securityStudioSubTab);
     navigateToTab(tab, subTool, converter, targetKB, securityMode, securityStudioSubTab);
   };
 
   const homeTools = [
-    {
-      id: 'photocraft',
-      name: 'PhotoCraft (Canva Studio)',
-      badge: 'Free Canva Alternative',
-      icon: Wand2,
-      bg: 'from-fuchsia-600 to-indigo-600',
-      desc: 'Free Canva-inspired photo editor & graphic design studio. Magic Eraser, AI Background Remover, Magic Grab, and templates.',
-      category: ['all', 'popular', 'edit'],
-      action: () => navigateToTab('photocraft'),
-    },
-    {
-      id: 'postercraft',
-      name: 'PosterCraft (Pinterest)',
-      badge: 'Brand Ambassador',
-      icon: Sparkles,
-      bg: 'from-purple-600 to-indigo-600',
-      desc: '1-Click Pinterest aesthetic editorial poster creator with 3D text behind subjects & 35mm grain.',
-      category: ['all', 'popular', 'edit'],
-      action: () => navigateToTab('postercraft'),
-    },
-    {
-      id: 'whatsapp-hd',
-      name: 'WhatsApp 15m HD Sizer',
-      badge: '15-Min Ready',
-      icon: Video,
-      bg: 'from-emerald-600 to-teal-600',
-      desc: 'Compress up to 15-minute videos into under 16MB/64MB without blur + 30s status slicer.',
-      category: ['all', 'popular'],
-      action: () => navigateToTab('whatsapp-studio'),
-    },
     {
       id: 'edit-sign',
       name: 'Edit & Sign PDF',
@@ -504,16 +496,6 @@ export const App: React.FC = () => {
     );
   }
 
-  if (activeTab === 'photocraft') {
-    return (
-      <ErrorBoundary fallbackTitle="Could Not Initialize PhotoCraft Studio">
-        <Suspense fallback={<ViewSkeleton />}>
-          <PhotoCraftStudio onBackToHome={handleResetFile} />
-        </Suspense>
-      </ErrorBoundary>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col text-slate-100 relative overflow-x-clip selection:bg-indigo-500 selection:text-white">
       {/* Ambient Radial Glowing Lights constrained in fixed container */}
@@ -551,41 +533,45 @@ export const App: React.FC = () => {
                       <Sparkles className="w-3.5 h-3.5 text-purple-600 animate-pulse shrink-0" />
                       <span>Zero Cloud Uploads • Hardware GPU Accelerated</span>
                     </div>
-                    <a
-                      href="/commercial.html"
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-900 text-[11px] sm:text-xs font-bold transition shadow-sm"
-                    >
-                      <Play className="w-3 h-3 fill-amber-600 text-amber-600" />
-                      <span>🎬 Watch 30s Video</span>
-                    </a>
                   </div>
 
                   <h1 className="text-4xl sm:text-6xl font-black text-[#111439] tracking-tight leading-[1.08]">
-                    Creative suite <br />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#111439] via-purple-700 to-pink-600">
-                      to elevate your media.
+                    Free Online PDF Editor <br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#111439] via-purple-700 to-indigo-600">
+                      Edit, Sign &amp; Compress PDFs Privately.
                     </span>
                   </h1>
 
                   <p className="text-sm sm:text-base text-[#425466] leading-relaxed max-w-xl font-normal">
-                    Generate high-fashion Pinterest aesthetic posters with 3D text behind subjects, optimize 15-minute WhatsApp video stories in full HD, and sign private PDFs with zero server uploads.
+                    Free in-browser PDF suite. Edit text, electronically sign, compress under 200KB for portals, merge, split, and convert documents with 100% client-side privacy and zero cloud uploads.
                   </p>
 
                   <div className="flex flex-wrap items-center gap-3 pt-2">
-                    <button
-                      onClick={() => navigateToTab('postercraft')}
-                      className="bg-[#111439] hover:bg-[#0A2540] text-white font-black text-xs sm:text-sm px-5 py-3 rounded-xl shadow-lg transition-all flex items-center gap-2"
+                    <a
+                      href="/sign-pdf"
+                      onClick={(e) => { e.preventDefault(); navigateToTab('sign-edit'); }}
+                      className="bg-gradient-to-r from-purple-700 via-indigo-600 to-purple-800 hover:from-purple-800 hover:to-indigo-700 text-white font-black text-xs sm:text-sm px-5 py-3 rounded-xl shadow-lg shadow-purple-600/30 transition-all flex items-center gap-2 hover:scale-[1.02] cursor-pointer"
                     >
-                      <span>🌟 Open PosterCraft (Pinterest)</span>
+                      <FileSignature className="w-4 h-4 text-amber-300" />
+                      <span>Edit &amp; Sign PDF</span>
                       <ArrowRight className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => navigateToTab('whatsapp-studio')}
-                      className="bg-white hover:bg-slate-50 text-[#111439] border border-slate-200 font-extrabold text-xs sm:text-sm px-5 py-3 rounded-xl shadow-sm transition-all flex items-center gap-2"
+                    </a>
+                    <a
+                      href="/merge-pdf"
+                      onClick={(e) => { e.preventDefault(); navigateToTab('organize'); }}
+                      className="bg-[#111439] hover:bg-[#0A2540] text-white font-bold text-xs sm:text-sm px-4 py-3 rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer"
                     >
-                      <Video className="w-4 h-4 text-emerald-600" />
-                      <span>🎬 WhatsApp 15m Sizer</span>
-                    </button>
+                      <Layers className="w-4 h-4 text-purple-300" />
+                      <span>Merge &amp; Organize</span>
+                    </a>
+                    <a
+                      href="/mask-aadhaar"
+                      onClick={(e) => { e.preventDefault(); navigateToTab('security-studio'); }}
+                      className="bg-white hover:bg-slate-50 text-[#111439] border border-slate-200 font-bold text-xs sm:text-sm px-4 py-3 rounded-xl shadow-sm transition-all flex items-center gap-2 cursor-pointer"
+                    >
+                      <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                      <span>Protect &amp; Mask PII</span>
+                    </a>
                   </div>
                 </div>
 
@@ -594,30 +580,31 @@ export const App: React.FC = () => {
                   <div className="relative w-full max-w-sm">
                     <div className="bg-white rounded-3xl p-5 shadow-2xl border border-slate-100 space-y-3.5">
                       <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                        <span className="text-xs font-black text-[#111439]">FEATURE SPOTLIGHT</span>
-                        <span className="text-[10px] font-mono bg-purple-50 text-purple-700 font-extrabold px-2 py-0.5 rounded-full border border-purple-200">
-                          BRAND AMBASSADOR
+                        <span className="text-xs font-black text-[#111439]">OFFICIAL VERIFICATION</span>
+                        <span className="text-[10px] font-mono bg-emerald-50 text-emerald-700 font-extrabold px-2 py-0.5 rounded-full border border-emerald-200">
+                          100% PRIVATE GPU
                         </span>
                       </div>
 
-                      <div className="relative aspect-[3/4] rounded-2xl bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-700 p-4 text-white flex flex-col justify-between overflow-hidden shadow-inner">
-                        <div className="flex justify-between items-center text-[10px] font-mono text-white/80">
-                          <span>VOL. 04 // 2026</span>
-                          <span>LAT: 34.0522° N</span>
+                      <div className="relative aspect-[3/4] rounded-2xl bg-gradient-to-tr from-slate-900 via-indigo-950 to-slate-900 p-4 text-white flex flex-col justify-between overflow-hidden shadow-inner border border-slate-800">
+                        <div className="flex justify-between items-center text-[10px] font-mono text-emerald-400">
+                          <span className="flex items-center gap-1"><ShieldCheck className="w-3 h-3 text-emerald-400" /> AES-256 ENCRYPTED</span>
+                          <span>SHA-256</span>
                         </div>
-                        <div className="text-center my-auto">
-                          <span className="text-xs font-serif italic tracking-widest block text-white/90">AESTHETIC</span>
-                          <span className="text-2xl font-black tracking-tight leading-none">HEAVEN</span>
+                        <div className="text-center my-auto space-y-1">
+                          <span className="text-[10px] font-mono uppercase tracking-widest block text-indigo-300">CRYPTOGRAPHIC AUDIT SEAL</span>
+                          <span className="text-xl font-black tracking-tight leading-tight block text-white">DOCUMENT SIGNED</span>
+                          <span className="text-[11px] text-slate-400 block">Verified In-Memory Browser Execution</span>
                         </div>
-                        <div className="flex justify-between items-center text-[9px] font-mono border-t border-white/20 pt-1.5">
-                          <span>|||| | |||| ||</span>
-                          <span className="bg-white text-black px-1.5 py-0.5 rounded font-extrabold text-[8px]">Pinterest Pin</span>
+                        <div className="flex justify-between items-center text-[9px] font-mono border-t border-white/10 pt-2 text-slate-400">
+                          <span>ZERO CLOUD UPLOADS</span>
+                          <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-1.5 py-0.5 rounded font-extrabold text-[8px]">TAMPER PROOF</span>
                         </div>
                       </div>
 
                       <div className="flex items-center justify-between text-xs text-slate-500 pt-1">
-                        <span className="font-semibold">✦ 3D Text Behind Subject</span>
-                        <span className="text-purple-600 font-bold">1-Click 4K</span>
+                        <span className="font-semibold text-slate-700">✦ E-Sign, Redact &amp; Squeeze</span>
+                        <span className="text-purple-600 font-bold">Hardware Accelerated</span>
                       </div>
                     </div>
                   </div>
@@ -626,21 +613,63 @@ export const App: React.FC = () => {
               </div>
             </div>
 
+            {/* Semantic SEO Introduction Section */}
+            <section aria-labelledby="about-pdfcraft-heading" className="w-full max-w-6xl mx-auto px-4 mb-8 text-left">
+              <div className="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 sm:p-8 backdrop-blur-sm shadow-sm space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/80 pb-3">
+                  <h2 id="about-pdfcraft-heading" className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                    <ShieldCheck className="w-5 h-5 text-emerald-400 shrink-0" />
+                    <span>Free Online PDF Editor &amp; Private Document Studio</span>
+                  </h2>
+                  <span className="text-xs text-indigo-400 font-semibold">100% In-Browser WebAssembly • No Server Uploads</span>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-slate-300 leading-relaxed">
+                  <div>
+                    <h3 className="font-semibold text-white mb-1.5 flex items-center gap-1.5">
+                      <FileSignature className="w-3.5 h-3.5 text-amber-300" />
+                      <span>Edit &amp; Electronically Sign</span>
+                    </h3>
+                    <p className="text-slate-400">
+                      Add vector signatures, text annotations, checkmarks, and dates to contracts and official forms. Draw or type signatures with zero account registration or monthly DocuSign subscription fees.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white mb-1.5 flex items-center gap-1.5">
+                      <Shrink className="w-3.5 h-3.5 text-indigo-400" />
+                      <span>Target Size PDF Compression</span>
+                    </h3>
+                    <p className="text-slate-400">
+                      Compress heavy scanned PDFs strictly under 100KB, 200KB, or 500KB to satisfy strict government, visa, and university portal upload limits without degrading essential text legibility.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white mb-1.5 flex items-center gap-1.5">
+                      <Lock className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>Zero-Cloud Document Privacy</span>
+                    </h3>
+                    <p className="text-slate-400">
+                      Unlike traditional cloud PDF converters, PDFCraft executes entirely in your local browser memory using WebAssembly. Your tax files, Aadhaar/PAN cards, and contracts never touch an external server.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
             {/* Universal Uploader Drop Box */}
             <FileUploader onFileLoaded={handleFileLoaded} title="Drop any PDF or Image here to edit immediately, or select a tool below" />
 
             {/* All Tools Open Visual Grid (Stripe Style) */}
             <div className="max-w-6xl mx-auto px-4 mt-10 pb-16 w-full">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                 <div>
-                  <h2 className="text-base sm:text-lg font-bold text-[#111439] flex items-center gap-2">
-                    <Zap className="w-5 h-5 text-purple-600" />
-                    <span>All Creative &amp; PDF Tools</span>
-                    <span className="text-[10px] font-semibold uppercase tracking-wider bg-purple-50 text-purple-700 border border-purple-200 px-2 py-0.5 rounded-full">
+                  <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                    <Zap className="w-5 h-5 text-purple-400" />
+                    <span>All PDF &amp; Document Tools</span>
+                    <span className="text-[10px] font-bold uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/30 px-2.5 py-0.5 rounded-full">
                       100% Free
                     </span>
                   </h2>
-                  <p className="text-xs text-[#425466] mt-0.5">Click any tool to launch instantly in your browser — zero accounts required</p>
+                  <p className="text-xs text-slate-400 mt-1">Click any tool to launch instantly in your browser — zero accounts required</p>
                 </div>
 
                 {/* Filter Pills */}
@@ -650,15 +679,15 @@ export const App: React.FC = () => {
                     { id: 'popular', label: '⭐ Popular' },
                     { id: 'security', label: '🛡️ Protect & Mask' },
                     { id: 'convert', label: '🔄 Converters' },
-                    { id: 'edit', label: '✍️ Edit & Creative' },
+                    { id: 'edit', label: '✍️ Edit & Sign' },
                   ].map((f) => (
                     <button
                       key={f.id}
                       onClick={() => setBentoFilter(f.id as any)}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition cursor-pointer ${
+                      className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition cursor-pointer ${
                         bentoFilter === f.id
-                          ? 'bg-[#111439] text-white shadow-md'
-                          : 'bg-white hover:bg-slate-100 text-[#425466] border border-slate-200'
+                          ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-600/30 border border-purple-400/40 font-bold scale-[1.02]'
+                          : 'bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800'
                       }`}
                     >
                       {f.label}
@@ -917,14 +946,6 @@ export const App: React.FC = () => {
 
                 {activeTab === 'resume' && (
                   <ResumeBuilder />
-                )}
-
-                {activeTab === 'postercraft' && (
-                  <PosterCraft />
-                )}
-
-                {activeTab === 'whatsapp-studio' && (
-                  <WhatsAppStudio />
                 )}
               </Suspense>
             </ErrorBoundary>
@@ -1212,20 +1233,80 @@ export const App: React.FC = () => {
                 </li>
                 <li>
                   <a
-                    href="/ilovepdf-alternative"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('tools'); }}
-                    className="hover:text-rose-300 transition block hover:translate-x-0.5 text-slate-300"
+                    href="/pdf-leak-checker"
+                    onClick={(e) => { e.preventDefault(); navigateToTab('security-studio', undefined, undefined, undefined, undefined, 'leak_checker'); }}
+                    className="hover:text-amber-300 transition block hover:translate-x-0.5 text-amber-400 font-semibold"
                   >
-                    ⚡ Free iLovePDF Alternative
+                    🔍 PDF Privacy Leak Checker
                   </a>
                 </li>
                 <li>
                   <a
-                    href="/smallpdf-alternative"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('tools'); }}
+                    href="/upsc-pdf-compressor"
+                    onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'upsc-pdf-compressor', undefined, 195); }}
+                    className="hover:text-indigo-300 transition block hover:translate-x-0.5"
+                  >
+                    🇮🇳 UPSC PDF Compressor (200KB)
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/ssc-cgl-signature-photo-compressor"
+                    onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'ssc-cgl-signature-photo-compressor', undefined, 48); }}
+                    className="hover:text-indigo-300 transition block hover:translate-x-0.5"
+                  >
+                    📝 SSC CGL Signature (50KB)
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/uscis-visa-pdf-compressor"
+                    onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'uscis-visa-pdf-compressor', undefined, 495); }}
+                    className="hover:text-indigo-300 transition block hover:translate-x-0.5"
+                  >
+                    ✈️ USCIS Visa PDF (500KB)
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/compare/pdfcraft-vs-ilovepdf"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setComparisonCompetitor('ilovepdf');
+                      setIsComparisonModalOpen(true);
+                      window.history.pushState(null, '', '/compare/pdfcraft-vs-ilovepdf');
+                    }}
+                    className="hover:text-rose-300 transition block hover:translate-x-0.5 text-slate-300"
+                  >
+                    ⚖️ PDFCraft vs iLovePDF
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/compare/pdfcraft-vs-smallpdf"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setComparisonCompetitor('smallpdf');
+                      setIsComparisonModalOpen(true);
+                      window.history.pushState(null, '', '/compare/pdfcraft-vs-smallpdf');
+                    }}
                     className="hover:text-amber-300 transition block hover:translate-x-0.5 text-slate-300"
                   >
-                    ⚡ Free Smallpdf Alternative
+                    ⚖️ PDFCraft vs Smallpdf
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/compare/pdfcraft-vs-adobe"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setComparisonCompetitor('adobe');
+                      setIsComparisonModalOpen(true);
+                      window.history.pushState(null, '', '/compare/pdfcraft-vs-adobe');
+                    }}
+                    className="hover:text-blue-300 transition block hover:translate-x-0.5 text-slate-300"
+                  >
+                    ⚖️ PDFCraft vs Adobe Acrobat
                   </a>
                 </li>
                 <li>
@@ -1297,6 +1378,19 @@ export const App: React.FC = () => {
             window.history.pushState(null, '', '/');
           }
         }}
+      />
+
+      {/* Contrarian Competitor Comparison Modal */}
+      <ComparisonModal
+        isOpen={isComparisonModalOpen}
+        initialCompetitor={comparisonCompetitor}
+        onClose={() => {
+          setIsComparisonModalOpen(false);
+          if (window.location.pathname.startsWith('/compare/')) {
+            window.history.pushState(null, '', '/');
+          }
+        }}
+        onSelectTool={(tab) => navigateToTab(tab as ActiveTab)}
       />
     </div>
   );

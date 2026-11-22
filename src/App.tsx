@@ -6,6 +6,7 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 import { FeatureDirectoryModal } from './components/FeatureDirectoryModal';
 import { PrivacyModal } from './components/PrivacyModal';
 import { ComparisonModal, CompetitorId } from './components/ComparisonModal';
+import { SeoFooter } from './components/SeoFooter';
 import { matchRoute } from './routes';
 
 // Resilient self-healing lazy loader for PWA and desktop apps
@@ -146,7 +147,7 @@ export const App: React.FC = () => {
     if (window.location.pathname !== '/') {
       window.history.pushState(null, '', '/');
     }
-    document.title = 'Free Online PDF Editor — Edit, Sign & Compress PDFs Privately | PDFCraft';
+    document.title = 'PDFCraft — 100% Free & Private PDF Editor, Signer & Tools (Zero Cloud Leaks)';
   };
 
   // Comprehensive SEO Route & URL sync handler for all canonical tools
@@ -1097,7 +1098,7 @@ export const App: React.FC = () => {
               </ul>
             </div>
 
-            {/* Column 3: Edit, Sign & Merge */}
+            {/* Column 3: Edit, Sign & Organize */}
             <div className="space-y-3">
               <h3 className="font-bold text-white uppercase text-[11px] tracking-wider text-blue-400 flex items-center gap-1.5">
                 <FileSignature className="w-3.5 h-3.5" />
@@ -1323,6 +1324,9 @@ export const App: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Crawlable Internal SEO Directory */}
+      <SeoFooter />
 
       {/* Footer */}
       <footer className="border-t border-slate-900 bg-slate-950/80 backdrop-blur-md py-6 text-xs text-slate-400 mb-16 md:mb-0">

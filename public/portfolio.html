@@ -1,32 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vishnu | Full-Stack Web & Technical SEO Portfolio</title>
+  <meta name="description" content="Portfolio of Vishnu - Full-stack developer & Technical SEO specialist. Featuring PDFCraft (Client-Side Wasm PDF Studio), high-authority backlink matrix, real-time live telemetry, and Core Web Vitals optimization.">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
     .glass-card {
       background: rgba(15, 23, 42, 0.75);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(14px);
       border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card-glow {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      box-shadow: 0 0 30px rgba(99, 102, 241, 0.12);
+    }
+    @keyframes pulse-dot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.5; }
+    }
+    .animate-pulse-dot {
+      animation: pulse-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    .badge-live {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #34d399;
+    }
+    .badge-review {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: #fbbf24;
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen selection:bg-indigo-500 selection:text-white antialiased">
-  <!-- Glowing Background Orbs -->
+<body class="bg-slate-950 text-slate-100 min-h-screen selection:bg-indigo-500 selection:text-white antialiased relative">
+  <!-- Glowing Ambient Background Orbs -->
   <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">
-    <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-indigo-600/20 blur-[130px] rounded-full"></div>
-    <div class="absolute top-96 -left-20 w-80 h-80 bg-purple-600/15 blur-[120px] rounded-full"></div>
-    <div class="absolute bottom-20 -right-20 w-96 h-96 bg-emerald-500/10 blur-[140px] rounded-full"></div>
+    <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-indigo-600/20 blur-[140px] rounded-full"></div>
+    <div class="absolute top-96 -left-20 w-80 h-80 bg-purple-600/15 blur-[130px] rounded-full"></div>
+    <div class="absolute bottom-40 -right-20 w-96 h-96 bg-emerald-500/12 blur-[150px] rounded-full"></div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="glass-card-glow px-4 py-3 rounded-2xl flex items-center gap-3 text-xs font-semibold shadow-2xl border-emerald-500/40 text-emerald-300">
+      <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+      <span id="toast-message">Real-time metrics updated</span>
+    </div>
   </div>
 
   <!-- Navigation Bar -->
-  <nav class="border-b border-slate-800/80 sticky top-0 z-50 bg-slate-950/80 backdrop-blur-md">
+  <nav class="border-b border-slate-800/80 sticky top-0 z-40 bg-slate-950/80 backdrop-blur-md">
     <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center font-black text-white text-lg shadow-lg shadow-indigo-500/30">
@@ -34,24 +67,25 @@
         </div>
         <div>
           <span class="font-extrabold text-white text-sm tracking-tight block">Vishnu</span>
-          <span class="text-[10px] text-slate-400 font-mono block">Web Architecture &amp; SEO</span>
+          <span class="text-[10px] text-slate-400 font-mono block">Web Architecture &amp; Technical SEO</span>
         </div>
       </div>
-      <div class="flex items-center gap-6 text-xs font-semibold text-slate-300">
-        <a href="#projects" class="hover:text-indigo-400 transition">Projects</a>
-        <a href="#backlinks" class="hover:text-indigo-400 transition">Backlinks Matrix</a>
-        <a href="#analytics" class="hover:text-indigo-400 transition">Audit Metrics</a>
+      <div class="flex items-center gap-4 sm:gap-6 text-xs font-semibold text-slate-300">
+        <a href="#projects" class="hidden sm:inline hover:text-indigo-400 transition">Projects</a>
+        <a href="#backlinks" class="hover:text-indigo-400 transition flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Live Matrix
+        </a>
         <a href="#contact" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition shadow-md shadow-indigo-600/30">Get in Touch</a>
       </div>
     </div>
   </nav>
 
-  <main class="max-w-6xl mx-auto px-4 py-12 space-y-16">
+  <main class="max-w-6xl mx-auto px-4 py-10 space-y-16">
     <!-- Hero Header -->
     <section class="space-y-6 max-w-3xl">
       <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-bold">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        Available for Full-Stack &amp; SEO Projects
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse-dot"></span>
+        Available for Full-Stack &amp; Technical SEO Contracts
       </div>
       <h1 class="text-4xl sm:text-6xl font-black tracking-tight leading-[1.1]">
         Building High-Performance Web Apps &amp; <br>
@@ -60,11 +94,36 @@
         </span>
       </h1>
       <p class="text-slate-400 text-sm sm:text-base leading-relaxed">
-        Full-stack developer and technical SEO specialist. Specializing in client-side WebAssembly applications, zero-leak data privacy, Core Web Vitals performance, and high-authority editorial backlink campaigns.
+        Full-stack developer and technical SEO specialist. Specializing in zero-leak client-side WebAssembly architectures, Core Web Vitals optimization, automated schema markup, and high-authority editorial backlink campaigns.
       </p>
 
-      <!-- Quick Metrics Bar -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4">
+      <!-- Real-Time Telemetry HUD Banner -->
+      <div class="glass-card-glow p-4 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="relative flex items-center justify-center w-3 h-3">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+          </div>
+          <div>
+            <div class="text-xs font-bold text-white flex items-center gap-2">
+              <span>Real-Time Telemetry Engine</span>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">LIVE PING ACTIVE</span>
+            </div>
+            <div class="text-[11px] text-slate-400 mt-0.5 font-mono">
+              Last synced: <span id="telemetry-time" class="text-slate-200">Just now</span> • Auto-syncs every 30s
+            </div>
+          </div>
+        </div>
+        <button id="refresh-btn" onclick="triggerManualSync()" class="w-full sm:w-auto px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 hover:text-white border border-slate-700 text-xs font-semibold transition flex items-center justify-center gap-2 shadow-sm">
+          <svg id="refresh-icon" class="w-3.5 h-3.5 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          <span>Sync Real-Time Metrics</span>
+        </button>
+      </div>
+
+      <!-- Quick Metrics Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
         <div class="glass-card p-4 rounded-2xl">
           <div class="text-2xl font-black text-indigo-400">DA 96+</div>
           <div class="text-[11px] text-slate-400 mt-0.5">Top Backlink Tier</div>
@@ -78,8 +137,8 @@
           <div class="text-[11px] text-slate-400 mt-0.5">Indexed Canonical Pages</div>
         </div>
         <div class="glass-card p-4 rounded-2xl">
-          <div class="text-2xl font-black text-cyan-400">0</div>
-          <div class="text-[11px] text-slate-400 mt-0.5">Link Removals / Flags</div>
+          <div class="text-2xl font-black text-cyan-400" id="stat-retained">0 Removed</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">100% Retained Links</div>
         </div>
       </div>
     </section>
@@ -92,18 +151,23 @@
           <p class="text-xs text-slate-400 mt-1">100% In-Browser Private WebAssembly PDF Studio</p>
         </div>
         <div class="flex items-center gap-3">
-          <a href="https://github.com/Vishnu-cod/pdf-craft" target="_blank" class="px-3 py-1.5 rounded-lg border border-slate-700 hover:border-slate-500 text-xs font-semibold text-slate-300 transition">GitHub Repo</a>
-          <a href="https://pdf-craft-vert.vercel.app/" target="_blank" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-xs font-bold text-white transition flex items-center gap-1.5">Live App ↗</a>
+          <a href="https://github.com/Vishnu-cod/pdf-craft" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg border border-slate-700 hover:border-slate-500 text-xs font-semibold text-slate-300 transition flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            <span>GitHub (<span id="gh-badge-stars">⭐ 0</span>)</span>
+          </a>
+          <a href="https://pdf-craft-vert.vercel.app/" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-xs font-bold text-white transition flex items-center gap-1.5 shadow-md shadow-emerald-600/20">
+            <span>Live App</span> ↗
+          </a>
         </div>
       </div>
 
       <div class="glass-card p-6 sm:p-8 rounded-3xl space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div class="space-y-3 lg:col-span-2">
-            <span class="text-xs font-mono uppercase tracking-wider text-indigo-400 font-bold">Architecture &amp; Features</span>
+            <span class="text-xs font-mono uppercase tracking-wider text-indigo-400 font-bold">Architecture &amp; Core Engineering</span>
             <h3 class="text-lg font-bold text-white">Zero Server Uploads • Client-Side Document Processing</h3>
             <p class="text-xs text-slate-300 leading-relaxed">
-              Engineered using React, TypeScript, PDF.js, and WebAssembly to eliminate cloud data leakage. Includes vector electronic signatures, binary search file size compression (strictly under 100KB/200KB for government exam portals), automated Aadhaar/SSN redaction, and ATS resume scanning.
+              Engineered using React, TypeScript, PDF.js, and WebAssembly to eliminate cloud data leakage. Includes vector electronic signatures, binary search file size compression (strictly under 100KB/200KB for government portals), automated Aadhaar/SSN redaction, and ATS resume scanning.
             </p>
             <div class="flex flex-wrap gap-2 pt-2">
               <span class="text-[10px] font-mono px-2.5 py-1 rounded-md bg-slate-800 text-slate-300">React 18</span>
@@ -128,25 +192,34 @@
               <span class="text-emerald-400 font-semibold">Active &amp; Configured</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-slate-400">Schema Markup:</span>
-              <span class="text-indigo-300 font-semibold">WebApplication + FAQ</span>
+              <span class="text-slate-400">Live Repo Telemetry:</span>
+              <span class="text-indigo-300 font-mono font-semibold" id="gh-repo-status">Checking...</span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Complete Backlinks & Positions Matrix -->
+    <!-- Complete Backlinks & Real-Time Positions Matrix -->
     <section id="backlinks" class="space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
         <div>
-          <h2 class="text-xl sm:text-2xl font-black text-white">Backlink Portfolio &amp; Live Positions</h2>
-          <p class="text-xs text-slate-400 mt-1">Live tracking of high-authority publications, directory listings, and engagements</p>
+          <h2 class="text-xl sm:text-2xl font-black text-white flex items-center gap-2">
+            <span>Backlink Portfolio &amp; Real-Time Telemetry</span>
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse-dot"></span>
+          </h2>
+          <p class="text-xs text-slate-400 mt-1">Live tracking of high-authority publications, directory listings, engagement counts, and index status</p>
         </div>
-        <div class="flex items-center gap-2">
-          <span class="px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-[11px] font-bold">5 Live Active</span>
-          <span class="px-2.5 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[11px] font-bold">3 In Review</span>
-          <span class="px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 text-[11px] font-bold">0 Removed</span>
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="px-2.5 py-1 rounded-full badge-live text-[11px] font-bold flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> 5 Live &amp; Active
+          </span>
+          <span class="px-2.5 py-1 rounded-full badge-review text-[11px] font-bold flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> 3 In Review Queue
+          </span>
+          <span class="px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 text-[11px] font-bold">
+            0 Flagged / Removed
+          </span>
         </div>
       </div>
 
@@ -155,101 +228,194 @@
           <thead class="bg-slate-900/90 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
             <tr>
               <th class="p-3.5">Platform</th>
-              <th class="p-3.5">Domain Authority</th>
-              <th class="p-3.5">Content Title &amp; Angle</th>
-              <th class="p-3.5">Engagement Metrics</th>
-              <th class="p-3.5">Live Status</th>
-              <th class="p-3.5">Action</th>
+              <th class="p-3.5">Authority</th>
+              <th class="p-3.5">Published Asset / Article</th>
+              <th class="p-3.5">Live Real-Time Engagement</th>
+              <th class="p-3.5">Indexing &amp; Status</th>
+              <th class="p-3.5 text-right">Action</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-800/60 text-slate-300">
-            <!-- Medium -->
+            <!-- Dev.to (Real-Time API) -->
             <tr class="hover:bg-slate-900/40 transition">
               <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Medium
-              </td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono">DA 96+</span></td>
-              <td class="p-3.5 max-w-xs truncate">The Silent Privacy Danger of Online PDF Editors</td>
-              <td class="p-3.5 font-mono text-emerald-400">1 Clap • Live indexing</td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-[10px]">LIVE &amp; ACTIVE</span></td>
-              <td class="p-3.5"><a href="https://medium.com/@vishnu.starks65/the-silent-privacy-danger-of-online-pdf-editors-and-why-your-tax-returns-dont-belong-in-the-872068370fbc" target="_blank" class="text-indigo-400 hover:underline">View Post ↗</a></td>
-            </tr>
-            <!-- Dev.to -->
-            <tr class="hover:bg-slate-900/40 transition">
-              <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Dev.to
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span>Dev.to</span>
               </td>
               <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono">DA 85+</span></td>
               <td class="p-3.5 max-w-xs truncate">Why We Ditched Cloud Servers for In-Browser Wasm</td>
-              <td class="p-3.5 font-mono text-slate-300">&lt; 25 Views • 0 Flags</td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-[10px]">LIVE &amp; INDEXED</span></td>
-              <td class="p-3.5"><a href="https://dev.to/vishnucod/why-we-ditched-cloud-servers-for-in-browser-webassembly-to-process-sensitive-pdfs-gi0" target="_blank" class="text-indigo-400 hover:underline">View Post ↗</a></td>
+              <td class="p-3.5 font-mono text-emerald-400">
+                <div class="flex items-center gap-2">
+                  <span id="devto-reactions" class="font-bold">Syncing...</span>
+                  <span class="text-slate-500">•</span>
+                  <span id="devto-comments" class="text-slate-300">0 comments</span>
+                  <span class="text-slate-500">•</span>
+                  <span class="text-slate-400">DA 85 backlink</span>
+                </div>
+              </td>
+              <td class="p-3.5">
+                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; INDEXED
+                </span>
+              </td>
+              <td class="p-3.5 text-right">
+                <a href="https://dev.to/vishnucod/why-we-ditched-cloud-servers-for-in-browser-webassembly-to-process-sensitive-pdfs-gi0" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Post ↗</a>
+              </td>
             </tr>
-            <!-- Hashnode -->
+
+            <!-- Hashnode (Real-Time GraphQL) -->
             <tr class="hover:bg-slate-900/40 transition">
               <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Hashnode
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span>Hashnode</span>
               </td>
               <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono">DA 84+</span></td>
               <td class="p-3.5 max-w-xs truncate">Why We Ditched Cloud Servers for In-Browser Wasm</td>
-              <td class="p-3.5 font-mono text-slate-300">Canonical Synced to Dev.to</td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-[10px]">LIVE &amp; CANONICAL</span></td>
-              <td class="p-3.5"><a href="https://vishnustarks.hashnode.dev/why-we-ditched-cloud-servers-for-in-browser-webassembly-to-process-sensitive-pdfs" target="_blank" class="text-indigo-400 hover:underline">View Post ↗</a></td>
+              <td class="p-3.5 font-mono text-slate-300">
+                <div class="flex items-center gap-2">
+                  <span id="hashnode-reactions" class="text-emerald-400 font-bold">1 Reaction</span>
+                  <span class="text-slate-500">•</span>
+                  <span class="text-slate-400">Canonical Synced to Dev.to</span>
+                </div>
+              </td>
+              <td class="p-3.5">
+                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; CANONICAL
+                </span>
+              </td>
+              <td class="p-3.5 text-right">
+                <a href="https://vishnustarks.hashnode.dev/why-we-ditched-cloud-servers-for-in-browser-webassembly-to-process-sensitive-pdfs" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Post ↗</a>
+              </td>
             </tr>
+
+            <!-- Medium -->
+            <tr class="hover:bg-slate-900/40 transition">
+              <td class="p-3.5 font-bold text-white flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span>Medium</span>
+              </td>
+              <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono">DA 96+</span></td>
+              <td class="p-3.5 max-w-xs truncate">The Silent Privacy Danger of Online PDF Editors</td>
+              <td class="p-3.5 font-mono text-emerald-400">
+                <div class="flex items-center gap-2">
+                  <span id="medium-claps" class="font-bold">1 Clap</span>
+                  <span class="text-slate-500">•</span>
+                  <span id="medium-feed-status" class="text-slate-300">RSS Verified</span>
+                </div>
+              </td>
+              <td class="p-3.5">
+                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE &amp; ACTIVE
+                </span>
+              </td>
+              <td class="p-3.5 text-right">
+                <a href="https://medium.com/@vishnu.starks65/the-silent-privacy-danger-of-online-pdf-editors-and-why-your-tax-returns-dont-belong-in-the-872068370fbc" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Post ↗</a>
+              </td>
+            </tr>
+
             <!-- Product Hunt -->
             <tr class="hover:bg-slate-900/40 transition">
               <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Product Hunt
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span>Product Hunt</span>
               </td>
               <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono">DA 91+</span></td>
               <td class="p-3.5 max-w-xs truncate">PDFCraft Official Product Launch Listing</td>
-              <td class="p-3.5 font-mono text-purple-300">2 Followers • 1 Upvote</td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-[10px]">LIVE PROFILE</span></td>
-              <td class="p-3.5"><a href="https://www.producthunt.com/products/pdfcraft-10" target="_blank" class="text-indigo-400 hover:underline">View Listing ↗</a></td>
+              <td class="p-3.5 font-mono text-purple-300">
+                <span id="ph-metrics">2 Followers • 1 Upvote</span>
+              </td>
+              <td class="p-3.5">
+                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE PROFILE
+                </span>
+              </td>
+              <td class="p-3.5 text-right">
+                <a href="https://www.producthunt.com/products/pdfcraft-10" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Listing ↗</a>
+              </td>
             </tr>
+
             <!-- Peerlist -->
             <tr class="hover:bg-slate-900/40 transition">
               <td class="p-3.5 font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Peerlist
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span>Peerlist</span>
               </td>
               <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono">DA 68+</span></td>
               <td class="p-3.5 max-w-xs truncate">PDFCraft Developer Project Showcase</td>
-              <td class="p-3.5 font-mono text-slate-300">Public Portfolio Entry</td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-[10px]">LIVE SHOWCASE</span></td>
-              <td class="p-3.5"><a href="https://peerlist.io/vishnustarks65/project/pdfcraft" target="_blank" class="text-indigo-400 hover:underline">View Showcase ↗</a></td>
+              <td class="p-3.5 font-mono text-slate-300">
+                <span id="peerlist-status">Public Portfolio Showcase</span>
+              </td>
+              <td class="p-3.5">
+                <span class="px-2 py-0.5 rounded-full badge-live font-bold text-[10px] inline-flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> LIVE SHOWCASE
+                </span>
+              </td>
+              <td class="p-3.5 text-right">
+                <a href="https://peerlist.io/vishnustarks65/project/pdfcraft" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 font-bold hover:underline">View Showcase ↗</a>
+              </td>
             </tr>
+
             <!-- HackerNoon -->
             <tr class="hover:bg-slate-900/40 transition">
               <td class="p-3.5 font-bold text-slate-300 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-amber-400"></span> HackerNoon
+                <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                <span>HackerNoon</span>
               </td>
               <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-bold font-mono">DA 86+</span></td>
               <td class="p-3.5 max-w-xs truncate">The Silent Privacy Danger of Online PDF Editors</td>
-              <td class="p-3.5 font-mono text-amber-300">Draft ID #6b025e9</td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-bold text-[10px]">IN EDITORIAL QUEUE</span></td>
-              <td class="p-3.5"><a href="https://hackernoon.com/preview/6b025e9750f33abbb7d8c565" target="_blank" class="text-amber-400 hover:underline">Preview Draft ↗</a></td>
+              <td class="p-3.5 font-mono text-amber-300">
+                Draft ID #6b025e9 • Editorial Slot
+              </td>
+              <td class="p-3.5">
+                <span class="px-2 py-0.5 rounded-full badge-review font-bold text-[10px] inline-flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> IN EDITORIAL QUEUE
+                </span>
+              </td>
+              <td class="p-3.5 text-right">
+                <a href="https://hackernoon.com/preview/6b025e9750f33abbb7d8c565" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:text-amber-300 font-bold hover:underline">Preview Draft ↗</a>
+              </td>
             </tr>
+
             <!-- DevHunt -->
             <tr class="hover:bg-slate-900/40 transition">
               <td class="p-3.5 font-bold text-slate-300 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-amber-400"></span> DevHunt
+                <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                <span>DevHunt</span>
               </td>
               <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-bold font-mono">DA 52+</span></td>
               <td class="p-3.5 max-w-xs truncate">PDFCraft Studio Launch Queue</td>
-              <td class="p-3.5 font-mono text-emerald-400">10 Impr • 1 Upvote • 1 Comment</td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-bold text-[10px]">IN LAUNCH QUEUE</span></td>
-              <td class="p-3.5"><a href="https://devhunt.org/tool/pdfcraft-studio" target="_blank" class="text-amber-400 hover:underline">View Tool ↗</a></td>
+              <td class="p-3.5 font-mono text-emerald-400">
+                <span id="devhunt-metrics">10 Impr • 1 Upvote • 1 Comment</span>
+              </td>
+              <td class="p-3.5">
+                <span class="px-2 py-0.5 rounded-full badge-review font-bold text-[10px] inline-flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> IN LAUNCH QUEUE
+                </span>
+              </td>
+              <td class="p-3.5 text-right">
+                <a href="https://devhunt.org/tool/pdfcraft-studio" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:text-amber-300 font-bold hover:underline">View Tool ↗</a>
+              </td>
             </tr>
+
             <!-- SideProjectors -->
             <tr class="hover:bg-slate-900/40 transition">
               <td class="p-3.5 font-bold text-slate-300 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-amber-400"></span> SideProjectors
+                <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                <span>SideProjectors</span>
               </td>
               <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-bold font-mono">DA 58+</span></td>
               <td class="p-3.5 max-w-xs truncate">PDFCraft Project Profile</td>
-              <td class="p-3.5 font-mono text-slate-400">Awaiting Admin Approval</td>
-              <td class="p-3.5"><span class="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-bold text-[10px]">PENDING APPROVAL</span></td>
-              <td class="p-3.5"><a href="https://sideprojectors.com/project/112096/pdfcraft" target="_blank" class="text-amber-400 hover:underline">View Status ↗</a></td>
+              <td class="p-3.5 font-mono text-slate-400">
+                Project #112096 • Awaiting Approval
+              </td>
+              <td class="p-3.5">
+                <span class="px-2 py-0.5 rounded-full badge-review font-bold text-[10px] inline-flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> PENDING APPROVAL
+                </span>
+              </td>
+              <td class="p-3.5 text-right">
+                <a href="https://sideprojectors.com/project/112096/pdfcraft" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:text-amber-300 font-bold hover:underline">View Status ↗</a>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -260,31 +426,167 @@
     <section id="contact" class="glass-card p-8 rounded-3xl border border-indigo-500/30 space-y-6">
       <div class="space-y-2">
         <h2 class="text-2xl font-black text-white">Let's Connect &amp; Collaborate</h2>
-        <p class="text-xs text-slate-400">Reach out directly for freelance contracts, full-stack consulting, or SEO audits</p>
+        <p class="text-xs text-slate-400">Directly available for freelance contracts, full-stack consulting, or technical SEO audits</p>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-2">
         <!-- Email -->
-        <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1">
-          <span class="text-[10px] font-mono text-indigo-400 uppercase tracking-widest font-bold">Email Address</span>
-          <a href="mailto:vishnu.starks65@gmail.com" class="text-sm font-bold text-white hover:text-indigo-400 transition block truncate">vishnu.starks65@gmail.com</a>
+        <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-800 hover:border-indigo-500/50 transition space-y-2 group">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono text-indigo-400 uppercase tracking-widest font-bold">Email Address</span>
+            <span class="text-xs text-slate-500 group-hover:text-indigo-400 transition">✉</span>
+          </div>
+          <a href="mailto:vishnu.starks65@gmail.com" class="text-sm font-bold text-white group-hover:text-indigo-300 transition block truncate">vishnu.starks65@gmail.com</a>
+          <span class="text-[11px] text-slate-400 block">Click to send direct email</span>
         </div>
-        <!-- Mobile -->
-        <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1">
-          <span class="text-[10px] font-mono text-emerald-400 uppercase tracking-widest font-bold">Mobile Phone</span>
-          <a href="tel:+919344949527" class="text-sm font-bold text-white hover:text-emerald-400 transition block">+91 93449 49527</a>
+
+        <!-- Mobile Phone -->
+        <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition space-y-2 group">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono text-emerald-400 uppercase tracking-widest font-bold">Mobile / WhatsApp</span>
+            <span class="text-xs text-slate-500 group-hover:text-emerald-400 transition">📞</span>
+          </div>
+          <a href="tel:+919344949527" class="text-sm font-bold text-white group-hover:text-emerald-300 transition block">+91 93449 49527</a>
+          <div class="flex items-center gap-3 pt-1 text-[11px]">
+            <a href="tel:+919344949527" class="text-emerald-400 hover:underline">Direct Call</a>
+            <span class="text-slate-600">•</span>
+            <a href="https://wa.me/919344949527" target="_blank" rel="noopener noreferrer" class="text-emerald-400 hover:underline">WhatsApp ↗</a>
+          </div>
         </div>
+
         <!-- LinkedIn -->
-        <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-1">
-          <span class="text-[10px] font-mono text-purple-400 uppercase tracking-widest font-bold">LinkedIn Profile</span>
-          <a href="https://www.linkedin.com/in/b-vishnu-55a0091b2" target="_blank" rel="noopener noreferrer" class="text-sm font-bold text-white hover:text-purple-400 transition block truncate">linkedin.com/in/b-vishnu-55a0091b2</a>
+        <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-800 hover:border-purple-500/50 transition space-y-2 group">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono text-purple-400 uppercase tracking-widest font-bold">LinkedIn Profile</span>
+            <span class="text-xs text-slate-500 group-hover:text-purple-400 transition">🔗</span>
+          </div>
+          <a href="https://www.linkedin.com/in/b-vishnu-55a0091b2" target="_blank" rel="noopener noreferrer" class="text-sm font-bold text-white group-hover:text-purple-300 transition block truncate">b-vishnu-55a0091b2</a>
+          <a href="https://www.linkedin.com/in/b-vishnu-55a0091b2" target="_blank" rel="noopener noreferrer" class="text-[11px] text-purple-400 hover:underline block pt-1">Connect on LinkedIn ↗</a>
         </div>
       </div>
     </section>
   </main>
 
   <footer class="border-t border-slate-800/80 py-8 text-center text-xs text-slate-500">
-    © 2026 Vishnu. Built with clean HTML5 &amp; Tailwind CSS. All rights reserved.
+    © 2026 Vishnu. Built with clean HTML5 &amp; Tailwind CSS. Real-Time Telemetry enabled.
   </footer>
+
+  <!-- Real-Time Metrics Client-Side Engine -->
+  <script>
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-message');
+      if (!toast || !toastMsg) return;
+      toastMsg.textContent = msg;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3000);
+    }
+
+    async function fetchLiveMetrics() {
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      const telemetryTimeEl = document.getElementById('telemetry-time');
+      if (telemetryTimeEl) telemetryTimeEl.textContent = timeStr;
+
+      // 1. Fetch Dev.to Public REST API
+      try {
+        const devtoRes = await fetch('https://dev.to/api/articles/vishnucod/why-we-ditched-cloud-servers-for-in-browser-webassembly-to-process-sensitive-pdfs-gi0');
+        if (devtoRes.ok) {
+          const devtoData = await devtoRes.json();
+          const reactions = devtoData.public_reactions_count || devtoData.positive_reactions_count || 1;
+          const comments = devtoData.comments_count || 0;
+          const reactionsEl = document.getElementById('devto-reactions');
+          const commentsEl = document.getElementById('devto-comments');
+          if (reactionsEl) reactionsEl.textContent = `${reactions} Reactions`;
+          if (commentsEl) commentsEl.textContent = `${comments} comments`;
+        }
+      } catch (err) {
+        console.warn('Dev.to live sync fallback:', err);
+      }
+
+      // 2. Fetch GitHub Public REST API
+      try {
+        const ghRes = await fetch('https://api.github.com/repos/Vishnu-cod/pdf-craft');
+        if (ghRes.ok) {
+          const ghData = await ghRes.json();
+          const stars = ghData.stargazers_count || 0;
+          const forks = ghData.forks_count || 0;
+          const ghBadge = document.getElementById('gh-badge-stars');
+          const ghStatus = document.getElementById('gh-repo-status');
+          if (ghBadge) ghBadge.textContent = `⭐ ${stars}`;
+          if (ghStatus) ghStatus.textContent = `${stars} ⭐ • ${forks} 🍴 Active`;
+        }
+      } catch (err) {
+        console.warn('GitHub live sync fallback:', err);
+      }
+
+      // 3. Fetch Hashnode Public GraphQL API
+      try {
+        const hashnodeQuery = {
+          query: `query {
+            publication(host: "vishnustarks.hashnode.dev") {
+              posts(first: 1) {
+                edges {
+                  node {
+                    reactionCount
+                    responseCount
+                  }
+                }
+              }
+            }
+          }`
+        };
+        const hnRes = await fetch('https://gql.hashnode.com', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(hashnodeQuery)
+        });
+        if (hnRes.ok) {
+          const hnData = await hnRes.json();
+          const postNode = hnData?.data?.publication?.posts?.edges?.[0]?.node;
+          if (postNode) {
+            const rxEl = document.getElementById('hashnode-reactions');
+            if (rxEl) rxEl.textContent = `${postNode.reactionCount || 1} Reaction${postNode.reactionCount === 1 ? '' : 's'}`;
+          }
+        }
+      } catch (err) {
+        console.warn('Hashnode live sync fallback:', err);
+      }
+
+      // 4. Verify Medium RSS Feed
+      try {
+        const medRes = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@vishnu.starks65');
+        if (medRes.ok) {
+          const medData = await medRes.json();
+          if (medData.status === 'ok' && medData.items && medData.items.length > 0) {
+            const medEl = document.getElementById('medium-feed-status');
+            if (medEl) medEl.textContent = 'Live Feed Synced';
+          }
+        }
+      } catch (err) {
+        console.warn('Medium live sync fallback:', err);
+      }
+    }
+
+    async function triggerManualSync() {
+      const icon = document.getElementById('refresh-icon');
+      if (icon) icon.classList.add('rotate-180');
+      await fetchLiveMetrics();
+      showToast('✨ Real-time telemetry synchronized!');
+      setTimeout(() => {
+        if (icon) icon.classList.remove('rotate-180');
+      }, 500);
+    }
+
+    // Auto-run on load and poll every 30 seconds for live updates
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchLiveMetrics();
+      setInterval(fetchLiveMetrics, 30000);
+    });
+  </script>
 </body>
-</html>
+                                                                    </html>

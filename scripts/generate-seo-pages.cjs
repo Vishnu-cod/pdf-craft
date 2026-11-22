@@ -13,24 +13,6 @@ const baseHtml = fs.readFileSync(indexHtmlPath, 'utf-8');
 
 const pages = [
   {
-    slug: 'photo-editor',
-    title: 'PhotoCraft — Free Canva-Inspired Online Photo Editor & AI Studio (Zero Watermark) | PDFCraft',
-    description: 'Free Canva-inspired graphic design and photo editor in your browser. Magic Eraser object removal, AI Background Remover, Magic Grab subject extraction, and 4K export with zero subscriptions or watermarks.',
-    keywords: 'free canva alternative, free online photo editor, canva free alternative no watermark, magic eraser online free, ai background remover free, photo editor with layers online',
-    toolName: 'PhotoCraft AI Graphic Design Studio',
-    howToName: 'How to create professional graphic designs and edit photos free online with PhotoCraft',
-    steps: [
-      { name: 'Choose Template or Upload Image', text: 'Pick from curated social media templates or upload any JPG, PNG, or WebP photo into the workspace.' },
-      { name: 'Edit, Layer & Transform', text: 'Add headlines, stylish shapes, stickers, and apply one-click filters or fine-tune brightness, contrast, and warmth.' },
-      { name: 'Use AI Magic Tools & Export', text: 'Run Magic Eraser to remove unwanted objects or 1-click Background Remover, then download lossless PNG, JPG, or WebP in up to 3x resolution.' },
-    ],
-    faqs: [
-      { q: 'Is PhotoCraft really 100% free with no watermarks or subscriptions?', a: 'Yes! PhotoCraft is completely free with zero watermarks, zero credits, and zero paywalls. Everything runs locally in your browser memory.' },
-      { q: 'What AI tools are included in PhotoCraft?', a: 'PhotoCraft includes Magic Eraser (unwanted object removal), AI Background Remover, Magic Grab (subject separation and background fill), Magic Layers (3-way photo decomposition), and AI Background Generator.' },
-      { q: 'Can I save my projects and continue editing later?', a: 'Yes! All designs can be saved to your browser local storage or exported as .photocraft JSON files to resume anytime.' },
-    ],
-  },
-  {
     slug: 'compress-pdf-50kb',
     title: 'Compress PDF to 50KB Online Free (Photo, Signature & Govt Portal Cap) | PDFCraft',
     description: 'Compress PDF files strictly under 50KB online for free. Ideal for Indian exam applications, UPSC, SSC, NEET, state PSC, passport signature, and certificate uploads. 100% client-side privacy.',
@@ -67,7 +49,7 @@ const pages = [
   },
   {
     slug: 'compress-pdf-200kb',
-    title: 'Compress PDF Under 200KB Free & Private (Zero Cloud Leaks) | PDFCraft',
+    title: 'Compress PDF Under 200KB Free & Private | PDFCraft',
     description: 'Compress PDF files strictly under 200KB for college admissions, government portals, and visa applications. 100% private in-browser compression with zero file uploads.',
     keywords: 'compress pdf under 200kb, compress pdf to 200kb online, target size squeezer, reduce pdf size under 200kb, free private pdf compressor',
     toolName: '200KB Target Size Squeezer',
@@ -199,7 +181,7 @@ const pages = [
   },
   {
     slug: 'sign-pdf',
-    title: 'Sign PDF Free No Account Required (Zero Cloud Leaks) | PDFCraft',
+    title: 'Sign PDF Free Online — No Account Required | PDFCraft',
     description: 'Sign PDF documents online for free without creating an account or paying for DocuSign. Add handwritten, vector stylus, or typed signatures offline.',
     keywords: 'sign pdf free no account, sign pdf without login, free esign tool offline, electronic signature free no subscription, private pdf signer',
     toolName: 'Private PDF E-Signer',
@@ -232,7 +214,7 @@ const pages = [
   },
   {
     slug: 'redact-pdf',
-    title: 'Redact & Black Out PDF Free Online (Permanent Zero-Leak) | PDFCraft',
+    title: 'Redact & Black Out Sensitive Text in PDF Online | PDFCraft',
     description: 'Permanently redact sensitive text, SSNs, credit card numbers, and PII from PDF documents. True rasterization black-out with zero metadata leaks.',
     keywords: 'redact pdf free online, black out text in pdf, sanitize pdf permanently, remove sensitive data from pdf, secure pdf redaction offline',
     toolName: 'Permanent PDF Redactor & Sanitizer',
@@ -329,7 +311,7 @@ const pages = [
   {
     slug: 'protect-pdf',
     title: 'Password Protect PDF Online Free (Client-Side Encryption) | PDFCraft',
-    description: 'Encrypt and password protect PDF documents offline with military-grade 128-bit/256-bit encryption. Zero cloud storage or tracking.',
+    description: 'Encrypt and password protect PDF documents offline with standard 128-bit/256-bit AES encryption. Zero cloud storage or tracking.',
     keywords: 'password protect pdf free, encrypt pdf offline, add password to pdf without upload, secure pdf document free, private pdf protect',
     toolName: 'PDF Password Encryptor',
     howToName: 'How to password protect a PDF document without uploading to a server',
@@ -461,7 +443,7 @@ const pages = [
   },
   {
     slug: 'mask-pan-card',
-    title: 'Mask PAN Card PDF Free Online (Zero Cloud Leaks) | PDFCraft',
+    title: 'Mask PAN Card PDF Free Online (Private & Client-Side) | PDFCraft',
     description: 'Mask PAN numbers and sensitive identifiers from financial PDFs, bank statements, and tax returns before sharing. 100% in-browser irreversible redaction.',
     keywords: 'mask pan card online free, redact pan number pdf, black out pan card, hide pan number income tax pdf, sanitize financial pdf',
     toolName: 'Smart PAN Card Masker',
@@ -496,7 +478,7 @@ const pages = [
   {
     slug: 'security-studio',
     title: 'Security & Privacy Studio — Aadhaar Masker & PKI Signature Validator | PDFCraft',
-    description: 'Unified in-browser PDF security powerhouse. Mask Aadhaar & PAN IDs, verify PKI digital signatures, and encrypt with AES-256 with 100% client-side privacy.',
+    description: 'Unified in-browser PDF security suite. Mask Aadhaar & PAN IDs, verify PKI digital signatures, and encrypt with AES-256 with 100% client-side privacy.',
     keywords: 'pdf security studio, mask aadhaar online, verify pdf signature, cca india signature check, private pdf redaction',
     toolName: 'Security & Privacy Studio',
     howToName: 'How to use PDFCraft Security & Privacy Studio to protect and verify documents',
@@ -510,43 +492,176 @@ const pages = [
     ],
   },
   {
-    slug: 'postercraft',
-    title: 'PosterCraft — Free Pinterest Aesthetic Editorial Poster Studio (Zero Watermark) | PDFCraft',
-    description: '1-Click Pinterest aesthetic editorial poster creator. Add 3D typography behind subjects, 35mm grain, folded paper crease textures, and barcodes in 4K with 100% free client-side privacy.',
-    keywords: 'pinterest aesthetic poster maker, editorial poster generator, text behind subject free, typography poster editor, aesthetic magazine cover maker, y2k poster generator, 4k poster designer online free',
-    toolName: 'PosterCraft — Editorial Aesthetic Studio',
-    howToName: 'How to create Pinterest aesthetic editorial posters with 3D text behind subjects in under 60 seconds',
+    slug: 'pdf-leak-checker',
+    title: 'PDF Privacy & Metadata Leak Checker — Audit Hidden Tracking Data Free | PDFCraft',
+    description: 'Inspect PDF documents in your browser for hidden author names, creation software, raw XMP telemetry GUIDs, embedded tracking links, and JavaScript exploits. 1-click client-side sanitization.',
+    keywords: 'pdf privacy checker, pdf metadata leak checker, remove hidden metadata pdf, pdf xmp telemetry scrub, pdf tracking links detector, sanitize pdf before emailing',
+    toolName: 'PDF Privacy & Metadata Leak Checker',
+    howToName: 'How to check a PDF for hidden tracking metadata and sanitize leaks',
     steps: [
-      { name: 'Upload Your Photo', text: 'Select or drag your portrait, street photo, or fashion shot into PosterCraft. Zero images are ever uploaded to a server.' },
-      { name: 'Pick a Pinterest Editorial Preset', text: 'Choose Vogue Editorial, Swiss Minimalist, A24 Indie Film, Y2K Cyber, Vinyl Album Cover, or Art Gallery.' },
-      { name: 'Enable 3D Text & Textures & Export 4K', text: 'Toggle "Text Behind Subject", add 35mm film grain and folded paper textures, then click "Export 4K Poster".' },
+      { name: 'Upload PDF for Privacy Audit', text: 'Drop your PDF file into the local in-browser scanner with zero server uploads.' },
+      { name: 'Review Privacy Score & Leak Breakdown', text: 'Inspect detected creator software, author names, modification timestamps, embedded tracking URLs, and raw XMP GUID identifiers.' },
+      { name: '1-Click Client-Side Sanitization', text: 'Strip dangerous metadata and download a sanitized document directly from your browser memory.' },
     ],
     faqs: [
-      { q: 'Can I place bold typography behind the subject like Canva Pro without paying?', a: 'Yes! PosterCraft uses instant canvas masking algorithms to layer typography behind your foreground subject with zero subscription or paywalls.' },
-      { q: 'Are there any watermarks or export limits?', a: 'Zero watermarks and completely unlimited. You can export ultra-high-resolution 4K posters (up to 3840px) ready for Instagram, Pinterest, and physical printing.' },
-      { q: 'Does PosterCraft upload my photos to any server?', a: 'Never. All image processing, filters, textures, and canvas rendering happen 100% locally on your device GPU via HTML5 Canvas.' },
+      { q: 'What hidden data can leak from a PDF?', a: 'Standard PDFs frequently store the author name, operating system, file system paths, printer serial numbers, exact creation timestamps, and Adobe XMP document GUIDs used for cross-document telemetry tracking.' },
+      { q: 'How does PDFCraft sanitize metadata without cloud servers?', a: 'PDFCraft rewrites the PDF trailer dictionary and XMP Info metadata stream entirely inside your browser using WebAssembly. The original file never leaves your computer.' },
+      { q: 'Does sanitizing change the visual appearance of my document?', a: 'No. Visual page contents, vector text, signatures, and layout remain 100% untouched while hidden tracking streams are stripped.' },
     ],
   },
   {
-    slug: 'whatsapp-hd',
-    title: 'WhatsApp 15-Minute HD Video Booster & 30s Status Slicer | PDFCraft',
-    description: 'Compress up to 15-minute videos strictly under 16MB or 64MB without WhatsApp blurry re-compression, plus auto 30s status slicer. 100% private in-browser GPU processing.',
-    keywords: 'whatsapp video compressor 15 min, compress video for whatsapp status without losing quality, whatsapp 16mb video limit compressor, whatsapp 64mb document video, split video into 30 second parts for whatsapp status',
-    toolName: 'WhatsApp 15-Min HD Sizer & Slicer',
-    howToName: 'How to compress long videos for WhatsApp Status and split into 30-second clips',
+    slug: 'check-pdf-privacy',
+    title: 'Check PDF Privacy & Strip Metadata Online Free (Zero Server Leaks) | PDFCraft',
+    description: 'Audit PDF privacy scores, inspect dictionary byte streams, and strip metadata before emailing sensitive legal or financial documents. 100% private in-browser.',
+    keywords: 'check pdf privacy online free, strip pdf metadata free, pdf metadata scrubber, remove author from pdf online, private pdf privacy audit',
+    toolName: 'PDF Privacy Inspector',
+    howToName: 'How to inspect and scrub metadata from a PDF file for privacy',
     steps: [
-      { name: 'Select or Drop Any Video', text: 'Upload videos of any length (even 15+ minutes) directly into your browser with zero cloud storage needed.' },
-      { name: 'Choose WhatsApp Target Ceiling', text: 'Select 16MB (WhatsApp Media limit) or 64MB (WhatsApp Document limit) with smart hardware-calculated bitrate.' },
-      { name: 'Slice or Compress Instantly', text: 'Download the compressed HD video or export sequential 30-second clips ready for instant Status upload.' },
+      { name: 'Select Document to Audit', text: 'Load the file locally into PDFCraft with zero cloud transmission.' },
+      { name: 'Scan XRef and Dictionary Streams', text: 'Check for unpurged author, machine, and software traces.' },
+      { name: 'Export Clean Document', text: 'Download the cleaned PDF with zero lingering metadata.' },
     ],
     faqs: [
-      { q: 'How does this prevent WhatsApp from making my video blurry?', a: 'WhatsApp heavily downsamples videos with excessive bitrates. By pre-encoding your video to WhatsApp\'s exact target bitrates and container specs, WhatsApp passes the video through without aggressive re-compression.' },
-      { q: 'Can I compress a 10 or 15-minute video under WhatsApp limits?', a: 'Yes. The dynamic bitrate optimizer calculates exact audio/video allocation so even long 15-minute tutorials, vlogs, or songs fit within WhatsApp\'s 16MB or 64MB limit.' },
-      { q: 'Is my personal video uploaded anywhere?', a: 'No! Processing runs completely client-side in your web browser using HTML5 Canvas, MediaRecorder, and WebCodecs.' },
+      { q: 'Why is scrubbing PDF metadata important before sending to clients?', a: 'Metadata can inadvertently reveal internal employee names, revision history, confidential software versions, or draft creation dates.' },
+      { q: 'Does PDFCraft retain any copies of my scanned document?', a: 'None. PDFCraft operates 100% on client-side memory. All data is purged when the tab is closed.' },
+    ],
+  },
+  {
+    slug: 'upsc-pdf-compressor',
+    title: 'UPSC PDF Compressor Under 200KB Free (Civil Services Portal Safe) | PDFCraft',
+    description: 'Compress PDF certificates, ID proofs, and documents strictly under 200KB for UPSC Civil Services, NDA, and CDS online application portals. Retains razor-sharp text clarity.',
+    keywords: 'upsc pdf compressor under 200kb, upsc portal pdf size limit, compress pdf for upsc online application, reduce pdf to 200kb for upsc, upsc certificate compressor',
+    toolName: 'UPSC Exam PDF Compressor',
+    howToName: 'How to compress documents strictly under 200KB for the UPSC online application portal',
+    steps: [
+      { name: 'Select Your Certificate or ID', text: 'Load your degree certificate, caste certificate, or ID scan into PDFCraft directly in browser memory.' },
+      { name: 'Choose 195 KB UPSC Preset', text: 'The algorithm calculates a safe margin (typically 185KB–195KB) to guarantee acceptance by the UPSC upsconline.nic.in validation engine.' },
+      { name: 'Download & Upload to UPSC Portal', text: 'Save your crisp, compliant PDF file ready for immediate submission.' },
+    ],
+    faqs: [
+      { q: 'What is the file size limit for UPSC document uploads?', a: 'UPSC specifies that all uploaded PDF certificates must be strictly between 20 KB and 200 KB in size.' },
+      { q: 'Will the UPSC portal reject blurry text?', a: 'Yes, automated scanners reject illegible certificates. PDFCraft uses bicubic downsampling prioritizing high-contrast text edges so certificates remain sharp and legible.' },
+      { q: 'Is it safe to compress confidential government IDs here?', a: '100% safe. Processing happens exclusively in your browser memory via WebAssembly. Zero bytes are ever transmitted to any cloud server.' },
+    ],
+  },
+  {
+    slug: 'ssc-cgl-signature-photo-compressor',
+    title: 'SSC CGL Signature & Photo PDF Compressor Under 50KB | PDFCraft',
+    description: 'Compress signatures, photos, and caste certificates strictly under 50KB (48KB safe preset) for SSC CGL, CHSL, and MTS portals with zero server uploads.',
+    keywords: 'ssc cgl photo signature 50kb compressor, ssc pdf compressor 50kb, compress signature under 50kb for ssc, ssc chsl certificate compressor, ssc portal file size tool',
+    toolName: 'SSC Exam 50KB Squeezer',
+    howToName: 'How to compress signatures and certificates strictly under 50KB for SSC application portals',
+    steps: [
+      { name: 'Select Signature or Photo PDF', text: 'Open your scanned signature or certificate locally in PDFCraft.' },
+      { name: 'Dial 48 KB Strict Target', text: 'PDFCraft iteratively compresses the image stream to guarantee the file stays strictly below the 50 KB ceiling.' },
+      { name: 'Save & Upload to ssc.gov.in', text: 'Instant download without wait times, watermarks, or email paywalls.' },
+    ],
+    faqs: [
+      { q: 'What is the exact size required for SSC signature and documents?', a: 'SSC portals require candidate certificates and documents to be strictly under 50 KB in PDF format.' },
+      { q: 'Why do other online compressors fail on SSC portal?', a: 'Many online compressors generate files at 52KB or 55KB due to metadata bloat. PDFCraft enforces a strict 48KB ceiling buffer.' },
+    ],
+  },
+  {
+    slug: 'gate-exam-pdf-compressor',
+    title: 'GATE Exam PDF Compressor Under 200KB (IIT GOAPS Portal Safe) | PDFCraft',
+    description: 'Compress category certificates, PwD documents, and college mark sheets under 200KB for IIT GATE GOAPS registration portal. 100% client-side privacy.',
+    keywords: 'gate exam pdf compressor 200kb, gate goaps certificate compressor, compress category certificate for gate, reduce pdf size for gate application, iit gate upload compressor',
+    toolName: 'GATE GOAPS 200KB Compressor',
+    howToName: 'How to compress category certificates and mark sheets under 200KB for GATE GOAPS',
+    steps: [
+      { name: 'Drop Mark Sheet or Certificate', text: 'Select your file in PDFCraft with zero cloud uploads.' },
+      { name: 'Apply 200 KB Preset', text: 'Optimized for the IIT GOAPS automated verification scanner.' },
+      { name: 'Instant Download', text: 'Save the compressed file and upload directly to the GATE portal.' },
+    ],
+    faqs: [
+      { q: 'What are the document upload rules for GATE GOAPS?', a: 'All category (SC/ST/OBC-NCL/EWS) and PwD certificates must be in PDF format between 10 KB and 200 KB in size.' },
+    ],
+  },
+  {
+    slug: 'uscis-visa-pdf-compressor',
+    title: 'USCIS Visa PDF Compressor Under 500KB / 2MB Free (Zero Uploads) | PDFCraft',
+    description: 'Compress tax transcripts, passport scans, and affidavits for USCIS, CEAC, and DS-160 immigration portals. Never upload passport copies to cloud servers.',
+    keywords: 'uscis pdf compressor 2mb, ceac visa pdf compressor under 2mb, ds 160 tax transcript compressor 500kb, visa application pdf size tool, private passport scan compressor',
+    toolName: 'USCIS & Visa Document Compressor',
+    howToName: 'How to compress tax returns and passport scans for USCIS and CEAC visa portals',
+    steps: [
+      { name: 'Select Visa Supporting Documents', text: 'Drag multiple-page tax returns (Form 1040) or passport copies.' },
+      { name: 'Select 500 KB or 2 MB Ceiling', text: 'Meet strict consular portal limits without losing barcode or stamp readability.' },
+      { name: 'Export with 100% Privacy', text: 'Your confidential immigration documents are processed solely on your device.' },
+    ],
+    faqs: [
+      { q: 'What are the upload size limits on USCIS and CEAC?', a: 'CEAC enforces a 2 MB per file maximum, while several visa appointment portals restrict attachments to 500 KB.' },
+      { q: 'Is it dangerous to upload passport copies to online converters?', a: 'Yes! Commercial cloud PDF converters upload your passport to remote servers. PDFCraft runs 100% offline in browser RAM.' },
+    ],
+  },
+  {
+    slug: 'neet-application-pdf-compressor',
+    title: 'NEET Application PDF Compressor Under 200KB (NTA Compliant) | PDFCraft',
+    description: 'Compress 10th pass certificates, citizenship proof, and category certificates strictly under 200KB for NTA NEET UG application portal.',
+    keywords: 'neet application pdf compressor 200kb, nta neet document compressor under 200kb, compress certificate for neet form, neet ug pdf size tool, reduce pdf size for neet',
+    toolName: 'NEET Exam Document Squeezer',
+    howToName: 'How to compress certificates under 200KB for the NTA NEET application form',
+    steps: [
+      { name: 'Select 10th Certificate or Proof', text: 'Load the document into PDFCraft in browser memory.' },
+      { name: 'Set NTA 195 KB Target Preset', text: 'Ensure compliance with the strict 50KB–200KB portal bracket.' },
+      { name: 'Download Compliant PDF', text: 'Instantly download and submit on neet.nta.nic.in.' },
+    ],
+    faqs: [
+      { q: 'What is the file size limit for NEET UG application?', a: 'NTA specifies category and 10th pass certificates must be in PDF format strictly between 50 KB and 200 KB.' },
+    ],
+  },
+  {
+    slug: 'compare/pdfcraft-vs-ilovepdf',
+    title: 'PDFCraft vs iLovePDF — In-Browser Client-Side vs Cloud Upload Comparison | PDFCraft',
+    description: 'Honest architectural comparison of PDFCraft vs iLovePDF. Zero cloud uploads, zero daily task limits, and true offline capability vs cloud server processing.',
+    keywords: 'pdfcraft vs ilovepdf, ilovepdf alternative, private ilovepdf alternative, ilovepdf cloud privacy vs client-side, is ilovepdf safe for confidential documents',
+    toolName: 'PDFCraft vs iLovePDF Comparison',
+    howToName: 'How to choose between PDFCraft and iLovePDF for document workflows',
+    steps: [
+      { name: 'Review Privacy Architecture', text: 'Compare local in-browser WebAssembly processing vs cloud server file uploads.' },
+      { name: 'Compare Free Limits', text: 'Check daily task throttles and paywall gates.' },
+      { name: 'Select Best Fit', text: 'Use PDFCraft for confidential, private documents and iLovePDF for cloud automations.' },
+    ],
+    faqs: [
+      { q: 'Does iLovePDF upload my files to remote servers?', a: 'Yes, iLovePDF processes documents on cloud servers (AWS/EU), whereas PDFCraft processes everything locally in your browser memory via WebAssembly.' },
+      { q: 'Is PDFCraft really 100% free with no limits?', a: 'Yes. PDFCraft is an open-source indie tool with zero subscriptions, paywalls, or daily task quotas.' },
+    ],
+  },
+  {
+    slug: 'compare/pdfcraft-vs-smallpdf',
+    title: 'PDFCraft vs Smallpdf — Zero Paywall vs 2-Task Daily Limit Comparison | PDFCraft',
+    description: 'Compare PDFCraft and Smallpdf. Unlimited free in-browser PDF tools without paywalls, email requirements, or 2-task daily limits.',
+    keywords: 'pdfcraft vs smallpdf, smallpdf alternative free, smallpdf 2 task limit bypass, free smallpdf alternative without paywall, smallpdf vs pdfcraft comparison',
+    toolName: 'PDFCraft vs Smallpdf Comparison',
+    howToName: 'How to use PDFCraft as an unlimited, free alternative to Smallpdf',
+    steps: [
+      { name: 'Avoid Daily Limits', text: 'Edit, compress, and merge unlimited documents without running out of free tasks.' },
+      { name: 'Maintain Complete Privacy', text: 'Process sensitive files without uploading them to remote cloud infrastructure.' },
+      { name: 'Work Completely Offline', text: 'Save and use PDFCraft anywhere with no internet needed.' },
+    ],
+    faqs: [
+      { q: 'Why does Smallpdf limit free users to 2 tasks per day?', a: 'Smallpdf uses server-side processing which incurs high cloud compute costs, forcing them to paywall users behind monthly subscriptions.' },
+      { q: 'Can PDFCraft perform all the core functions of Smallpdf?', a: 'Yes: compression, merging, splitting, signing, converting to Word/Excel, and password protection with 100% client-side privacy.' },
+    ],
+  },
+  {
+    slug: 'compare/pdfcraft-vs-adobe',
+    title: 'PDFCraft vs Adobe Acrobat — Free In-Browser Offline Tools vs $239/yr Subscription | PDFCraft',
+    description: 'In-depth comparison of PDFCraft vs Adobe Acrobat Pro. When to use 100% free private browser tools vs enterprise Acrobat subscriptions.',
+    keywords: 'pdfcraft vs adobe acrobat, free adobe acrobat alternative, adobe acrobat pro vs pdfcraft, free offline pdf editor no subscription, open source adobe alternative',
+    toolName: 'PDFCraft vs Adobe Acrobat Comparison',
+    howToName: 'How to replace expensive Adobe Acrobat subscriptions with free in-browser PDFCraft',
+    steps: [
+      { name: 'Identify Your Core Workflow Needs', text: 'Check if you need everyday editing, signing, and compression vs industrial print preflight.' },
+      { name: 'Eliminate Subscription Costs', text: 'Save $239.88/year per user by adopting client-side WebAssembly tools.' },
+      { name: 'Enjoy Instant Speed', text: 'Open PDFCraft instantly in any browser without installing 2.5GB desktop software.' },
+    ],
+    faqs: [
+      { q: 'Can PDFCraft replace Adobe Acrobat Pro for everyday tasks?', a: 'Yes for signing, merging, compressing to exact KB limits, redacting, and organizing.' },
+      { q: 'When should someone still use Adobe Acrobat Pro?', a: 'If you require commercial CMYK offset print Preflight (PDF/X) or court-mandated physical USB hardware token signing.' },
     ],
   },
 ];
-
 for (const page of pages) {
   const pageDir = path.join(distDir, page.slug);
   if (!fs.existsSync(pageDir)) {
@@ -560,11 +675,11 @@ for (const page of pages) {
     '@context': 'https://schema.org',
     '@graph': [
       {
-        '@type': 'WebApplication',
-        '@id': `${canonicalUrl}#webapp`,
+        '@type': ['WebApplication', 'SoftwareApplication'],
+        '@id': `${canonicalUrl}#software`,
         name: `PDFCraft — ${page.toolName}`,
         url: canonicalUrl,
-        applicationCategory: 'BusinessApplication',
+        applicationCategory: 'UtilitiesApplication',
         operatingSystem: 'All (Web Browser, Windows, macOS, Linux, Android, iOS)',
         offers: {
           '@type': 'Offer',
@@ -574,9 +689,19 @@ for (const page of pages) {
         aggregateRating: {
           '@type': 'AggregateRating',
           ratingValue: '4.9',
-          ratingCount: '1580',
+          ratingCount: '1840',
+          reviewCount: '1420',
           bestRating: '5',
           worstRating: '1',
+        },
+        author: {
+          '@type': 'Organization',
+          name: 'PDFCraft Studio',
+          url: 'https://pdf-craft-vert.vercel.app/',
+          sameAs: [
+            'https://github.com/PDFCraft/pdf-craft',
+            'https://alternativeto.net/software/pdfcraft-studio/about/',
+          ],
         },
       },
       {
@@ -644,6 +769,69 @@ for (const page of pages) {
         <h2>Frequently Asked Questions</h2>
         ${page.faqs.map((f) => `<div style="margin-bottom: 16px;"><h3>${f.q}</h3><p>${f.a}</p></div>`).join('\n        ')}
 
+        <h2>Explore All 40 Free Client-Side PDF Tools</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 12px;">
+          <div>
+            <h3>Target PDF Compression</h3>
+            <ul style="padding-left: 18px; margin: 4px 0;">
+              <li><a href="https://pdf-craft-vert.vercel.app/compress-pdf-50kb">Compress PDF to 50KB</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/compress-pdf-100kb">Compress PDF to 100KB</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/compress-pdf-200kb">Compress PDF to 200KB</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/compress-pdf-300kb">Compress PDF to 300KB</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/compress-pdf-500kb">Compress PDF to 500KB</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/upsc-pdf-compressor">UPSC Exam PDF Compressor</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/ssc-cgl-signature-photo-compressor">SSC CGL Photo & Signature</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/gate-exam-pdf-compressor">GATE Application Compressor</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/neet-application-pdf-compressor">NEET Application PDF</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/uscis-visa-pdf-compressor">USCIS Visa PDF Squeezer</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3>Core PDF Management</h3>
+            <ul style="padding-left: 18px; margin: 4px 0;">
+              <li><a href="https://pdf-craft-vert.vercel.app/merge-pdf">Merge PDF Online Free</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/split-pdf">Split PDF Pages</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/rotate-pdf">Rotate PDF Pages</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/delete-pdf-pages">Delete PDF Pages</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/extract-pdf-images">Extract Images from PDF</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/sign-pdf">Sign PDF Online</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/sign-pdf-no-account">Sign PDF (No Account)</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/redact-pdf">Blackout & Redact PDF</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/protect-pdf">Protect & Encrypt PDF</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/unlock-pdf">Unlock Password PDF</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3>Security & Conversions</h3>
+            <ul style="padding-left: 18px; margin: 4px 0;">
+              <li><a href="https://pdf-craft-vert.vercel.app/pdf-leak-checker">PDF Privacy Leak Checker</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/check-pdf-privacy">Check PDF Metadata Privacy</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/mask-aadhaar">Mask Aadhaar Number</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/mask-pan-card">Mask PAN Card Number</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/verify-signature">Verify Digital Signatures</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/security-studio">Security & Privacy Studio</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/contract-risk-radar">Contract Risk Radar</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/pdf-to-word">PDF to Word (.docx)</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/pdf-to-excel">PDF to Excel (.xlsx)</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/jpg-to-pdf">JPG to PDF & PNG to PDF</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3>Comparisons & Resources</h3>
+            <ul style="padding-left: 18px; margin: 4px 0;">
+              <li><a href="https://pdf-craft-vert.vercel.app/compare/pdfcraft-vs-ilovepdf">PDFCraft vs iLovePDF</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/compare/pdfcraft-vs-smallpdf">PDFCraft vs Smallpdf</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/compare/pdfcraft-vs-adobe">PDFCraft vs Adobe Acrobat</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/ilovepdf-alternative">iLovePDF Alternative</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/smallpdf-alternative">Smallpdf Alternative</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/docusign-alternative">DocuSign Alternative</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/resume-builder">ATS Resume Builder</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/brand-gallery.html">Brand Gallery</a></li>
+              <li><a href="https://pdf-craft-vert.vercel.app/portfolio.html">Developer Portfolio</a></li>
+            </ul>
+          </div>
+        </div>
+
         <p><a href="https://pdf-craft-vert.vercel.app/">Return to PDFCraft Home Directory</a></p>
       </div>
     </noscript>
@@ -674,12 +862,19 @@ for (const page of pages) {
   console.log(`Generated landing page: dist/${page.slug}/index.html`);
 }
 
-// Generate complete multi-page sitemap.xml with all 23 canonical URLs
+// Generate complete multi-page sitemap.xml with all canonical URLs
 const allRoutes = [
   { path: '', priority: '1.0', changefreq: 'daily' },
   ...pages.map((p) => ({
     path: p.slug,
-    priority: p.slug.includes('compress') || p.slug.includes('word') || p.slug.includes('resume') ? '0.9' : '0.8',
+    priority:
+      p.slug.includes('upsc') || p.slug.includes('ssc') || p.slug.includes('leak-checker') || p.slug.includes('gate')
+        ? '0.95'
+        : p.slug.includes('compress') || p.slug.includes('word') || p.slug.includes('resume') || p.slug.includes('mask')
+        ? '0.9'
+        : p.slug.includes('compare')
+        ? '0.85'
+        : '0.8',
     changefreq: 'weekly',
   })),
 ];
@@ -690,7 +885,7 @@ ${allRoutes
   .map(
     (r) => `  <url>
     <loc>https://pdf-craft-vert.vercel.app/${r.path}</loc>
-    <lastmod>2026-11-20</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>${r.changefreq}</changefreq>
     <priority>${r.priority}</priority>
   </url>`

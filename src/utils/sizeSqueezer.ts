@@ -86,10 +86,51 @@ export async function squeezePDFToTargetKB(
   onProgress?: SqueezeProgressCallback,
   checkCancelled?: () => boolean
 ): Promise<SqueezeResult> {
-  const originalSizeKB = Math.round(pdfBytes.byteLength / 1024);
+  const originalByteLength = pdfBytes.byteLength;
+  const originalSizeKB = Math.max(1, Math.round(originalByteLength / 1024));
+  const targetBytes = targetKB * 1024;
   const loadingTask = pdfjsLib.getDocument({ data: pdfBytes.slice(0) });
   const pdfDoc = await loadingTask.promise;
   const numPages = pdfDoc.numPages;
+
+  // Helper to render first page preview safely
+  const renderPreview = async (): Promise<string> => {
+    try {
+      if (typeof document === 'undefined') return '';
+      const firstPage = await pdfDoc.getPage(1);
+      const vp = firstPage.getViewport({ scale: 0.6 });
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(vp.width);
+      canvas.height = Math.round(vp.height);
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return '';
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      await firstPage.render({ canvasContext: ctx, viewport: vp }).promise;
+      return canvas.toDataURL('image/jpeg', 0.8);
+    } catch {
+      return '';
+    }
+  };
+
+  // Guard: If the original PDF is ALREADY smaller than the requested limit,
+  // do NOT rasterize & bloat it! Preserve the crisp original vector file.
+  if (originalByteLength <= targetBytes) {
+    if (onProgress) onProgress(1, 1, 'Document already meets target ceiling. Preserving crisp vector file...');
+    const firstPagePreviewUrl = await renderPreview();
+    return {
+      compressedBytes: new Uint8Array(pdfBytes.slice(0)),
+      compressedSizeKB: originalSizeKB,
+      originalSizeKB,
+      reductionPercentage: 0,
+      numPages,
+      firstPagePreviewUrl,
+      targetAchieved: true,
+      requestedTargetKB: targetKB,
+      strategyUsed: 'vector-preserve',
+      warning: `No shrinking needed: your PDF (${originalSizeKB} KB) is already under the ${targetKB} KB cap. Original sharp vector file was preserved without re-compression.`,
+    };
+  }
 
   // Approximate per-page byte budget with safety margin (12% safety margin so we stay strictly below ceiling)
   const safeTargetBytes = targetKB * 1024 * 0.88;
@@ -178,8 +219,11 @@ export async function squeezePDFToTargetKB(
     });
   }
 
-  const compressedBytes = await newPdfDoc.save({ useObjectStreams: true });
-  const compressedSizeKB = Math.round(compressedBytes.byteLength / 1024);
+  const savedBytes = await newPdfDoc.save({ useObjectStreams: true });
+  // Never output a compressed file larger than the original uploaded file
+  const usedOriginalFallback = savedBytes.byteLength >= originalByteLength;
+  const finalBytes = usedOriginalFallback ? new Uint8Array(pdfBytes.slice(0)) : savedBytes;
+  const compressedSizeKB = Math.max(1, Math.round(finalBytes.byteLength / 1024));
   const reductionPercentage = Math.max(
     0,
     Math.round(((originalSizeKB - compressedSizeKB) / Math.max(1, originalSizeKB)) * 100)
@@ -188,12 +232,14 @@ export async function squeezePDFToTargetKB(
   const targetAchieved = compressedSizeKB <= targetKB;
   let warning: string | undefined;
 
-  if (!targetAchieved) {
+  if (usedOriginalFallback && !targetAchieved) {
+    warning = `Notice: Re-rendering did not shrink this vector PDF further than ${originalSizeKB} KB. Original smaller file kept.`;
+  } else if (!targetAchieved) {
     warning = `Notice: Target of ${targetKB} KB was exceeded (${compressedSizeKB} KB achieved). For documents with ${numPages} pages, achieving under ${targetKB} KB requires splitting or selecting a higher limit.`;
   }
 
   return {
-    compressedBytes,
+    compressedBytes: finalBytes,
     compressedSizeKB,
     originalSizeKB,
     reductionPercentage,

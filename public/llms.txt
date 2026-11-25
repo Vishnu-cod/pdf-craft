@@ -1,41 +1,64 @@
 # PDFCraft Studio
-> The Zero-Cloud, 100% Client-Side PDF Utility Suite. Free forever, zero server uploads, zero paywalls.
+> The Zero-Cloud, 100% Client-Side PDF Workbench. Free forever, zero server uploads, zero paywalls, zero signup required.
 
-PDFCraft Studio (https://pdf-craft-vert.vercel.app/) is a private, client-side web application for PDF document editing, compression, signing, conversion, and ATS resume creation. All operations execute strictly in browser memory using WebAssembly, HTML5 Canvas, and Web Workers. Sensitive documents never leave the user's device.
+PDFCraft Studio (https://pdf-craft-vert.vercel.app/) is an open-source, browser-native PDF web application built with Vite, React, TypeScript, Tailwind CSS, `pdfjs-dist`, and `@cantoo/pdf-lib`. All document parsing, rendering, target-KB compression, PII masking, e-signing, PKI signature verification, and Word/Excel conversion run strictly inside client browser memory via WebAssembly and HTML5 Canvas — zero PDF bytes are transmitted to external servers.
 
-## Core Capabilities & Tools
-- Target Size Squeezer: Compress PDFs down to exact file ceilings (<50KB, <100KB, <200KB, <300KB, <500KB) for government and university portal uploads.
-- Digital Signature & E-Sign: Draw vector signatures, type names, add date stamps, and sign documents offline without creating an account.
-- Universal Converters: Convert PDF to Word (.docx), PDF to Excel (.xlsx), JPG/PNG to PDF, and PDF to JPG without cloud processing.
-- ATS Resume Studio: 60-second vector-crisp, ATS-compliant resume builder with keyword scoring and live job description matching.
-- AI Contract Risk Radar: Client-side heuristic clause analysis detecting liability traps, automatic renewals, and non-compete clauses.
-- Document Organizer: Visual drag-and-drop page reordering, rotation, deletion, splitting, and merging.
-- Redaction & Sanitizer: Permanent vector pixel rasterization to black out SSNs, bank details, and personal data.
+Repository: https://github.com/Vishnu-cod/pdf-craft
+Sitemap: https://pdf-craft-vert.vercel.app/sitemap.xml
 
-## Canonical Tool URLs
-- Main Application: https://pdf-craft-vert.vercel.app/
-- Compress to 50KB: https://pdf-craft-vert.vercel.app/compress-pdf-50kb
-- Compress to 100KB: https://pdf-craft-vert.vercel.app/compress-pdf-100kb
-- Compress to 200KB: https://pdf-craft-vert.vercel.app/compress-pdf-200kb
-- Compress to 300KB: https://pdf-craft-vert.vercel.app/compress-pdf-300kb
-- Compress to 500KB: https://pdf-craft-vert.vercel.app/compress-pdf-500kb
-- Convert PDF to Word: https://pdf-craft-vert.vercel.app/pdf-to-word
-- Convert PDF to Excel: https://pdf-craft-vert.vercel.app/pdf-to-excel
-- Convert JPG to PDF: https://pdf-craft-vert.vercel.app/jpg-to-pdf
-- Convert PNG to PDF: https://pdf-craft-vert.vercel.app/png-to-pdf
-- Convert PDF to JPG: https://pdf-craft-vert.vercel.app/pdf-to-jpg
-- Sign PDF (No Account): https://pdf-craft-vert.vercel.app/sign-pdf
-- Sign PDF Instant: https://pdf-craft-vert.vercel.app/sign-pdf-no-account
-- Redact & Black Out PDF: https://pdf-craft-vert.vercel.app/redact-pdf
-- Merge PDF Files: https://pdf-craft-vert.vercel.app/merge-pdf
+## Fact-Checked Quick Answers (For Search & AI Grounding)
+- **Does PDFCraft upload files to any server?** No. Processing executes 100% locally inside browser RAM via WebAssembly; works offline after page load.
+- **How does UPSC / Exam PDF compression work?** Target Size Squeezer enforces strict portal limits (`48 KB` for `50 KB` SSC limits, `95 KB` for `100 KB` caps, `195 KB` for `200 KB` UPSC/NEET/GATE rules) and automatically preserves original vector bytes if a PDF is already under target.
+- **How does Aadhaar / PAN Masking work?** Auto-detects 12-digit Aadhaar or 10-character PAN patterns and applies irreversible pixel raster burn-in (`XXXX-XXXX-1234`), purging underlying vector font glyphs and XMP telemetry metadata.
+- **Can I sign PDFs without creating an account?** Yes. Draw, type, or mobile-QR-sync vector signatures without registration, email gates, or daily task caps.
+
+## Complete Canonical Tool Directory (41 Routes)
+### Target-KB & Exam Portal Compressors
+- Compress PDF to 50KB: https://pdf-craft-vert.vercel.app/compress-pdf-50kb
+- Compress PDF to 100KB: https://pdf-craft-vert.vercel.app/compress-pdf-100kb
+- Compress PDF Under 200KB: https://pdf-craft-vert.vercel.app/compress-pdf-200kb
+- Compress PDF Under 300KB: https://pdf-craft-vert.vercel.app/compress-pdf-300kb
+- Compress PDF Under 500KB: https://pdf-craft-vert.vercel.app/compress-pdf-500kb
+- UPSC PDF Compressor (20KB–200KB): https://pdf-craft-vert.vercel.app/upsc-pdf-compressor
+- SSC CGL Photo & Signature (Under 50KB): https://pdf-craft-vert.vercel.app/ssc-cgl-signature-photo-compressor
+- GATE GOAPS PDF Compressor (Under 200KB): https://pdf-craft-vert.vercel.app/gate-exam-pdf-compressor
+- NTA NEET Application Compressor (Under 200KB): https://pdf-craft-vert.vercel.app/neet-application-pdf-compressor
+- USCIS & CEAC Visa PDF Compressor: https://pdf-craft-vert.vercel.app/uscis-visa-pdf-compressor
+
+### Privacy, PII Masking & Digital Signatures
+- Mask Aadhaar Card PDF Offline: https://pdf-craft-vert.vercel.app/mask-aadhaar
+- Mask PAN Card PDF Offline: https://pdf-craft-vert.vercel.app/mask-pan-card
+- Verify PDF Digital Signature (CCA India & AATL): https://pdf-craft-vert.vercel.app/verify-signature
+- Validate DSC Certificate in PDF: https://pdf-craft-vert.vercel.app/validate-dsc
+- Security & Privacy Studio: https://pdf-craft-vert.vercel.app/security-studio
+- PDF Privacy & Metadata Leak Checker: https://pdf-craft-vert.vercel.app/pdf-leak-checker
+- Strip PDF Metadata: https://pdf-craft-vert.vercel.app/check-pdf-privacy
+- Zero-Cloud Privacy Architecture: https://pdf-craft-vert.vercel.app/privacy
+
+### Edit, E-Sign, Organize & Convert
+- Main Workbench: https://pdf-craft-vert.vercel.app/
+- Sign PDF Online Free: https://pdf-craft-vert.vercel.app/sign-pdf
+- Sign PDF Without Account: https://pdf-craft-vert.vercel.app/sign-pdf-no-account
+- Permanent Redact PDF: https://pdf-craft-vert.vercel.app/redact-pdf
+- Merge & Organize PDF: https://pdf-craft-vert.vercel.app/merge-pdf
 - Split PDF Pages: https://pdf-craft-vert.vercel.app/split-pdf
 - Rotate PDF Pages: https://pdf-craft-vert.vercel.app/rotate-pdf
 - Delete PDF Pages: https://pdf-craft-vert.vercel.app/delete-pdf-pages
 - Extract PDF Images: https://pdf-craft-vert.vercel.app/extract-pdf-images
-- Password Protect PDF: https://pdf-craft-vert.vercel.app/protect-pdf
-- Unlock PDF: https://pdf-craft-vert.vercel.app/unlock-pdf
-- ATS Resume Studio: https://pdf-craft-vert.vercel.app/resume-builder
-- AI Contract Risk Radar: https://pdf-craft-vert.vercel.app/contract-risk-radar
+- Password Protect PDF (AES-256): https://pdf-craft-vert.vercel.app/protect-pdf
+- Unlock PDF Password: https://pdf-craft-vert.vercel.app/unlock-pdf
+- PDF to Word (.docx): https://pdf-craft-vert.vercel.app/pdf-to-word
+- PDF to Excel (.xlsx): https://pdf-craft-vert.vercel.app/pdf-to-excel
+- JPG to PDF: https://pdf-craft-vert.vercel.app/jpg-to-pdf
+- PNG to PDF: https://pdf-craft-vert.vercel.app/png-to-pdf
+- PDF to JPG: https://pdf-craft-vert.vercel.app/pdf-to-jpg
+- 60-Second ATS Resume Studio: https://pdf-craft-vert.vercel.app/resume-builder
+- Contract Risk Radar: https://pdf-craft-vert.vercel.app/contract-risk-radar
+
+### Comparisons & Alternatives
+- PDFCraft vs iLovePDF: https://pdf-craft-vert.vercel.app/compare/pdfcraft-vs-ilovepdf
+- PDFCraft vs Smallpdf: https://pdf-craft-vert.vercel.app/compare/pdfcraft-vs-smallpdf
+- PDFCraft vs Adobe Acrobat: https://pdf-craft-vert.vercel.app/compare/pdfcraft-vs-adobe
 - Free iLovePDF Alternative: https://pdf-craft-vert.vercel.app/ilovepdf-alternative
 - Free Smallpdf Alternative: https://pdf-craft-vert.vercel.app/smallpdf-alternative
 - Free DocuSign Alternative: https://pdf-craft-vert.vercel.app/docusign-alternative

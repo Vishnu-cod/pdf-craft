@@ -137,7 +137,7 @@ export const APP_ROUTES: RouteConfig[] = [
     tab: 'tools',
     subTool: 'size-squeezer',
     targetKB: 195,
-    title: 'Compress PDF Under 200KB Free & Private | PDFCraft',
+    title: 'Compress PDF Under 200KB Free Online — Zero Uploads | PDFCraft',
     description: 'Compress PDF files under 200KB for college admissions, job applications, and government portal ceilings.',
   },
   {
@@ -220,8 +220,8 @@ export const APP_ROUTES: RouteConfig[] = [
     path: '/mask-aadhaar',
     tab: 'security-studio',
     securityStudioSubTab: 'pii_masker',
-    title: 'Mask Aadhaar Card PDF Free (1-Click Client-Side Auto-Redact) | PDFCraft',
-    description: 'Legally compliant Masked Aadhaar creator. Automatically detects 12-digit Aadhaar numbers and irreversibly blackouts the first 8 digits directly in your browser with zero server uploads.',
+    title: 'Mask Aadhaar Card PDF Free Online — Hide First 8 Digits Offline | PDFCraft',
+    description: 'Mask already-downloaded or scanned Aadhaar PDFs offline in your browser. Automatically black out the first 8 digits (XXXX-XXXX-1234) for UIDAI & bank KYC with zero server uploads.',
   },
   {
     path: '/mask-pan-card',
@@ -267,8 +267,8 @@ export const APP_ROUTES: RouteConfig[] = [
     tab: 'tools',
     subTool: 'size-squeezer',
     targetKB: 195,
-    title: 'UPSC PDF Compressor Under 200KB Free (Civil Services Portal Safe) | PDFCraft',
-    description: 'Compress PDF certificates, ID proofs, and documents strictly under 200KB for UPSC Civil Services, NDA, and CDS online application portals. Retains razor-sharp text clarity.',
+    title: 'UPSC PDF Compressor Under 200KB Free (No Cloud Upload) | PDFCraft',
+    description: 'Compress certificates, degree scans, and ID proofs strictly between 20KB and 200KB for UPSC Civil Services, NDA, and CDS online forms. 100% private in-browser processing.',
   },
   {
     path: '/ssc-cgl-signature-photo-compressor',

@@ -102,10 +102,13 @@ export const App: React.FC = () => {
     'pdf-to-word' | 'pdf-to-excel' | 'pdf-to-images' | 'images-to-pdf' | 'word-to-pdf' | 'word-to-images'
   >('pdf-to-word');
 
-  // Landing Page Feature Filter & Scroll Progress
+  // Landing Page Feature Filter & Route View State
   const [bentoFilter, setBentoFilter] = useState<'all' | 'popular' | 'security' | 'convert' | 'edit'>('all');
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const [scrollPercent, setScrollPercent] = useState<number>(0);
+  const [isDirectToolView, setIsDirectToolView] = useState<boolean>(false);
+  const [activeRouteTitle, setActiveRouteTitle] = useState<string>('');
+  const [activeRouteDescription, setActiveRouteDescription] = useState<string>('');
 
   useEffect(() => {
     const onScroll = () => {
@@ -154,12 +157,16 @@ export const App: React.FC = () => {
   const handleFileLoaded = (file: File, bytes: ArrayBuffer) => {
     setCurrentFile(file);
     setCurrentBytes(bytes);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleResetFile = () => {
     setCurrentFile(null);
     setCurrentBytes(null);
     setActiveTab('sign-edit');
+    setIsDirectToolView(false);
+    setActiveRouteTitle('');
+    setActiveRouteDescription('');
     if (window.location.pathname !== '/') {
       window.history.pushState(null, '', '/');
     }
@@ -296,6 +303,11 @@ export const App: React.FC = () => {
       window.history.pushState(null, '', path);
     }
     document.title = title;
+    setIsDirectToolView(path !== '/');
+    setActiveRouteTitle(title.replace(/\s*\|\s*PDFCraft$/i, ''));
+    const matchedMeta = matchRoute(path);
+    setActiveRouteDescription(matchedMeta.description);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // Centralized Route Sync with matchRoute for initial load & browser popstate
@@ -322,6 +334,13 @@ export const App: React.FC = () => {
       if (route.targetKB) setTargetKB(route.targetKB);
       if (route.securityMode) setSecurityMode(route.securityMode);
       if (route.securityStudioSubTab) setSecurityStudioSubTab(route.securityStudioSubTab);
+      const isDirect =
+        route.path !== '/' &&
+        route.path !== '/privacy' &&
+        !route.path.startsWith('/compare/');
+      setIsDirectToolView(isDirect);
+      setActiveRouteTitle(route.title.replace(/\s*\|\s*PDFCraft$/i, ''));
+      setActiveRouteDescription(route.description);
       document.title = route.title;
     };
 
@@ -591,18 +610,18 @@ export const App: React.FC = () => {
       />
 
       {/* Main Content Area */}
-      <main className={`flex-1 flex flex-col ${activeTab === 'sign-edit' && currentBytes ? 'pb-0' : 'pb-16 lg:pb-0'}`}>
-        {!currentBytes && activeTab === 'sign-edit' ? (
+      <main className={`flex-1 flex flex-col ${activeTab === 'sign-edit' && currentBytes ? 'pb-0' : 'pb-24 lg:pb-0'}`}>
+        {!currentBytes && activeTab === 'sign-edit' && !isDirectToolView ? (
           <div className="flex-1 flex flex-col">
             {/* ============================================================ */}
             {/* SECTION 01: #pdfcraft — HERO & INTERACTIVE WORKBENCH         */}
             {/* ============================================================ */}
             <section id="pdfcraft" className="w-full border-b border-line bg-bg">
               {/* Sticky Section Eyebrow */}
-              <div className="sticky top-12 z-30 border-b border-line bg-bg/80 backdrop-blur-md">
-                <div className="max-w-[1280px] mx-auto border-x border-line px-4 sm:px-6 h-10 flex items-center justify-between">
-                  <span className="hud-label text-muted">01 / PDFCRAFT</span>
-                  <span className="hud-label text-faint">WEB WORKBENCH · CLIENT-SIDE WASM</span>
+              <div className="sticky top-12 z-30 border-b border-line bg-bg/95 backdrop-blur-md">
+                <div className="max-w-[1280px] mx-auto border-x border-line px-4 sm:px-6 h-10 flex items-center justify-between gap-2">
+                  <span className="hud-label text-[9px] sm:text-[11px] tracking-[0.08em] sm:tracking-[0.15em] text-muted shrink-0">01 / PDFCRAFT</span>
+                  <span className="hud-label text-[9px] sm:text-[11px] tracking-[0.06em] sm:tracking-[0.15em] text-faint truncate">CLIENT-SIDE WASM WORKBENCH</span>
                 </div>
               </div>
 
@@ -611,14 +630,14 @@ export const App: React.FC = () => {
                 <span className="tick absolute -top-[6px] -right-[6px] hidden xl:block" />
 
                 {/* Centered Hero Editorial Stack */}
-                <div className="px-6 py-14 md:px-10 md:py-20 text-center flex flex-col items-center scanlines">
+                <div className="px-4 py-8 sm:px-6 md:px-10 sm:py-16 md:py-20 text-center flex flex-col items-center scanlines">
                   {/* App Icon Square + 05 Badge */}
-                  <div className="flex flex-col items-center gap-4 mb-6">
-                    <div className="w-24 h-24 sm:w-28 sm:h-28 bg-app flex items-center justify-center shadow-[0_6px_14px_rgba(0,0,0,0.28)] border border-line-strong">
+                  <div className="flex flex-col items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+                    <div className="w-20 h-20 sm:w-28 sm:h-28 bg-app flex items-center justify-center shadow-[0_6px_14px_rgba(0,0,0,0.28)] border border-line-strong">
                       <img
                         src="/icon.png"
                         alt="PDFCraft Workbench Emblem"
-                        className="w-16 h-16 sm:w-20 sm:h-20 object-contain drop-shadow"
+                        className="w-14 h-14 sm:w-20 sm:h-20 object-contain drop-shadow"
                       />
                     </div>
                     <div className="flex items-center gap-2.5">
@@ -878,7 +897,7 @@ export const App: React.FC = () => {
                       <button
                         key={f.id}
                         onClick={() => setBentoFilter(f.id as any)}
-                        className={`px-3.5 py-2.5 hud-label whitespace-nowrap transition-colors cursor-pointer ${
+                        className={`px-3.5 min-h-[44px] flex items-center hud-label whitespace-nowrap transition-colors cursor-pointer ${
                           bentoFilter === f.id
                             ? 'bg-invert-bg text-invert-fg font-bold'
                             : 'bg-bg text-muted hover:text-ink hover:bg-bg-raised'
@@ -1143,12 +1162,14 @@ export const App: React.FC = () => {
           </div>
         ) : (
           /* Active Tool Views wrapped in ArtCraft Workspace Harmonizer */
-          <div className="flex-1 flex flex-col artcraft-workspace max-w-[1280px] w-full mx-auto border-x border-line bg-bg animate-in fade-in duration-150">
-            <div className="border-b border-line bg-bg-raised px-4 sm:px-6 h-10 flex items-center justify-between">
-              <span className="hud-label text-app-ink">ACTIVE WORKBENCH · {activeTab.toUpperCase()}</span>
+          <div className="flex-1 flex flex-col artcraft-workspace max-w-[1280px] w-full min-w-0 overflow-x-hidden mx-auto border-x border-line bg-bg animate-in fade-in duration-150">
+            <div className="border-b border-line bg-bg-raised px-4 sm:px-6 min-h-[44px] flex items-center justify-between gap-2">
+              <span className="hud-label text-[9px] sm:text-[11px] text-app-ink truncate">
+                ACTIVE WORKBENCH · {activeTab.toUpperCase()}
+              </span>
               <button
                 onClick={handleResetFile}
-                className="hud-label text-muted hover:text-ink cursor-pointer"
+                className="hud-label text-[9px] sm:text-[11px] text-muted hover:text-ink cursor-pointer shrink-0 min-h-[44px] flex items-center px-1"
               >
                 ← Return Home
               </button>
@@ -1164,7 +1185,17 @@ export const App: React.FC = () => {
                       onResetFile={handleResetFile}
                     />
                   ) : (
-                    <div className="max-w-3xl mx-auto py-16 px-4 w-full">
+                    <div className="max-w-3xl mx-auto py-8 sm:py-14 px-4 w-full space-y-6">
+                      <div className="border-b border-line pb-5">
+                        <p className="hud-label text-app-ink mb-2">ZERO-ACCOUNT VECTOR SIGNER &amp; REDACTOR</p>
+                        <h1 className="font-display text-2xl sm:text-4xl tracking-[-0.03em] text-ink-strong">
+                          {activeRouteTitle || 'Sign PDF Free Online — No Account Required'}
+                        </h1>
+                        <p className="font-sans text-xs sm:text-sm text-muted mt-1.5 leading-relaxed">
+                          {activeRouteDescription ||
+                            'Draw or type crisp vector signatures, place dates, or redact confidential text directly inside your browser memory.'}
+                        </p>
+                      </div>
                       <FileUploader onFileLoaded={handleFileLoaded} title="Drop PDF to Edit, Sign & Redact" />
                     </div>
                   )
@@ -1225,6 +1256,8 @@ export const App: React.FC = () => {
                     fileName={currentFile?.name}
                     initialSubTool={targetSubTool}
                     initialTargetKB={targetKB}
+                    routeTitle={activeRouteTitle}
+                    routeSubtitle={activeRouteDescription}
                     onFileLoaded={handleFileLoaded}
                   />
                 )}

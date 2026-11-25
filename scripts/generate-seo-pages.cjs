@@ -14,8 +14,10 @@ const baseHtml = fs.readFileSync(indexHtmlPath, 'utf-8');
 const pages = [
   {
     slug: 'compress-pdf-50kb',
+    h1: 'Compress PDF Strictly Under 50KB',
     title: 'Compress PDF to 50KB Online Free (Photo, Signature & Govt Portal Cap) | PDFCraft',
     description: 'Compress PDF files strictly under 50KB online for free. Ideal for Indian exam applications, UPSC, SSC, NEET, state PSC, passport signature, and certificate uploads. 100% client-side privacy.',
+    quickAnswer: 'Select PDFCraft’s 48 KB safe target preset to shrink signatures, ID photos, or single-page portal PDFs strictly under the 50 KB upload cap inside local browser memory without uploading sensitive files to any server.',
     keywords: 'compress pdf to 50kb, compress pdf under 50kb online free, reduce pdf size to 50kb, ssc photo signature 50kb pdf compressor, 50kb pdf tool private',
     toolName: '50KB Target Size Squeezer',
     howToName: 'How to compress a PDF strictly under 50KB for government exam applications and signatures',
@@ -575,8 +577,10 @@ const pages = [
   },
   {
     slug: 'ssc-cgl-signature-photo-compressor',
+    h1: 'SSC CGL Signature & Photo PDF Compressor Under 50KB',
     title: 'SSC CGL Signature & Photo PDF Compressor Under 50KB | PDFCraft',
     description: 'Compress signatures, photos, and caste certificates strictly under 50KB (48KB safe preset) for SSC CGL, CHSL, and MTS portals with zero server uploads.',
+    quickAnswer: 'SSC application portals reject files even 1 KB above 50 KB. PDFCraft defaults to a 48 KB ceiling preset and runs iterative quality checks directly inside your browser so certificates and signatures upload cleanly to ssc.gov.in.',
     keywords: 'ssc cgl photo signature 50kb compressor, ssc pdf compressor 50kb, compress signature under 50kb for ssc, ssc chsl certificate compressor, ssc portal file size tool',
     toolName: 'SSC Exam 50KB Squeezer',
     howToName: 'How to compress signatures and certificates strictly under 50KB for SSC application portals',
@@ -592,8 +596,10 @@ const pages = [
   },
   {
     slug: 'gate-exam-pdf-compressor',
+    h1: 'GATE Exam PDF Compressor Under 200KB',
     title: 'GATE Exam PDF Compressor Under 200KB (IIT GOAPS Portal Safe) | PDFCraft',
     description: 'Compress category certificates, PwD documents, and college mark sheets under 200KB for IIT GATE GOAPS registration portal. 100% client-side privacy.',
+    quickAnswer: 'IIT GATE GOAPS requires SC/ST/OBC-NCL/EWS and PwD PDF certificates to sit strictly between 10 KB and 200 KB. PDFCraft targets 195 KB locally in browser RAM while keeping stamp text legible and preserving files already below 195 KB.',
     keywords: 'gate exam pdf compressor 200kb, gate goaps certificate compressor, compress category certificate for gate, reduce pdf size for gate application, iit gate upload compressor',
     toolName: 'GATE GOAPS 200KB Compressor',
     howToName: 'How to compress category certificates and mark sheets under 200KB for GATE GOAPS',
@@ -608,8 +614,10 @@ const pages = [
   },
   {
     slug: 'uscis-visa-pdf-compressor',
+    h1: 'USCIS & CEAC Visa PDF Compressor (Zero Uploads)',
     title: 'USCIS Visa PDF Compressor Under 500KB / 2MB Free (Zero Uploads) | PDFCraft',
     description: 'Compress tax transcripts, passport scans, and affidavits for USCIS, CEAC, and DS-160 immigration portals. Never upload passport copies to cloud servers.',
+    quickAnswer: 'CEAC visa uploads permit up to 2 MB per file while many consular portals enforce 500 KB limits. PDFCraft compresses multi-page passports and IRS transcripts locally in browser RAM via WebAssembly so sensitive IDs never touch remote servers.',
     keywords: 'uscis pdf compressor 2mb, ceac visa pdf compressor under 2mb, ds 160 tax transcript compressor 500kb, visa application pdf size tool, private passport scan compressor',
     toolName: 'USCIS & Visa Document Compressor',
     howToName: 'How to compress tax returns and passport scans for USCIS and CEAC visa portals',
@@ -625,8 +633,10 @@ const pages = [
   },
   {
     slug: 'neet-application-pdf-compressor',
+    h1: 'NEET Application PDF Compressor Under 200KB',
     title: 'NEET Application PDF Compressor Under 200KB (NTA Compliant) | PDFCraft',
     description: 'Compress 10th pass certificates, citizenship proof, and category certificates strictly under 200KB for NTA NEET UG application portal.',
+    quickAnswer: 'NTA NEET UG applications require Class 10 and category certificates as PDFs between 50 KB and 200 KB. PDFCraft enforces a safe 195 KB ceiling offline in browser memory without watermarks or daily task quotas.',
     keywords: 'neet application pdf compressor 200kb, nta neet document compressor under 200kb, compress certificate for neet form, neet ug pdf size tool, reduce pdf size for neet',
     toolName: 'NEET Exam Document Squeezer',
     howToName: 'How to compress certificates under 200KB for the NTA NEET application form',
@@ -641,8 +651,10 @@ const pages = [
   },
   {
     slug: 'compare/pdfcraft-vs-ilovepdf',
+    h1: 'PDFCraft vs iLovePDF — Client-Side Privacy vs Cloud Uploads',
     title: 'PDFCraft vs iLovePDF — In-Browser Client-Side vs Cloud Upload Comparison | PDFCraft',
     description: 'Honest architectural comparison of PDFCraft vs iLovePDF. Zero cloud uploads, zero daily task limits, and true offline capability vs cloud server processing.',
+    quickAnswer: 'The core architectural difference is where files are processed: iLovePDF uploads documents to cloud servers and caps free tasks, whereas PDFCraft executes compression, signing, Aadhaar masking, and merging locally inside browser RAM with zero server uploads.',
     keywords: 'pdfcraft vs ilovepdf, ilovepdf alternative, private ilovepdf alternative, ilovepdf cloud privacy vs client-side, is ilovepdf safe for confidential documents',
     toolName: 'PDFCraft vs iLovePDF Comparison',
     howToName: 'How to choose between PDFCraft and iLovePDF for document workflows',
@@ -658,8 +670,10 @@ const pages = [
   },
   {
     slug: 'compare/pdfcraft-vs-smallpdf',
+    h1: 'PDFCraft vs Smallpdf — Unlimited Free vs 2-Task Daily Limit',
     title: 'PDFCraft vs Smallpdf — Zero Paywall vs 2-Task Daily Limit Comparison | PDFCraft',
     description: 'Compare PDFCraft and Smallpdf. Unlimited free in-browser PDF tools without paywalls, email requirements, or 2-task daily limits.',
+    quickAnswer: 'Smallpdf restricts free accounts to two tasks per day and processes files on remote servers. PDFCraft runs completely inside your web browser with unlimited free files, exact KB targets, and zero email or paywall gates.',
     keywords: 'pdfcraft vs smallpdf, smallpdf alternative free, smallpdf 2 task limit bypass, free smallpdf alternative without paywall, smallpdf vs pdfcraft comparison',
     toolName: 'PDFCraft vs Smallpdf Comparison',
     howToName: 'How to use PDFCraft as an unlimited, free alternative to Smallpdf',
@@ -675,8 +689,10 @@ const pages = [
   },
   {
     slug: 'compare/pdfcraft-vs-adobe',
+    h1: 'PDFCraft vs Adobe Acrobat — Free Browser Suite vs $239/yr Subscription',
     title: 'PDFCraft vs Adobe Acrobat — Free In-Browser Offline Tools vs $239/yr Subscription | PDFCraft',
     description: 'In-depth comparison of PDFCraft vs Adobe Acrobat Pro. When to use 100% free private browser tools vs enterprise Acrobat subscriptions.',
+    quickAnswer: 'For everyday signing, merging, redacting, and compressing PDFs under 100KB or 200KB, PDFCraft runs instantly in-browser at zero cost. Keep Adobe Acrobat Pro only if you require commercial CMYK print preflight (PDF/X) or USB hardware smartcard signing.',
     keywords: 'pdfcraft vs adobe acrobat, free adobe acrobat alternative, adobe acrobat pro vs pdfcraft, free offline pdf editor no subscription, open source adobe alternative',
     toolName: 'PDFCraft vs Adobe Acrobat Comparison',
     howToName: 'How to replace expensive Adobe Acrobat subscriptions with free in-browser PDFCraft',
@@ -711,27 +727,35 @@ for (const page of pages) {
         url: canonicalUrl,
         applicationCategory: 'UtilitiesApplication',
         operatingSystem: 'All (Web Browser, Windows, macOS, Linux, Android, iOS)',
+        isAccessibleForFree: true,
+        browserRequirements: 'Requires modern browser with WebAssembly support',
         offers: {
           '@type': 'Offer',
           price: '0',
           priceCurrency: 'USD',
         },
-        aggregateRating: {
-          '@type': 'AggregateRating',
-          ratingValue: '4.9',
-          ratingCount: '1840',
-          reviewCount: '1420',
-          bestRating: '5',
-          worstRating: '1',
-        },
         author: {
           '@type': 'Organization',
+          '@id': 'https://pdf-craft-vert.vercel.app/#org',
           name: 'PDFCraft Studio',
           url: 'https://pdf-craft-vert.vercel.app/',
           sameAs: [
-            'https://github.com/PDFCraft/pdf-craft',
-            'https://alternativeto.net/software/pdfcraft-studio/about/',
+            'https://github.com/Vishnu-cod/pdf-craft',
           ],
+        },
+      },
+      {
+        '@type': 'WebPage',
+        '@id': `${canonicalUrl}#webpage`,
+        url: canonicalUrl,
+        name: page.title,
+        description: page.description,
+        isPartOf: {
+          '@id': 'https://pdf-craft-vert.vercel.app/#org',
+        },
+        speakable: {
+          '@type': 'SpeakableSpecification',
+          cssSelector: ['h1', '#quick-answer'],
         },
       },
       {
@@ -773,13 +797,6 @@ for (const page of pages) {
           },
         })),
       },
-      {
-        '@type': 'SpeakableSpecification',
-        xpath: [
-          '/html/head/title',
-          "/html/head/meta[@name='description']/@content"
-        ]
-      },
     ],
   };
 
@@ -788,7 +805,7 @@ for (const page of pages) {
     <main style="background:#121316;color:#f2f1ee;font-family:system-ui,-apple-system,sans-serif;max-width:860px;margin:0 auto;padding:40px 24px;line-height:1.65;">
       <p style="font-family:monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#f23a62;margin:0 0 12px 0;">PDFCraft · Zero-Cloud Client-Side Workbench</p>
       <h1 style="font-size:clamp(1.85rem,4vw,2.75rem);line-height:1.1;margin:0 0 16px 0;color:#ffffff;">${page.h1 || page.toolName}</h1>
-      <div style="background:#191b1f;border-left:4px solid #e8204f;padding:16px 20px;margin:20px 0;">
+      <div id="quick-answer" style="background:#191b1f;border-left:4px solid #e8204f;padding:16px 20px;margin:20px 0;">
         <p style="margin:0 0 6px 0;font-family:monospace;font-size:11px;font-weight:700;color:#f23a62;text-transform:uppercase;letter-spacing:0.08em;">Quick Answer · 100% In-Browser Privacy</p>
         <p style="margin:0;font-size:15px;color:#f2f1ee;">${page.quickAnswer || page.description}</p>
       </div>
@@ -957,6 +974,10 @@ const homeBody = `
   <main style="background:#121316;color:#f2f1ee;font-family:system-ui,-apple-system,sans-serif;max-width:860px;margin:0 auto;padding:40px 24px;line-height:1.65;">
     <p style="font-family:monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#f23a62;margin:0 0 12px 0;">PDFCraft · Zero-Cloud Client-Side PDF Suite</p>
     <h1 style="font-size:clamp(2rem,4.5vw,3rem);line-height:1.05;margin:0 0 16px 0;color:#ffffff;">The zero-cloud PDF workbench.</h1>
+    <div id="quick-answer" style="background:#191b1f;border-left:4px solid #e8204f;padding:16px 20px;margin:20px 0;">
+      <p style="margin:0 0 6px 0;font-family:monospace;font-size:11px;font-weight:700;color:#f23a62;text-transform:uppercase;letter-spacing:0.08em;">Quick Answer · 100% In-Browser Privacy</p>
+      <p style="margin:0;font-size:15px;color:#f2f1ee;">PDFCraft is a free, open-source WebAssembly PDF suite built with Vite and React. Compress documents strictly under 50KB, 100KB, or 200KB, sign PDFs with zero accounts, mask Aadhaar/PAN IDs permanently, and convert PDF to Word offline inside browser memory.</p>
+    </div>
     <p style="color:rgba(242,241,238,0.82);margin:0 0 20px 0;">Edit, e-sign without an account, mask Aadhaar/PAN IDs, compress PDFs strictly under 100KB or 200KB for UPSC/SSC/exam portals, and convert PDF to Word or Excel locally in your browser via WebAssembly.</p>
     <nav aria-label="Popular PDFCraft Tools">
       <ul style="padding-left:20px;margin:0;">

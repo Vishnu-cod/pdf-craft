@@ -59,20 +59,44 @@
           "url": "https://pdf-craft-vert.vercel.app/",
           "applicationCategory": "BusinessApplication",
           "operatingSystem": "All (Web Browser, Windows, macOS, Linux, Android, iOS)",
+          "isAccessibleForFree": true,
+          "browserRequirements": "Requires modern browser with WebAssembly support",
           "offers": {
             "@type": "Offer",
             "price": "0",
             "priceCurrency": "USD"
           },
-          "description": "All-in-one free and private PDF suite running 100% client-side in the browser. Zero cloud uploads, zero paywalls.",
+          "author": {
+            "@type": "Organization",
+            "@id": "https://pdf-craft-vert.vercel.app/#org",
+            "name": "PDFCraft Studio",
+            "url": "https://pdf-craft-vert.vercel.app/",
+            "sameAs": [
+              "https://github.com/Vishnu-cod/pdf-craft"
+            ]
+          },
+          "description": "All-in-one free and private PDF suite running 100% client-side in the browser with Vite, React, TypeScript, and WebAssembly. Zero cloud uploads, zero paywalls.",
           "featureList": [
-            "Client-Side PDF Sign & Edit",
-            "Target Size Squeezer under 200KB & 100KB",
-            "AI Contract Risk Radar & Clause Scanner",
-            "60-Second ATS Resume Studio",
-            "PDF to Word (.docx) & Excel (.xlsx) Converter",
-            "Visual Page Thumbnail Reorganizer & Multi-PDF Merge"
+            "Client-Side PDF Sign & Edit Without Account",
+            "Target Size Squeezer under 50KB, 100KB, and 200KB",
+            "Irreversible Aadhaar & PAN Masking via Raster Burn-In",
+            "CCA India & Adobe AATL Digital Signature Validator",
+            "AI Contract Risk Radar & Metadata Leak Checker",
+            "60-Second ATS Resume Studio & Word/Excel Converters"
           ]
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://pdf-craft-vert.vercel.app/#webpage",
+          "url": "https://pdf-craft-vert.vercel.app/",
+          "name": "Free Online PDF Editor — Edit, Sign & Compress PDFs Privately | PDFCraft",
+          "isPartOf": {
+            "@id": "https://pdf-craft-vert.vercel.app/#org"
+          },
+          "speakable": {
+            "@type": "SpeakableSpecification",
+            "cssSelector": ["h1", "#quick-answer"]
+          }
         },
         {
           "@type": "FAQPage",

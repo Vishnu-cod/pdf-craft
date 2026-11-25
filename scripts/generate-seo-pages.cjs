@@ -662,6 +662,7 @@ const pages = [
     ],
   },
 ];
+
 for (const page of pages) {
   const pageDir = path.join(distDir, page.slug);
   if (!fs.existsSync(pageDir)) {
@@ -743,6 +744,13 @@ for (const page of pages) {
           },
         })),
       },
+      {
+        '@type': 'SpeakableSpecification',
+        xpath: [
+          '/html/head/title',
+          "/html/head/meta[@name='description']/@content"
+        ]
+      },
     ],
   };
 
@@ -752,6 +760,10 @@ for (const page of pages) {
     <noscript>
       <div style="font-family: system-ui, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; line-height: 1.6; color: #1e293b;">
         <h1>${page.title}</h1>
+        <div style="background: #f1f5f9; border-left: 4px solid #4f46e5; padding: 14px 18px; margin: 18px 0; border-radius: 6px;">
+          <p style="margin: 0 0 6px 0; font-size: 12px; font-weight: 700; color: #4338ca; text-transform: uppercase; letter-spacing: 0.05em;">⚡ Quick Answer (AEO / Answer Engine Definition)</p>
+          <p style="margin: 0; font-size: 15px; color: #0f172a;">${page.quickAnswer || page.description}</p>
+        </div>
         <p><strong>${page.description}</strong></p>
         
         <h2>How to Use ${page.toolName} (3 Simple Steps)</h2>

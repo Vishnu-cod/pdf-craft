@@ -476,6 +476,23 @@ const pages = [
     ],
   },
   {
+    slug: 'validate-dsc',
+    title: 'Validate DSC Certificate in PDF Online Free (CCA India & eMudhra) | PDFCraft',
+    description: 'Validate Digital Signature Certificates (DSC) on GST, MCA, Income Tax, and court PDFs free in your browser. Checks eMudhra, Capricorn, VSign, and Adobe AATL.',
+    keywords: 'validate dsc certificate pdf, dsc signature validation online free, check emudhra digital signature pdf, cca india dsc validator, verify dsc pdf offline',
+    toolName: 'DSC Certificate PDF Validator',
+    howToName: 'How to validate a Digital Signature Certificate (DSC) inside a PDF offline',
+    steps: [
+      { name: 'Select Signed PDF', text: 'Open the GST, MCA, or Income Tax PDF carrying a Digital Signature Certificate.' },
+      { name: 'Inspect DSC Signer & Integrity', text: 'Verify the issuer CN, serial metadata, and /ByteRange cryptographic boundaries in browser memory.' },
+      { name: 'Review Validation Report', text: 'Confirm authenticity cleanly with zero document uploads to external servers.' },
+    ],
+    faqs: [
+      { q: 'Does validating a DSC upload my GST or MCA filing?', a: 'No. PDFCraft inspects PKCS#7 signature dictionaries and X.509 certificate headers strictly inside local browser RAM.' },
+      { q: 'Which Indian DSC issuers are detected?', a: 'Supports eMudhra, Capricorn, VSign, Pantasign, SafeScrypt, NSDL, DigiLocker, and Adobe AATL issuers.' },
+    ],
+  },
+  {
     slug: 'security-studio',
     title: 'Security & Privacy Studio — Aadhaar Masker & PKI Signature Validator | PDFCraft',
     description: 'Unified in-browser PDF security suite. Mask Aadhaar & PAN IDs, verify PKI digital signatures, and encrypt with AES-256 with 100% client-side privacy.',
@@ -891,13 +908,15 @@ const allRoutes = [
   })),
 ];
 
+const buildDate = new Date().toISOString().split('T')[0];
+
 const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${allRoutes
   .map(
     (r) => `  <url>
     <loc>https://pdf-craft-vert.vercel.app/${r.path}</loc>
-    <lastmod>2026-11-21</lastmod>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>${r.changefreq}</changefreq>
     <priority>${r.priority}</priority>
   </url>`
@@ -905,6 +924,14 @@ ${allRoutes
   .join('\n')}
 </urlset>
 `;
+
+// Ensure /privacy resolves directly as clean static route (HTTP 200) without catch-all rewrite soft-404s
+const privacyDir = path.join(distDir, 'privacy');
+if (!fs.existsSync(privacyDir)) fs.mkdirSync(privacyDir, { recursive: true });
+const privacyHtml = baseHtml
+  .replace(/<title>.*?<\/title>/is, '<title>Zero-Cloud Privacy Policy &amp; Security Guarantee | PDFCraft</title>')
+  .replace(/<link rel="canonical" href=".*?" \/>/is, '<link rel="canonical" href="https://pdf-craft-vert.vercel.app/privacy" />');
+fs.writeFileSync(path.join(privacyDir, 'index.html'), privacyHtml, 'utf-8');
 
 fs.writeFileSync(path.resolve(__dirname, '..', 'public', 'sitemap.xml'), sitemapXml, 'utf-8');
 fs.writeFileSync(path.resolve(__dirname, '..', 'dist', 'sitemap.xml'), sitemapXml, 'utf-8');

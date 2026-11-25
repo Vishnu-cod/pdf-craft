@@ -2,38 +2,212 @@
 @tailwind components;
 @tailwind utilities;
 
+:root,
+:root[data-theme='dark'] {
+  --bg: #121316;
+  --bg-raised: #101014;
+  --bg-sunken: #060607;
+  --ink: #f2f1ee;
+  --ink-strong: #ffffff;
+  --muted: rgba(242, 241, 238, 0.6);
+  --faint: rgba(242, 241, 238, 0.38);
+  --line: rgba(242, 241, 238, 0.15);
+  --line-strong: rgba(242, 241, 238, 0.4);
+  --accent: #2d81ff;
+  --accent-ink: #74aaff;
+  --invert-bg: #ffffff;
+  --invert-fg: #0b0b0c;
+  --app: #e8204f;
+  --app-ink: #f23a62;
+  --danger: #ff6259;
+  --scanline: rgba(255, 255, 255, 0.025);
+
+  --font-display: 'Archivo', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+:root[data-theme='light'] {
+  --bg: #f2f1ee;
+  --bg-raised: #faf9f7;
+  --bg-sunken: #e9e8e4;
+  --ink: #101014;
+  --ink-strong: #000000;
+  --muted: rgba(16, 16, 20, 0.62);
+  --faint: rgba(16, 16, 20, 0.42);
+  --line: rgba(16, 16, 20, 0.16);
+  --line-strong: rgba(16, 16, 20, 0.4);
+  --accent: #2d81ff;
+  --accent-ink: #1659c4;
+  --invert-bg: #101014;
+  --invert-fg: #f2f1ee;
+  --app: #e8204f;
+  --app-ink: #b70228;
+  --danger: #b3261e;
+  --scanline: rgba(16, 16, 20, 0.03);
+}
+
 @layer base {
-  html, body {
-    @apply bg-[#F8F8F9] text-[#111439] antialiased selection:bg-purple-600 selection:text-white;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-    overflow-x: hidden;
+  html,
+  body {
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
     min-height: 100dvh;
   }
 
-  button, a, input, select, textarea, [role="button"] {
+  button,
+  a,
+  input,
+  select,
+  textarea,
+  [role='button'] {
     touch-action: manipulation;
   }
 }
 
-/* Stripe's Signature Organic Flowing Mesh Gradient */
-.stripe-hero-mesh {
-  background: 
-    radial-gradient(circle at 5% 15%, rgba(255, 140, 50, 0.85) 0%, transparent 40%),
-    radial-gradient(circle at 75% 10%, rgba(168, 85, 247, 0.8) 0%, transparent 45%),
-    radial-gradient(circle at 35% 45%, rgba(244, 63, 94, 0.5) 0%, transparent 50%),
-    radial-gradient(circle at 85% 70%, rgba(56, 189, 248, 0.45) 0%, transparent 45%),
-    #F8F8F9;
+/* ArtCraft Typography Primitives */
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 620;
+  font-stretch: 118%;
 }
 
-.stripe-card {
-  background: #FFFFFF;
-  box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.1), 0 8px 16px -8px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(226, 232, 240, 0.9);
-  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+.hud-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
 }
-.stripe-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 20px 38px -8px rgba(50, 50, 93, 0.16), 0 12px 24px -8px rgba(0, 0, 0, 0.08);
+
+.ruler-digits {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Hairline Crosshair Tick Mark (11x11px) */
+.tick {
+  position: relative;
+  width: 11px;
+  height: 11px;
+  pointer-events: none;
+}
+.tick::before,
+.tick::after {
+  content: '';
+  position: absolute;
+  background-color: var(--line-strong);
+}
+.tick::before {
+  left: 5px;
+  top: 0;
+  width: 1px;
+  height: 11px;
+}
+.tick::after {
+  top: 5px;
+  left: 0;
+  width: 11px;
+  height: 1px;
+}
+
+/* Crisp Rectangular Button Inversion */
+.invert-block {
+  background-color: var(--bg);
+  color: var(--ink);
+  border: 1px solid var(--line-strong);
+  transition: background-color 0.16s ease, color 0.16s ease, border-color 0.16s ease;
+}
+.invert-block:hover {
+  background-color: var(--invert-bg);
+  color: var(--invert-fg);
+  border-color: var(--invert-bg);
+}
+
+/* Subtle architectural scanlines texture for hero showcase backdrop */
+.scanlines {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--scanline) 0px,
+    var(--scanline) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+/* Unify Inner Tool Workspaces with ArtCraft Architectural Aesthetics */
+.artcraft-workspace {
+  --tw-bg-opacity: 1;
+}
+.artcraft-workspace [class*='bg-slate-950'],
+.artcraft-workspace [class*='bg-slate-900'] {
+  background-color: var(--bg-raised) !important;
+}
+.artcraft-workspace [class*='bg-slate-800'],
+.artcraft-workspace [class*='bg-slate-850'] {
+  background-color: var(--bg-sunken) !important;
+}
+.artcraft-workspace [class*='border-slate-9'],
+.artcraft-workspace [class*='border-slate-8'],
+.artcraft-workspace [class*='border-slate-7'] {
+  border-color: var(--line) !important;
+}
+.artcraft-workspace .text-white,
+.artcraft-workspace .text-slate-100,
+.artcraft-workspace .text-slate-200 {
+  color: var(--ink-strong) !important;
+}
+.artcraft-workspace .text-slate-300,
+.artcraft-workspace .text-slate-400,
+.artcraft-workspace .text-slate-500 {
+  color: var(--muted) !important;
+}
+:root[data-theme='light'] .artcraft-workspace .text-indigo-300,
+:root[data-theme='light'] .artcraft-workspace .text-indigo-400,
+:root[data-theme='light'] .artcraft-workspace .text-indigo-200 {
+  color: #1659c4 !important;
+}
+:root[data-theme='light'] .artcraft-workspace .text-emerald-300,
+:root[data-theme='light'] .artcraft-workspace .text-emerald-400,
+:root[data-theme='light'] .artcraft-workspace .text-emerald-200 {
+  color: #047857 !important;
+}
+:root[data-theme='light'] .artcraft-workspace .text-purple-300,
+:root[data-theme='light'] .artcraft-workspace .text-purple-400 {
+  color: #6d28d9 !important;
+}
+:root[data-theme='light'] .artcraft-workspace .text-amber-300,
+:root[data-theme='light'] .artcraft-workspace .text-amber-400 {
+  color: #b45309 !important;
+}
+:root[data-theme='light'] .artcraft-workspace .text-rose-300,
+:root[data-theme='light'] .artcraft-workspace .text-rose-400 {
+  color: #b70228 !important;
+}
+.artcraft-workspace .rounded-3xl,
+.artcraft-workspace .rounded-2xl,
+.artcraft-workspace .rounded-xl,
+.artcraft-workspace .rounded-lg {
+  border-radius: 0px !important;
+}
+.artcraft-workspace .bg-indigo-600,
+.artcraft-workspace .bg-purple-600 {
+  background-color: var(--invert-bg) !important;
+  color: var(--invert-fg) !important;
+  border-radius: 0px !important;
+}
+.artcraft-workspace .bg-indigo-600:hover,
+.artcraft-workspace .bg-purple-600:hover {
+  opacity: 0.85;
+}
+.artcraft-workspace .bg-indigo-600 *,
+.artcraft-workspace .bg-purple-600 * {
+  color: var(--invert-fg) !important;
 }
 
 /* Safe area insets for notches and Android navigation gestures */
@@ -45,7 +219,8 @@
 }
 
 /* Touch canvas protection for signature drawing */
-.touch-none, canvas.touch-drawing {
+.touch-none,
+canvas.touch-drawing {
   touch-action: none !important;
   -webkit-user-select: none;
   user-select: none;
@@ -77,18 +252,14 @@
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.6);
+  background: var(--bg-sunken);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(99, 102, 241, 0.3);
-  border-radius: 9999px;
+  background: var(--line-strong);
+  border-radius: 0px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(99, 102, 241, 0.6);
-}
-
-.glow-indigo {
-  box-shadow: 0 0 25px -5px rgba(99, 102, 241, 0.25);
+  background: var(--app-ink);
 }
 
 @media print {
@@ -96,7 +267,11 @@
     background: white !important;
     color: black !important;
   }
-  header, footer, nav, button, .print\:hidden {
+  header,
+  footer,
+  nav,
+  button,
+  .print\:hidden {
     display: none !important;
   }
   main {

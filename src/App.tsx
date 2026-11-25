@@ -102,9 +102,25 @@ export const App: React.FC = () => {
     'pdf-to-word' | 'pdf-to-excel' | 'pdf-to-images' | 'images-to-pdf' | 'word-to-pdf' | 'word-to-images'
   >('pdf-to-word');
 
-  // Landing Page Feature Filter
+  // Landing Page Feature Filter & Scroll Progress
   const [bentoFilter, setBentoFilter] = useState<'all' | 'popular' | 'security' | 'convert' | 'edit'>('all');
-  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const [scrollPercent, setScrollPercent] = useState<number>(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight <= 0) {
+        setScrollPercent(0);
+        return;
+      }
+      const pct = Math.min(100, Math.max(0, Math.round((window.scrollY / docHeight) * 100)));
+      setScrollPercent(pct);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   // Check if opened as mobile signing page
   useEffect(() => {
@@ -498,15 +514,71 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col text-slate-100 relative overflow-x-clip selection:bg-indigo-500 selection:text-white">
-      {/* Ambient Radial Glowing Lights constrained in fixed container */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] bg-gradient-to-b from-indigo-500/10 via-purple-500/5 to-transparent blur-3xl" />
-        <div className="absolute top-48 left-10 w-72 h-72 bg-rose-500/5 blur-3xl" />
-        <div className="absolute top-48 right-10 w-72 h-72 bg-emerald-500/5 blur-3xl" />
-      </div>
+    <div className="min-h-screen bg-bg flex flex-col text-ink relative overflow-x-clip font-sans">
+      {/* Right-Side Fixed Scroll Ruler & Section Jump Rail (ArtCraft Architectural HUD) */}
+      {!currentBytes && activeTab === 'sign-edit' && (
+        <aside
+          aria-label="Scroll progress and section navigation"
+          className="fixed inset-y-0 right-0 z-40 w-[60px] hidden min-[1420px]:flex flex-col justify-between border-l border-line bg-bg/85 backdrop-blur-sm py-16 pointer-events-none select-none"
+        >
+          {/* Top Ruler Percentage */}
+          <div className="flex flex-col items-center gap-2 pt-2">
+            <div className="w-full flex flex-col items-end pr-2 gap-2.5 opacity-60">
+              {Array.from({ length: 10 }).map((_, idx) => (
+                <div key={idx} className="flex items-center gap-1.5">
+                  {idx % 3 === 0 && (
+                    <span className="ruler-digits text-[9px] text-faint">
+                      {String(idx * 10).padStart(2, '0')}
+                    </span>
+                  )}
+                  <span className={`h-px bg-line-strong ${idx % 3 === 0 ? 'w-3' : 'w-1.5'}`} />
+                </div>
+              ))}
+            </div>
+            <div className="w-full border-y border-app/60 py-1 text-center">
+              <span className="ruler-digits text-[10px] font-bold text-app-ink">
+                {String(scrollPercent).padStart(3, '0')}%
+              </span>
+            </div>
+          </div>
 
-      {/* Navbar with Tools Hub Trigger */}
+          {/* Vertical Rotated Active Tag */}
+          <div className="flex items-center justify-center">
+            <span
+              className="hud-label text-faint whitespace-nowrap"
+              style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
+            >
+              PDFCRAFT · WASM
+            </span>
+          </div>
+
+          {/* Bottom Section Jump Links */}
+          <nav className="pointer-events-auto flex flex-col items-end pr-2.5 gap-1.5">
+            {[
+              { id: 'pdfcraft', label: 'PDFCRAFT' },
+              { id: 'highlights', label: 'HIGHLIGHTS' },
+              { id: 'tools', label: 'TOOLS' },
+              { id: 'compare', label: 'SPECS' },
+              { id: 'faq', label: 'FAQ' },
+              { id: 'directory', label: 'DIRECTORY' },
+            ].map((sec) => (
+              <a
+                key={sec.id}
+                href={`#${sec.id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById(sec.id)?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="font-mono text-[9px] tracking-[0.14em] text-faint hover:text-app-ink transition-colors"
+              >
+                {sec.label}
+              </a>
+            ))}
+          </nav>
+        </aside>
+      )}
+
+      {/* Navbar */}
       <Navbar
         activeTab={activeTab}
         setActiveTab={navigateToTab}
@@ -519,356 +591,568 @@ export const App: React.FC = () => {
       />
 
       {/* Main Content Area */}
-      <main className={`flex-1 flex flex-col ${activeTab === 'sign-edit' && currentBytes ? 'pb-0' : 'pb-20 md:pb-0'}`}>
-        {/* If no file loaded and on sign-edit home, show the Stripe-Inspired Hero Showcase + Uploader */}
+      <main className={`flex-1 flex flex-col ${activeTab === 'sign-edit' && currentBytes ? 'pb-0' : 'pb-16 lg:pb-0'}`}>
         {!currentBytes && activeTab === 'sign-edit' ? (
-          <div className="flex-1 flex flex-col justify-center items-center py-6 sm:py-10 px-4">
-            
-            {/* Stripe-Style Flowing Hero Banner */}
-            <div className="w-full max-w-6xl mx-auto stripe-hero-mesh p-6 sm:p-12 rounded-3xl border border-slate-200/90 shadow-xl mb-10">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                
-                <div className="lg:col-span-7 space-y-4 text-left">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/90 border border-slate-200 text-[#111439] text-[11px] sm:text-xs font-bold shadow-sm">
-                      <Sparkles className="w-3.5 h-3.5 text-purple-600 animate-pulse shrink-0" />
-                      <span>Zero Cloud Uploads • Hardware GPU Accelerated</span>
+          <div className="flex-1 flex flex-col">
+            {/* ============================================================ */}
+            {/* SECTION 01: #pdfcraft — HERO & INTERACTIVE WORKBENCH         */}
+            {/* ============================================================ */}
+            <section id="pdfcraft" className="w-full border-b border-line bg-bg">
+              {/* Sticky Section Eyebrow */}
+              <div className="sticky top-12 z-30 border-b border-line bg-bg/80 backdrop-blur-md">
+                <div className="max-w-[1280px] mx-auto border-x border-line px-4 sm:px-6 h-10 flex items-center justify-between">
+                  <span className="hud-label text-muted">01 / PDFCRAFT</span>
+                  <span className="hud-label text-faint">WEB WORKBENCH · CLIENT-SIDE WASM</span>
+                </div>
+              </div>
+
+              <div className="max-w-[1280px] mx-auto border-x border-line relative">
+                <span className="tick absolute -top-[6px] -left-[6px] hidden xl:block" />
+                <span className="tick absolute -top-[6px] -right-[6px] hidden xl:block" />
+
+                {/* Centered Hero Editorial Stack */}
+                <div className="px-6 py-14 md:px-10 md:py-20 text-center flex flex-col items-center scanlines">
+                  {/* App Icon Square + 05 Badge */}
+                  <div className="flex flex-col items-center gap-4 mb-6">
+                    <div className="w-24 h-24 sm:w-28 sm:h-28 bg-app flex items-center justify-center shadow-[0_6px_14px_rgba(0,0,0,0.28)] border border-line-strong">
+                      <img
+                        src="/icon.png"
+                        alt="PDFCraft Workbench Emblem"
+                        className="w-16 h-16 sm:w-20 sm:h-20 object-contain drop-shadow"
+                      />
+                    </div>
+                    <div className="flex items-center gap-2.5">
+                      <span className="px-2 py-0.5 bg-app text-white font-mono text-[11px] font-bold tracking-widest">
+                        05
+                      </span>
+                      <span className="font-display text-xl sm:text-2xl text-app-ink tracking-tight">
+                        PdfCraft
+                      </span>
                     </div>
                   </div>
 
-                  <h1 className="text-4xl sm:text-6xl font-black text-[#111439] tracking-tight leading-[1.08]">
-                    Free Online PDF Editor <br />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#111439] via-purple-700 to-indigo-600">
-                      Edit, Sign &amp; Compress PDFs Privately.
-                    </span>
+                  {/* Display Hero Headline (Archivo Stretch 118%) */}
+                  <h1 className="max-w-4xl font-display text-4xl sm:text-6xl lg:text-7xl leading-[1.02] tracking-[-0.035em] text-ink-strong">
+                    The <span className="text-app-ink">zero-cloud</span> PDF workbench.
                   </h1>
 
-                  <p className="text-sm sm:text-base text-[#425466] leading-relaxed max-w-xl font-normal">
-                    Free in-browser PDF suite. Edit text, electronically sign, compress under 200KB for portals, merge, split, and convert documents with 100% client-side privacy and zero cloud uploads.
+                  {/* Lead Subhead */}
+                  <p className="font-sans text-base sm:text-lg leading-relaxed text-muted max-w-xl mt-6">
+                    Read, edit, sign, compress under 200KB, mask Aadhaar &amp; PII, and convert documents inside browser memory. No account, no telemetry, no cloud.
                   </p>
 
-                  <div className="flex flex-wrap items-center gap-3 pt-2">
+                  {/* 4-Button Rectangular CTA Row */}
+                  <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+                    <label className="h-12 px-6 bg-invert-bg text-invert-fg font-mono text-[11px] font-bold uppercase tracking-[0.12em] hover:opacity-80 transition-opacity flex items-center gap-2 cursor-pointer">
+                      <FileSignature className="w-4 h-4" />
+                      <span>Open PDF Document</span>
+                      <input
+                        type="file"
+                        accept=".pdf"
+                        aria-label="Open PDF Document"
+                        className="hidden"
+                        onChange={async (e) => {
+                          if (e.target.files && e.target.files[0]) {
+                            const file = e.target.files[0];
+                            const bytes = await file.arrayBuffer();
+                            handleFileLoaded(file, bytes);
+                          }
+                        }}
+                      />
+                    </label>
                     <a
-                      href="/sign-pdf"
-                      onClick={(e) => { e.preventDefault(); navigateToTab('sign-edit'); }}
-                      className="bg-gradient-to-r from-purple-700 via-indigo-600 to-purple-800 hover:from-purple-800 hover:to-indigo-700 text-white font-black text-xs sm:text-sm px-5 py-3 rounded-xl shadow-lg shadow-purple-600/30 transition-all flex items-center gap-2 hover:scale-[1.02] cursor-pointer"
+                      href="/upsc-pdf-compressor"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigateToTab('tools', 'upsc-pdf-compressor', undefined, 195);
+                      }}
+                      className="h-12 px-6 invert-block font-mono text-[11px] font-bold uppercase tracking-[0.12em] flex items-center gap-2 cursor-pointer"
                     >
-                      <FileSignature className="w-4 h-4 text-amber-300" />
-                      <span>Edit &amp; Sign PDF</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </a>
-                    <a
-                      href="/merge-pdf"
-                      onClick={(e) => { e.preventDefault(); navigateToTab('organize'); }}
-                      className="bg-[#111439] hover:bg-[#0A2540] text-white font-bold text-xs sm:text-sm px-4 py-3 rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer"
-                    >
-                      <Layers className="w-4 h-4 text-purple-300" />
-                      <span>Merge &amp; Organize</span>
+                      <Shrink className="w-3.5 h-3.5 text-app-ink" />
+                      <span>200KB Squeezer</span>
                     </a>
                     <a
                       href="/mask-aadhaar"
-                      onClick={(e) => { e.preventDefault(); navigateToTab('security-studio'); }}
-                      className="bg-white hover:bg-slate-50 text-[#111439] border border-slate-200 font-bold text-xs sm:text-sm px-4 py-3 rounded-xl shadow-sm transition-all flex items-center gap-2 cursor-pointer"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigateToTab('security-studio', undefined, undefined, undefined, undefined, 'pii_masker');
+                      }}
+                      className="h-12 px-6 invert-block font-mono text-[11px] font-bold uppercase tracking-[0.12em] flex items-center gap-2 cursor-pointer"
                     >
-                      <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                      <span>Protect &amp; Mask PII</span>
+                      <ShieldCheck className="w-3.5 h-3.5" />
+                      <span>Mask Aadhaar / PII</span>
+                    </a>
+                    <button
+                      onClick={() => setIsFeatureModalOpen(true)}
+                      className="h-12 px-6 invert-block font-mono text-[11px] font-bold uppercase tracking-[0.12em] flex items-center gap-2 cursor-pointer"
+                    >
+                      <Search className="w-3.5 h-3.5" />
+                      <span>All 16 Tools (⌘K)</span>
+                    </button>
+                  </div>
+
+                  {/* Platform Metadata Subline */}
+                  <div className="mt-7 flex flex-col items-center gap-2">
+                    <p className="hud-label text-faint">
+                      CHROME · SAFARI · FIREFOX · EDGE · OFFLINE PWA · FREE AND OPEN SOURCE
+                    </p>
+                  </div>
+
+                  {/* 6-Cell Hairline Action / Share Strip */}
+                  <div className="mt-8 grid grid-cols-2 sm:flex sm:w-fit gap-px border border-line bg-line">
+                    <button
+                      onClick={() => document.getElementById('workbench-dropzone')?.scrollIntoView({ behavior: 'smooth' })}
+                      className="h-9 px-3.5 bg-bg text-muted hover:text-ink hover:bg-bg-raised font-mono text-[11px] font-bold uppercase tracking-[0.12em] transition-colors cursor-pointer"
+                    >
+                      Dropzone ↓
+                    </button>
+                    <button
+                      onClick={() => setIsPrivacyModalOpen(true)}
+                      className="h-9 px-3.5 bg-bg text-muted hover:text-ink hover:bg-bg-raised font-mono text-[11px] font-bold uppercase tracking-[0.12em] transition-colors cursor-pointer"
+                    >
+                      Zero-Cloud Spec
+                    </button>
+                    <button
+                      onClick={() => {
+                        setComparisonCompetitor('ilovepdf');
+                        setIsComparisonModalOpen(true);
+                      }}
+                      className="h-9 px-3.5 bg-bg text-muted hover:text-ink hover:bg-bg-raised font-mono text-[11px] font-bold uppercase tracking-[0.12em] transition-colors cursor-pointer"
+                    >
+                      vs iLovePDF
+                    </button>
+                    <button
+                      onClick={() => {
+                        setComparisonCompetitor('smallpdf');
+                        setIsComparisonModalOpen(true);
+                      }}
+                      className="h-9 px-3.5 bg-bg text-muted hover:text-ink hover:bg-bg-raised font-mono text-[11px] font-bold uppercase tracking-[0.12em] transition-colors cursor-pointer"
+                    >
+                      vs Smallpdf
+                    </button>
+                    <a
+                      href="/resume-builder"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigateToTab('resume');
+                      }}
+                      className="h-9 px-3.5 bg-bg text-muted hover:text-ink hover:bg-bg-raised font-mono text-[11px] font-bold uppercase tracking-[0.12em] transition-colors flex items-center justify-center"
+                    >
+                      ATS Resume
+                    </a>
+                    <a
+                      href="https://github.com/Vishnu-cod/pdf-craft"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="h-9 px-3.5 bg-bg text-muted hover:text-ink hover:bg-bg-raised font-mono text-[11px] font-bold uppercase tracking-[0.12em] transition-colors flex items-center justify-center"
+                    >
+                      GitHub
                     </a>
                   </div>
                 </div>
 
-                {/* Floating Stripe-Style Mockup Showcase */}
-                <div className="lg:col-span-5 flex justify-center">
-                  <div className="relative w-full max-w-sm">
-                    <div className="bg-white rounded-3xl p-5 shadow-2xl border border-slate-100 space-y-3.5">
-                      <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                        <span className="text-xs font-black text-[#111439]">OFFICIAL VERIFICATION</span>
-                        <span className="text-[10px] font-mono bg-emerald-50 text-emerald-700 font-extrabold px-2 py-0.5 rounded-full border border-emerald-200">
-                          100% PRIVATE GPU
-                        </span>
-                      </div>
-
-                      <div className="relative aspect-[3/4] rounded-2xl bg-gradient-to-tr from-slate-900 via-indigo-950 to-slate-900 p-4 text-white flex flex-col justify-between overflow-hidden shadow-inner border border-slate-800">
-                        <div className="flex justify-between items-center text-[10px] font-mono text-emerald-400">
-                          <span className="flex items-center gap-1"><ShieldCheck className="w-3 h-3 text-emerald-400" /> AES-256 ENCRYPTED</span>
-                          <span>SHA-256</span>
-                        </div>
-                        <div className="text-center my-auto space-y-1">
-                          <span className="text-[10px] font-mono uppercase tracking-widest block text-indigo-300">CRYPTOGRAPHIC AUDIT SEAL</span>
-                          <span className="text-xl font-black tracking-tight leading-tight block text-white">DOCUMENT SIGNED</span>
-                          <span className="text-[11px] text-slate-400 block">Verified In-Memory Browser Execution</span>
-                        </div>
-                        <div className="flex justify-between items-center text-[9px] font-mono border-t border-white/10 pt-2 text-slate-400">
-                          <span>ZERO CLOUD UPLOADS</span>
-                          <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-1.5 py-0.5 rounded font-extrabold text-[8px]">TAMPER PROOF</span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center justify-between text-xs text-slate-500 pt-1">
-                        <span className="font-semibold text-slate-700">✦ E-Sign, Redact &amp; Squeeze</span>
-                        <span className="text-purple-600 font-bold">Hardware Accelerated</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-            {/* Semantic SEO Introduction Section */}
-            <section aria-labelledby="about-pdfcraft-heading" className="w-full max-w-6xl mx-auto px-4 mb-8 text-left">
-              <div className="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 sm:p-8 backdrop-blur-sm shadow-sm space-y-4">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/80 pb-3">
-                  <h2 id="about-pdfcraft-heading" className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-                    <ShieldCheck className="w-5 h-5 text-emerald-400 shrink-0" />
-                    <span>Free Online PDF Editor &amp; Private Document Studio</span>
-                  </h2>
-                  <span className="text-xs text-indigo-400 font-semibold">100% In-Browser WebAssembly • No Server Uploads</span>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-slate-300 leading-relaxed">
-                  <div>
-                    <h3 className="font-semibold text-white mb-1.5 flex items-center gap-1.5">
-                      <FileSignature className="w-3.5 h-3.5 text-amber-300" />
-                      <span>Edit &amp; Electronically Sign</span>
-                    </h3>
-                    <p className="text-slate-400">
-                      Add vector signatures, text annotations, checkmarks, and dates to contracts and official forms. Draw or type signatures with zero account registration or monthly DocuSign subscription fees.
-                    </p>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white mb-1.5 flex items-center gap-1.5">
-                      <Shrink className="w-3.5 h-3.5 text-indigo-400" />
-                      <span>Target Size PDF Compression</span>
-                    </h3>
-                    <p className="text-slate-400">
-                      Compress heavy scanned PDFs strictly under 100KB, 200KB, or 500KB to satisfy strict government, visa, and university portal upload limits without degrading essential text legibility.
-                    </p>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white mb-1.5 flex items-center gap-1.5">
-                      <Lock className="w-3.5 h-3.5 text-emerald-400" />
-                      <span>Zero-Cloud Document Privacy</span>
-                    </h3>
-                    <p className="text-slate-400">
-                      Unlike traditional cloud PDF converters, PDFCraft executes entirely in your local browser memory using WebAssembly. Your tax files, Aadhaar/PAN cards, and contracts never touch an external server.
-                    </p>
+                {/* Full-Width Interactive Dropzone Container */}
+                <div id="workbench-dropzone" className="border-t border-line bg-bg-sunken">
+                  <FileUploader
+                    onFileLoaded={handleFileLoaded}
+                    title="Drop any PDF here to launch the workbench"
+                    subtitle="Edit, sign, redact, compress strictly under 50KB–200KB, or split pages completely offline."
+                  />
+                  <div className="px-4 py-2.5 border-t border-line bg-bg flex items-center justify-between">
+                    <span className="hud-label text-faint">IN-MEMORY WEBASSEMBLY WORKBENCH</span>
+                    <span className="hud-label text-app-ink">READY FOR INPUT</span>
                   </div>
                 </div>
               </div>
             </section>
 
-            {/* Universal Uploader Drop Box */}
-            <FileUploader onFileLoaded={handleFileLoaded} title="Drop any PDF or Image here to edit immediately, or select a tool below" />
+            {/* ============================================================ */}
+            {/* SECTION 02: #highlights — WHAT'S INSIDE (3x2 HAIRLINE GRID)  */}
+            {/* ============================================================ */}
+            <section id="highlights" className="w-full border-b border-line bg-bg">
+              <div className="sticky top-12 z-30 border-b border-line bg-bg/80 backdrop-blur-md">
+                <div className="max-w-[1280px] mx-auto border-x border-line px-4 sm:px-6 h-10 flex items-center justify-between">
+                  <span className="hud-label text-muted">02 / HIGHLIGHTS</span>
+                  <span className="hud-label text-faint">PDF WORKBENCH</span>
+                </div>
+              </div>
 
-            {/* All Tools Open Visual Grid (Stripe Style) */}
-            <div className="max-w-6xl mx-auto px-4 mt-10 pb-16 w-full">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-                <div>
-                  <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-                    <Zap className="w-5 h-5 text-purple-400" />
-                    <span>All PDF &amp; Document Tools</span>
-                    <span className="text-[10px] font-bold uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/30 px-2.5 py-0.5 rounded-full">
-                      100% Free
-                    </span>
+              <div className="max-w-[1280px] mx-auto border-x border-line relative">
+                <span className="tick absolute -top-[6px] -left-[6px] hidden xl:block" />
+                <span className="tick absolute -top-[6px] -right-[6px] hidden xl:block" />
+
+                <div className="px-6 py-12 md:px-10 md:py-16 border-b border-line">
+                  <h2 className="font-display text-4xl sm:text-5xl md:text-6xl leading-[1.02] tracking-[-0.035em] text-ink-strong">
+                    What&apos;s <span className="text-app-ink">inside</span>.
                   </h2>
-                  <p className="text-xs text-slate-400 mt-1">Click any tool to launch instantly in your browser — zero accounts required</p>
                 </div>
 
-                {/* Filter Pills */}
-                <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-1">
+                {/* 3x2 Hairline Feature Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-line">
                   {[
-                    { id: 'all', label: 'All Tools' },
-                    { id: 'popular', label: '⭐ Popular' },
-                    { id: 'security', label: '🛡️ Protect & Mask' },
-                    { id: 'convert', label: '🔄 Converters' },
-                    { id: 'edit', label: '✍️ Edit & Sign' },
-                  ].map((f) => (
-                    <button
-                      key={f.id}
-                      onClick={() => setBentoFilter(f.id as any)}
-                      className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition cursor-pointer ${
-                        bentoFilter === f.id
-                          ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-600/30 border border-purple-400/40 font-bold scale-[1.02]'
-                          : 'bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800'
-                      }`}
+                    {
+                      num: '01',
+                      title: 'Zero-cloud rendering',
+                      desc: 'Every byte is parsed, rendered, and exported in browser memory via WebAssembly and PDF.js. Zero packets hit any backend server.',
+                    },
+                    {
+                      num: '02',
+                      title: 'Strict KB target dialing',
+                      desc: 'Dial exact file limits (48KB, 95KB, 195KB) for UPSC, SSC CGL, NEET, GATE, and USCIS portals while keeping document fonts sharp.',
+                    },
+                    {
+                      num: '03',
+                      title: 'Organize like cards',
+                      desc: 'Rotate, delete, split, insert, and reorder PDF pages across multiple documents visually with zero upload wait times.',
+                    },
+                    {
+                      num: '04',
+                      title: 'Irreversible redaction & PII',
+                      desc: 'True rasterization purges underlying XMP metadata and OCR text streams when masking 12-digit Aadhaar or PAN numbers.',
+                    },
+                    {
+                      num: '05',
+                      title: 'Convert without limits',
+                      desc: 'Transform PDFs to editable Word (.docx), Excel spreadsheets, or high-resolution image ZIPs without 2-task daily paywalls.',
+                    },
+                    {
+                      num: '06',
+                      title: 'Contract & leak audits',
+                      desc: 'Built-in Clause Risk Radar, digital signature verifier (CCA India / AATL), and privacy leak checker keep sensitive files safe.',
+                    },
+                  ].map((item) => (
+                    <div
+                      key={item.num}
+                      className="bg-bg p-6 md:p-8 flex flex-col justify-between min-h-[210px] hover:bg-bg-raised transition-colors"
                     >
-                      {f.label}
-                    </button>
+                      <div className="flex justify-end">
+                        <span className="hud-label text-faint">{item.num}</span>
+                      </div>
+                      <div className="mt-8">
+                        <h3 className="font-display text-2xl tracking-[-0.02em] text-ink-strong mb-2">
+                          {item.title}
+                        </h3>
+                        <p className="font-sans text-sm text-muted leading-relaxed">{item.desc}</p>
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>
+            </section>
 
-              {/* Responsive 4-Column Grid (Stripe Cards) */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {homeTools
-                  .filter((t) => bentoFilter === 'all' || t.category.includes(bentoFilter))
-                  .map((tool) => {
-                    const Icon = tool.icon;
-                    return (
-                      <div
-                        key={tool.id}
-                        onClick={() => {
-                          tool.action();
-                          confetti({ particleCount: 35, spread: 50 });
-                        }}
-                        className="stripe-card p-4 rounded-2xl cursor-pointer group flex flex-col justify-between"
+            {/* ============================================================ */}
+            {/* SECTION 03: #tools — ALL 16 TOOLS HAIRLINE MATRIX            */}
+            {/* ============================================================ */}
+            <section id="tools" className="w-full border-b border-line bg-bg">
+              <div className="sticky top-12 z-30 border-b border-line bg-bg/80 backdrop-blur-md">
+                <div className="max-w-[1280px] mx-auto border-x border-line px-4 sm:px-6 h-10 flex items-center justify-between">
+                  <span className="hud-label text-muted">03 / WORKBENCH TOOLS</span>
+                  <span className="hud-label text-faint">16 CORE UTILITIES · UNLIMITED</span>
+                </div>
+              </div>
+
+              <div className="max-w-[1280px] mx-auto border-x border-line relative">
+                <span className="tick absolute -top-[6px] -left-[6px] hidden xl:block" />
+                <span className="tick absolute -top-[6px] -right-[6px] hidden xl:block" />
+
+                {/* Header + Filter Strip */}
+                <div className="px-6 py-10 md:px-10 flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-line">
+                  <div>
+                    <h2 className="font-display text-3xl sm:text-5xl tracking-[-0.035em] text-ink-strong">
+                      Built for <span className="text-app-ink">every</span> PDF workflow.
+                    </h2>
+                    <p className="font-sans text-sm text-muted mt-2 max-w-xl">
+                      Select any tool below to launch directly inside your browser — zero accounts or paywalls.
+                    </p>
+                  </div>
+
+                  {/* Filter Hairline Tabs */}
+                  <div className="flex items-center gap-px bg-line border border-line overflow-x-auto scrollbar-none shrink-0">
+                    {[
+                      { id: 'all', label: 'All Tools' },
+                      { id: 'popular', label: 'Popular' },
+                      { id: 'security', label: 'Protect & Mask' },
+                      { id: 'convert', label: 'Converters' },
+                      { id: 'edit', label: 'Edit & Sign' },
+                    ].map((f) => (
+                      <button
+                        key={f.id}
+                        onClick={() => setBentoFilter(f.id as any)}
+                        className={`px-3.5 py-2.5 hud-label whitespace-nowrap transition-colors cursor-pointer ${
+                          bentoFilter === f.id
+                            ? 'bg-invert-bg text-invert-fg font-bold'
+                            : 'bg-bg text-muted hover:text-ink hover:bg-bg-raised'
+                        }`}
                       >
-                        <div>
-                          <div className="flex items-center justify-between mb-3">
-                            <div className={`w-9 h-9 rounded-xl bg-gradient-to-tr ${tool.bg} flex items-center justify-center text-white shadow-md shadow-indigo-500/20 group-hover:scale-105 transition`}>
-                              <Icon className="w-4 h-4" />
-                            </div>
-                            <span className="text-[10px] font-semibold uppercase tracking-wider bg-slate-100 text-slate-700 border border-slate-200 px-2 py-0.5 rounded-full">
+                        {f.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 4-Column Hairline Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-line">
+                  {homeTools
+                    .filter((t) => bentoFilter === 'all' || t.category.includes(bentoFilter))
+                    .map((tool, index) => {
+                      const Icon = tool.icon;
+                      return (
+                        <div
+                          key={tool.id}
+                          onClick={() => {
+                            tool.action();
+                            confetti({ particleCount: 35, spread: 50 });
+                          }}
+                          className="bg-bg hover:bg-bg-raised p-6 cursor-pointer group flex flex-col justify-between min-h-[220px] transition-colors"
+                        >
+                          <div className="flex items-center justify-between mb-6">
+                            <span className="hud-label text-faint">
+                              {String(index + 1).padStart(2, '0')}
+                            </span>
+                            <span className="hud-label text-[9px] text-app-ink border border-line px-1.5 py-0.5">
                               {tool.badge}
                             </span>
                           </div>
-                          <h3 className="text-sm font-bold text-[#111439] group-hover:text-purple-700 transition flex items-center gap-1">
-                            <span>{tool.name}</span>
-                            <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition -translate-x-1 group-hover:translate-x-0 text-purple-600" />
-                          </h3>
-                          <p className="text-xs text-[#425466] mt-1.5 leading-relaxed">
-                            {tool.desc}
-                          </p>
-                        </div>
-                      </div>
-                    );
-                  })}
-              </div>
-            </div>
 
-            {/* ======================================================== */}
-            {/* SEO & BRAND TRUST SECTION (Crawlable Rich Semantic HTML) */}
-            {/* ======================================================== */}
-            <div className="pt-12 sm:pt-16 pb-8 space-y-12">
-              {/* 1. Comparison: PDFCraft vs Traditional PDF Tools */}
-              <section aria-labelledby="comparison-heading" className="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl">
-                <div className="text-center max-w-2xl mx-auto mb-8">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-full">
-                    The Zero-Cloud Advantage
-                  </span>
-                  <h2 id="comparison-heading" className="text-xl sm:text-2xl font-black text-white mt-3 mb-2">
-                    Why Privacy-Conscious Teams Choose PDFCraft
-                  </h2>
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    Traditional PDF websites upload your sensitive contracts and resumes to third-party cloud servers. PDFCraft runs 100% locally in your browser memory.
-                  </p>
+                          <div>
+                            <div className="w-9 h-9 border border-line bg-bg-raised flex items-center justify-center text-ink-strong group-hover:bg-app group-hover:text-white group-hover:border-app transition-colors mb-4">
+                              <Icon className="w-4 h-4" />
+                            </div>
+                            <h3 className="font-display text-lg text-ink-strong group-hover:text-app-ink transition-colors flex items-center justify-between gap-2">
+                              <span>{tool.name}</span>
+                              <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity text-app-ink shrink-0" />
+                            </h3>
+                            <p className="font-sans text-xs text-muted mt-2 leading-relaxed">
+                              {tool.desc}
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              </div>
+            </section>
+
+            {/* ============================================================ */}
+            {/* SECTION 04: #compare — ARCHITECTURAL COMPARISON MATRIX       */}
+            {/* ============================================================ */}
+            <section id="compare" className="w-full border-b border-line bg-bg">
+              <div className="sticky top-12 z-30 border-b border-line bg-bg/80 backdrop-blur-md">
+                <div className="max-w-[1280px] mx-auto border-x border-line px-4 sm:px-6 h-10 flex items-center justify-between">
+                  <span className="hud-label text-muted">04 / ARCHITECTURE &amp; SPECS</span>
+                  <span className="hud-label text-faint">CLIENT WASM VS CLOUD SAAS</span>
+                </div>
+              </div>
+
+              <div className="max-w-[1280px] mx-auto border-x border-line relative">
+                <span className="tick absolute -top-[6px] -left-[6px] hidden xl:block" />
+                <span className="tick absolute -top-[6px] -right-[6px] hidden xl:block" />
+
+                <div className="px-6 py-10 md:px-10 border-b border-line flex flex-col md:flex-row md:items-end justify-between gap-4">
+                  <div>
+                    <h2 className="font-display text-3xl sm:text-5xl tracking-[-0.035em] text-ink-strong">
+                      Zero server uploads. <span className="text-app-ink">Verified</span>.
+                    </h2>
+                    <p className="font-sans text-sm text-muted mt-2 max-w-2xl">
+                      Cloud editors force confidential tax returns, contracts, and KYC documents onto remote servers and lock limits behind paywalls. PDFCraft runs locally.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setComparisonCompetitor('ilovepdf');
+                      setIsComparisonModalOpen(true);
+                    }}
+                    className="h-10 px-5 invert-block font-mono text-[11px] font-bold uppercase tracking-[0.12em] shrink-0 cursor-pointer"
+                  >
+                    Full Spec Comparison
+                  </button>
                 </div>
 
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs text-slate-300">
+                  <table className="w-full text-left text-xs border-collapse">
                     <thead>
-                      <tr className="border-b border-slate-800 text-slate-400 font-bold uppercase text-[10px]">
-                        <th className="py-3 px-4">Feature / Capability</th>
-                        <th className="py-3 px-4 text-emerald-400 font-black">PDFCraft</th>
-                        <th className="py-3 px-4">iLovePDF</th>
-                        <th className="py-3 px-4">Smallpdf</th>
+                      <tr className="border-b border-line bg-bg-raised hud-label text-muted">
+                        <th className="py-4 px-6">Capability</th>
+                        <th className="py-4 px-6 text-app-ink font-bold">PdfCraft (Browser Wasm)</th>
+                        <th className="py-4 px-6">iLovePDF</th>
+                        <th className="py-4 px-6">Smallpdf</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-800/60 font-medium">
-                      <tr>
-                        <td className="py-3.5 px-4 text-white font-semibold">Document Privacy</td>
-                        <td className="py-3.5 px-4 text-emerald-300 font-bold flex items-center gap-1">
-                          <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
-                          <span>100% Client-Side (Zero Uploads)</span>
+                    <tbody className="divide-y divide-line">
+                      <tr className="hover:bg-bg-raised transition-colors">
+                        <td className="py-4 px-6 font-medium text-ink-strong">Document Privacy</td>
+                        <td className="py-4 px-6 text-ink-strong font-medium">
+                          ✓ 100% Client-Side Memory (Zero Uploads)
                         </td>
-                        <td className="py-3.5 px-4 text-rose-400">Uploaded to Cloud Servers</td>
-                        <td className="py-3.5 px-4 text-rose-400">Uploaded to Cloud Servers</td>
+                        <td className="py-4 px-6 text-muted">Uploaded to Remote Servers</td>
+                        <td className="py-4 px-6 text-muted">Uploaded to Remote Servers</td>
                       </tr>
-                      <tr>
-                        <td className="py-3.5 px-4 text-white font-semibold">Free Usage Limits</td>
-                        <td className="py-3.5 px-4 text-emerald-300 font-bold">Unlimited (Free Forever)</td>
-                        <td className="py-3.5 px-4 text-slate-400">Limited daily tasks</td>
-                        <td className="py-3.5 px-4 text-slate-400">2 free tasks / day</td>
+                      <tr className="hover:bg-bg-raised transition-colors">
+                        <td className="py-4 px-6 font-medium text-ink-strong">Daily Free Quotas</td>
+                        <td className="py-4 px-6 text-ink-strong font-medium">✓ Unlimited Forever</td>
+                        <td className="py-4 px-6 text-muted">Capped free tasks</td>
+                        <td className="py-4 px-6 text-muted">2 free tasks / day</td>
                       </tr>
-                      <tr>
-                        <td className="py-3.5 px-4 text-white font-semibold">Target Size Squeezer (&lt;200 KB)</td>
-                        <td className="py-3.5 px-4 text-emerald-300 font-bold">✓ 1-Click Dial (50K - 200K)</td>
-                        <td className="py-3.5 px-4 text-slate-400">Basic compression only</td>
-                        <td className="py-3.5 px-4 text-slate-400">Paid tier only</td>
+                      <tr className="hover:bg-bg-raised transition-colors">
+                        <td className="py-4 px-6 font-medium text-ink-strong">Strict KB Squeezer (&lt;200KB / 50KB)</td>
+                        <td className="py-4 px-6 text-ink-strong font-medium">
+                          ✓ Exact Target Dial (UPSC / SSC / USCIS)
+                        </td>
+                        <td className="py-4 px-6 text-muted">Generic presets only</td>
+                        <td className="py-4 px-6 text-muted">Pro subscription required</td>
                       </tr>
-                      <tr>
-                        <td className="py-3.5 px-4 text-white font-semibold">AI Contract Risk Radar</td>
-                        <td className="py-3.5 px-4 text-emerald-300 font-bold">✓ Predatory Clause Scanner</td>
-                        <td className="py-3.5 px-4 text-slate-400">✗ Not Available</td>
-                        <td className="py-3.5 px-4 text-slate-400">✗ Not Available</td>
+                      <tr className="hover:bg-bg-raised transition-colors">
+                        <td className="py-4 px-6 font-medium text-ink-strong">Aadhaar / PII Redaction</td>
+                        <td className="py-4 px-6 text-ink-strong font-medium">✓ 1-Click Auto-Mask + Purge</td>
+                        <td className="py-4 px-6 text-muted">Not Available</td>
+                        <td className="py-4 px-6 text-muted">Not Available</td>
                       </tr>
-                      <tr>
-                        <td className="py-3.5 px-4 text-white font-semibold">ATS-Friendly Resume Studio</td>
-                        <td className="py-3.5 px-4 text-emerald-300 font-bold">✓ Free Vector PDF Export</td>
-                        <td className="py-3.5 px-4 text-slate-400">✗ Not Available</td>
-                        <td className="py-3.5 px-4 text-slate-400">✗ Not Available</td>
+                      <tr className="hover:bg-bg-raised transition-colors">
+                        <td className="py-4 px-6 font-medium text-ink-strong">ATS Resume Studio</td>
+                        <td className="py-4 px-6 text-ink-strong font-medium">✓ Free Vector PDF Export</td>
+                        <td className="py-4 px-6 text-muted">Not Available</td>
+                        <td className="py-4 px-6 text-muted">Not Available</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
-              </section>
+              </div>
+            </section>
 
-              {/* 2. Frequently Asked Questions (FAQ) with Schema Alignment */}
-              <section aria-labelledby="faq-heading" className="max-w-3xl mx-auto space-y-4">
-                <div className="text-center mb-6">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-full">
-                    Help &amp; Knowledge
-                  </span>
-                  <h2 id="faq-heading" className="text-xl sm:text-2xl font-black text-white mt-3 mb-2">
-                    Frequently Asked Questions
-                  </h2>
-                  <p className="text-xs text-slate-400">
-                    Everything you need to know about PDFCraft's zero-cloud technology and tools.
-                  </p>
+            {/* ============================================================ */}
+            {/* SECTION 05: #faq — FREQUENTLY ASKED QUESTIONS                */}
+            {/* ============================================================ */}
+            <section id="faq" className="w-full border-b border-line bg-bg">
+              <div className="sticky top-12 z-30 border-b border-line bg-bg/80 backdrop-blur-md">
+                <div className="max-w-[1280px] mx-auto border-x border-line px-4 sm:px-6 h-10 flex items-center justify-between">
+                  <span className="hud-label text-muted">05 / FAQ &amp; VERIFICATION</span>
+                  <span className="hud-label text-faint">OPEN SPECIFICATIONS</span>
                 </div>
+              </div>
 
-                <div className="space-y-3">
-                  {[
-                    {
-                      q: 'Are my PDF documents uploaded to your servers?',
-                      a: 'No. PDFCraft operates 100% inside your web browser using WebAssembly and PDF.js. Your documents never touch an external server or cloud database, guaranteeing complete confidentiality for legal, financial, and personal files.',
-                    },
-                    {
-                      q: 'Is PDFCraft really 100% free with no paywalls or daily limits?',
-                      a: 'Yes. Unlike iLovePDF or Smallpdf which lock users behind daily limits and $12/month subscriptions, all 16 tools on PDFCraft are completely free with zero download gates and no account registration required.',
-                    },
-                    {
-                      q: 'Can I compress a PDF strictly under 200KB or 100KB for government job portals?',
-                      a: 'Yes. The Target Size Squeezer tool allows you to specify an exact target size (such as 200 KB, 100 KB, or 50 KB) and intelligently resamples the document entirely in browser memory to meet portal submission limits.',
-                    },
-                    {
-                      q: 'How do I sign a PDF without creating an account or paying?',
-                      a: 'Simply choose the Edit & Sign tab, draw your signature or type your name, and tap anywhere on the document to place it. You can burn in your signature and download the completed vector PDF in seconds without registering.',
-                    },
-                    {
-                      q: 'How does the 60-Second ATS Resume Studio work?',
-                      a: 'The Resume Studio allows you to import old resumes or pick starter templates, scans your content against target job descriptions for missing ATS keywords, embeds scannable portfolio QR codes, and exports vector PDFs that ATS robots can easily parse.',
-                    },
-                  ].map((item, idx) => (
-                    <div
-                      key={idx}
-                      className="bg-slate-900/80 border border-slate-800 rounded-2xl overflow-hidden shadow-sm"
-                    >
-                      <button
-                        onClick={() => setOpenFaqIndex(openFaqIndex === idx ? null : idx)}
-                        className="w-full p-4 text-left flex items-center justify-between gap-3 text-xs sm:text-sm font-bold text-white hover:text-indigo-300 transition cursor-pointer"
-                      >
-                        <span>{item.q}</span>
-                        <ChevronDown
-                          className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${
-                            openFaqIndex === idx ? 'rotate-180 text-indigo-400' : ''
-                          }`}
-                        />
-                      </button>
-                      {openFaqIndex === idx && (
-                        <div className="px-4 pb-4 pt-1 text-xs text-slate-400 leading-relaxed border-t border-slate-800/60 animate-in fade-in duration-150">
-                          {item.a}
-                        </div>
-                      )}
+              <div className="max-w-[1280px] mx-auto border-x border-line relative">
+                <span className="tick absolute -top-[6px] -left-[6px] hidden xl:block" />
+                <span className="tick absolute -top-[6px] -right-[6px] hidden xl:block" />
+
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-px bg-line">
+                  <div className="lg:col-span-4 bg-bg p-6 md:p-10 flex flex-col justify-between">
+                    <div>
+                      <span className="hud-label text-app-ink">TRANSPARENCY</span>
+                      <h2 className="font-display text-3xl sm:text-4xl tracking-[-0.03em] text-ink-strong mt-3">
+                        Questions answered cleanly.
+                      </h2>
+                      <p className="font-sans text-sm text-muted mt-3 leading-relaxed">
+                        Verify our WebAssembly architecture in DevTools or offline airplane mode anytime.
+                      </p>
                     </div>
-                  ))}
-                </div>
-              </section>
-            </div>
+                    <button
+                      onClick={() => setIsPrivacyModalOpen(true)}
+                      className="mt-8 h-10 px-5 invert-block font-mono text-[11px] font-bold uppercase tracking-[0.12em] w-fit cursor-pointer"
+                    >
+                      Read Security Audit
+                    </button>
+                  </div>
 
+                  <div className="lg:col-span-8 bg-line flex flex-col gap-px">
+                    {[
+                      {
+                        q: 'Are my PDF documents uploaded to external servers?',
+                        a: 'No. PDFCraft executes 100% inside browser memory using WebAssembly and PDF.js. Your files never leave your machine—open Chrome DevTools Network tab to confirm zero outbound file packets.',
+                      },
+                      {
+                        q: 'Is PDFCraft really free with no daily limits or paywalls?',
+                        a: 'Yes. Because all processing runs locally on your own CPU/GPU instead of remote cloud servers, we have zero server compute bills to recover. All tools are 100% free and unlimited.',
+                      },
+                      {
+                        q: 'How do I compress a PDF strictly under 200KB or 50KB for UPSC / SSC?',
+                        a: 'Launch the Target Size Squeezer (/upsc-pdf-compressor or /compress-pdf-50kb), drop your PDF, select the safe ceiling (195KB or 48KB), and export with high-contrast bicubic font preservation.',
+                      },
+                      {
+                        q: 'Does PDFCraft actually destroy masked Aadhaar or redacted text?',
+                        a: 'Yes. Rather than drawing a cosmetic black box on top of readable text, our redactor flattens pages cleanly and purges underlying XMP metadata and hidden text streams.',
+                      },
+                      {
+                        q: 'Does it work offline after the page loads?',
+                        a: 'Yes. As a Progressive Web App, you can install PDFCraft locally or disconnect Wi-Fi completely and run merges, splits, signatures, and compressions offline.',
+                      },
+                    ].map((item, idx) => (
+                      <div key={idx} className="bg-bg">
+                        <button
+                          onClick={() => setOpenFaqIndex(openFaqIndex === idx ? null : idx)}
+                          className="w-full px-6 py-5 text-left flex items-center justify-between gap-4 hover:bg-bg-raised transition-colors cursor-pointer"
+                        >
+                          <div className="flex items-center gap-4">
+                            <span className="hud-label text-faint">0{idx + 1}</span>
+                            <span className="font-display text-base sm:text-lg text-ink-strong">
+                              {item.q}
+                            </span>
+                          </div>
+                          <ChevronDown
+                            className={`w-4 h-4 text-muted shrink-0 transition-transform duration-200 ${
+                              openFaqIndex === idx ? 'rotate-180 text-app-ink' : ''
+                            }`}
+                          />
+                        </button>
+                        {openFaqIndex === idx && (
+                          <div className="px-6 pb-5 pt-1 pl-14 font-sans text-sm text-muted leading-relaxed">
+                            {item.a}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* ============================================================ */}
+            {/* SECTION 06: CANONICAL DIRECTORY & COMMUNITY CTA              */}
+            {/* ============================================================ */}
+            <SeoFooter />
+
+            {/* Final Pre-Footer Centered CTA (ArtCraft Signature Block) */}
+            <section id="start" className="w-full border-b border-line bg-bg">
+              <div className="max-w-[1280px] mx-auto border-x border-line px-6 py-20 md:py-28 text-center flex flex-col items-center relative">
+                <span className="tick absolute -top-[6px] -left-[6px] hidden xl:block" />
+                <span className="tick absolute -top-[6px] -right-[6px] hidden xl:block" />
+                <p className="hud-label text-app-ink mb-4">OPEN SOURCE · FREE FOREVER</p>
+                <h2 className="font-display text-4xl sm:text-6xl md:text-7xl leading-[0.98] tracking-[-0.04em] text-ink-strong max-w-3xl">
+                  Built for <span className="text-app-ink">privacy</span> first.
+                </h2>
+                <p className="font-sans text-base text-muted max-w-lg mt-5">
+                  Star the open-source repository on GitHub, audit every line of WebAssembly PDF code, or start editing right now in your browser.
+                </p>
+                <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+                  <button
+                    onClick={() => document.getElementById('workbench-dropzone')?.scrollIntoView({ behavior: 'smooth' })}
+                    className="h-12 px-7 bg-invert-bg text-invert-fg font-mono text-[11px] font-bold uppercase tracking-[0.12em] hover:opacity-80 transition-opacity cursor-pointer"
+                  >
+                    Launch Workbench
+                  </button>
+                  <a
+                    href="https://github.com/Vishnu-cod/pdf-craft"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="h-12 px-7 invert-block font-mono text-[11px] font-bold uppercase tracking-[0.12em] flex items-center"
+                  >
+                    View on GitHub
+                  </a>
+                </div>
+              </div>
+            </section>
           </div>
         ) : (
-          /* Active Tool Views */
-          <div className="flex-1 flex flex-col animate-in fade-in duration-200">
+          /* Active Tool Views wrapped in ArtCraft Workspace Harmonizer */
+          <div className="flex-1 flex flex-col artcraft-workspace max-w-[1280px] w-full mx-auto border-x border-line bg-bg animate-in fade-in duration-150">
+            <div className="border-b border-line bg-bg-raised px-4 sm:px-6 h-10 flex items-center justify-between">
+              <span className="hud-label text-app-ink">ACTIVE WORKBENCH · {activeTab.toUpperCase()}</span>
+              <button
+                onClick={handleResetFile}
+                className="hud-label text-muted hover:text-ink cursor-pointer"
+              >
+                ← Return Home
+              </button>
+            </div>
             <ErrorBoundary fallbackTitle="Could Not Initialize Tool Module">
               <Suspense fallback={<ViewSkeleton />}>
                 {activeTab === 'sign-edit' && (
@@ -880,7 +1164,7 @@ export const App: React.FC = () => {
                       onResetFile={handleResetFile}
                     />
                   ) : (
-                    <div className="max-w-2xl mx-auto py-20 px-4 text-center">
+                    <div className="max-w-3xl mx-auto py-16 px-4 w-full">
                       <FileUploader onFileLoaded={handleFileLoaded} title="Drop PDF to Edit, Sign & Redact" />
                     </div>
                   )
@@ -894,7 +1178,7 @@ export const App: React.FC = () => {
                       onFileLoaded={handleFileLoaded}
                     />
                   ) : (
-                    <div className="max-w-2xl mx-auto py-20 px-4 text-center">
+                    <div className="max-w-3xl mx-auto py-16 px-4 w-full">
                       <FileUploader onFileLoaded={handleFileLoaded} title="Drop PDF to Organize, Rotate & Merge" />
                     </div>
                   )
@@ -945,421 +1229,88 @@ export const App: React.FC = () => {
                   />
                 )}
 
-                {activeTab === 'resume' && (
-                  <ResumeBuilder />
-                )}
+                {activeTab === 'resume' && <ResumeBuilder />}
               </Suspense>
             </ErrorBoundary>
           </div>
         )}
       </main>
 
-      {/* Comprehensive SEO Tool Directory & Internal Linking Graph */}
-      <section aria-labelledby="seo-directory-heading" className="border-t border-slate-900 bg-slate-950 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto space-y-8">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-6">
-            <div>
-              <h2 id="seo-directory-heading" className="text-base font-black text-white tracking-tight flex items-center gap-2">
-                <span>PDFCraft Private Suite</span>
-                <span className="text-[10px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full">
-                  100% Free • No Limits
-                </span>
-              </h2>
-              <p className="text-xs text-slate-400 mt-1">
-                Zero cloud uploads. All document operations execute securely in your web browser memory.
-              </p>
+      {/* ArtCraft 5-Column Hairline Footer */}
+      <footer className="w-full border-t border-line bg-bg text-xs text-muted mb-12 lg:mb-0">
+        <div className="max-w-[1280px] mx-auto border-x border-line">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-px bg-line">
+            {/* Brand Column */}
+            <div className="bg-bg p-6 md:p-8 flex flex-col justify-between gap-6">
+              <div>
+                <div className="flex items-center gap-2.5 mb-4">
+                  <div className="w-7 h-7 bg-app flex items-center justify-center">
+                    <img src="/icon.png" alt="PDFCraft" className="w-5 h-5 object-contain" />
+                  </div>
+                  <span className="font-display text-lg text-ink-strong">
+                    Pdf<span className="text-app-ink">Craft</span>
+                  </span>
+                </div>
+                <p className="font-sans text-xs text-muted leading-relaxed max-w-xs">
+                  Open-source client-side PDF workbench. Read, organize, sign, mask PII, and compress inside browser memory without cloud uploads or paywalls.
+                </p>
+              </div>
+              <p className="hud-label text-faint">ZERO TELEMETRY · 100% LOCAL</p>
             </div>
-            <button
-              onClick={() => setIsFeatureModalOpen(true)}
-              className="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white text-xs font-semibold flex items-center gap-2 transition cursor-pointer self-start sm:self-auto"
-            >
-              <Search className="w-3.5 h-3.5 text-indigo-400" />
-              <span>Browse All 16 Tools (Ctrl+K)</span>
-            </button>
-          </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-xs">
-            {/* Column 1: Squeeze & Compress */}
-            <div className="space-y-3">
-              <h3 className="font-bold text-white uppercase text-[11px] tracking-wider text-indigo-400 flex items-center gap-1.5">
-                <Shrink className="w-3.5 h-3.5" />
-                <span>Compress &amp; Resize</span>
-              </h3>
-              <ul className="space-y-2 text-slate-400 font-medium">
-                <li>
-                  <a
-                    href="/compress-pdf-50kb"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'size-squeezer'); setTargetKB(48); }}
-                    className="hover:text-indigo-300 transition block hover:translate-x-0.5"
-                  >
-                    Compress PDF to 50KB (Exam &amp; Photo)
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/compress-pdf-100kb"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'size-squeezer-100kb'); }}
-                    className="hover:text-indigo-300 transition block hover:translate-x-0.5"
-                  >
-                    Compress PDF to 100KB (Govt Cap)
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/compress-pdf-200kb"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'size-squeezer-200kb'); }}
-                    className="hover:text-indigo-300 transition block hover:translate-x-0.5"
-                  >
-                    Compress PDF Under 200KB (Admissions)
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/compress-pdf-300kb"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'size-squeezer'); setTargetKB(295); }}
-                    className="hover:text-indigo-300 transition block hover:translate-x-0.5"
-                  >
-                    Compress PDF to 300KB (Visa Limit)
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/compress-pdf-500kb"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'size-squeezer'); setTargetKB(495); }}
-                    className="hover:text-indigo-300 transition block hover:translate-x-0.5"
-                  >
-                    Compress PDF to 500KB (Email Cap)
-                  </a>
-                </li>
+            {/* Col 2: Compression */}
+            <div className="bg-bg p-6 md:p-8 space-y-3">
+              <p className="hud-label text-ink-strong mb-3">Compression</p>
+              <ul className="space-y-2">
+                <li><a href="/compress-pdf-50kb" onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'size-squeezer-50kb', undefined, 48); }} className="hover:text-app-ink transition-colors">Compress 50KB</a></li>
+                <li><a href="/compress-pdf-100kb" onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'size-squeezer-100kb', undefined, 95); }} className="hover:text-app-ink transition-colors">Compress 100KB</a></li>
+                <li><a href="/compress-pdf-200kb" onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'size-squeezer-200kb', undefined, 195); }} className="hover:text-app-ink transition-colors">Compress 200KB</a></li>
+                <li><a href="/upsc-pdf-compressor" onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'upsc-pdf-compressor', undefined, 195); }} className="hover:text-app-ink transition-colors">UPSC Exam PDF</a></li>
+                <li><a href="/ssc-cgl-signature-photo-compressor" onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'ssc-cgl-signature-photo-compressor', undefined, 48); }} className="hover:text-app-ink transition-colors">SSC Signature 50KB</a></li>
               </ul>
             </div>
 
-            {/* Column 2: Document Converters */}
-            <div className="space-y-3">
-              <h3 className="font-bold text-white uppercase text-[11px] tracking-wider text-violet-400 flex items-center gap-1.5">
-                <ArrowLeftRight className="w-3.5 h-3.5" />
-                <span>Document Converters</span>
-              </h3>
-              <ul className="space-y-2 text-slate-400 font-medium">
-                <li>
-                  <a
-                    href="/pdf-to-word"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('convert', undefined, 'pdf-to-word'); }}
-                    className="hover:text-violet-300 transition block hover:translate-x-0.5"
-                  >
-                    PDF to Editable Word (.docx)
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/pdf-to-excel"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('convert', undefined, 'pdf-to-excel'); }}
-                    className="hover:text-violet-300 transition block hover:translate-x-0.5"
-                  >
-                    PDF to Excel (.xlsx) Spreadsheet
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/jpg-to-pdf"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('convert', undefined, 'images-to-pdf'); }}
-                    className="hover:text-violet-300 transition block hover:translate-x-0.5"
-                  >
-                    Convert JPG &amp; Photos to PDF
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/png-to-pdf"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('convert', undefined, 'images-to-pdf'); }}
-                    className="hover:text-violet-300 transition block hover:translate-x-0.5"
-                  >
-                    Convert PNG to PDF (Transparent)
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/pdf-to-jpg"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('convert', undefined, 'pdf-to-images'); }}
-                    className="hover:text-violet-300 transition block hover:translate-x-0.5"
-                  >
-                    Extract PDF Pages to JPG ZIP
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/extract-pdf-images"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('convert', undefined, 'pdf-to-images'); }}
-                    className="hover:text-violet-300 transition block hover:translate-x-0.5"
-                  >
-                    Extract All Embedded Photos
-                  </a>
-                </li>
+            {/* Col 3: Workbench */}
+            <div className="bg-bg p-6 md:p-8 space-y-3">
+              <p className="hud-label text-ink-strong mb-3">Workbench</p>
+              <ul className="space-y-2">
+                <li><a href="/sign-pdf" onClick={(e) => { e.preventDefault(); navigateToTab('sign-edit'); }} className="hover:text-app-ink transition-colors">Edit &amp; Sign PDF</a></li>
+                <li><a href="/merge-pdf" onClick={(e) => { e.preventDefault(); navigateToTab('organize'); }} className="hover:text-app-ink transition-colors">Merge &amp; Organize</a></li>
+                <li><a href="/split-pdf" onClick={(e) => { e.preventDefault(); navigateToTab('split'); }} className="hover:text-app-ink transition-colors">Split PDF Pages</a></li>
+                <li><a href="/redact-pdf" onClick={(e) => { e.preventDefault(); navigateToTab('sign-edit', 'redact'); }} className="hover:text-app-ink transition-colors">Redact Document</a></li>
+                <li><a href="/pdf-to-word" onClick={(e) => { e.preventDefault(); navigateToTab('convert', undefined, 'pdf-to-word'); }} className="hover:text-app-ink transition-colors">PDF to Word</a></li>
               </ul>
             </div>
 
-            {/* Column 3: Edit, Sign & Organize */}
-            <div className="space-y-3">
-              <h3 className="font-bold text-white uppercase text-[11px] tracking-wider text-blue-400 flex items-center gap-1.5">
-                <FileSignature className="w-3.5 h-3.5" />
-                <span>Edit, Sign &amp; Merge</span>
-              </h3>
-              <ul className="space-y-2 text-slate-400 font-medium">
-                <li>
-                  <a
-                    href="/sign-pdf"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('sign-edit'); }}
-                    className="hover:text-blue-300 transition block hover:translate-x-0.5"
-                  >
-                    Sign PDF Free (No Account)
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/sign-pdf-no-account"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('sign-edit'); }}
-                    className="hover:text-blue-300 transition block hover:translate-x-0.5"
-                  >
-                    Zero-Signup Document E-Sign
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/redact-pdf"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('sign-edit', 'redact'); }}
-                    className="hover:text-blue-300 transition block hover:translate-x-0.5"
-                  >
-                    Redact &amp; Black Out Text
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/merge-pdf"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('organize'); }}
-                    className="hover:text-blue-300 transition block hover:translate-x-0.5"
-                  >
-                    Organize &amp; Merge Multiple PDFs
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/split-pdf"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('split'); }}
-                    className="hover:text-blue-300 transition block hover:translate-x-0.5"
-                  >
-                    Split PDF Pages &amp; Extract
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/rotate-pdf"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('organize'); }}
-                    className="hover:text-blue-300 transition block hover:translate-x-0.5"
-                  >
-                    Rotate PDF Pages Permanently
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/delete-pdf-pages"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('organize'); }}
-                    className="hover:text-blue-300 transition block hover:translate-x-0.5"
-                  >
-                    Delete Unwanted &amp; Blank Pages
-                  </a>
-                </li>
+            {/* Col 4: Security */}
+            <div className="bg-bg p-6 md:p-8 space-y-3">
+              <p className="hud-label text-ink-strong mb-3">Security</p>
+              <ul className="space-y-2">
+                <li><a href="/mask-aadhaar" onClick={(e) => { e.preventDefault(); navigateToTab('security-studio', undefined, undefined, undefined, undefined, 'pii_masker'); }} className="hover:text-app-ink transition-colors">Mask Aadhaar Card</a></li>
+                <li><a href="/pdf-leak-checker" onClick={(e) => { e.preventDefault(); navigateToTab('security-studio', undefined, undefined, undefined, undefined, 'leak_checker'); }} className="hover:text-app-ink transition-colors">Privacy Leak Check</a></li>
+                <li><a href="/verify-signature" onClick={(e) => { e.preventDefault(); navigateToTab('security-studio', undefined, undefined, undefined, undefined, 'signature_validator'); }} className="hover:text-app-ink transition-colors">Verify eSignature</a></li>
+                <li><a href="/contract-risk-radar" onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'risk-radar'); }} className="hover:text-app-ink transition-colors">Contract Risk Radar</a></li>
+                <li><a href="/protect-pdf" onClick={(e) => { e.preventDefault(); navigateToTab('security', undefined, undefined, undefined, 'protect'); }} className="hover:text-app-ink transition-colors">AES-256 Encrypt</a></li>
               </ul>
             </div>
 
-            {/* Column 4: Career & AI Legal */}
-            <div className="space-y-3">
-              <h3 className="font-bold text-white uppercase text-[11px] tracking-wider text-emerald-400 flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Career &amp; Security</span>
-              </h3>
-              <ul className="space-y-2 text-slate-400 font-medium">
-                <li>
-                  <a
-                    href="/resume-builder"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('resume'); }}
-                    className="hover:text-emerald-300 transition block hover:translate-x-0.5"
-                  >
-                    60s ATS Resume Studio
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/contract-risk-radar"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'risk-radar'); }}
-                    className="hover:text-rose-300 transition block hover:translate-x-0.5"
-                  >
-                    AI Contract Risk Radar
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/mask-aadhaar"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('security-studio', undefined, undefined, undefined, undefined, 'pii_masker'); }}
-                    className="hover:text-emerald-300 transition block hover:translate-x-0.5 text-emerald-400 font-semibold"
-                  >
-                    🛡️ Mask Aadhaar &amp; PAN Card
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/verify-signature"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('security-studio', undefined, undefined, undefined, undefined, 'signature_validator'); }}
-                    className="hover:text-emerald-300 transition block hover:translate-x-0.5 text-emerald-400 font-semibold"
-                  >
-                    ✓ Verify Digital Signature (CCA India)
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/protect-pdf"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('security', undefined, undefined, undefined, 'protect'); }}
-                    className="hover:text-indigo-300 transition block hover:translate-x-0.5"
-                  >
-                    Password Protect &amp; Encrypt PDF
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/unlock-pdf"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('security', undefined, undefined, undefined, 'unlock'); }}
-                    className="hover:text-indigo-300 transition block hover:translate-x-0.5"
-                  >
-                    Unlock &amp; Remove PDF Password
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/pdf-leak-checker"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('security-studio', undefined, undefined, undefined, undefined, 'leak_checker'); }}
-                    className="hover:text-amber-300 transition block hover:translate-x-0.5 text-amber-400 font-semibold"
-                  >
-                    🔍 PDF Privacy Leak Checker
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/upsc-pdf-compressor"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'upsc-pdf-compressor', undefined, 195); }}
-                    className="hover:text-indigo-300 transition block hover:translate-x-0.5"
-                  >
-                    🇮🇳 UPSC PDF Compressor (200KB)
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/ssc-cgl-signature-photo-compressor"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'ssc-cgl-signature-photo-compressor', undefined, 48); }}
-                    className="hover:text-indigo-300 transition block hover:translate-x-0.5"
-                  >
-                    📝 SSC CGL Signature (50KB)
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/uscis-visa-pdf-compressor"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'uscis-visa-pdf-compressor', undefined, 495); }}
-                    className="hover:text-indigo-300 transition block hover:translate-x-0.5"
-                  >
-                    ✈️ USCIS Visa PDF (500KB)
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/compare/pdfcraft-vs-ilovepdf"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setComparisonCompetitor('ilovepdf');
-                      setIsComparisonModalOpen(true);
-                      window.history.pushState(null, '', '/compare/pdfcraft-vs-ilovepdf');
-                    }}
-                    className="hover:text-rose-300 transition block hover:translate-x-0.5 text-slate-300"
-                  >
-                    ⚖️ PDFCraft vs iLovePDF
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/compare/pdfcraft-vs-smallpdf"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setComparisonCompetitor('smallpdf');
-                      setIsComparisonModalOpen(true);
-                      window.history.pushState(null, '', '/compare/pdfcraft-vs-smallpdf');
-                    }}
-                    className="hover:text-amber-300 transition block hover:translate-x-0.5 text-slate-300"
-                  >
-                    ⚖️ PDFCraft vs Smallpdf
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/compare/pdfcraft-vs-adobe"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setComparisonCompetitor('adobe');
-                      setIsComparisonModalOpen(true);
-                      window.history.pushState(null, '', '/compare/pdfcraft-vs-adobe');
-                    }}
-                    className="hover:text-blue-300 transition block hover:translate-x-0.5 text-slate-300"
-                  >
-                    ⚖️ PDFCraft vs Adobe Acrobat
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/docusign-alternative"
-                    onClick={(e) => { e.preventDefault(); navigateToTab('sign-edit'); }}
-                    className="hover:text-blue-300 transition block hover:translate-x-0.5 text-slate-300"
-                  >
-                    ⚡ Free DocuSign Alternative
-                  </a>
-                </li>
+            {/* Col 5: Resources */}
+            <div className="bg-bg p-6 md:p-8 space-y-3">
+              <p className="hud-label text-ink-strong mb-3">Resources</p>
+              <ul className="space-y-2">
+                <li><a href="/resume-builder" onClick={(e) => { e.preventDefault(); navigateToTab('resume'); }} className="hover:text-app-ink transition-colors">ATS Resume Studio</a></li>
+                <li><a href="/compare/pdfcraft-vs-ilovepdf" onClick={(e) => { e.preventDefault(); setComparisonCompetitor('ilovepdf'); setIsComparisonModalOpen(true); }} className="hover:text-app-ink transition-colors">vs iLovePDF</a></li>
+                <li><a href="/compare/pdfcraft-vs-smallpdf" onClick={(e) => { e.preventDefault(); setComparisonCompetitor('smallpdf'); setIsComparisonModalOpen(true); }} className="hover:text-app-ink transition-colors">vs Smallpdf</a></li>
+                <li><a href="/portfolio.html" className="hover:text-app-ink transition-colors">SEO Portfolio</a></li>
+                <li><button onClick={() => setIsPrivacyModalOpen(true)} className="hover:text-app-ink transition-colors text-left cursor-pointer">Privacy Architecture</button></li>
               </ul>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Crawlable Internal SEO Directory */}
-      <SeoFooter />
-
-      {/* Footer */}
-      <footer className="border-t border-slate-900 bg-slate-950/80 backdrop-blur-md py-6 text-xs text-slate-400 mb-16 md:mb-0">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-          <div className="flex items-center gap-2.5 justify-center">
-            <img src="/icon.png" alt="PDFCraft Logo" className="w-5 h-5 object-contain" />
-            <span className="font-black text-white tracking-tight">PDF<span className="text-[#ED8C2A]">CRAFT</span></span>
-            <span className="text-slate-600">•</span>
-            <span className="text-slate-300 font-medium tracking-wide text-[11px]">CREATE. CONVERT. CUSTOMIZE.</span>
-          </div>
-          <div className="flex items-center gap-4 text-[11px] text-slate-400 justify-center">
-            <button
-              onClick={() => {
-                window.history.pushState(null, '', '/privacy');
-                setIsPrivacyModalOpen(true);
-              }}
-              className="flex items-center gap-1 hover:text-emerald-400 transition cursor-pointer"
-            >
-              <Lock className="w-3 h-3 text-emerald-400" />
-              <span>100% Private (No Cloud Uploads)</span>
-            </button>
-            <span>•</span>
-            <button
-              onClick={() => {
-                window.history.pushState(null, '', '/privacy');
-                setIsPrivacyModalOpen(true);
-              }}
-              className="text-slate-400 hover:text-white transition cursor-pointer"
-            >
-              Privacy Policy
-            </button>
-            <span>•</span>
-            <span className="text-emerald-400 font-semibold">Free Forever</span>
+          {/* Bottom Copyright Bar */}
+          <div className="border-t border-line px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+            <span className="hud-label text-faint">© 2026 PDFCraft · Free and Open Source</span>
+            <span className="hud-label text-muted">100% Client-Side WebAssembly</span>
           </div>
         </div>
       </footer>

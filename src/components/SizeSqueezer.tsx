@@ -211,7 +211,7 @@ export const SizeSqueezer: React.FC<SizeSqueezerProps> = ({
   };
 
   const originalKB = pdfBytes ? Math.max(1, Math.round(pdfBytes.byteLength / 1024)) : 0;
-  const headingText = routeTitle || 'Target Size Squeezer & Compressor';
+  const headingText = (routeTitle || 'Target Size Squeezer & Compressor').replace(/\s*\|\s*PDFCraft$/i, '');
   const subtitleText =
     routeSubtitle ||
     'Compress PDFs strictly under 50KB, 100KB, or 200KB for UPSC, SSC, and visa portals. 100% in-browser memory.';
@@ -524,6 +524,58 @@ export const SizeSqueezer: React.FC<SizeSqueezerProps> = ({
           )}
         </div>
       )}
+
+      {/* Companion Portal Presets & Internal SEO Navigation */}
+      <div className="border-t border-line pt-6 space-y-4">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <p className="hud-label text-app-ink">PORTAL LIMITS &amp; COMPANION TOOLS</p>
+          <span className="font-mono text-[10px] text-faint">100% OFFLINE WEBASSEMBLY</span>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-line border border-line">
+          <a
+            href="/upsc-pdf-compressor"
+            className="p-4 bg-bg hover:bg-bg-raised transition-colors min-h-[44px] flex flex-col justify-between gap-1"
+          >
+            <span className="font-mono text-xs font-bold text-ink-strong">UPSC PDF Compressor (20–200 KB)</span>
+            <span className="font-sans text-[11px] text-muted">Safe 195 KB preset for degrees, caste certificates &amp; upsconline.nic.in.</span>
+          </a>
+          <a
+            href="/compress-pdf-100kb"
+            className="p-4 bg-bg hover:bg-bg-raised transition-colors min-h-[44px] flex flex-col justify-between gap-1"
+          >
+            <span className="font-mono text-xs font-bold text-ink-strong">Compress PDF to 100 KB</span>
+            <span className="font-sans text-[11px] text-muted">Strict 95 KB buffer for state PSC, banking &amp; scholarship forms.</span>
+          </a>
+          <a
+            href="/compress-pdf-200kb"
+            className="p-4 bg-bg hover:bg-bg-raised transition-colors min-h-[44px] flex flex-col justify-between gap-1"
+          >
+            <span className="font-mono text-xs font-bold text-ink-strong">Compress PDF Under 200 KB</span>
+            <span className="font-sans text-[11px] text-muted">Preserves crisp original vectors when already below ceiling.</span>
+          </a>
+          <a
+            href="/ssc-cgl-signature-photo-compressor"
+            className="p-4 bg-bg hover:bg-bg-raised transition-colors min-h-[44px] flex flex-col justify-between gap-1"
+          >
+            <span className="font-mono text-xs font-bold text-ink-strong">SSC CGL Signature &amp; Photo (50 KB)</span>
+            <span className="font-sans text-[11px] text-muted">Strict 48 KB preset tailored for ssc.gov.in uploads.</span>
+          </a>
+          <a
+            href="/mask-aadhaar"
+            className="p-4 bg-bg hover:bg-bg-raised transition-colors min-h-[44px] flex flex-col justify-between gap-1"
+          >
+            <span className="font-mono text-xs font-bold text-ink-strong">Mask Aadhaar Card Offline</span>
+            <span className="font-sans text-[11px] text-muted">Hide the first 8 digits permanently before portal KYC uploads.</span>
+          </a>
+          <a
+            href="/sign-pdf-no-account"
+            className="p-4 bg-bg hover:bg-bg-raised transition-colors min-h-[44px] flex flex-col justify-between gap-1"
+          >
+            <span className="font-mono text-xs font-bold text-ink-strong">Sign PDF Without Account</span>
+            <span className="font-sans text-[11px] text-muted">Draw vector signatures offline with zero email gates or paywalls.</span>
+          </a>
+        </div>
+      </div>
     </div>
   );
 };

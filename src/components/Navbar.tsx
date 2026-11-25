@@ -13,8 +13,9 @@ import {
   Lock,
   Search,
   UploadCloud,
-  MessageSquare,
   ChevronDown,
+  Sun,
+  Moon,
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -41,7 +42,24 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const moreMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const current = (document.documentElement.getAttribute('data-theme') as 'dark' | 'light') || 'dark';
+    setTheme(current);
+  }, []);
+
+  const toggleTheme = () => {
+    const next = theme === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+    document.documentElement.setAttribute('data-theme', next);
+    try {
+      localStorage.setItem('pdfcraft-theme', next);
+    } catch {
+      // Ignore storage failures
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -72,90 +90,65 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   const primaryTabs = [
-    { id: 'sign-edit', label: 'Edit & Sign', shortLabel: 'Edit & Sign', icon: FileSignature },
-    { id: 'organize', label: 'Merge & Organize', shortLabel: 'Organize', icon: Layers },
+    { id: 'sign-edit', label: 'Edit & Sign', shortLabel: 'Sign', icon: FileSignature },
+    { id: 'organize', label: 'Organize', shortLabel: 'Organize', icon: Layers },
     { id: 'convert', label: 'Convert', shortLabel: 'Convert', icon: ArrowLeftRight },
-    { id: 'security-studio', label: 'Protect & Mask', shortLabel: 'Protect', icon: ShieldCheck, badge: 'New' },
+    { id: 'security-studio', label: 'Protect & Mask', shortLabel: 'Protect', icon: ShieldCheck, badge: 'PII' },
   ];
 
   const secondaryTabs = [
     { id: 'tools', label: 'Pro Tools', shortLabel: 'Tools', icon: Sparkles },
-    { id: 'resume', label: 'Resume Builder', shortLabel: 'Resume', icon: GraduationCap, badge: 'Free' },
+    { id: 'resume', label: 'Resume Studio', shortLabel: 'Resume', icon: GraduationCap, badge: 'Free' },
   ];
 
   const allTabs = [...primaryTabs, ...secondaryTabs];
 
   const isSecondaryActive = secondaryTabs.some(
-    (t) => activeTab === t.id || (t.id === 'organize' && activeTab === 'split') || (t.id === 'security-studio' && activeTab === 'security')
+    (t) =>
+      activeTab === t.id ||
+      (t.id === 'organize' && activeTab === 'split') ||
+      (t.id === 'security-studio' && activeTab === 'security')
   );
-  const activeSecondaryTab = secondaryTabs.find(
-    (t) => activeTab === t.id || (t.id === 'organize' && activeTab === 'split') || (t.id === 'security-studio' && activeTab === 'security')
-  );
-
-  const getBadgeStyle = (badge: string, isActive: boolean) => {
-    if (badge === 'New') {
-      return isActive
-        ? 'bg-blue-300 text-slate-950 border-blue-200 font-bold'
-        : 'bg-blue-100 text-blue-800 border-blue-200';
-    }
-    if (badge === 'Free' || badge === '60s') {
-      return isActive
-        ? 'bg-emerald-300 text-slate-950 border-emerald-200 font-bold'
-        : 'bg-emerald-100 text-emerald-800 border-emerald-200';
-    }
-    return isActive
-      ? 'bg-slate-300 text-slate-950 border-slate-200 font-bold'
-      : 'bg-slate-100 text-slate-700 border-slate-200';
-  };
 
   return (
     <>
-      <header className="border-b border-slate-200/90 bg-white/90 backdrop-blur-xl sticky top-0 z-50 shadow-sm">
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4 sm:gap-6">
-          {/* Logo & Brand */}
-          <div
-            role="button"
-            tabIndex={0}
-            aria-label="PDFCraft Home"
-            className="flex items-center gap-2 sm:gap-2.5 cursor-pointer shrink-0 focus:outline-none focus:ring-2 focus:ring-purple-500 rounded-xl p-1"
-            onClick={onResetFile}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                onResetFile();
-              }
-            }}
-          >
-            <div className="relative w-9 h-9 sm:w-10 sm:h-10 shrink-0 flex items-center justify-center">
-              <img
-                src="/icon.png"
-                alt="PDFCraft Official Logo"
-                className="w-full h-full object-contain filter drop-shadow-[0_2px_8px_rgba(147,51,234,0.35)] transition-transform duration-200 hover:scale-105"
-              />
-            </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-black text-base sm:text-lg tracking-tight text-[#111439]">
-                  PDF<span className="text-purple-600">CRAFT</span>
+      <header className="sticky top-0 left-0 z-50 w-full border-b border-line bg-bg/95 backdrop-blur-sm">
+        <div className="max-w-[1280px] mx-auto border-x border-line min-h-[48px] flex items-stretch justify-between">
+          {/* Brand Logo */}
+          <div className="flex items-stretch">
+            <div
+              role="button"
+              tabIndex={0}
+              aria-label="PDFCraft Home"
+              className="flex items-center gap-2.5 px-3 sm:px-4 border-r border-line cursor-pointer shrink-0 hover:bg-bg-raised transition-colors focus:outline-none"
+              onClick={onResetFile}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  onResetFile();
+                }
+              }}
+            >
+              <div className="w-6 h-6 bg-app flex items-center justify-center text-white font-mono text-[10px] font-bold shrink-0">
+                <img
+                  src="/icon.png"
+                  alt="PDFCraft"
+                  className="w-4 h-4 object-contain"
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-display text-sm tracking-tight text-ink-strong">
+                  Pdf<span className="text-app-ink">Craft</span>
                 </span>
-                <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-purple-50 text-purple-700 border border-purple-200 px-1.5 py-0.5 rounded-full hidden xl:inline-block">
-                  100% Free
+                <span className="hud-label text-[9px] text-muted border border-line px-1.5 py-0.5 hidden xl:inline-block">
+                  WEB WASM
                 </span>
               </div>
-              <p
-                onClick={onOpenPrivacyModal}
-                className="text-[9px] sm:text-[10px] text-slate-500 font-semibold tracking-wider uppercase hidden xl:block cursor-pointer hover:text-purple-600 transition"
-              >
-                Zero Cloud Uploads • Private GPU
-              </p>
             </div>
-          </div>
 
-          {/* Desktop Navigation Tabs (Visible on lg and up) */}
-          <div className="hidden lg:flex items-center justify-center min-w-0">
-            <nav aria-label="Main Navigation" className="flex items-center gap-0.5 sm:gap-1 bg-slate-100/90 p-1 rounded-2xl border border-slate-200 shadow-inner shrink-0">
+            {/* Desktop Hairline Nav Links */}
+            <nav aria-label="Main Navigation" className="hidden lg:flex items-stretch">
               {primaryTabs.map((tab) => {
-                const Icon = tab.icon;
                 const isActive = activeTab === tab.id || (tab.id === 'organize' && activeTab === 'split');
                 return (
                   <button
@@ -165,64 +158,41 @@ export const Navbar: React.FC<NavbarProps> = ({
                       setMoreMenuOpen(false);
                     }}
                     aria-label={tab.label}
-                    className={`flex items-center gap-1.5 px-2 xl:px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all whitespace-nowrap cursor-pointer ${
+                    className={`flex items-center gap-1.5 px-3 xl:px-3.5 hud-label transition-colors whitespace-nowrap cursor-pointer border-r border-line ${
                       isActive
-                        ? 'bg-[#111439] text-white shadow-md font-bold scale-[1.02]'
-                        : 'text-[#425466] hover:text-[#111439] hover:bg-slate-200/60'
+                        ? 'bg-invert-bg text-invert-fg font-bold'
+                        : 'text-muted hover:text-ink hover:bg-bg-raised'
                     }`}
                   >
-                    <Icon className="w-4 h-4 shrink-0" />
-                    <span className="hidden xl:inline">{tab.label}</span>
-                    <span className="xl:hidden">{tab.shortLabel}</span>
-                    {tab.badge && (
-                      <span
-                        className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider border shrink-0 hidden xl:inline-block ${getBadgeStyle(
-                          tab.badge,
-                          isActive
-                        )}`}
-                      >
-                        {tab.badge}
-                      </span>
-                    )}
+                    <span>{tab.label}</span>
                   </button>
                 );
               })}
 
-              {/* "More Tools" Dropdown */}
-              <div className="relative" ref={moreMenuRef}>
+              {/* Pro Tools & Resume Dropdown */}
+              <div className="relative flex items-stretch" ref={moreMenuRef}>
                 <button
                   onClick={() => setMoreMenuOpen(!moreMenuOpen)}
                   aria-expanded={moreMenuOpen}
-                  aria-label="More PDF and creative tools"
-                  className={`flex items-center gap-1.5 px-2 xl:px-2.5 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all whitespace-nowrap cursor-pointer ${
+                  aria-label="More PDF Tools"
+                  className={`flex items-center gap-1.5 px-3 xl:px-3.5 hud-label transition-colors whitespace-nowrap cursor-pointer border-r border-line ${
                     isSecondaryActive
-                      ? 'bg-[#111439] text-white shadow-md font-bold'
-                      : 'text-[#425466] hover:text-[#111439] hover:bg-slate-200/60'
+                      ? 'bg-invert-bg text-invert-fg font-bold'
+                      : 'text-muted hover:text-ink hover:bg-bg-raised'
                   }`}
                 >
-                  {activeSecondaryTab ? (
-                    <>
-                      <activeSecondaryTab.icon className="w-4 h-4 shrink-0" />
-                      <span className="hidden xl:inline">{activeSecondaryTab.label}</span>
-                      <span className="xl:hidden">{activeSecondaryTab.shortLabel}</span>
-                    </>
-                  ) : (
-                    <>
-                      <span className="hidden xl:inline">More Tools</span>
-                      <span className="xl:hidden">More</span>
-                    </>
-                  )}
-                  <ChevronDown className={`w-3.5 h-3.5 transition-transform ${moreMenuOpen ? 'rotate-180' : ''}`} />
+                  <span>Studio</span>
+                  <ChevronDown className={`w-3 h-3 transition-transform ${moreMenuOpen ? 'rotate-180' : ''}`} />
                 </button>
 
                 {moreMenuOpen && (
-                  <div className="absolute right-0 top-full mt-2 w-60 bg-white rounded-2xl shadow-2xl border border-slate-200 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-                    <div className="px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100">
-                      Additional Pro Tools
+                  <div className="absolute left-0 top-full w-64 bg-bg-raised border border-line-strong z-50">
+                    <div className="px-3.5 py-2 border-b border-line hud-label text-[10px] text-faint">
+                      Additional Workbenches
                     </div>
                     {secondaryTabs.map((tab) => {
                       const Icon = tab.icon;
-                      const isActive = activeTab === tab.id || (tab.id === 'security-studio' && activeTab === 'security');
+                      const isActive = activeTab === tab.id;
                       return (
                         <button
                           key={tab.id}
@@ -230,49 +200,36 @@ export const Navbar: React.FC<NavbarProps> = ({
                             setActiveTab(tab.id as ActiveTab);
                             setMoreMenuOpen(false);
                           }}
-                          className={`w-full flex items-center justify-between px-3.5 py-2.5 text-xs font-semibold transition cursor-pointer text-left ${
+                          className={`w-full flex items-center justify-between px-3.5 py-3 hud-label transition-colors cursor-pointer text-left border-b border-line ${
                             isActive
-                              ? 'bg-purple-50 text-purple-700 font-bold'
-                              : 'text-slate-700 hover:bg-slate-50 hover:text-[#111439]'
+                              ? 'bg-invert-bg text-invert-fg'
+                              : 'text-ink hover:bg-bg'
                           }`}
                         >
-                          <div className="flex items-center gap-2.5">
-                            <Icon className={`w-4 h-4 ${isActive ? 'text-purple-600' : 'text-slate-500'}`} />
+                          <span className="flex items-center gap-2">
+                            <Icon className="w-3.5 h-3.5" />
                             <span>{tab.label}</span>
-                          </div>
+                          </span>
                           {tab.badge && (
-                            <span
-                              className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider border ${getBadgeStyle(
-                                tab.badge,
-                                false
-                              )}`}
-                            >
-                              {tab.badge}
-                            </span>
+                            <span className="text-[9px] text-app-ink font-bold">{tab.badge}</span>
                           )}
                         </button>
                       );
                     })}
-
                     {onOpenToolsModal && (
-                      <>
-                        <div className="border-t border-slate-100 my-1"></div>
-                        <button
-                          onClick={() => {
-                            setMoreMenuOpen(false);
-                            onOpenToolsModal();
-                          }}
-                          className="w-full flex items-center justify-between px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-purple-50 hover:text-purple-700 transition cursor-pointer text-left"
-                        >
-                          <div className="flex items-center gap-2.5">
-                            <Search className="w-4 h-4 text-purple-600" />
-                            <span>All 16 Tools Hub</span>
-                          </div>
-                          <kbd className="text-[9px] bg-slate-100 border border-slate-200 px-1.5 py-0.5 rounded text-slate-500 font-mono">
-                            ⌘K
-                          </kbd>
-                        </button>
-                      </>
+                      <button
+                        onClick={() => {
+                          setMoreMenuOpen(false);
+                          onOpenToolsModal();
+                        }}
+                        className="w-full flex items-center justify-between px-3.5 py-3 hud-label text-ink hover:bg-invert-bg hover:text-invert-fg transition-colors cursor-pointer text-left"
+                      >
+                        <span className="flex items-center gap-2">
+                          <Search className="w-3.5 h-3.5" />
+                          <span>All 16 Tools</span>
+                        </span>
+                        <span className="text-[10px] opacity-70">⌘K</span>
+                      </button>
                     )}
                   </div>
                 )}
@@ -280,25 +237,58 @@ export const Navbar: React.FC<NavbarProps> = ({
             </nav>
           </div>
 
-          {/* Desktop Right Action Buttons (Visible on lg and up) */}
-          <div className="hidden lg:flex items-center gap-2 shrink-0">
+          {/* Desktop Right Rail */}
+          <div className="hidden lg:flex items-stretch">
+            {onOpenToolsModal && (
+              <button
+                onClick={onOpenToolsModal}
+                aria-label="Command Palette (Ctrl+K)"
+                className="flex items-center gap-1.5 px-3 border-l border-line hud-label text-muted hover:text-ink hover:bg-bg-raised transition-colors cursor-pointer"
+              >
+                <Search className="w-3.5 h-3.5" />
+                <span className="hidden xl:inline">Tools</span>
+                <kbd className="text-[9px] text-faint border border-line px-1">⌘K</kbd>
+              </button>
+            )}
+
+            {onOpenPrivacyModal && (
+              <button
+                onClick={onOpenPrivacyModal}
+                aria-label="Client-Side Privacy Architecture"
+                className="flex items-center gap-1.5 px-3 border-l border-line hud-label text-app-ink hover:text-ink hover:bg-bg-raised transition-colors cursor-pointer"
+              >
+                <Lock className="w-3 h-3" />
+                <span className="hidden xl:inline">Zero Cloud</span>
+              </button>
+            )}
+
+            <button
+              onClick={toggleTheme}
+              aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+              title={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+              className="flex items-center justify-center px-3.5 border-l border-line text-muted hover:text-ink hover:bg-bg-raised transition-colors cursor-pointer"
+            >
+              {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </button>
+
             {deferredPrompt && (
               <button
                 onClick={handleInstallPWA}
-                aria-label="Install as Desktop App"
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-md shadow-indigo-600/30 transition animate-pulse shrink-0 whitespace-nowrap"
-                title="Install as Desktop App"
+                aria-label="Install App"
+                className="flex items-center gap-1.5 px-3 border-l border-line hud-label text-ink hover:bg-bg-raised transition-colors cursor-pointer"
               >
-                <DownloadCloud className="w-3.5 h-3.5" />
-                <span className="hidden xl:inline">Install App</span>
+                <DownloadCloud className="w-3.5 h-3.5 text-app-ink" />
+                <span className="hidden xl:inline">Install</span>
               </button>
             )}
 
             {hasFile && fileName ? (
-              <div className="flex items-center gap-2 bg-slate-800/80 border border-slate-700/60 px-3 py-1.5 rounded-xl text-xs shrink-0">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
-                <span className="text-slate-200 max-w-[100px] lg:max-w-[140px] truncate">{fileName}</span>
-                <label className="text-[11px] text-indigo-400 hover:text-indigo-300 font-semibold cursor-pointer pl-1 transition">
+              <div className="flex items-stretch border-l border-line bg-bg-raised">
+                <div className="flex items-center gap-2 px-3">
+                  <span className="w-1.5 h-1.5 bg-app shrink-0" />
+                  <span className="font-mono text-[11px] text-ink max-w-[120px] truncate">{fileName}</span>
+                </div>
+                <label className="flex items-center px-3 border-l border-line hud-label text-muted hover:text-ink hover:bg-bg cursor-pointer transition-colors">
                   Change
                   <input
                     type="file"
@@ -317,49 +307,50 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <button
                   onClick={onResetFile}
                   aria-label="Close active file"
-                  className="text-slate-400 hover:text-rose-400 ml-1 font-bold"
+                  className="px-3 border-l border-line font-mono text-sm text-muted hover:text-danger hover:bg-bg transition-colors cursor-pointer"
                   title="Close File"
                 >
                   ×
                 </button>
               </div>
             ) : (
-              <div className="flex items-center gap-2">
-                <label className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-md shadow-indigo-600/30 cursor-pointer transition shrink-0 whitespace-nowrap">
-                  <UploadCloud className="w-3.5 h-3.5" />
-                  <span>Upload PDF</span>
-                  <input
-                    type="file"
-                    accept=".pdf"
-                    aria-label="Upload PDF Document"
-                    className="hidden"
-                    onChange={async (e) => {
-                      if (e.target.files && e.target.files[0]) {
-                        const file = e.target.files[0];
-                        const bytes = await file.arrayBuffer();
-                        onFileLoaded?.(file, bytes);
-                      }
-                    }}
-                  />
-                </label>
-                <button
-                  onClick={onOpenPrivacyModal}
-                  aria-label="View Privacy Architecture"
-                  className="flex items-center gap-1.5 text-xs text-emerald-800 hover:text-emerald-950 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300/80 px-2.5 py-1.5 rounded-xl shrink-0 whitespace-nowrap transition cursor-pointer font-bold shadow-sm"
-                >
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>100% Client-Side</span>
-                </button>
-              </div>
+              <label className="flex items-center gap-2 px-5 border-l border-line bg-invert-bg text-invert-fg font-mono text-[11px] font-bold uppercase tracking-[0.12em] hover:opacity-80 cursor-pointer transition-opacity shrink-0 whitespace-nowrap">
+                <UploadCloud className="w-3.5 h-3.5" />
+                <span>Launch / Open PDF</span>
+                <input
+                  type="file"
+                  accept=".pdf"
+                  aria-label="Upload PDF Document"
+                  className="hidden"
+                  onChange={async (e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      const file = e.target.files[0];
+                      const bytes = await file.arrayBuffer();
+                      onFileLoaded?.(file, bytes);
+                    }
+                  }}
+                />
+              </label>
             )}
           </div>
 
-          {/* Mobile Right Action Bar (Search, Direct Upload, Hamburger & Active File status) */}
-          <div className="flex lg:hidden items-center gap-1.5">
-            {/* Quick Mobile Upload button if no file */}
-            {!hasFile && (
+          {/* Mobile Right Controls */}
+          <div className="flex lg:hidden items-stretch">
+            {hasFile && fileName ? (
+              <div className="flex items-center gap-1.5 px-2.5 border-l border-line">
+                <span className="w-1.5 h-1.5 bg-app shrink-0" />
+                <span className="font-mono text-[10px] text-ink max-w-[85px] truncate">{fileName}</span>
+                <button
+                  onClick={onResetFile}
+                  aria-label="Close active file"
+                  className="text-muted hover:text-danger text-sm font-mono pl-1"
+                >
+                  ×
+                </button>
+              </div>
+            ) : (
               <label
-                className="p-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white shadow-md shadow-indigo-600/30 cursor-pointer transition flex items-center justify-center shrink-0"
+                className="flex items-center justify-center px-3 border-l border-line bg-invert-bg text-invert-fg cursor-pointer"
                 title="Upload PDF"
               >
                 <UploadCloud className="w-4 h-4" />
@@ -379,137 +370,44 @@ export const Navbar: React.FC<NavbarProps> = ({
               </label>
             )}
 
+            <button
+              onClick={toggleTheme}
+              aria-label="Toggle color theme"
+              className="flex items-center justify-center px-3 border-l border-line text-muted hover:text-ink"
+            >
+              {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </button>
+
             {onOpenToolsModal && (
               <button
                 onClick={onOpenToolsModal}
-                aria-label="Search all features (Ctrl+K)"
-                className="p-2 rounded-xl bg-slate-800 text-indigo-400 hover:text-white border border-slate-700 transition"
-                title="Search all features"
+                aria-label="Search tools"
+                className="flex items-center justify-center px-3 border-l border-line text-muted hover:text-ink"
               >
                 <Search className="w-4 h-4" />
               </button>
             )}
 
-            {hasFile && fileName && (
-              <div className="flex items-center gap-1 bg-slate-800 border border-slate-700 px-2 py-1 rounded-lg text-[11px] max-w-[110px]">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0"></span>
-                <span className="text-slate-200 truncate">{fileName}</span>
-                <button
-                  onClick={onResetFile}
-                  aria-label="Close active file"
-                  className="text-slate-400 hover:text-rose-400 text-xs font-bold pl-0.5"
-                  title="Close File"
-                >
-                  ×
-                </button>
-              </div>
-            )}
-
-            {deferredPrompt && (
-              <button
-                onClick={handleInstallPWA}
-                aria-label="Install App"
-                className="p-2 rounded-xl bg-indigo-600 text-white text-xs"
-                title="Install App"
-              >
-                <DownloadCloud className="w-4 h-4" />
-              </button>
-            )}
-
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white border border-slate-700 transition"
-              aria-label="Toggle menu"
+              className="flex items-center justify-center px-3 border-l border-line text-ink"
+              aria-label="Open main menu"
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Slide-down Menu Drawer */}
+        {/* Mobile Drawer */}
         {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-slate-800 bg-slate-900/98 px-4 py-4 space-y-3 shadow-2xl animate-in slide-in-from-top-2 duration-150">
-            {/* Mobile Direct Upload & File Status */}
-            {hasFile && fileName ? (
-              <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between gap-2">
-                <div className="flex items-center gap-2 min-w-0">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0"></span>
-                  <span className="text-xs font-mono text-slate-200 truncate">{fileName}</span>
-                </div>
-                <div className="flex items-center gap-2 shrink-0">
-                  <label className="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-[11px] font-bold cursor-pointer transition">
-                    Change
-                    <input
-                      type="file"
-                      accept=".pdf"
-                      aria-label="Change PDF document"
-                      className="hidden"
-                      onChange={async (e) => {
-                        if (e.target.files && e.target.files[0]) {
-                          const file = e.target.files[0];
-                          const bytes = await file.arrayBuffer();
-                          onFileLoaded?.(file, bytes);
-                          setMobileMenuOpen(false);
-                        }
-                      }}
-                    />
-                  </label>
-                  <button
-                    onClick={() => {
-                      onResetFile();
-                      setMobileMenuOpen(false);
-                    }}
-                    aria-label="Close file"
-                    className="text-slate-400 hover:text-rose-400 text-sm font-bold px-1"
-                  >
-                    ×
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <label className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-600/30 cursor-pointer transition">
-                <UploadCloud className="w-4 h-4" />
-                <span>Upload PDF Document</span>
-                <input
-                  type="file"
-                  accept=".pdf"
-                  aria-label="Upload PDF document"
-                  className="hidden"
-                  onChange={async (e) => {
-                    if (e.target.files && e.target.files[0]) {
-                      const file = e.target.files[0];
-                      const bytes = await file.arrayBuffer();
-                      onFileLoaded?.(file, bytes);
-                      setMobileMenuOpen(false);
-                    }
-                  }}
-                />
-              </label>
-            )}
-
-            {/* Quick Tools Hub Launch Banner */}
-            {onOpenToolsModal && (
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onOpenToolsModal();
-                }}
-                className="w-full flex items-center justify-between p-3 rounded-2xl bg-gradient-to-r from-purple-900/80 via-indigo-900/80 to-purple-900/80 border border-purple-500/40 text-xs font-bold text-white shadow-lg cursor-pointer"
-              >
-                <span className="flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-purple-300" />
-                  <span>🔍 Explore All 16 Creative &amp; PDF Tools</span>
-                </span>
-                <span className="text-[10px] bg-purple-500/30 text-purple-200 px-2 py-0.5 rounded-full font-bold">
-                  Free
-                </span>
-              </button>
-            )}
-
-            <div className="space-y-1">
+          <div className="lg:hidden border-t border-line bg-bg-raised">
+            <div className="grid grid-cols-1 divide-y divide-line">
               {allTabs.map((tab) => {
                 const Icon = tab.icon;
-                const isActive = activeTab === tab.id || (tab.id === 'organize' && activeTab === 'split') || (tab.id === 'security-studio' && activeTab === 'security');
+                const isActive =
+                  activeTab === tab.id ||
+                  (tab.id === 'organize' && activeTab === 'split') ||
+                  (tab.id === 'security-studio' && activeTab === 'security');
                 return (
                   <button
                     key={tab.id}
@@ -517,61 +415,64 @@ export const Navbar: React.FC<NavbarProps> = ({
                       setActiveTab(tab.id as ActiveTab);
                       setMobileMenuOpen(false);
                     }}
-                    className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition ${
-                      isActive
-                        ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md font-bold'
-                        : 'text-slate-200 hover:bg-slate-800 hover:text-white'
+                    className={`w-full flex items-center justify-between px-4 py-3.5 hud-label text-left ${
+                      isActive ? 'bg-invert-bg text-invert-fg' : 'text-ink hover:bg-bg'
                     }`}
                   >
-                    <div className="flex items-center gap-3">
-                      <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-indigo-400'}`} />
+                    <span className="flex items-center gap-3">
+                      <Icon className="w-4 h-4" />
                       <span>{tab.label}</span>
-                    </div>
-                    {tab.badge && (
-                      <span
-                        className={`text-[9px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${
-                          tab.badge === 'New'
-                            ? 'bg-blue-500/30 text-blue-200 border border-blue-500/40'
-                            : 'bg-emerald-500/30 text-emerald-200 border border-emerald-500/40'
-                        }`}
-                      >
-                        {tab.badge}
-                      </span>
-                    )}
+                    </span>
+                    {tab.badge && <span className="text-[10px] text-app-ink font-bold">{tab.badge}</span>}
                   </button>
                 );
               })}
-            </div>
 
-            <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+              {onOpenToolsModal && (
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onOpenToolsModal();
+                  }}
+                  className="w-full flex items-center justify-between px-4 py-3.5 hud-label text-app-ink text-left hover:bg-bg"
+                >
+                  <span className="flex items-center gap-3">
+                    <Sparkles className="w-4 h-4" />
+                    <span>Command Palette (All 16 Tools)</span>
+                  </span>
+                  <span>⌘K</span>
+                </button>
+              )}
+
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
                   onOpenPrivacyModal?.();
                 }}
-                className="flex items-center gap-1.5 hover:text-emerald-400 transition cursor-pointer"
+                className="w-full flex items-center justify-between px-4 py-3.5 hud-label text-muted text-left hover:bg-bg"
               >
-                <Lock className="w-3.5 h-3.5 text-emerald-400" />
-                <span>100% Client-Side Privacy</span>
+                <span className="flex items-center gap-3">
+                  <Lock className="w-4 h-4 text-app-ink" />
+                  <span>Zero-Cloud Privacy Architecture</span>
+                </span>
+                <span>Verify</span>
               </button>
-              {deferredPrompt && (
-                <button
-                  onClick={handleInstallPWA}
-                  className="px-2.5 py-1 rounded-lg bg-indigo-600 text-white text-[11px] font-semibold"
-                >
-                  Install App
-                </button>
-              )}
             </div>
           </div>
         )}
       </header>
 
-      {/* Mobile Sticky Bottom Navigation Bar (Thumb Friendly Stripe Theme) */}
-      <nav aria-label="Mobile Navigation" className="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-2xl border-t border-slate-200/90 lg:hidden print:hidden px-1.5 py-1.5 flex items-center justify-around shadow-2xl safe-area-pb">
+      {/* Mobile Bottom Hairline Bar */}
+      <nav
+        aria-label="Mobile Navigation"
+        className="fixed bottom-0 inset-x-0 z-40 bg-bg/95 backdrop-blur-md border-t border-line lg:hidden print:hidden grid grid-cols-5 divide-x divide-line safe-area-pb"
+      >
         {allTabs.slice(0, 5).map((tab) => {
           const Icon = tab.icon;
-          const isActive = activeTab === tab.id || (tab.id === 'organize' && activeTab === 'split') || (tab.id === 'tools' && activeTab === 'security');
+          const isActive =
+            activeTab === tab.id ||
+            (tab.id === 'organize' && activeTab === 'split') ||
+            (tab.id === 'tools' && activeTab === 'security');
           return (
             <button
               key={tab.id}
@@ -580,28 +481,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                 setMobileMenuOpen(false);
               }}
               aria-label={tab.label}
-              className={`flex flex-col items-center justify-center py-1 px-1 rounded-xl transition relative min-w-[54px] min-h-[44px] ${
-                isActive
-                  ? 'text-purple-600 font-bold'
-                  : 'text-slate-500 hover:text-[#111439]'
+              className={`flex flex-col items-center justify-center py-2 px-1 transition-colors relative min-h-[48px] ${
+                isActive ? 'bg-invert-bg text-invert-fg' : 'text-muted hover:text-ink'
               }`}
             >
-              {/* Active Indicator Pip */}
-              {isActive && (
-                <span className="absolute -top-1.5 w-6 h-1 rounded-full bg-[#111439] shadow-sm" />
-              )}
-              
-              <div className="relative">
-                <Icon className={`w-5 h-5 transition-transform ${isActive ? 'scale-110 text-purple-600' : 'text-slate-500'}`} />
-                {tab.badge && (
-                  <span
-                    className={`absolute -top-1 -right-2 w-2 h-2 rounded-full ${
-                      tab.badge === 'New' ? 'bg-blue-600' : 'bg-emerald-500'
-                    }`}
-                  />
-                )}
-              </div>
-              <span className={`text-[10px] mt-1 tracking-tight truncate max-w-[62px] ${isActive ? 'text-[#111439] font-bold' : 'text-slate-500'}`}>
+              {isActive && <span className="absolute top-0 inset-x-0 h-0.5 bg-app" />}
+              <Icon className="w-4 h-4" />
+              <span className="font-mono text-[9px] uppercase tracking-wider mt-1 truncate max-w-full">
                 {tab.shortLabel}
               </span>
             </button>

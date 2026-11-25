@@ -479,26 +479,26 @@ export const ResumeBuilder: React.FC = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-2 sm:px-4 py-4 sm:py-8">
-      {/* Top Banner Guide */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 pb-4 sm:pb-6 border-b border-slate-800 mb-4 sm:mb-6">
+    <div className="max-w-6xl mx-auto px-3 sm:px-6 py-6 sm:py-10 w-full">
+      {/* Top Studio Header Bar */}
+      <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-4 pb-6 border-b border-line mb-6">
         <div>
-          <div className="flex flex-wrap items-center gap-2">
-            <h2 className="text-lg sm:text-2xl font-black text-white flex items-center gap-1.5 sm:gap-2">
-              <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-indigo-400" />
-              <span>60-Second Resume Studio</span>
-            </h2>
-            <span className="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full font-semibold">
-              100% Free • ATS Ready
+          <div className="flex flex-wrap items-center gap-2.5 mb-2">
+            <span className="hud-label text-app-ink">VECTOR ATS ENGINE · ZERO PAYWALL</span>
+            <span className="hud-label text-[10px] border border-line px-2 py-0.5 text-ink-strong">
+              100% FREE · ATS READY
             </span>
           </div>
-          <p className="text-xs text-slate-400 mt-1 max-w-2xl leading-relaxed hidden sm:block">
-            Edit text directly on canvas. Auto-import PDFs, scan against job ATS keywords, generate matching cover letters, and export vector PDFs.
+          <h2 className="font-display text-2xl sm:text-4xl tracking-[-0.03em] text-ink-strong flex items-center gap-2.5">
+            <span>60-Second Resume <span className="text-app-ink">Studio</span>.</span>
+          </h2>
+          <p className="font-sans text-xs sm:text-sm text-muted mt-1.5 max-w-2xl leading-relaxed hidden sm:block">
+            Edit directly on the A4 canvas. Import PDFs locally, scan missing job ATS keywords, sync cover letters, and export vector PDFs.
           </p>
         </div>
 
-        {/* Action Buttons */}
-        <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 w-full md:w-auto">
+        {/* Crisp Rectangular Action Buttons */}
+        <div className="grid grid-cols-2 sm:flex sm:items-center gap-2.5 w-full md:w-auto shrink-0">
           <input
             ref={fileInputRef}
             type="file"
@@ -510,74 +510,74 @@ export const ResumeBuilder: React.FC = () => {
           <button
             onClick={() => fileInputRef.current?.click()}
             disabled={isParsing}
-            className="flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-indigo-500/50 text-white text-xs font-bold shadow-md transition cursor-pointer w-full sm:w-auto"
+            className="h-11 px-4 invert-block font-mono text-[11px] font-bold uppercase tracking-[0.12em] flex items-center justify-center gap-2 cursor-pointer w-full sm:w-auto"
             title="Upload old resume to auto-populate all templates"
           >
             {isParsing ? (
               <>
-                <Loader2 className="w-3.5 h-3.5 text-indigo-400 animate-spin" />
+                <Loader2 className="w-3.5 h-3.5 text-app-ink animate-spin" />
                 <span className="truncate">Parsing...</span>
               </>
             ) : (
               <>
-                <UploadCloud className="w-3.5 h-3.5 text-indigo-400" />
-                <span className="truncate">⚡ Import (PDF)</span>
+                <UploadCloud className="w-3.5 h-3.5 text-app-ink" />
+                <span className="truncate">Import PDF</span>
               </>
             )}
           </button>
 
           <button
             onClick={handlePrintToPDF}
-            className="flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold shadow-lg shadow-indigo-600/30 transition cursor-pointer w-full sm:w-auto whitespace-nowrap"
+            className="h-11 px-5 bg-invert-bg text-invert-fg font-mono text-[11px] font-bold uppercase tracking-[0.12em] hover:opacity-85 transition-opacity flex items-center justify-center gap-2 cursor-pointer w-full sm:w-auto whitespace-nowrap"
           >
             <Printer className="w-3.5 h-3.5" />
-            <span className="truncate">Export PDF</span>
+            <span className="truncate">Export Vector PDF</span>
           </button>
         </div>
       </div>
 
       {/* Notification Toast Banner */}
       {notification && (
-        <div className="mb-6 p-3.5 rounded-2xl bg-indigo-950/70 border border-indigo-500/40 text-indigo-200 text-xs flex items-center justify-between gap-3 shadow-lg animate-in fade-in duration-200">
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-indigo-400 shrink-0" />
-            <span>{notification}</span>
+        <div className="mb-6 p-4 border border-app bg-bg-raised text-ink-strong text-xs flex items-center justify-between gap-3 animate-in fade-in duration-200">
+          <div className="flex items-center gap-2.5">
+            <Sparkles className="w-4 h-4 text-app-ink shrink-0" />
+            <span className="font-sans">{notification}</span>
           </div>
           <button
             onClick={() => setNotification(null)}
-            className="text-indigo-400 hover:text-white text-xs font-bold px-2 py-0.5 rounded cursor-pointer"
+            className="text-muted hover:text-ink-strong font-mono text-xs font-bold px-2 py-0.5 cursor-pointer"
           >
             ✕
           </button>
         </div>
       )}
 
-      {/* Speed Controls Bar - Desktop Version */}
-      <div className="hidden sm:block bg-slate-900 border border-slate-800 p-3 sm:p-4 rounded-3xl mb-8 space-y-3 sm:space-y-4 shadow-xl">
-        {/* Row 1: Profile & Starter Presets */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
+      {/* Desktop Architectural Control Grid */}
+      <div className="hidden sm:block border border-line bg-bg-raised mb-8">
+        {/* Row 1: Imported Profile & Starter Role Presets */}
+        <div className="p-4 flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-line">
           <div className="flex items-center gap-2 flex-wrap">
             {savedUserResume && (
-              <div className="flex items-center gap-1.5 bg-gradient-to-r from-indigo-950 to-violet-950 border border-indigo-500/50 rounded-2xl p-1 pr-2 shadow-inner">
+              <div className="flex items-center border border-line-strong bg-bg">
                 <button
                   onClick={handleRestoreUserResume}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                  className={`h-9 px-3 font-mono text-[11px] font-bold uppercase tracking-wider transition-colors flex items-center gap-1.5 cursor-pointer ${
                     isUserResumeActive
-                      ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md'
-                      : 'text-indigo-300 hover:text-white hover:bg-indigo-900/60'
+                      ? 'bg-invert-bg text-invert-fg'
+                      : 'text-ink-strong hover:bg-bg-sunken'
                   }`}
                   title="Switch back to your imported resume"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-indigo-300" />
-                  <span className="truncate max-w-[120px]">{savedUserResume.fullName || 'My Resume'}</span>
-                  {isUserResumeActive && <Check className="w-3 h-3 text-emerald-300 ml-0.5 shrink-0" />}
+                  <Sparkles className="w-3.5 h-3.5 text-app-ink" />
+                  <span className="truncate max-w-[140px]">{savedUserResume.fullName || 'My Resume'}</span>
+                  {isUserResumeActive && <Check className="w-3 h-3 text-app-ink shrink-0" />}
                 </button>
                 <button
                   onClick={() => {
                     setDrawerData(savedUserResume);
                     setIsDrawerOpen(true);
                   }}
-                  className="px-2 py-1 text-indigo-300 hover:text-white hover:bg-indigo-800/40 rounded-lg text-[10px] font-semibold transition cursor-pointer flex items-center gap-1 whitespace-nowrap"
+                  className="h-9 px-3 border-l border-line font-mono text-[10px] font-bold uppercase tracking-wider text-muted hover:text-ink-strong hover:bg-bg-sunken transition-colors cursor-pointer flex items-center gap-1 whitespace-nowrap"
                   title="Open Review Drawer to inspect or tweak your details"
                 >
                   <Edit3 className="w-3 h-3" />
@@ -587,66 +587,69 @@ export const ResumeBuilder: React.FC = () => {
             )}
           </div>
 
-          <div className="flex items-center gap-2 overflow-x-auto scrollbar-none py-0.5">
-            <span className="text-xs text-slate-400 font-semibold flex items-center gap-1 shrink-0">
-              <Briefcase className="w-3.5 h-3.5 text-indigo-400" />
+          <div className="flex items-center gap-3 overflow-x-auto scrollbar-none py-0.5">
+            <span className="hud-label text-muted flex items-center gap-1.5 shrink-0">
+              <Briefcase className="w-3.5 h-3.5 text-app-ink" />
               <span>{savedUserResume ? 'Demos:' : 'Starter Roles:'}</span>
             </span>
-            <div className="flex gap-1.5 shrink-0">
+            <div className="flex gap-px bg-line border border-line shrink-0">
               {[
-                { id: 'marketing', label: '📈 Marketing Lead' },
-                { id: 'engineer', label: '💻 Software Engineer' },
-                { id: 'sales', label: '🤝 Enterprise Sales' },
-                { id: 'fresher', label: '🎓 Recent Graduate' },
-              ].map((p) => (
-                <button
-                  key={p.id}
-                  onClick={() => handleSelectPreset(p.id)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition cursor-pointer whitespace-nowrap ${
-                    activeRole === p.id && !isUserResumeActive
-                      ? 'bg-indigo-600 text-white border-indigo-500 shadow-md'
-                      : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border-slate-700'
-                  }`}
-                  title={`Preview ${p.label} sample data`}
-                >
-                  {p.label}
-                </button>
-              ))}
+                { id: 'marketing', label: 'Marketing Lead' },
+                { id: 'engineer', label: 'Software Engineer' },
+                { id: 'sales', label: 'Enterprise Sales' },
+                { id: 'fresher', label: 'Recent Graduate' },
+              ].map((p) => {
+                const isSelected = activeRole === p.id && !isUserResumeActive;
+                return (
+                  <button
+                    key={p.id}
+                    onClick={() => handleSelectPreset(p.id)}
+                    className={`h-9 px-3.5 font-mono text-[10px] font-bold uppercase tracking-[0.08em] transition-colors cursor-pointer whitespace-nowrap ${
+                      isSelected
+                        ? 'bg-invert-bg text-invert-fg'
+                        : 'bg-bg text-muted hover:text-ink-strong hover:bg-bg-sunken'
+                    }`}
+                    title={`Preview ${p.label} sample data`}
+                  >
+                    {p.label}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
 
-        {/* Row 2: Pro Super-Tools + Layout & Style Controls */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-          {/* Pro Tools Grid (2x2 on mobile, flex on desktop) */}
-          <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 w-full lg:w-auto">
+        {/* Row 2: Super-Tools & Style Bar */}
+        <div className="p-4 flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+          {/* Pro Action Buttons */}
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 w-full xl:w-auto">
             {/* ATS Matcher */}
             <button
               onClick={() => setIsAtsModalOpen(true)}
-              className="px-3.5 py-2 sm:py-1.5 rounded-xl text-xs font-bold bg-slate-800 hover:bg-emerald-950/40 text-emerald-300 border border-emerald-500/30 flex items-center justify-center gap-1.5 transition cursor-pointer shadow-sm hover:border-emerald-500/60"
+              className="h-9 px-3.5 bg-bg border border-line-strong hover:border-app-ink text-ink-strong font-mono text-[10px] font-bold uppercase tracking-[0.1em] flex items-center justify-center gap-2 transition-colors cursor-pointer"
               title="Scan resume against target Job Description for ATS match % and missing keywords"
             >
-              <Target className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-              <span>🎯 ATS Matcher</span>
-              <span className="text-[9px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.2 rounded font-mono hidden sm:inline">
-                Alt
+              <Target className="w-3.5 h-3.5 text-app-ink shrink-0" />
+              <span>ATS Matcher</span>
+              <span className="text-[9px] text-app-ink border border-line px-1 hidden sm:inline">
+                AI
               </span>
             </button>
 
             {/* Cover Letter Toggle */}
             <button
               onClick={() => setIsCoverLetterMode(!isCoverLetterMode)}
-              className={`px-3.5 py-2 sm:py-1.5 rounded-xl text-xs font-bold border flex items-center justify-center gap-1.5 transition cursor-pointer shadow-sm ${
+              className={`h-9 px-3.5 border font-mono text-[10px] font-bold uppercase tracking-[0.1em] flex items-center justify-center gap-2 transition-colors cursor-pointer ${
                 isCoverLetterMode
-                  ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white border-indigo-400'
-                  : 'bg-slate-800 hover:bg-slate-700 text-indigo-300 border-indigo-500/30'
+                  ? 'bg-invert-bg text-invert-fg border-invert-bg'
+                  : 'bg-bg border-line-strong hover:border-ink-strong text-ink-strong'
               }`}
               title="Switch between Resume and Matching Cover Letter"
             >
-              <Mail className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
-              <span>{isCoverLetterMode ? 'View Resume' : '✉️ Cover Letter'}</span>
-              <span className="text-[9px] bg-indigo-500/20 text-indigo-300 px-1.5 py-0.2 rounded font-mono hidden sm:inline">
-                Synced
+              <Mail className={`w-3.5 h-3.5 shrink-0 ${isCoverLetterMode ? 'text-app' : 'text-app-ink'}`} />
+              <span>{isCoverLetterMode ? 'View Resume' : 'Cover Letter'}</span>
+              <span className="text-[9px] border border-line px-1 opacity-80 hidden sm:inline">
+                SYNCED
               </span>
             </button>
 
@@ -657,16 +660,16 @@ export const ResumeBuilder: React.FC = () => {
                 updateField('qrCodeEnabled', next);
                 confetti({ particleCount: 20, spread: 35 });
               }}
-              className={`px-3.5 py-2 sm:py-1.5 rounded-xl text-xs font-bold border flex items-center justify-center gap-1.5 transition cursor-pointer ${
+              className={`h-9 px-3.5 border font-mono text-[10px] font-bold uppercase tracking-[0.1em] flex items-center justify-center gap-2 transition-colors cursor-pointer ${
                 data.qrCodeEnabled
-                  ? 'bg-indigo-600 text-white border-indigo-500'
-                  : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border-slate-700'
+                  ? 'bg-invert-bg text-invert-fg border-invert-bg'
+                  : 'bg-bg border-line-strong hover:border-ink-strong text-ink-strong'
               }`}
               title="Toggle Portfolio / LinkedIn QR Code"
             >
-              <QrCode className="w-3.5 h-3.5 text-indigo-300 shrink-0" />
+              <QrCode className="w-3.5 h-3.5 shrink-0 text-app-ink" />
               <span>Portfolio QR:</span>
-              <span className={`text-[10px] px-1 rounded font-mono ${data.qrCodeEnabled ? 'bg-white/20' : 'bg-slate-900'}`}>
+              <span className="font-mono font-bold">
                 {data.qrCodeEnabled ? 'ON' : 'OFF'}
               </span>
             </button>
@@ -674,35 +677,35 @@ export const ResumeBuilder: React.FC = () => {
             {/* Headshot Styler */}
             <button
               onClick={() => setIsHeadshotModalOpen(true)}
-              className={`px-3.5 py-2 sm:py-1.5 rounded-xl text-xs font-bold border flex items-center justify-center gap-1.5 transition cursor-pointer ${
+              className={`h-9 px-3.5 border font-mono text-[10px] font-bold uppercase tracking-[0.1em] flex items-center justify-center gap-2 transition-colors cursor-pointer ${
                 data.photoUrl
-                  ? 'bg-indigo-950/60 text-indigo-200 border-indigo-500/40'
-                  : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border-slate-700'
+                  ? 'bg-invert-bg text-invert-fg border-invert-bg'
+                  : 'bg-bg border-line-strong hover:border-ink-strong text-ink-strong'
               }`}
               title="Upload or style profile photo"
             >
-              <Camera className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
-              <span>{data.photoUrl ? '📸 Photo' : '📸 +Photo'}</span>
+              <Camera className="w-3.5 h-3.5 shrink-0 text-app-ink" />
+              <span>{data.photoUrl ? 'Edit Photo' : '+ Photo'}</span>
             </button>
           </div>
 
-          {/* Template & Theme Controls */}
-          <div className="flex items-center justify-between sm:justify-start gap-3 flex-wrap pt-2 lg:pt-0 border-t border-slate-800/80 lg:border-t-0">
+          {/* Template & Accent Swatches */}
+          <div className="flex items-center justify-between sm:justify-start gap-4 flex-wrap pt-3 xl:pt-0 border-t border-line xl:border-t-0">
             {/* Template Picker */}
-            <div className="flex items-center gap-1.5">
-              <span className="text-xs text-slate-400 font-semibold hidden sm:flex items-center gap-1">
-                <LayoutTemplate className="w-3.5 h-3.5 text-indigo-400" />
-                <span>Template:</span>
+            <div className="flex items-center gap-2">
+              <span className="hud-label text-muted hidden sm:flex items-center gap-1.5">
+                <LayoutTemplate className="w-3.5 h-3.5 text-app-ink" />
+                <span>Layout:</span>
               </span>
-              <div className="flex bg-slate-950 p-1 rounded-xl border border-slate-800 gap-1 text-xs">
+              <div className="flex gap-px bg-line border border-line">
                 {(['modern', 'executive', 'classic'] as const).map((t) => (
                   <button
                     key={t}
                     onClick={() => setTemplate(t)}
-                    className={`px-2.5 sm:px-3 py-1 rounded-lg capitalize font-medium transition cursor-pointer text-xs ${
+                    className={`h-9 px-3 font-mono text-[10px] font-bold uppercase tracking-wider transition-colors cursor-pointer ${
                       template === t
-                        ? 'bg-indigo-600 text-white font-semibold'
-                        : 'text-slate-400 hover:text-white'
+                        ? 'bg-invert-bg text-invert-fg'
+                        : 'bg-bg text-muted hover:text-ink-strong'
                     }`}
                   >
                     {t}
@@ -711,19 +714,19 @@ export const ResumeBuilder: React.FC = () => {
               </div>
             </div>
 
-            {/* Theme Color */}
-            <div className="flex items-center gap-1.5">
-              <span className="text-xs text-slate-400 font-semibold hidden sm:flex items-center gap-1">
-                <Palette className="w-3.5 h-3.5 text-indigo-400" />
-                <span>Theme:</span>
+            {/* Theme Color Swatches */}
+            <div className="flex items-center gap-2">
+              <span className="hud-label text-muted hidden sm:flex items-center gap-1.5">
+                <Palette className="w-3.5 h-3.5 text-app-ink" />
+                <span>Ink:</span>
               </span>
               <div className="flex gap-1.5">
                 {(['indigo', 'navy', 'slate', 'emerald', 'burgundy'] as const).map((c) => (
                   <button
                     key={c}
                     onClick={() => setColor(c)}
-                    className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 transition cursor-pointer ${
-                      color === c ? 'border-white scale-110 shadow-md' : 'border-transparent'
+                    className={`w-6 h-6 rounded-full border-2 transition-transform cursor-pointer ${
+                      color === c ? 'border-app scale-110 ring-1 ring-ink-strong' : 'border-line'
                     }`}
                     style={{ backgroundColor: colorThemes[c].hex }}
                     title={c}
@@ -735,10 +738,10 @@ export const ResumeBuilder: React.FC = () => {
             {/* Auto-Fit Toggle */}
             <button
               onClick={() => setIsCompact(!isCompact)}
-              className={`px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-semibold border transition cursor-pointer whitespace-nowrap ${
+              className={`h-9 px-3.5 border font-mono text-[10px] font-bold uppercase tracking-wider transition-colors cursor-pointer whitespace-nowrap ${
                 isCompact
-                  ? 'bg-indigo-600 border-indigo-500 text-white'
-                  : 'bg-slate-800 border-slate-700 text-slate-300 hover:text-white'
+                  ? 'bg-invert-bg border-invert-bg text-invert-fg'
+                  : 'bg-bg border-line-strong text-ink-strong hover:bg-bg-sunken'
               }`}
             >
               {isCompact ? '✓ 1-Page Fit' : 'Compact 1-Page'}

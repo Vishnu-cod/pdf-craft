@@ -59,7 +59,7 @@ export interface ToolItem {
   converter?: 'pdf-to-word' | 'pdf-to-excel' | 'pdf-to-images' | 'images-to-pdf' | 'word-to-pdf' | 'word-to-images';
   targetKB?: number;
   securityMode?: 'protect' | 'unlock';
-  securityStudioSubTab?: 'pii_masker' | 'signature_validator';
+  securityStudioSubTab?: 'pii_masker' | 'signature_validator' | 'leak_checker';
   hotkey?: string;
 }
 
@@ -72,7 +72,7 @@ interface FeatureDirectoryModalProps {
     converter?: any,
     securityMode?: 'protect' | 'unlock',
     targetKB?: number,
-    securityStudioSubTab?: 'pii_masker' | 'signature_validator'
+    securityStudioSubTab?: 'pii_masker' | 'signature_validator' | 'leak_checker'
   ) => void;
 }
 
@@ -101,11 +101,11 @@ export const FeatureDirectoryModal: React.FC<FeatureDirectoryModalProps> = ({
       id: 'redact-pdf',
       name: 'Black Out Text (Permanent)',
       category: 'edit',
-      badge: 'Zero-Leak Security',
+      badge: 'Permanent Redaction',
       badgeColor: 'bg-rose-500/20 text-rose-300 border-rose-500/30',
       icon: Eye,
       iconBg: 'from-rose-600 to-red-600',
-      description: 'Permanently black out sensitive numbers, text, emails, and account details with zero leaks.',
+      description: 'Permanently black out sensitive numbers, text, emails, and account details directly in browser.',
       targetTab: 'sign-edit',
       subTool: 'risk-radar', // marker handled in routing
     },
@@ -246,8 +246,46 @@ export const FeatureDirectoryModal: React.FC<FeatureDirectoryModalProps> = ({
       subTool: 'size-squeezer',
       targetKB: 195,
     },
+    {
+      id: 'upsc-pdf-compressor',
+      name: 'UPSC Exam PDF Squeezer (200KB)',
+      category: 'compress',
+      badge: 'UPSC Portal Safe',
+      badgeColor: 'bg-blue-500/20 text-blue-300 border-blue-500/30',
+      icon: Shrink,
+      iconBg: 'from-blue-600 to-indigo-600',
+      description: 'Compress certificates and ID scans strictly under 200KB for UPSC online applications.',
+      targetTab: 'tools',
+      subTool: 'size-squeezer',
+      targetKB: 195,
+    },
+    {
+      id: 'uscis-visa-pdf-compressor',
+      name: 'USCIS Visa PDF Squeezer (500KB)',
+      category: 'compress',
+      badge: 'Visa / CEAC Limit',
+      badgeColor: 'bg-teal-500/20 text-teal-300 border-teal-500/30',
+      icon: Shrink,
+      iconBg: 'from-teal-600 to-emerald-600',
+      description: 'Compress multi-page tax forms (1040) and passport scans for CEAC, DS-160, and USCIS portals.',
+      targetTab: 'tools',
+      subTool: 'size-squeezer',
+      targetKB: 495,
+    },
 
     // 5. Security & Privacy
+    {
+      id: 'pdf-leak-checker',
+      name: 'PDF Privacy & Metadata Leak Checker',
+      category: 'security',
+      badge: 'Zero Telemetry',
+      badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+      icon: Search,
+      iconBg: 'from-amber-600 to-orange-600',
+      description: 'Audit PDFs for hidden author info, machine paths, raw XMP GUID tracking telemetry, and embedded links.',
+      targetTab: 'security-studio',
+      securityStudioSubTab: 'leak_checker',
+    },
     {
       id: 'mask-pii-aadhaar',
       name: 'Mask Aadhaar & IDs',
@@ -433,57 +471,64 @@ export const FeatureDirectoryModal: React.FC<FeatureDirectoryModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4">
-      <div className="w-full max-w-4xl bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+    <div
+      className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4"
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-4xl bg-bg border border-line-strong overflow-hidden flex flex-col max-h-[90vh]"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Header with Search Input */}
-        <div className="p-4 sm:p-6 border-b border-slate-800 flex flex-col gap-4">
+        <div className="p-5 border-b border-line bg-bg-raised flex flex-col gap-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-600 flex items-center justify-center text-white shadow-lg shadow-indigo-600/30">
-                <Sparkles className="w-5 h-5" />
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 bg-app flex items-center justify-center text-white shrink-0">
+                <Sparkles className="w-4 h-4" />
               </div>
               <div>
-                <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
-                  PDFCraft Feature Directory
+                <h2 className="font-display text-lg text-ink-strong tracking-tight">
+                  Command Palette · All Tools
                 </h2>
-                <p className="text-xs text-slate-400">
-                  Search &amp; launch any tool in 1 click • 100% Client-Side Privacy
+                <p className="hud-label text-faint">
+                  Launch any utility in browser memory · Zero server uploads
                 </p>
               </div>
             </div>
 
             <button
               onClick={onClose}
-              className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition"
+              aria-label="Close command palette"
+              className="p-2 border border-line text-muted hover:text-ink hover:border-line-strong transition-colors cursor-pointer"
               title="Close (Esc)"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
           </div>
 
           {/* Search Box */}
           <div className="relative">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+            <Search className="w-4 h-4 text-muted absolute left-3.5 top-3" />
             <input
               type="text"
-              placeholder="Search by tool name, file format (e.g. 'docx', 'split', 'compress', 'encrypt')..."
+              placeholder="Search tools, formats (e.g. '200kb', 'aadhaar', 'docx', 'split', 'redact')..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               autoFocus
-              className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-slate-950 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-medium"
+              className="w-full pl-10 pr-4 py-2.5 bg-bg border border-line-strong text-xs font-mono text-ink placeholder-faint focus:outline-none focus:border-app-ink"
             />
           </div>
 
-          {/* Category Filter Pills */}
-          <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pb-1">
+          {/* Category Filter Hairline Rail */}
+          <div className="flex items-center gap-px bg-line border border-line overflow-x-auto scrollbar-none">
             {categories.map((cat) => (
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition cursor-pointer ${
+                className={`px-3 py-2 hud-label whitespace-nowrap transition-colors cursor-pointer ${
                   selectedCategory === cat.id
-                    ? 'bg-indigo-600 text-white shadow-md'
-                    : 'bg-slate-800/80 text-slate-400 hover:text-slate-200 hover:bg-slate-800'
+                    ? 'bg-invert-bg text-invert-fg font-bold'
+                    : 'bg-bg text-muted hover:text-ink hover:bg-bg-raised'
                 }`}
               >
                 {cat.label}
@@ -492,9 +537,9 @@ export const FeatureDirectoryModal: React.FC<FeatureDirectoryModalProps> = ({
           </div>
         </div>
 
-        {/* Tools Grid */}
-        <div className="p-4 sm:p-6 overflow-y-auto flex-1 grid grid-cols-1 md:grid-cols-2 gap-3.5">
-          {filteredTools.map((tool) => {
+        {/* Tools Hairline Grid */}
+        <div className="overflow-y-auto flex-1 grid grid-cols-1 md:grid-cols-2 gap-px bg-line">
+          {filteredTools.map((tool, index) => {
             const Icon = tool.icon;
             return (
               <div
@@ -511,28 +556,27 @@ export const FeatureDirectoryModal: React.FC<FeatureDirectoryModalProps> = ({
                   confetti({ particleCount: 30, spread: 40 });
                   onClose();
                 }}
-                className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800/80 hover:border-indigo-500/50 hover:bg-slate-800/50 transition cursor-pointer group flex flex-col justify-between shadow-sm"
+                className="p-5 bg-bg hover:bg-bg-raised transition-colors cursor-pointer group flex flex-col justify-between"
               >
                 <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <div
-                      className={`w-9 h-9 rounded-xl bg-gradient-to-tr ${tool.iconBg} text-white flex items-center justify-center shadow-md group-hover:scale-105 transition`}
-                    >
-                      <Icon className="w-4 h-4" />
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="hud-label text-faint">
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
+                      <Icon className="w-4 h-4 text-ink-strong group-hover:text-app-ink transition-colors" />
                     </div>
-                    <span
-                      className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider border ${tool.badgeColor}`}
-                    >
+                    <span className="hud-label text-[9px] text-app-ink border border-line px-1.5 py-0.5">
                       {tool.badge}
                     </span>
                   </div>
 
-                  <h3 className="text-xs font-bold text-white group-hover:text-indigo-300 transition flex items-center gap-1">
+                  <h3 className="font-display text-sm text-ink-strong group-hover:text-app-ink transition-colors flex items-center justify-between gap-2">
                     <span>{tool.name}</span>
-                    <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition -translate-x-1 group-hover:translate-x-0" />
+                    <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-app-ink shrink-0" />
                   </h3>
 
-                  <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">
+                  <p className="font-sans text-xs text-muted mt-1.5 leading-relaxed">
                     {tool.description}
                   </p>
                 </div>
@@ -541,18 +585,18 @@ export const FeatureDirectoryModal: React.FC<FeatureDirectoryModalProps> = ({
           })}
 
           {filteredTools.length === 0 && (
-            <div className="col-span-2 py-12 text-center text-slate-500 text-xs">
-              No tools found matching &quot;{searchQuery}&quot;. Try searching for &quot;split&quot;, &quot;compress&quot;, or &quot;excel&quot;.
+            <div className="col-span-2 py-12 bg-bg text-center text-muted font-mono text-xs">
+              No tools found matching &quot;{searchQuery}&quot;.
             </div>
           )}
         </div>
 
         {/* Modal Footer */}
-        <div className="px-6 py-3 bg-slate-950/80 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
-          <span className="font-mono text-[11px]">
-            Tip: Press <kbd className="bg-slate-800 px-1 py-0.5 rounded text-white font-bold">⌘K</kbd> anywhere to open
+        <div className="px-6 py-3 bg-bg-raised border-t border-line flex items-center justify-between">
+          <span className="hud-label text-faint">
+            TIP: PRESS <kbd className="border border-line px-1 text-ink-strong">⌘K</kbd> ANYWHERE
           </span>
-          <span className="text-[11px] text-indigo-400 font-semibold">100% Free • No Sign-up</span>
+          <span className="hud-label text-app-ink">100% FREE · NO SIGN-UP</span>
         </div>
       </div>
     </div>

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, follow" />
+    <title>404 — Page Not Found | PDFCraft</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,600..700&family=Geist+Mono:wght@500;700&family=Inter:wght@400;500&display=swap"
+    />
+    <style>
+      :root {
+        --bg: #121316;
+        --ink: #f2f1ee;
+        --muted: rgba(242, 241, 238, 0.6);
+        --line: rgba(242, 241, 238, 0.16);
+        --app: #e8204f;
+        --app-ink: #f23a62;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: 'Inter', system-ui, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .wrap {
+        max-width: 1280px;
+        width: 100%;
+        margin: 0 auto;
+        border-left: 1px solid var(--line);
+        border-right: 1px solid var(--line);
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 48px 24px;
+      }
+      .hud {
+        font-family: 'Geist Mono', monospace;
+        font-size: 11px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--app-ink);
+        margin-bottom: 16px;
+      }
+      h1 {
+        font-family: 'Archivo', system-ui, sans-serif;
+        font-weight: 620;
+        font-stretch: 118%;
+        font-size: clamp(2.25rem, 6vw, 4.5rem);
+        line-height: 1.02;
+        letter-spacing: -0.035em;
+        margin: 0 0 16px 0;
+      }
+      p {
+        color: var(--muted);
+        max-width: 520px;
+        line-height: 1.6;
+        margin: 0 0 32px 0;
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      a {
+        font-family: 'Geist Mono', monospace;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        text-decoration: none;
+        padding: 14px 22px;
+        display: inline-block;
+      }
+      .primary {
+        background: #ffffff;
+        color: #0b0b0c;
+      }
+      .secondary {
+        border: 1px solid var(--line);
+        color: var(--ink);
+      }
+      .secondary:hover {
+        background: #ffffff;
+        color: #0b0b0c;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <div class="hud">ERROR 404 · ROUTE NOT FOUND</div>
+      <h1>This PDF route does not exist.</h1>
+      <p>
+        The page you requested could not be found on PDFCraft. Launch our home workbench or jump directly to one of our free zero-cloud PDF tools below.
+      </p>
+      <div class="actions">
+        <a href="/" class="primary">Return Home</a>
+        <a href="/upsc-pdf-compressor" class="secondary">UPSC 200KB Compressor</a>
+        <a href="/mask-aadhaar" class="secondary">Mask Aadhaar PDF</a>
+        <a href="/pdf-to-word" class="secondary">PDF to Word</a>
+      </div>
+    </main>
+  </body>
+</html>

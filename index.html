@@ -6,7 +6,7 @@
     <link rel="apple-touch-icon" href="/icon.png" />
     <link rel="shortcut icon" href="/favicon-32.png" />
     <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#164881" />
+    <meta name="theme-color" content="#121316" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -33,6 +33,19 @@
     <meta name="twitter:title" content="Free Online PDF Editor — Edit, Sign &amp; Compress PDFs | PDFCraft" />
     <meta name="twitter:description" content="Edit, sign, compress under 200KB, and convert PDFs 100% free with zero server uploads. 100% client-side privacy." />
     <meta name="twitter:image" content="https://pdf-craft-vert.vercel.app/og-image.png" />
+
+    <!-- Google Analytics 4 (GA4) & Search Console Event Telemetry -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VISHNUSTARKS"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      const measurementId = window.GA_MEASUREMENT_ID || localStorage.getItem('GA_MEASUREMENT_ID') || 'G-VISHNUSTARKS';
+      gtag('config', measurementId, {
+        send_page_view: true,
+        cookie_flags: 'SameSite=None;Secure'
+      });
+    </script>
 
     <!-- Structured Data (JSON-LD) for Google Rich Snippets -->
     <script type="application/ld+json">
@@ -103,16 +116,26 @@
     }
     </script>
 
-    <!-- Non-render-blocking Inter Font -->
+    <!-- Non-render-blocking ArtCraft Font Stack: Archivo Display, Instrument Serif, Inter, Geist Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Geist+Mono:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Geist+Mono:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'">
     <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Geist+Mono:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap">
     </noscript>
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('pdfcraft-theme') || 'dark';
+          document.documentElement.setAttribute('data-theme', saved);
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      })();
+    </script>
   </head>
-  <body class="bg-slate-950 text-slate-100 min-h-screen font-['Inter',sans-serif] selection:bg-indigo-500 selection:text-white antialiased">
+  <body class="bg-bg text-ink min-h-screen font-sans selection:bg-app selection:text-white antialiased">
     <div id="root"></div>
     <!-- Crawlable Semantic SEO Architecture for Search Engine Crawlers -->
     <noscript>
@@ -184,4 +207,4 @@
     </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
-      </html>
+</html>

@@ -295,9 +295,9 @@ export const ConvertPanel: React.FC<ConvertPanelProps> = ({
       <div className="border-b border-line pb-6 mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
           <p className="hud-label text-app-ink mb-2">CLIENT-SIDE CONVERSION ENGINE</p>
-          <h2 className="font-display text-3xl sm:text-5xl tracking-[-0.03em] text-ink-strong">
+          <h1 className="font-display text-3xl sm:text-5xl tracking-[-0.03em] text-ink-strong">
             Convert any document, <span className="text-app-ink">locally</span>.
-          </h2>
+          </h1>
           <p className="font-sans text-sm text-muted mt-2 max-w-xl">
             Transform PDFs into editable Word, Excel, or retina images — and pack Word or images back into crisp PDFs inside browser memory.
           </p>

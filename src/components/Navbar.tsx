@@ -334,23 +334,27 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </div>
 
-          {/* Mobile Right Controls */}
-          <div className="flex lg:hidden items-stretch">
+          {/* Mobile Right Controls (Min 44x44px Touch Targets) */}
+          <div className="flex lg:hidden items-stretch shrink-0">
             {hasFile && fileName ? (
-              <div className="flex items-center gap-1.5 px-2.5 border-l border-line">
-                <span className="w-1.5 h-1.5 bg-app shrink-0" />
-                <span className="font-mono text-[10px] text-ink max-w-[85px] truncate">{fileName}</span>
+              <div className="flex items-stretch border-l border-line">
+                <span className="hidden sm:flex items-center gap-1.5 px-2.5">
+                  <span className="w-1.5 h-1.5 bg-app shrink-0" />
+                  <span className="font-mono text-[10px] text-ink max-w-[72px] truncate">{fileName}</span>
+                </span>
                 <button
                   onClick={onResetFile}
-                  aria-label="Close active file"
-                  className="text-muted hover:text-danger text-sm font-mono pl-1"
+                  aria-label={`Close ${fileName}`}
+                  title={`Close ${fileName}`}
+                  className="text-muted hover:text-danger text-sm font-mono min-w-[44px] min-h-[44px] flex items-center justify-center gap-1 px-2 cursor-pointer"
                 >
-                  ×
+                  <span className="w-1.5 h-1.5 bg-app sm:hidden shrink-0" />
+                  <span>×</span>
                 </button>
               </div>
             ) : (
               <label
-                className="flex items-center justify-center px-3 border-l border-line bg-invert-bg text-invert-fg cursor-pointer"
+                className="flex items-center justify-center min-w-[44px] min-h-[44px] px-3 border-l border-line bg-invert-bg text-invert-fg cursor-pointer"
                 title="Upload PDF"
               >
                 <UploadCloud className="w-4 h-4" />
@@ -373,7 +377,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               onClick={toggleTheme}
               aria-label="Toggle color theme"
-              className="flex items-center justify-center px-3 border-l border-line text-muted hover:text-ink"
+              className="flex items-center justify-center min-w-[44px] min-h-[44px] px-3 border-l border-line text-muted hover:text-ink"
             >
               {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
@@ -382,7 +386,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 onClick={onOpenToolsModal}
                 aria-label="Search tools"
-                className="flex items-center justify-center px-3 border-l border-line text-muted hover:text-ink"
+                className="flex items-center justify-center min-w-[44px] min-h-[44px] px-3 border-l border-line text-muted hover:text-ink"
               >
                 <Search className="w-4 h-4" />
               </button>
@@ -390,7 +394,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="flex items-center justify-center px-3 border-l border-line text-ink"
+              className="flex items-center justify-center min-w-[44px] min-h-[44px] px-3 border-l border-line text-ink"
               aria-label="Open main menu"
             >
               {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
@@ -462,10 +466,10 @@ export const Navbar: React.FC<NavbarProps> = ({
         )}
       </header>
 
-      {/* Mobile Bottom Hairline Bar */}
+      {/* Mobile Bottom Hairline Bar (Opaque solid surface so scrolling white previews never reduce contrast) */}
       <nav
         aria-label="Mobile Navigation"
-        className="fixed bottom-0 inset-x-0 z-40 bg-bg/95 backdrop-blur-md border-t border-line lg:hidden print:hidden grid grid-cols-5 divide-x divide-line safe-area-pb"
+        className="fixed bottom-0 inset-x-0 z-40 bg-bg border-t border-line-strong lg:hidden print:hidden grid grid-cols-5 divide-x divide-line safe-area-pb shadow-none"
       >
         {allTabs.slice(0, 5).map((tab) => {
           const Icon = tab.icon;

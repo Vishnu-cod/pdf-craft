@@ -199,7 +199,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
           <button
             onClick={handleLoadSamplePDF}
             disabled={isGeneratingSample}
-            className="h-10 px-4 invert-block font-mono text-[11px] font-bold uppercase tracking-[0.12em] flex items-center justify-center gap-2 shrink-0 cursor-pointer"
+            className="min-h-[44px] h-11 px-4 invert-block font-mono text-[11px] font-bold uppercase tracking-[0.12em] flex items-center justify-center gap-2 shrink-0 cursor-pointer"
           >
             <Zap className="w-3.5 h-3.5 text-app-ink" />
             <span>{isGeneratingSample ? 'Generating...' : 'Load Sample PDF'}</span>

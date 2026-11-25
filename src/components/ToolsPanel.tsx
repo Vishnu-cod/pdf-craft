@@ -52,6 +52,8 @@ interface ToolsPanelProps {
   fileName?: string;
   initialSubTool?: 'risk-radar' | 'size-squeezer' | 'diff' | 'table-extract' | 'doctor';
   initialTargetKB?: number;
+  routeTitle?: string;
+  routeSubtitle?: string;
   onFileLoaded?: (file: File, bytes: ArrayBuffer) => void;
 }
 
@@ -60,6 +62,8 @@ export const ToolsPanel: React.FC<ToolsPanelProps> = ({
   fileName = 'document.pdf',
   initialSubTool = 'risk-radar',
   initialTargetKB,
+  routeTitle,
+  routeSubtitle,
   onFileLoaded,
 }) => {
   const [subTool, setSubTool] = useState<
@@ -274,70 +278,68 @@ export const ToolsPanel: React.FC<ToolsPanelProps> = ({
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      {/* Sub Tool Switcher */}
-      <div className="w-full flex items-center sm:justify-center mb-8 overflow-x-auto scrollbar-none py-1">
-        <div className="bg-slate-900 border border-slate-800 p-1.5 rounded-2xl flex items-center gap-1.5 shadow-lg mx-auto shrink-0 sm:flex-wrap sm:justify-center">
-          <button
-            onClick={() => setSubTool('risk-radar')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition cursor-pointer ${
-              subTool === 'risk-radar'
-                ? 'bg-rose-600 text-white shadow-lg shadow-rose-600/30'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800'
-            }`}
-          >
-            <Scale className="w-4 h-4 text-amber-300" />
-            <span>Check Contract Risks</span>
-          </button>
+    <div className="max-w-6xl w-full min-w-0 mx-auto px-3 sm:px-6 py-6 sm:py-8 overflow-x-hidden">
+      {/* Sub Tool Switcher — Responsive ArtCraft Hairline Grid (Zero Mobile Overflow) */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-px bg-line border border-line w-full mb-8">
+        <button
+          onClick={() => setSubTool('risk-radar')}
+          className={`flex items-center justify-center gap-2 px-3 py-3 min-h-[44px] hud-label transition-colors cursor-pointer text-center ${
+            subTool === 'risk-radar'
+              ? 'bg-invert-bg text-invert-fg font-bold'
+              : 'bg-bg text-muted hover:text-ink-strong hover:bg-bg-raised'
+          }`}
+        >
+          <Scale className="w-4 h-4 shrink-0 text-app-ink" />
+          <span className="truncate">Contract Risks</span>
+        </button>
 
-          <button
-            onClick={() => setSubTool('size-squeezer')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition cursor-pointer ${
-              subTool === 'size-squeezer'
-                ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/30'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800'
-            }`}
-          >
-            <Shrink className="w-4 h-4 text-emerald-300" />
-            <span>Compress to Exact Size</span>
-          </button>
+        <button
+          onClick={() => setSubTool('size-squeezer')}
+          className={`flex items-center justify-center gap-2 px-3 py-3 min-h-[44px] hud-label transition-colors cursor-pointer text-center ${
+            subTool === 'size-squeezer'
+              ? 'bg-invert-bg text-invert-fg font-bold'
+              : 'bg-bg text-muted hover:text-ink-strong hover:bg-bg-raised'
+          }`}
+        >
+          <Shrink className="w-4 h-4 shrink-0 text-app-ink" />
+          <span className="truncate">Size Squeezer</span>
+        </button>
 
-          <button
-            onClick={() => setSubTool('diff')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition cursor-pointer ${
-              subTool === 'diff'
-                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800'
-            }`}
-          >
-            <GitCompare className="w-4 h-4" />
-            <span>Compare Two PDFs</span>
-          </button>
+        <button
+          onClick={() => setSubTool('diff')}
+          className={`flex items-center justify-center gap-2 px-3 py-3 min-h-[44px] hud-label transition-colors cursor-pointer text-center ${
+            subTool === 'diff'
+              ? 'bg-invert-bg text-invert-fg font-bold'
+              : 'bg-bg text-muted hover:text-ink-strong hover:bg-bg-raised'
+          }`}
+        >
+          <GitCompare className="w-4 h-4 shrink-0 text-app-ink" />
+          <span className="truncate">Compare PDFs</span>
+        </button>
 
-          <button
-            onClick={() => setSubTool('table-extract')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition cursor-pointer ${
-              subTool === 'table-extract'
-                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800'
-            }`}
-          >
-            <Table2 className="w-4 h-4" />
-            <span>Extract Tables to Excel</span>
-          </button>
+        <button
+          onClick={() => setSubTool('table-extract')}
+          className={`flex items-center justify-center gap-2 px-3 py-3 min-h-[44px] hud-label transition-colors cursor-pointer text-center ${
+            subTool === 'table-extract'
+              ? 'bg-invert-bg text-invert-fg font-bold'
+              : 'bg-bg text-muted hover:text-ink-strong hover:bg-bg-raised'
+          }`}
+        >
+          <Table2 className="w-4 h-4 shrink-0 text-app-ink" />
+          <span className="truncate">PDF Tables</span>
+        </button>
 
-          <button
-            onClick={() => setSubTool('doctor')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition cursor-pointer ${
-              subTool === 'doctor'
-                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800'
-            }`}
-          >
-            <Wand2 className="w-4 h-4" />
-            <span>Clean & Brighten Scans</span>
-          </button>
-        </div>
+        <button
+          onClick={() => setSubTool('doctor')}
+          className={`col-span-2 sm:col-span-1 flex items-center justify-center gap-2 px-3 py-3 min-h-[44px] hud-label transition-colors cursor-pointer text-center ${
+            subTool === 'doctor'
+              ? 'bg-invert-bg text-invert-fg font-bold'
+              : 'bg-bg text-muted hover:text-ink-strong hover:bg-bg-raised'
+          }`}
+        >
+          <Wand2 className="w-4 h-4 shrink-0 text-app-ink" />
+          <span className="truncate">Scan Doctor</span>
+        </button>
       </div>
 
       {/* Tool 1: AI Contract Risk & Red-Flag Radar */}
@@ -355,6 +357,8 @@ export const ToolsPanel: React.FC<ToolsPanelProps> = ({
           initialPdfBytes={activePdfBytes}
           initialFileName={activeFileName}
           initialTargetKB={initialTargetKB}
+          routeTitle={routeTitle}
+          routeSubtitle={routeSubtitle}
           onFileLoaded={handleInternalFileLoad}
         />
       )}

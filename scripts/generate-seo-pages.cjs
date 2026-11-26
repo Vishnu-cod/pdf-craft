@@ -565,12 +565,13 @@ const pages = [
     toolName: 'UPSC Exam PDF Compressor',
     howToName: 'How to compress documents strictly under 200KB for the UPSC online application portal',
     steps: [
-      { name: 'Select Your Certificate or ID', text: 'Load your degree certificate, caste certificate, or ID scan into PDFCraft directly in browser memory.' },
-      { name: 'Choose 195 KB UPSC Preset', text: 'The algorithm calculates a safe margin (typically 185KB–195KB) to guarantee acceptance by the UPSC upsconline.nic.in validation engine.' },
+      { name: 'Select or Merge Certificates & IDs', text: 'Load a single PDF or select multiple marksheets to merge them automatically inside local browser memory before compression.' },
+      { name: 'Apply 195 KB UPSC Preset & Check 20–200 KB Compliance', text: 'PDFCraft targets 195 KB safely below 200 KB and verifies your file stays above UPSC upsconline.nic.in minimum 20 KB rejection threshold.' },
       { name: 'Download & Upload to UPSC Portal', text: 'Save your crisp, compliant PDF file ready for immediate submission.' },
     ],
     faqs: [
       { q: 'What is the file size limit for UPSC document uploads?', a: 'UPSC specifies that all uploaded PDF certificates must be strictly between 20 KB and 200 KB in size.' },
+      { q: 'What if my compressed UPSC PDF is smaller than 20 KB?', a: 'The UPSC OTR portal rejects files under 20 KB just like files over 200 KB. PDFCraft includes a live 20–200 KB portal compliance check and preserves sharp under-target vector documents instead of over-shrinking them.' },
       { q: 'Will the UPSC portal reject blurry text?', a: 'Yes, automated scanners reject illegible certificates. PDFCraft uses bicubic downsampling prioritizing high-contrast text edges so certificates remain sharp and legible.' },
       { q: 'Is it safe to compress confidential government IDs here?', a: '100% safe. Processing happens exclusively in your browser memory via WebAssembly. Zero bytes are ever transmitted to any cloud server.' },
     ],

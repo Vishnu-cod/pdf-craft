@@ -264,10 +264,10 @@ export const SizeSqueezer: React.FC<SizeSqueezerProps> = ({
     'Compress PDFs strictly under 50KB, 100KB, or 200KB for UPSC, SSC, and visa portals. 100% in-browser memory.';
 
   return (
-    <div className="w-full min-w-0 max-w-4xl mx-auto px-2 sm:px-4 py-4 sm:py-6 space-y-6">
+    <div className="w-full min-w-0 max-w-4xl mx-auto px-2 sm:px-4 py-4 sm:py-6 space-y-6 overflow-x-hidden">
       {/* Top Banner with Route-Specific H1 */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 pb-6 border-b border-line">
-        <div className="min-w-0">
+      <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 pb-6 border-b border-line min-w-0">
+        <div className="min-w-0 w-full">
           <div className="flex flex-wrap items-center gap-2 mb-2">
             <span className="hud-label text-app-ink">STRICT KB TARGET ENGINE</span>
             <span className="hud-label text-[9px] text-ink-strong border border-line px-2 py-0.5 whitespace-nowrap shrink-0">
@@ -277,20 +277,20 @@ export const SizeSqueezer: React.FC<SizeSqueezerProps> = ({
           <h1 className="font-display text-2xl sm:text-4xl tracking-[-0.03em] text-ink-strong break-words">
             {headingText}
           </h1>
-          <p className="font-sans text-xs sm:text-sm text-muted mt-1.5 max-w-2xl leading-relaxed">
+          <p className="font-sans text-xs sm:text-sm text-muted mt-1.5 max-w-2xl leading-relaxed break-words">
             {subtitleText}
           </p>
         </div>
 
         {pdfBytes && (
-          <div className="flex flex-wrap items-center gap-2 shrink-0">
-            <label className="min-h-[44px] px-4 border border-line-strong bg-bg-raised hover:bg-bg text-ink-strong hud-label flex items-center gap-2 cursor-pointer transition-colors">
-              <Sparkles className="w-3.5 h-3.5 text-app-ink" />
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto min-w-0 sm:shrink-0">
+            <label className="min-h-[44px] px-3 sm:px-4 border border-line-strong bg-bg-raised hover:bg-bg text-ink-strong hud-label flex items-center gap-2 cursor-pointer transition-colors whitespace-nowrap">
+              <Sparkles className="w-3.5 h-3.5 text-app-ink shrink-0" />
               <span>+ Merge Another PDF</span>
               <input type="file" accept=".pdf" multiple className="hidden" onChange={handleAppendMergeUpload} />
             </label>
-            <label className="min-h-[44px] px-4 invert-block hud-label flex items-center gap-2 cursor-pointer">
-              <UploadCloud className="w-4 h-4 text-app-ink" />
+            <label className="min-h-[44px] px-3 sm:px-4 invert-block hud-label flex items-center gap-2 cursor-pointer whitespace-nowrap">
+              <UploadCloud className="w-4 h-4 text-app-ink shrink-0" />
               <span>Change PDF</span>
               <input type="file" accept=".pdf" multiple className="hidden" onChange={handleFileUpload} />
             </label>
@@ -334,9 +334,9 @@ export const SizeSqueezer: React.FC<SizeSqueezerProps> = ({
           </div>
         </div>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-6 w-full min-w-0">
           {/* File Card & Strategy Selector */}
-          <div className="p-4 sm:p-6 bg-bg-raised border border-line space-y-5">
+          <div className="p-3 sm:p-6 bg-bg-raised border border-line space-y-5 w-full min-w-0 overflow-hidden">
             <div className="flex flex-wrap items-center justify-between gap-2 text-xs border-b border-line pb-4">
               <div className="flex items-center gap-2.5 min-w-0">
                 <FileText className="w-4 h-4 text-app-ink shrink-0" />
@@ -492,22 +492,22 @@ export const SizeSqueezer: React.FC<SizeSqueezerProps> = ({
 
           {/* Results Summary Box */}
           {result && (
-            <div className="p-5 sm:p-6 bg-bg-raised border border-line-strong space-y-4">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-line pb-4">
-                <div className="flex items-start gap-3">
+            <div className="p-4 sm:p-6 bg-bg-raised border border-line-strong space-y-4 w-full min-w-0 overflow-hidden">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-line pb-4 min-w-0">
+                <div className="flex items-start gap-3 min-w-0 w-full sm:w-auto">
                   <div className="w-10 h-10 bg-app text-white flex items-center justify-center shrink-0">
                     <CheckCircle2 className="w-5 h-5" />
                   </div>
-                  <div>
+                  <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="font-display text-base text-ink-strong">
+                      <h3 className="font-display text-base text-ink-strong break-words">
                         Compression Complete
                       </h3>
                       <span className="hud-label text-[9px] text-app-ink border border-line px-2 py-0.5 whitespace-nowrap">
                         {result.targetAchieved ? 'Under Target' : 'Best Effort'}
                       </span>
                     </div>
-                    <p className="font-sans text-xs text-muted mt-1">
+                    <p className="font-sans text-xs text-muted mt-1 break-words">
                       Original: {result.originalSizeKB} KB → Output:{' '}
                       <strong className="text-ink-strong">{result.compressedSizeKB} KB</strong>{' '}
                       {result.reductionPercentage > 0
@@ -519,9 +519,9 @@ export const SizeSqueezer: React.FC<SizeSqueezerProps> = ({
 
                 <button
                   onClick={handleDownload}
-                  className="w-full sm:w-auto min-h-[44px] h-11 px-5 bg-invert-bg text-invert-fg font-mono text-[11px] font-bold uppercase tracking-[0.12em] hover:opacity-85 transition-opacity flex items-center justify-center gap-2 cursor-pointer shrink-0"
+                  className="w-full sm:w-auto min-h-[44px] h-11 px-4 sm:px-5 bg-invert-bg text-invert-fg font-mono text-[11px] font-bold uppercase tracking-[0.12em] hover:opacity-85 transition-opacity flex items-center justify-center gap-2 cursor-pointer sm:shrink-0"
                 >
-                  <Download className="w-4 h-4" />
+                  <Download className="w-4 h-4 shrink-0" />
                   <span>Download Compressed PDF</span>
                 </button>
               </div>

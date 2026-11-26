@@ -366,6 +366,7 @@ export const App: React.FC = () => {
       id: 'edit-sign',
       name: 'Edit & Sign PDF',
       badge: 'Touch Sync',
+      href: '/sign-pdf-no-account',
       icon: FileSignature,
       bg: 'from-blue-600 to-indigo-600',
       desc: 'Sign with mobile phone sync, add text notes, dates & stamps.',
@@ -376,6 +377,7 @@ export const App: React.FC = () => {
       id: 'mask-aadhaar',
       name: 'Mask Aadhaar & IDs',
       badge: '1-Click Auto',
+      href: '/mask-aadhaar',
       icon: EyeOff,
       bg: 'from-rose-600 to-red-600',
       desc: 'Auto-detect and black out 12-digit Aadhaar & PAN numbers before sharing.',
@@ -384,18 +386,20 @@ export const App: React.FC = () => {
     },
     {
       id: 'size-squeezer',
-      name: 'Compress to Exact Size',
-      badge: '50KB / 100KB',
+      name: 'UPSC & 200KB Compressor',
+      badge: '50KB / 200KB',
+      href: '/upsc-pdf-compressor',
       icon: Shrink,
       bg: 'from-emerald-600 to-teal-600',
-      desc: 'Shrink strictly under 50KB, 100KB, or 200KB for exam & govt portals.',
+      desc: 'Shrink strictly between 20KB–200KB or under 100KB for UPSC, SSC & exam portals.',
       category: ['all', 'popular', 'edit'],
-      action: () => handleLaunchTool('tools', 'size-squeezer'),
+      action: () => navigateToTab('tools', 'upsc-pdf-compressor', undefined, 195),
     },
     {
       id: 'organize-merge',
       name: 'Merge & Reorder Pages',
       badge: 'Multi-PDF',
+      href: '/merge-pdf',
       icon: Layers,
       bg: 'from-teal-600 to-emerald-600',
       desc: 'Combine multiple PDFs into one and arrange custom page order.',
@@ -406,6 +410,7 @@ export const App: React.FC = () => {
       id: 'split-pdf',
       name: 'Split PDF Pages',
       badge: 'Extract Pages',
+      href: '/split-pdf',
       icon: Scissors,
       bg: 'from-amber-600 to-orange-600',
       desc: 'Extract custom page ranges or split into individual sheets in a ZIP.',
@@ -416,6 +421,7 @@ export const App: React.FC = () => {
       id: 'pdf-to-word',
       name: 'PDF to Word (.docx)',
       badge: 'Editable DOCX',
+      href: '/pdf-to-word',
       icon: FileText,
       bg: 'from-blue-600 to-sky-600',
       desc: 'Convert PDF documents into formatted, editable Microsoft Word files.',
@@ -426,6 +432,7 @@ export const App: React.FC = () => {
       id: 'pdf-to-excel',
       name: 'PDF to Excel (.xlsx)',
       badge: 'Spreadsheet',
+      href: '/pdf-to-excel',
       icon: FileSpreadsheet,
       bg: 'from-emerald-600 to-green-600',
       desc: 'Extract tables and numbers from invoices into Excel workbooks.',
@@ -436,6 +443,7 @@ export const App: React.FC = () => {
       id: 'verify-signature',
       name: 'Verify Digital Signature',
       badge: 'CCA India / Adobe',
+      href: '/verify-signature',
       icon: FileCheck2,
       bg: 'from-emerald-600 to-teal-600',
       desc: 'Validate eSignatures from eMudhra, Capricorn, DigiLocker & Adobe.',
@@ -446,6 +454,7 @@ export const App: React.FC = () => {
       id: 'resume-builder',
       name: 'ATS Resume Builder',
       badge: '60s Vector PDF',
+      href: '/resume-builder',
       icon: GraduationCap,
       bg: 'from-indigo-600 to-violet-600',
       desc: 'Build job-ready resumes & matching cover letters in 60 seconds.',
@@ -456,6 +465,7 @@ export const App: React.FC = () => {
       id: 'risk-radar',
       name: 'Check Contract Risks',
       badge: 'AI Clause Audit',
+      href: '/contract-risk-radar',
       icon: Scale,
       bg: 'from-rose-600 to-amber-600',
       desc: 'Spot sneaky non-competes, IP grabs, and unfair contract terms.',
@@ -464,18 +474,20 @@ export const App: React.FC = () => {
     },
     {
       id: 'contract-diff',
-      name: 'Compare Two PDFs',
-      badge: 'Side-by-Side',
-      icon: GitCompare,
+      name: 'Compress Strictly 100KB',
+      badge: 'Exam & Job Cap',
+      href: '/compress-pdf-100kb',
+      icon: Shrink,
       bg: 'from-indigo-600 to-blue-600',
-      desc: 'Highlight visual and text differences between two contract drafts.',
-      category: ['all', 'edit'],
-      action: () => handleLaunchTool('tools', 'diff'),
+      desc: 'Hit strict 100KB government portal caps offline in browser memory.',
+      category: ['all', 'popular', 'edit'],
+      action: () => navigateToTab('tools', 'size-squeezer-100kb', undefined, 95),
     },
     {
       id: 'protect-pdf',
       name: 'Lock with Password',
       badge: 'AES-256',
+      href: '/protect-pdf',
       icon: Lock,
       bg: 'from-purple-600 to-indigo-600',
       desc: 'Protect confidential PDFs with user and owner passwords.',
@@ -486,6 +498,7 @@ export const App: React.FC = () => {
       id: 'unlock-pdf',
       name: 'Remove Password',
       badge: 'Instant Unlock',
+      href: '/unlock-pdf',
       icon: Unlock,
       bg: 'from-cyan-600 to-teal-600',
       desc: 'Remove password restrictions and export clean, unlocked PDFs.',
@@ -494,18 +507,20 @@ export const App: React.FC = () => {
     },
     {
       id: 'document-doctor',
-      name: 'Clean & Brighten Scans',
-      badge: 'Scan Enhancer',
+      name: 'Privacy & Leak Checker',
+      badge: 'Strip XMP Metadata',
+      href: '/pdf-leak-checker',
       icon: Wand2,
       bg: 'from-fuchsia-600 to-purple-600',
-      desc: 'Whiten dark scanned paper and boost faded photocopy ink.',
-      category: ['all', 'edit'],
-      action: () => handleLaunchTool('tools', 'doctor'),
+      desc: 'Inspect hidden tracking metadata and sanitize sensitive PDFs locally.',
+      category: ['all', 'security'],
+      action: () => handleLaunchTool('security-studio', undefined, undefined, undefined, undefined, 'leak_checker'),
     },
     {
       id: 'pdf-to-images',
       name: 'PDF to Images (ZIP)',
       badge: 'High-Res PNG',
+      href: '/pdf-to-jpg',
       icon: FileImage,
       bg: 'from-amber-600 to-yellow-600',
       desc: 'Save every page as crisp high-resolution PNG or JPG images in a ZIP.',
@@ -516,6 +531,7 @@ export const App: React.FC = () => {
       id: 'images-to-pdf',
       name: 'Images to Single PDF',
       badge: 'Photos to PDF',
+      href: '/jpg-to-pdf',
       icon: Zap,
       bg: 'from-violet-600 to-fuchsia-600',
       desc: 'Combine photos, receipts, and scans into a single PDF document.',
@@ -731,24 +747,28 @@ export const App: React.FC = () => {
                     >
                       Zero-Cloud Spec
                     </button>
-                    <button
-                      onClick={() => {
+                    <a
+                      href="/compare/pdfcraft-vs-ilovepdf"
+                      onClick={(e) => {
+                        e.preventDefault();
                         setComparisonCompetitor('ilovepdf');
                         setIsComparisonModalOpen(true);
                       }}
-                      className="h-9 px-3.5 bg-bg text-muted hover:text-ink hover:bg-bg-raised font-mono text-[11px] font-bold uppercase tracking-[0.12em] transition-colors cursor-pointer"
+                      className="h-9 px-3.5 bg-bg text-muted hover:text-ink hover:bg-bg-raised font-mono text-[11px] font-bold uppercase tracking-[0.12em] transition-colors flex items-center justify-center cursor-pointer"
                     >
                       vs iLovePDF
-                    </button>
-                    <button
-                      onClick={() => {
+                    </a>
+                    <a
+                      href="/compare/pdfcraft-vs-smallpdf"
+                      onClick={(e) => {
+                        e.preventDefault();
                         setComparisonCompetitor('smallpdf');
                         setIsComparisonModalOpen(true);
                       }}
-                      className="h-9 px-3.5 bg-bg text-muted hover:text-ink hover:bg-bg-raised font-mono text-[11px] font-bold uppercase tracking-[0.12em] transition-colors cursor-pointer"
+                      className="h-9 px-3.5 bg-bg text-muted hover:text-ink hover:bg-bg-raised font-mono text-[11px] font-bold uppercase tracking-[0.12em] transition-colors flex items-center justify-center cursor-pointer"
                     >
                       vs Smallpdf
-                    </button>
+                    </a>
                     <a
                       href="/resume-builder"
                       onClick={(e) => {
@@ -916,13 +936,15 @@ export const App: React.FC = () => {
                     .map((tool, index) => {
                       const Icon = tool.icon;
                       return (
-                        <div
+                        <a
                           key={tool.id}
-                          onClick={() => {
+                          href={tool.href}
+                          onClick={(e) => {
+                            e.preventDefault();
                             tool.action();
                             confetti({ particleCount: 35, spread: 50 });
                           }}
-                          className="bg-bg hover:bg-bg-raised p-6 cursor-pointer group flex flex-col justify-between min-h-[220px] transition-colors"
+                          className="bg-bg hover:bg-bg-raised p-6 cursor-pointer group flex flex-col justify-between min-h-[220px] transition-colors no-underline"
                         >
                           <div className="flex items-center justify-between mb-6">
                             <span className="hud-label text-faint">
@@ -945,7 +967,7 @@ export const App: React.FC = () => {
                               {tool.desc}
                             </p>
                           </div>
-                        </div>
+                        </a>
                       );
                     })}
                 </div>

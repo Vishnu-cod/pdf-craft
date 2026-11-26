@@ -73,15 +73,62 @@ export const SizeSqueezer: React.FC<SizeSqueezerProps> = ({
   ];
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
 
-    const arrayBuffer = await file.arrayBuffer();
-    setPdfBytes(arrayBuffer);
-    setFileName(file.name);
     setResult(null);
     setErrorMessage(null);
-    onFileLoaded?.(file, arrayBuffer);
+    try {
+      if (files.length === 1) {
+        const file = files[0];
+        const arrayBuffer = await file.arrayBuffer();
+        setPdfBytes(arrayBuffer);
+        setFileName(file.name);
+        onFileLoaded?.(file, arrayBuffer);
+      } else {
+        await mergeAndLoadBuffers(files.map((f) => ({ name: f.name, promise: f.arrayBuffer() })), files[0].name);
+      }
+    } catch {
+      setErrorMessage('Failed to load or merge selected PDF file(s). Ensure none are corrupt or encrypted.');
+    }
+    e.target.value = '';
+  };
+
+  const mergeAndLoadBuffers = async (
+    items: Array<{ name: string; promise: Promise<ArrayBuffer> }>,
+    primaryName: string
+  ) => {
+    const { PDFDocument } = await import('@cantoo/pdf-lib');
+    const mergedDoc = await PDFDocument.create();
+    for (const item of items) {
+      const buf = await item.promise;
+      const src = await PDFDocument.load(buf, { ignoreEncryption: true });
+      const copied = await mergedDoc.copyPages(src, src.getPageIndices());
+      copied.forEach((p) => mergedDoc.addPage(p));
+    }
+    const mergedBytes = await mergedDoc.save({ useObjectStreams: true });
+    const mergedBuffer = mergedBytes.buffer.slice(mergedBytes.byteOffset, mergedBytes.byteOffset + mergedBytes.byteLength);
+    const outName = `merged_${primaryName.replace(/\.pdf$/i, '')}.pdf`;
+    setPdfBytes(mergedBuffer);
+    setFileName(outName);
+    setResult(null);
+    onFileLoaded?.(new File([mergedBuffer], outName, { type: 'application/pdf' }), mergedBuffer);
+  };
+
+  const handleAppendMergeUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0 || !pdfBytes) return;
+    setErrorMessage(null);
+    try {
+      const currentCopy = pdfBytes.slice(0);
+      await mergeAndLoadBuffers(
+        [{ name: fileName, promise: Promise.resolve(currentCopy) }, ...files.map((f) => ({ name: f.name, promise: f.arrayBuffer() }))],
+        fileName
+      );
+    } catch {
+      setErrorMessage('Could not append & merge the extra PDF file. Ensure it is not password-locked.');
+    }
+    e.target.value = '';
   };
 
   // Generate realistic ~280KB heavy canvas sample PDF so users on 200KB/100KB pages can test real size shrinking!
@@ -236,11 +283,18 @@ export const SizeSqueezer: React.FC<SizeSqueezerProps> = ({
         </div>
 
         {pdfBytes && (
-          <label className="min-h-[44px] px-4 invert-block hud-label flex items-center gap-2 cursor-pointer shrink-0">
-            <UploadCloud className="w-4 h-4 text-app-ink" />
-            <span>Change PDF</span>
-            <input type="file" accept=".pdf" className="hidden" onChange={handleFileUpload} />
-          </label>
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
+            <label className="min-h-[44px] px-4 border border-line-strong bg-bg-raised hover:bg-bg text-ink-strong hud-label flex items-center gap-2 cursor-pointer transition-colors">
+              <Sparkles className="w-3.5 h-3.5 text-app-ink" />
+              <span>+ Merge Another PDF</span>
+              <input type="file" accept=".pdf" multiple className="hidden" onChange={handleAppendMergeUpload} />
+            </label>
+            <label className="min-h-[44px] px-4 invert-block hud-label flex items-center gap-2 cursor-pointer">
+              <UploadCloud className="w-4 h-4 text-app-ink" />
+              <span>Change PDF</span>
+              <input type="file" accept=".pdf" multiple className="hidden" onChange={handleFileUpload} />
+            </label>
+          </div>
         )}
       </div>
 
@@ -254,14 +308,14 @@ export const SizeSqueezer: React.FC<SizeSqueezerProps> = ({
             Drop your PDF here to compress under {targetKB <= 50 ? '50KB' : targetKB <= 100 ? '100KB' : targetKB <= 200 ? '200KB' : `${targetKB}KB`}
           </h2>
           <p className="font-sans text-xs sm:text-sm text-muted max-w-md mx-auto mb-6">
-            Runs 100% inside local browser memory. Ideal for UPSC, SSC, NEET, GATE, and official identity documents.
+            Select 1 PDF or multiple marksheets to merge &amp; compress strictly into valid portal bounds (100% browser RAM).
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <label className="w-full sm:w-auto min-h-[44px] h-11 px-6 bg-invert-bg text-invert-fg font-mono text-[11px] font-bold uppercase tracking-[0.12em] hover:opacity-85 transition-opacity inline-flex items-center justify-center gap-2 cursor-pointer">
               <UploadCloud className="w-4 h-4" />
-              <span>Select PDF Document</span>
-              <input type="file" accept=".pdf" className="hidden" onChange={handleFileUpload} />
+              <span>Select PDF(s) or Merge Marksheets</span>
+              <input type="file" accept=".pdf" multiple className="hidden" onChange={handleFileUpload} />
             </label>
 
             <button
@@ -507,6 +561,49 @@ export const SizeSqueezer: React.FC<SizeSqueezerProps> = ({
                 </div>
               </div>
 
+              {/* Official Indian Exam Portal Compliance Validator */}
+              <div className="border border-line bg-bg p-4 space-y-3">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <p className="hud-label text-app-ink">PORTAL COMPLIANCE CHECK ({result.compressedSizeKB} KB)</p>
+                  <span className="font-mono text-[10px] text-faint">MIN &amp; MAX FLOOR VERIFIED</span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 text-xs">
+                  {[
+                    { name: 'UPSC OTR', min: 20, max: 200, host: 'upsconline.nic.in' },
+                    { name: 'SSC Portal', min: 10, max: 50, host: 'ssc.gov.in' },
+                    { name: 'GATE GOAPS', min: 10, max: 200, host: 'gate.iitk.ac.in' },
+                    { name: 'NTA NEET UG', min: 50, max: 200, host: 'neet.nta.nic.in' },
+                  ].map((portal) => {
+                    const tooSmall = result.compressedSizeKB < portal.min;
+                    const tooLarge = result.compressedSizeKB > portal.max;
+                    const valid = !tooSmall && !tooLarge;
+                    return (
+                      <div key={portal.name} className="p-2.5 border border-line bg-bg-raised flex flex-col gap-1">
+                        <div className="flex items-center justify-between gap-1">
+                          <span className="font-mono font-bold text-ink-strong">{portal.name}</span>
+                          <span
+                            className={`hud-label text-[9px] px-1.5 py-0.5 border ${
+                              valid
+                                ? 'border-emerald-500/40 text-emerald-400'
+                                : 'border-danger/40 text-danger'
+                            }`}
+                          >
+                            {valid ? 'PASS' : tooSmall ? `< ${portal.min}KB` : `> ${portal.max}KB`}
+                          </span>
+                        </div>
+                        <span className="font-sans text-[10px] text-muted">
+                          {valid
+                            ? `Fits ${portal.min}–${portal.max} KB (${portal.host})`
+                            : tooSmall
+                            ? `Rejected under ${portal.min} KB floor!`
+                            : `Exceeds ${portal.max} KB limit`}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
               {/* First Page Preview */}
               {result.firstPagePreviewUrl && (
                 <div className="pt-2">
@@ -524,6 +621,36 @@ export const SizeSqueezer: React.FC<SizeSqueezerProps> = ({
           )}
         </div>
       )}
+
+      {/* Official Portal Size & Rejection Quick-Fix Reference Table */}
+      <div className="border border-line bg-bg-raised p-4 sm:p-5 space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <p className="hud-label text-app-ink">INDIAN EXAM PORTAL PDF LIMITS &amp; REJECTION FIXES</p>
+          <span className="font-mono text-[10px] text-faint">OFFICIAL BRACKETS</span>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-line border border-line text-xs">
+          <div className="p-3 bg-bg space-y-1">
+            <p className="font-mono font-bold text-ink-strong">UPSC Civil Services / OTR</p>
+            <p className="text-app-ink font-mono text-[11px]">Valid: 20 KB – 200 KB</p>
+            <p className="text-muted text-[11px]">Files under 20 KB or over 200 KB fail upsconline.nic.in checks. Use 195 KB preset.</p>
+          </div>
+          <div className="p-3 bg-bg space-y-1">
+            <p className="font-mono font-bold text-ink-strong">SSC CGL / CHSL / MTS</p>
+            <p className="text-app-ink font-mono text-[11px]">Valid: Strictly &le; 50 KB</p>
+            <p className="text-muted text-[11px]">Set target to 48 KB so ssc.gov.in metadata overhead never crosses 50 KB.</p>
+          </div>
+          <div className="p-3 bg-bg space-y-1">
+            <p className="font-mono font-bold text-ink-strong">IIT GATE GOAPS</p>
+            <p className="text-app-ink font-mono text-[11px]">Valid: 10 KB – 200 KB</p>
+            <p className="text-muted text-[11px]">Category &amp; PwD certificates preserve crisp stamps at 150–195 KB.</p>
+          </div>
+          <div className="p-3 bg-bg space-y-1">
+            <p className="font-mono font-bold text-ink-strong">NTA NEET UG</p>
+            <p className="text-app-ink font-mono text-[11px]">Valid: 50 KB – 200 KB</p>
+            <p className="text-muted text-[11px]">Keep Class 10 &amp; category certificates between 50 KB minimum and 200 KB max.</p>
+          </div>
+        </div>
+      </div>
 
       {/* Companion Portal Presets & Internal SEO Navigation */}
       <div className="border-t border-line pt-6 space-y-4">

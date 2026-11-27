@@ -695,6 +695,27 @@ export const SizeSqueezer: React.FC<SizeSqueezerProps> = ({
             <span className="font-sans text-[11px] text-muted">Hide the first 8 digits permanently before portal KYC uploads.</span>
           </a>
           <a
+            href="/upsc-caste-certificate-compressor"
+            className="p-4 bg-bg hover:bg-bg-raised transition-colors min-h-[44px] flex flex-col justify-between gap-1"
+          >
+            <span className="font-mono text-xs font-bold text-ink-strong">UPSC Caste / EWS Certificate (20–200 KB)</span>
+            <span className="font-sans text-[11px] text-muted">Preserves gazetted stamps &amp; QR seals for upsconline.nic.in OTR.</span>
+          </a>
+          <a
+            href="/ibps-po-signature-photo-compressor"
+            className="p-4 bg-bg hover:bg-bg-raised transition-colors min-h-[44px] flex flex-col justify-between gap-1"
+          >
+            <span className="font-mono text-xs font-bold text-ink-strong">IBPS PO &amp; Clerk Compressor (50 KB)</span>
+            <span className="font-sans text-[11px] text-muted">48 KB safe ceiling for bank declarations, thumb &amp; category forms.</span>
+          </a>
+          <a
+            href="/mask-already-downloaded-aadhaar"
+            className="p-4 bg-bg hover:bg-bg-raised transition-colors min-h-[44px] flex flex-col justify-between gap-1"
+          >
+            <span className="font-mono text-xs font-bold text-ink-strong">Mask Downloaded e-Aadhaar PDF</span>
+            <span className="font-sans text-[11px] text-muted">Scrub first 8 digits offline + verify 0 selectable digits in export.</span>
+          </a>
+          <a
             href="/sign-pdf-no-account"
             className="p-4 bg-bg hover:bg-bg-raised transition-colors min-h-[44px] flex flex-col justify-between gap-1"
           >

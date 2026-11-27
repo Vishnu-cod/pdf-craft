@@ -651,6 +651,63 @@ const pages = [
     ],
   },
   {
+    slug: 'upsc-caste-certificate-compressor',
+    h1: 'UPSC Caste, EWS & OBC-NCL Certificate PDF Compressor (20–200KB)',
+    title: 'UPSC Caste, EWS & OBC Certificate PDF Compressor (20–200KB) | PDFCraft',
+    description: 'Compress UPSC SC/ST, OBC-NCL, and EWS caste certificates strictly between 20KB and 200KB for upsconline.nic.in OTR uploads while preserving gazetted attestation seals.',
+    quickAnswer: 'UPSC OTR requires SC, ST, OBC-NCL, and EWS category certificates to be legible PDFs strictly between 20 KB and 200 KB. PDFCraft targets 195 KB offline in browser RAM, checks the 20 KB minimum floor, and preserves wet stamps and QR verification codes without uploading identity records.',
+    keywords: 'upsc caste certificate pdf compressor, upsc obc ncl certificate size 200kb, upsc ews certificate compress under 200kb, upsconline.nic.in category certificate pdf size',
+    toolName: 'UPSC Caste Certificate 200KB Compressor',
+    howToName: 'How to compress UPSC caste, EWS, or OBC-NCL certificates strictly between 20KB and 200KB',
+    steps: [
+      { name: 'Load Multi-Page or Single Caste Certificate', text: 'Drop your central-format SC/ST, OBC-NCL, or EWS certificate PDF locally in browser RAM with zero server uploads.' },
+      { name: 'Run 195 KB UPSC Preset & Compliance Check', text: 'PDFCraft compresses safely under 200 KB while verifying the file exceeds UPSC 20 KB minimum size floor so QR codes and gazetted stamps stay scannable.' },
+      { name: 'Upload to UPSC OTR Portal', text: 'Download your compliant certificate immediately with zero watermarks or email gates.' },
+    ],
+    faqs: [
+      { q: 'What size limit applies to UPSC OTR caste and EWS certificates?', a: 'UPSC specifies all uploaded PDF certificates (including OBC-NCL, EWS, SC/ST, and PwBD annexures) must fall strictly between 20 KB and 200 KB.' },
+      { q: 'How do I combine a 2-page OBC-NCL certificate under 200 KB without blurry text?', a: 'Use PDFCraft + Merge Another PDF to combine front/back pages in-browser and let the adaptive 195 KB engine preserve sharp contrast around serial numbers and magistrate stamps.' },
+    ],
+  },
+  {
+    slug: 'ibps-po-signature-photo-compressor',
+    h1: 'IBPS PO & Clerk Signature, Thumb & Declaration PDF Compressor Under 50KB',
+    title: 'IBPS PO & Clerk Signature, Thumb & Declaration PDF Compressor | PDFCraft',
+    description: 'Compress IBPS PO, Clerk, and SBI application documents, handwritten declarations, and certificates strictly under 50KB offline in your browser with zero uploads.',
+    quickAnswer: 'IBPS PO, Clerk, RRB, and SBI forms enforce tight ceilings around 50 KB to 200 KB for left-thumb impressions, handwritten declarations, and scorecards. PDFCraft compresses locally to a strict 48 KB buffer inside browser RAM with zero cloud leaks or daily caps.',
+    keywords: 'ibps po signature compressor, ibps handwritten declaration size reducer 50kb, sbi po pdf compressor under 50kb, ibps clerk document size tool',
+    toolName: 'IBPS PO & Clerk 50KB Compressor',
+    howToName: 'How to compress IBPS PO and SBI documents strictly under 50KB offline',
+    steps: [
+      { name: 'Open Your IBPS Scan or Certificate', text: 'Select the document or handwritten declaration PDF directly in your browser without server transmission.' },
+      { name: 'Use 48 KB Strict Buffer', text: 'Leave headroom under 50 KB so portal metadata overhead never triggers an Invalid File Size error.' },
+      { name: 'Verify Bracket & Download', text: 'Inspect the live portal compliance badge and download your compliant PDF immediately.' },
+    ],
+    faqs: [
+      { q: 'Does IBPS reject 50 KB PDFs that cross by a few bytes?', a: 'Yes, banking application portals perform strict byte-level checks. PDFCraft defaults to 48 KB so exported PDFs stay reliably under the 50 KB threshold.' },
+      { q: 'Can I compress bank documents on mobile offline?', a: 'Yes, PDFCraft works cleanly on Android and iPhone browsers using WebAssembly memory without uploading files over mobile data.' },
+    ],
+  },
+  {
+    slug: 'mask-already-downloaded-aadhaar',
+    h1: 'Mask Already Downloaded e-Aadhaar PDF Offline (Hide First 8 Digits)',
+    title: 'Mask Already Downloaded e-Aadhaar PDF Free (Hide First 8 Digits Offline) | PDFCraft',
+    description: 'Forgot to download Masked Aadhaar from UIDAI? Permanently black out the first 8 digits of your existing e-Aadhaar PDF inside browser memory with post-mask verification and zero server uploads.',
+    quickAnswer: 'If you already downloaded an unmasked e-Aadhaar PDF, you do not need to re-download from myAadhaar or upload your ID to a cloud server. PDFCraft scans the PDF locally in browser RAM, burns opaque black pixels over Aadhaar numbers at 200 DPI, strips XMP metadata, and verifies 0 selectable 12-digit numbers remain.',
+    keywords: 'mask already downloaded aadhaar pdf, hide first 8 digits of existing aadhaar pdf offline, convert normal aadhaar pdf to masked aadhaar free, client side aadhaar masking audit',
+    toolName: 'Already-Downloaded e-Aadhaar Masker',
+    howToName: 'How to convert an existing e-Aadhaar PDF into a verified masked Aadhaar offline',
+    steps: [
+      { name: 'Load Already-Downloaded e-Aadhaar PDF', text: 'Drop your unlocked e-Aadhaar PDF (or unlock it locally first) inside browser RAM with zero server upload.' },
+      { name: 'Auto-Detect & Apply 200 DPI Burn-In Mask', text: 'Select the 12-digit Aadhaar matches and run irreversible raster burn-in that purges underlying selectable text.' },
+      { name: 'Inspect Post-Mask Cryptographic Audit', text: 'Verify the exported PDF contains 0 selectable Aadhaar patterns and stripped metadata, then save the receipt.' },
+    ],
+    faqs: [
+      { q: 'How does PDFCraft prove my Aadhaar numbers cannot be copied out later?', a: 'After burning in black pixels at 200 DPI and stripping Title/Author/Keywords metadata, PDFCraft re-scans the output PDF byte stream automatically to verify 0 selectable 12-digit Aadhaar patterns remain.' },
+      { q: 'Should I use unlock-pdf before masking a password-protected e-Aadhaar?', a: 'Yes. Standard UIDAI e-Aadhaar downloads are locked with your 8-character name+year password; unlock it locally via /unlock-pdf and immediately mask it here.' },
+    ],
+  },
+  {
     slug: 'compare/pdfcraft-vs-ilovepdf',
     h1: 'PDFCraft vs iLovePDF — Client-Side Privacy vs Cloud Uploads',
     title: 'PDFCraft vs iLovePDF — In-Browser Client-Side vs Cloud Upload Comparison | PDFCraft',
@@ -839,7 +896,9 @@ for (const page of pages) {
               <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/compress-pdf-300kb">Compress PDF to 300KB</a></li>
               <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/compress-pdf-500kb">Compress PDF to 500KB</a></li>
               <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/upsc-pdf-compressor">UPSC Exam PDF Compressor</a></li>
+              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/upsc-caste-certificate-compressor">UPSC Caste &amp; EWS Certificate Compressor</a></li>
               <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/ssc-cgl-signature-photo-compressor">SSC CGL Photo &amp; Signature</a></li>
+              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/ibps-po-signature-photo-compressor">IBPS PO &amp; Clerk 50KB Compressor</a></li>
               <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/gate-exam-pdf-compressor">GATE Application Compressor</a></li>
               <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/neet-application-pdf-compressor">NEET Application PDF</a></li>
               <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/uscis-visa-pdf-compressor">USCIS Visa PDF Squeezer</a></li>
@@ -866,6 +925,7 @@ for (const page of pages) {
               <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/pdf-leak-checker">PDF Privacy Leak Checker</a></li>
               <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/check-pdf-privacy">Check PDF Metadata Privacy</a></li>
               <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/mask-aadhaar">Mask Aadhaar Number</a></li>
+              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/mask-already-downloaded-aadhaar">Mask Downloaded e-Aadhaar PDF</a></li>
               <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/mask-pan-card">Mask PAN Card Number</a></li>
               <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/verify-signature">Verify Digital Signatures</a></li>
               <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/validate-dsc">Validate DSC Certificate</a></li>

@@ -12,7 +12,7 @@ Sitemap: https://pdf-craft-vert.vercel.app/sitemap.xml
 - **How does Aadhaar / PAN Masking work?** Auto-detects 12-digit Aadhaar or 10-character PAN patterns and applies irreversible pixel raster burn-in (`XXXX-XXXX-1234`), purging underlying vector font glyphs and XMP telemetry metadata.
 - **Can I sign PDFs without creating an account?** Yes. Draw, type, or mobile-QR-sync vector signatures without registration, email gates, or daily task caps.
 
-## Complete Canonical Tool Directory (41 Routes)
+## Complete Canonical Tool Directory (44 Routes)
 ### Target-KB & Exam Portal Compressors
 - Compress PDF to 50KB: https://pdf-craft-vert.vercel.app/compress-pdf-50kb
 - Compress PDF to 100KB: https://pdf-craft-vert.vercel.app/compress-pdf-100kb
@@ -20,13 +20,16 @@ Sitemap: https://pdf-craft-vert.vercel.app/sitemap.xml
 - Compress PDF Under 300KB: https://pdf-craft-vert.vercel.app/compress-pdf-300kb
 - Compress PDF Under 500KB: https://pdf-craft-vert.vercel.app/compress-pdf-500kb
 - UPSC PDF Compressor (20KB–200KB): https://pdf-craft-vert.vercel.app/upsc-pdf-compressor
+- UPSC Caste, EWS & OBC Certificate (20KB–200KB): https://pdf-craft-vert.vercel.app/upsc-caste-certificate-compressor
 - SSC CGL Photo & Signature (Under 50KB): https://pdf-craft-vert.vercel.app/ssc-cgl-signature-photo-compressor
+- IBPS PO & Clerk Signature Compressor (Under 50KB): https://pdf-craft-vert.vercel.app/ibps-po-signature-photo-compressor
 - GATE GOAPS PDF Compressor (Under 200KB): https://pdf-craft-vert.vercel.app/gate-exam-pdf-compressor
 - NTA NEET Application Compressor (Under 200KB): https://pdf-craft-vert.vercel.app/neet-application-pdf-compressor
 - USCIS & CEAC Visa PDF Compressor: https://pdf-craft-vert.vercel.app/uscis-visa-pdf-compressor
 
 ### Privacy, PII Masking & Digital Signatures
 - Mask Aadhaar Card PDF Offline: https://pdf-craft-vert.vercel.app/mask-aadhaar
+- Mask Already Downloaded e-Aadhaar PDF: https://pdf-craft-vert.vercel.app/mask-already-downloaded-aadhaar
 - Mask PAN Card PDF Offline: https://pdf-craft-vert.vercel.app/mask-pan-card
 - Verify PDF Digital Signature (CCA India & AATL): https://pdf-craft-vert.vercel.app/verify-signature
 - Validate DSC Certificate in PDF: https://pdf-craft-vert.vercel.app/validate-dsc

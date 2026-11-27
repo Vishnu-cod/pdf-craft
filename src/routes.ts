@@ -224,6 +224,13 @@ export const APP_ROUTES: RouteConfig[] = [
     description: 'Mask already-downloaded or scanned Aadhaar PDFs offline in your browser. Automatically black out the first 8 digits (XXXX-XXXX-1234) for UIDAI & bank KYC with zero server uploads.',
   },
   {
+    path: '/mask-already-downloaded-aadhaar',
+    tab: 'security-studio',
+    securityStudioSubTab: 'pii_masker',
+    title: 'Mask Already Downloaded e-Aadhaar PDF Free (Hide First 8 Digits Offline) | PDFCraft',
+    description: 'Forgot to download Masked Aadhaar from UIDAI? Permanently black out the first 8 digits on your existing e-Aadhaar PDF inside browser memory with post-mask verification and zero server uploads.',
+  },
+  {
     path: '/mask-pan-card',
     tab: 'security-studio',
     securityStudioSubTab: 'pii_masker',
@@ -302,6 +309,22 @@ export const APP_ROUTES: RouteConfig[] = [
     title: 'NEET Application PDF Compressor Under 200KB (NTA Compliant) | PDFCraft',
     description: 'Compress 10th pass certificates, citizenship proof, and category certificates strictly under 200KB for NTA NEET UG application portal.',
   },
+  {
+    path: '/upsc-caste-certificate-compressor',
+    tab: 'tools',
+    subTool: 'size-squeezer',
+    targetKB: 195,
+    title: 'UPSC Caste, EWS & OBC Certificate PDF Compressor (20–200KB) | PDFCraft',
+    description: 'Compress UPSC SC/ST, OBC-NCL, and EWS caste certificates strictly between 20KB and 200KB for upsconline.nic.in OTR uploads while preserving gazetted attestation seals.',
+  },
+  {
+    path: '/ibps-po-signature-photo-compressor',
+    tab: 'tools',
+    subTool: 'size-squeezer',
+    targetKB: 48,
+    title: 'IBPS PO & Clerk Signature, Thumb & Declaration PDF Compressor | PDFCraft',
+    description: 'Compress IBPS PO, Clerk, and SBI application documents, handwritten declarations, and certificates strictly under 50KB offline in your browser with zero uploads.',
+  },
 
   // 10. Contrarian Competitor Comparisons
   {
@@ -339,6 +362,7 @@ export function matchRoute(pathname: string): RouteConfig {
     return APP_ROUTES.find((r) => r.path === '/pdf-leak-checker')!;
   }
   if (normalized.includes('upsc')) return APP_ROUTES.find((r) => r.path === '/upsc-pdf-compressor')!;
+  if (normalized.includes('ibps') || normalized.includes('sbi-po')) return APP_ROUTES.find((r) => r.path === '/ibps-po-signature-photo-compressor')!;
   if (normalized.includes('ssc')) return APP_ROUTES.find((r) => r.path === '/ssc-cgl-signature-photo-compressor')!;
   if (normalized.includes('gate')) return APP_ROUTES.find((r) => r.path === '/gate-exam-pdf-compressor')!;
   if (normalized.includes('uscis') || normalized.includes('visa-pdf')) return APP_ROUTES.find((r) => r.path === '/uscis-visa-pdf-compressor')!;

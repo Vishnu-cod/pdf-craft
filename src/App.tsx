@@ -1250,6 +1250,8 @@ export const App: React.FC = () => {
                     initialFile={currentFile}
                     initialPdfBytes={currentBytes || undefined}
                     initialSubTab={securityStudioSubTab}
+                    routeTitle={activeRouteTitle}
+                    routeSubtitle={activeRouteDescription}
                     onFileLoaded={handleFileLoaded}
                   />
                 )}
@@ -1321,7 +1323,9 @@ export const App: React.FC = () => {
                 <li><a href="/compress-pdf-100kb" onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'size-squeezer-100kb', undefined, 95); }} className="hover:text-app-ink transition-colors">Compress 100KB</a></li>
                 <li><a href="/compress-pdf-200kb" onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'size-squeezer-200kb', undefined, 195); }} className="hover:text-app-ink transition-colors">Compress 200KB</a></li>
                 <li><a href="/upsc-pdf-compressor" onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'upsc-pdf-compressor', undefined, 195); }} className="hover:text-app-ink transition-colors">UPSC Exam PDF</a></li>
+                <li><a href="/upsc-caste-certificate-compressor" onClick={(e) => { e.preventDefault(); window.history.pushState(null, '', '/upsc-caste-certificate-compressor'); window.dispatchEvent(new PopStateEvent('popstate')); }} className="hover:text-app-ink transition-colors">UPSC Caste Certificate</a></li>
                 <li><a href="/ssc-cgl-signature-photo-compressor" onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'ssc-cgl-signature-photo-compressor', undefined, 48); }} className="hover:text-app-ink transition-colors">SSC Signature 50KB</a></li>
+                <li><a href="/ibps-po-signature-photo-compressor" onClick={(e) => { e.preventDefault(); window.history.pushState(null, '', '/ibps-po-signature-photo-compressor'); window.dispatchEvent(new PopStateEvent('popstate')); }} className="hover:text-app-ink transition-colors">IBPS PO 50KB PDF</a></li>
               </ul>
             </div>
 
@@ -1342,6 +1346,7 @@ export const App: React.FC = () => {
               <p className="hud-label text-ink-strong mb-3">Security</p>
               <ul className="space-y-2">
                 <li><a href="/mask-aadhaar" onClick={(e) => { e.preventDefault(); navigateToTab('security-studio', undefined, undefined, undefined, undefined, 'pii_masker'); }} className="hover:text-app-ink transition-colors">Mask Aadhaar Card</a></li>
+                <li><a href="/mask-already-downloaded-aadhaar" onClick={(e) => { e.preventDefault(); window.history.pushState(null, '', '/mask-already-downloaded-aadhaar'); window.dispatchEvent(new PopStateEvent('popstate')); }} className="hover:text-app-ink transition-colors">Mask e-Aadhaar PDF</a></li>
                 <li><a href="/pdf-leak-checker" onClick={(e) => { e.preventDefault(); navigateToTab('security-studio', undefined, undefined, undefined, undefined, 'leak_checker'); }} className="hover:text-app-ink transition-colors">Privacy Leak Check</a></li>
                 <li><a href="/verify-signature" onClick={(e) => { e.preventDefault(); navigateToTab('security-studio', undefined, undefined, undefined, undefined, 'signature_validator'); }} className="hover:text-app-ink transition-colors">Verify eSignature</a></li>
                 <li><a href="/contract-risk-radar" onClick={(e) => { e.preventDefault(); navigateToTab('tools', 'risk-radar'); }} className="hover:text-app-ink transition-colors">Contract Risk Radar</a></li>

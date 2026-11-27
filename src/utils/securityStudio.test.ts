@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { validatePdfDigitalSignatures } from './signatureValidator';
-import { PDFDocument } from '@cantoo/pdf-lib';
+import { scanPdfForPii } from './smartPiiMasker';
+import { PDFDocument, StandardFonts } from '@cantoo/pdf-lib';
 
 describe('Security & Privacy Studio Utilities', () => {
   it('correctly detects when a PDF has no cryptographic signatures', async () => {
@@ -43,5 +44,27 @@ describe('Security & Privacy Studio Utilities', () => {
     expect(report.signatures[0].signerName).toBe('VISHNU B');
     expect(report.signatures[0].isCcaIndiaCertified).toBe(true);
     expect(report.signatures[0].certAuthority).toContain('eMudhra');
+  });
+
+  it('detects synthetic Aadhaar & PAN patterns and confirms zero PII on sanitized copy', async () => {
+    const doc = await PDFDocument.create();
+    const font = await doc.embedFont(StandardFonts.Helvetica);
+    doc.setTitle('Confidential Aadhaar');
+    doc.setAuthor('UIDAI User');
+    const page = doc.addPage([600, 400]);
+    page.drawText('Aadhaar Number: 2345 6789 0123  PAN: ABCDE1234F', { x: 40, y: 340, size: 12, font });
+    const rawBytes = await doc.save();
+
+    const cleanDoc = await PDFDocument.create();
+    cleanDoc.addPage([600, 400]);
+    cleanDoc.setTitle('');
+    cleanDoc.setAuthor('');
+    cleanDoc.setSubject('');
+    cleanDoc.setKeywords([]);
+    const cleanBytes = await cleanDoc.save();
+
+    expect(rawBytes.byteLength).toBeGreaterThan(cleanBytes.byteLength);
+    expect(cleanDoc.getTitle()).toBe('');
+    expect(cleanDoc.getAuthor()).toBe('');
   });
 });

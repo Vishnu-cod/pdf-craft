@@ -80,7 +80,8 @@ const PII_PATTERNS = [
  */
 export async function scanPdfForPii(pdfData: ArrayBuffer): Promise<DetectedPiiItem[]> {
   const pdfjsLib = await import('pdfjs-dist');
-  const loadingTask = pdfjsLib.getDocument({ data: new Uint8Array(pdfData) });
+  const clonedBuffer = pdfData.slice(0);
+  const loadingTask = pdfjsLib.getDocument({ data: new Uint8Array(clonedBuffer) });
   const doc = await loadingTask.promise;
   const detectedItems: DetectedPiiItem[] = [];
 

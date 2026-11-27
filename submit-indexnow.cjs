@@ -1,33 +1,11 @@
+const fs = require('fs');
+const path = require('path');
 const https = require('https');
 
-const urls = [
-  "https://pdf-craft-vert.vercel.app/",
-  "https://pdf-craft-vert.vercel.app/compress-pdf-50kb",
-  "https://pdf-craft-vert.vercel.app/compress-pdf-100kb",
-  "https://pdf-craft-vert.vercel.app/compress-pdf-200kb",
-  "https://pdf-craft-vert.vercel.app/compress-pdf-300kb",
-  "https://pdf-craft-vert.vercel.app/compress-pdf-500kb",
-  "https://pdf-craft-vert.vercel.app/pdf-to-word",
-  "https://pdf-craft-vert.vercel.app/pdf-to-excel",
-  "https://pdf-craft-vert.vercel.app/jpg-to-pdf",
-  "https://pdf-craft-vert.vercel.app/png-to-pdf",
-  "https://pdf-craft-vert.vercel.app/pdf-to-jpg",
-  "https://pdf-craft-vert.vercel.app/extract-pdf-images",
-  "https://pdf-craft-vert.vercel.app/sign-pdf",
-  "https://pdf-craft-vert.vercel.app/sign-pdf-no-account",
-  "https://pdf-craft-vert.vercel.app/redact-pdf",
-  "https://pdf-craft-vert.vercel.app/merge-pdf",
-  "https://pdf-craft-vert.vercel.app/split-pdf",
-  "https://pdf-craft-vert.vercel.app/rotate-pdf",
-  "https://pdf-craft-vert.vercel.app/delete-pdf-pages",
-  "https://pdf-craft-vert.vercel.app/protect-pdf",
-  "https://pdf-craft-vert.vercel.app/unlock-pdf",
-  "https://pdf-craft-vert.vercel.app/resume-builder",
-  "https://pdf-craft-vert.vercel.app/contract-risk-radar",
-  "https://pdf-craft-vert.vercel.app/ilovepdf-alternative",
-  "https://pdf-craft-vert.vercel.app/smallpdf-alternative",
-  "https://pdf-craft-vert.vercel.app/docusign-alternative"
-];
+// Dynamically read all canonical <loc> URLs from public/sitemap.xml
+const sitemapPath = path.resolve(__dirname, 'public', 'sitemap.xml');
+const sitemapContent = fs.readFileSync(sitemapPath, 'utf-8');
+const urls = Array.from(sitemapContent.matchAll(/<loc>(.*?)<\/loc>/g), (m) => m[1].trim()).filter(Boolean);
 
 const data = JSON.stringify({
   host: "pdf-craft-vert.vercel.app",

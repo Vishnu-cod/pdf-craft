@@ -6,7 +6,7 @@ PDFCraft Studio executes all PDF parsing, target-size compression, Aadhaar/PAN r
 
 ## Supported Versions
 
-Security fixes apply directly to the latest `main` branch deployed at `https://pdf-craft-vert.vercel.app/`.
+Security fixes apply directly to the latest `main` branch deployed at `https://usepdfcraft.xyz/`.
 
 ## Reporting a Vulnerability
 

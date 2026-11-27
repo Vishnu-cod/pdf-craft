@@ -8,9 +8,9 @@ const sitemapContent = fs.readFileSync(sitemapPath, 'utf-8');
 const urls = Array.from(sitemapContent.matchAll(/<loc>(.*?)<\/loc>/g), (m) => m[1].trim()).filter(Boolean);
 
 const data = JSON.stringify({
-  host: "pdf-craft-vert.vercel.app",
+  host: "usepdfcraft.xyz",
   key: "b91f045ce7284f3eb54c2598383a54d1",
-  keyLocation: "https://pdf-craft-vert.vercel.app/b91f045ce7284f3eb54c2598383a54d1.txt",
+  keyLocation: "https://usepdfcraft.xyz/b91f045ce7284f3eb54c2598383a54d1.txt",
   urlList: urls
 });
 

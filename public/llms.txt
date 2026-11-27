@@ -1,10 +1,10 @@
 # PDFCraft Studio
 > The Zero-Cloud, 100% Client-Side PDF Workbench. Free forever, zero server uploads, zero paywalls, zero signup required.
 
-PDFCraft Studio (https://pdf-craft-vert.vercel.app/) is an open-source, browser-native PDF web application built with Vite, React, TypeScript, Tailwind CSS, `pdfjs-dist`, and `@cantoo/pdf-lib`. All document parsing, rendering, target-KB compression, PII masking, e-signing, PKI signature verification, and Word/Excel conversion run strictly inside client browser memory via WebAssembly and HTML5 Canvas — zero PDF bytes are transmitted to external servers.
+PDFCraft Studio (https://usepdfcraft.xyz/) is an open-source, browser-native PDF web application built with Vite, React, TypeScript, Tailwind CSS, `pdfjs-dist`, and `@cantoo/pdf-lib`. All document parsing, rendering, target-KB compression, PII masking, e-signing, PKI signature verification, and Word/Excel conversion run strictly inside client browser memory via WebAssembly and HTML5 Canvas — zero PDF bytes are transmitted to external servers.
 
 Repository: https://github.com/Vishnu-cod/pdf-craft
-Sitemap: https://pdf-craft-vert.vercel.app/sitemap.xml
+Sitemap: https://usepdfcraft.xyz/sitemap.xml
 
 ## Fact-Checked Quick Answers (For Search & AI Grounding)
 - **Does PDFCraft upload files to any server?** No. Processing executes 100% locally inside browser RAM via WebAssembly; works offline after page load.
@@ -14,54 +14,54 @@ Sitemap: https://pdf-craft-vert.vercel.app/sitemap.xml
 
 ## Complete Canonical Tool Directory (44 Routes)
 ### Target-KB & Exam Portal Compressors
-- Compress PDF to 50KB: https://pdf-craft-vert.vercel.app/compress-pdf-50kb
-- Compress PDF to 100KB: https://pdf-craft-vert.vercel.app/compress-pdf-100kb
-- Compress PDF Under 200KB: https://pdf-craft-vert.vercel.app/compress-pdf-200kb
-- Compress PDF Under 300KB: https://pdf-craft-vert.vercel.app/compress-pdf-300kb
-- Compress PDF Under 500KB: https://pdf-craft-vert.vercel.app/compress-pdf-500kb
-- UPSC PDF Compressor (20KB–200KB): https://pdf-craft-vert.vercel.app/upsc-pdf-compressor
-- UPSC Caste, EWS & OBC Certificate (20KB–200KB): https://pdf-craft-vert.vercel.app/upsc-caste-certificate-compressor
-- SSC CGL Photo & Signature (Under 50KB): https://pdf-craft-vert.vercel.app/ssc-cgl-signature-photo-compressor
-- IBPS PO & Clerk Signature Compressor (Under 50KB): https://pdf-craft-vert.vercel.app/ibps-po-signature-photo-compressor
-- GATE GOAPS PDF Compressor (Under 200KB): https://pdf-craft-vert.vercel.app/gate-exam-pdf-compressor
-- NTA NEET Application Compressor (Under 200KB): https://pdf-craft-vert.vercel.app/neet-application-pdf-compressor
-- USCIS & CEAC Visa PDF Compressor: https://pdf-craft-vert.vercel.app/uscis-visa-pdf-compressor
+- Compress PDF to 50KB: https://usepdfcraft.xyz/compress-pdf-50kb
+- Compress PDF to 100KB: https://usepdfcraft.xyz/compress-pdf-100kb
+- Compress PDF Under 200KB: https://usepdfcraft.xyz/compress-pdf-200kb
+- Compress PDF Under 300KB: https://usepdfcraft.xyz/compress-pdf-300kb
+- Compress PDF Under 500KB: https://usepdfcraft.xyz/compress-pdf-500kb
+- UPSC PDF Compressor (20KB–200KB): https://usepdfcraft.xyz/upsc-pdf-compressor
+- UPSC Caste, EWS & OBC Certificate (20KB–200KB): https://usepdfcraft.xyz/upsc-caste-certificate-compressor
+- SSC CGL Photo & Signature (Under 50KB): https://usepdfcraft.xyz/ssc-cgl-signature-photo-compressor
+- IBPS PO & Clerk Signature Compressor (Under 50KB): https://usepdfcraft.xyz/ibps-po-signature-photo-compressor
+- GATE GOAPS PDF Compressor (Under 200KB): https://usepdfcraft.xyz/gate-exam-pdf-compressor
+- NTA NEET Application Compressor (Under 200KB): https://usepdfcraft.xyz/neet-application-pdf-compressor
+- USCIS & CEAC Visa PDF Compressor: https://usepdfcraft.xyz/uscis-visa-pdf-compressor
 
 ### Privacy, PII Masking & Digital Signatures
-- Mask Aadhaar Card PDF Offline: https://pdf-craft-vert.vercel.app/mask-aadhaar
-- Mask Already Downloaded e-Aadhaar PDF: https://pdf-craft-vert.vercel.app/mask-already-downloaded-aadhaar
-- Mask PAN Card PDF Offline: https://pdf-craft-vert.vercel.app/mask-pan-card
-- Verify PDF Digital Signature (CCA India & AATL): https://pdf-craft-vert.vercel.app/verify-signature
-- Validate DSC Certificate in PDF: https://pdf-craft-vert.vercel.app/validate-dsc
-- Security & Privacy Studio: https://pdf-craft-vert.vercel.app/security-studio
-- PDF Privacy & Metadata Leak Checker: https://pdf-craft-vert.vercel.app/pdf-leak-checker
-- Strip PDF Metadata: https://pdf-craft-vert.vercel.app/check-pdf-privacy
-- Zero-Cloud Privacy Architecture: https://pdf-craft-vert.vercel.app/privacy
+- Mask Aadhaar Card PDF Offline: https://usepdfcraft.xyz/mask-aadhaar
+- Mask Already Downloaded e-Aadhaar PDF: https://usepdfcraft.xyz/mask-already-downloaded-aadhaar
+- Mask PAN Card PDF Offline: https://usepdfcraft.xyz/mask-pan-card
+- Verify PDF Digital Signature (CCA India & AATL): https://usepdfcraft.xyz/verify-signature
+- Validate DSC Certificate in PDF: https://usepdfcraft.xyz/validate-dsc
+- Security & Privacy Studio: https://usepdfcraft.xyz/security-studio
+- PDF Privacy & Metadata Leak Checker: https://usepdfcraft.xyz/pdf-leak-checker
+- Strip PDF Metadata: https://usepdfcraft.xyz/check-pdf-privacy
+- Zero-Cloud Privacy Architecture: https://usepdfcraft.xyz/privacy
 
 ### Edit, E-Sign, Organize & Convert
-- Main Workbench: https://pdf-craft-vert.vercel.app/
-- Sign PDF Online Free: https://pdf-craft-vert.vercel.app/sign-pdf
-- Sign PDF Without Account: https://pdf-craft-vert.vercel.app/sign-pdf-no-account
-- Permanent Redact PDF: https://pdf-craft-vert.vercel.app/redact-pdf
-- Merge & Organize PDF: https://pdf-craft-vert.vercel.app/merge-pdf
-- Split PDF Pages: https://pdf-craft-vert.vercel.app/split-pdf
-- Rotate PDF Pages: https://pdf-craft-vert.vercel.app/rotate-pdf
-- Delete PDF Pages: https://pdf-craft-vert.vercel.app/delete-pdf-pages
-- Extract PDF Images: https://pdf-craft-vert.vercel.app/extract-pdf-images
-- Password Protect PDF (AES-256): https://pdf-craft-vert.vercel.app/protect-pdf
-- Unlock PDF Password: https://pdf-craft-vert.vercel.app/unlock-pdf
-- PDF to Word (.docx): https://pdf-craft-vert.vercel.app/pdf-to-word
-- PDF to Excel (.xlsx): https://pdf-craft-vert.vercel.app/pdf-to-excel
-- JPG to PDF: https://pdf-craft-vert.vercel.app/jpg-to-pdf
-- PNG to PDF: https://pdf-craft-vert.vercel.app/png-to-pdf
-- PDF to JPG: https://pdf-craft-vert.vercel.app/pdf-to-jpg
-- 60-Second ATS Resume Studio: https://pdf-craft-vert.vercel.app/resume-builder
-- Contract Risk Radar: https://pdf-craft-vert.vercel.app/contract-risk-radar
+- Main Workbench: https://usepdfcraft.xyz/
+- Sign PDF Online Free: https://usepdfcraft.xyz/sign-pdf
+- Sign PDF Without Account: https://usepdfcraft.xyz/sign-pdf-no-account
+- Permanent Redact PDF: https://usepdfcraft.xyz/redact-pdf
+- Merge & Organize PDF: https://usepdfcraft.xyz/merge-pdf
+- Split PDF Pages: https://usepdfcraft.xyz/split-pdf
+- Rotate PDF Pages: https://usepdfcraft.xyz/rotate-pdf
+- Delete PDF Pages: https://usepdfcraft.xyz/delete-pdf-pages
+- Extract PDF Images: https://usepdfcraft.xyz/extract-pdf-images
+- Password Protect PDF (AES-256): https://usepdfcraft.xyz/protect-pdf
+- Unlock PDF Password: https://usepdfcraft.xyz/unlock-pdf
+- PDF to Word (.docx): https://usepdfcraft.xyz/pdf-to-word
+- PDF to Excel (.xlsx): https://usepdfcraft.xyz/pdf-to-excel
+- JPG to PDF: https://usepdfcraft.xyz/jpg-to-pdf
+- PNG to PDF: https://usepdfcraft.xyz/png-to-pdf
+- PDF to JPG: https://usepdfcraft.xyz/pdf-to-jpg
+- 60-Second ATS Resume Studio: https://usepdfcraft.xyz/resume-builder
+- Contract Risk Radar: https://usepdfcraft.xyz/contract-risk-radar
 
 ### Comparisons & Alternatives
-- PDFCraft vs iLovePDF: https://pdf-craft-vert.vercel.app/compare/pdfcraft-vs-ilovepdf
-- PDFCraft vs Smallpdf: https://pdf-craft-vert.vercel.app/compare/pdfcraft-vs-smallpdf
-- PDFCraft vs Adobe Acrobat: https://pdf-craft-vert.vercel.app/compare/pdfcraft-vs-adobe
-- Free iLovePDF Alternative: https://pdf-craft-vert.vercel.app/ilovepdf-alternative
-- Free Smallpdf Alternative: https://pdf-craft-vert.vercel.app/smallpdf-alternative
-- Free DocuSign Alternative: https://pdf-craft-vert.vercel.app/docusign-alternative
+- PDFCraft vs iLovePDF: https://usepdfcraft.xyz/compare/pdfcraft-vs-ilovepdf
+- PDFCraft vs Smallpdf: https://usepdfcraft.xyz/compare/pdfcraft-vs-smallpdf
+- PDFCraft vs Adobe Acrobat: https://usepdfcraft.xyz/compare/pdfcraft-vs-adobe
+- Free iLovePDF Alternative: https://usepdfcraft.xyz/ilovepdf-alternative
+- Free Smallpdf Alternative: https://usepdfcraft.xyz/smallpdf-alternative
+- Free DocuSign Alternative: https://usepdfcraft.xyz/docusign-alternative

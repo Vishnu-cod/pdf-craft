@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://pdf-craft-vert.vercel.app/sitemap.xml
+Sitemap: https://usepdfcraft.xyz/sitemap.xml

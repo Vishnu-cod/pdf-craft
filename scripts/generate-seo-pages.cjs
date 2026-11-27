@@ -772,7 +772,7 @@ for (const page of pages) {
     fs.mkdirSync(pageDir, { recursive: true });
   }
 
-  const canonicalUrl = `https://pdf-craft-vert.vercel.app/${page.slug}`;
+  const canonicalUrl = `https://usepdfcraft.xyz/${page.slug}`;
 
   // Structured Data (JSON-LD) for Google Rich Snippets
   const structuredData = {
@@ -794,9 +794,9 @@ for (const page of pages) {
         },
         author: {
           '@type': 'Organization',
-          '@id': 'https://pdf-craft-vert.vercel.app/#org',
+          '@id': 'https://usepdfcraft.xyz/#org',
           name: 'PDFCraft Studio',
-          url: 'https://pdf-craft-vert.vercel.app/',
+          url: 'https://usepdfcraft.xyz/',
           sameAs: [
             'https://github.com/Vishnu-cod/pdf-craft',
           ],
@@ -809,7 +809,7 @@ for (const page of pages) {
         name: page.title,
         description: page.description,
         isPartOf: {
-          '@id': 'https://pdf-craft-vert.vercel.app/#org',
+          '@id': 'https://usepdfcraft.xyz/#org',
         },
         speakable: {
           '@type': 'SpeakableSpecification',
@@ -823,7 +823,7 @@ for (const page of pages) {
             '@type': 'ListItem',
             position: 1,
             name: 'Home',
-            item: 'https://pdf-craft-vert.vercel.app/',
+            item: 'https://usepdfcraft.xyz/',
           },
           {
             '@type': 'ListItem',
@@ -890,67 +890,67 @@ for (const page of pages) {
           <div>
             <h3 style="font-size:0.95rem;margin:0 0 8px 0;color:#f2f1ee;">Target PDF Compression</h3>
             <ul style="padding-left:18px;margin:0;">
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/compress-pdf-50kb">Compress PDF to 50KB</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/compress-pdf-100kb">Compress PDF to 100KB</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/compress-pdf-200kb">Compress PDF to 200KB</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/compress-pdf-300kb">Compress PDF to 300KB</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/compress-pdf-500kb">Compress PDF to 500KB</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/upsc-pdf-compressor">UPSC Exam PDF Compressor</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/upsc-caste-certificate-compressor">UPSC Caste &amp; EWS Certificate Compressor</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/ssc-cgl-signature-photo-compressor">SSC CGL Photo &amp; Signature</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/ibps-po-signature-photo-compressor">IBPS PO &amp; Clerk 50KB Compressor</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/gate-exam-pdf-compressor">GATE Application Compressor</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/neet-application-pdf-compressor">NEET Application PDF</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/uscis-visa-pdf-compressor">USCIS Visa PDF Squeezer</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/compress-pdf-50kb">Compress PDF to 50KB</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/compress-pdf-100kb">Compress PDF to 100KB</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/compress-pdf-200kb">Compress PDF to 200KB</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/compress-pdf-300kb">Compress PDF to 300KB</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/compress-pdf-500kb">Compress PDF to 500KB</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/upsc-pdf-compressor">UPSC Exam PDF Compressor</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/upsc-caste-certificate-compressor">UPSC Caste &amp; EWS Certificate Compressor</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/ssc-cgl-signature-photo-compressor">SSC CGL Photo &amp; Signature</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/ibps-po-signature-photo-compressor">IBPS PO &amp; Clerk 50KB Compressor</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/gate-exam-pdf-compressor">GATE Application Compressor</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/neet-application-pdf-compressor">NEET Application PDF</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/uscis-visa-pdf-compressor">USCIS Visa PDF Squeezer</a></li>
             </ul>
           </div>
           <div>
             <h3 style="font-size:0.95rem;margin:0 0 8px 0;color:#f2f1ee;">Core PDF Management</h3>
             <ul style="padding-left:18px;margin:0;">
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/merge-pdf">Merge PDF Online Free</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/split-pdf">Split PDF Pages</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/rotate-pdf">Rotate PDF Pages</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/delete-pdf-pages">Delete PDF Pages</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/extract-pdf-images">Extract Images from PDF</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/sign-pdf">Sign PDF Online</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/sign-pdf-no-account">Sign PDF (No Account)</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/redact-pdf">Blackout &amp; Redact PDF</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/protect-pdf">Protect &amp; Encrypt PDF</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/unlock-pdf">Unlock Password PDF</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/merge-pdf">Merge PDF Online Free</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/split-pdf">Split PDF Pages</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/rotate-pdf">Rotate PDF Pages</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/delete-pdf-pages">Delete PDF Pages</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/extract-pdf-images">Extract Images from PDF</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/sign-pdf">Sign PDF Online</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/sign-pdf-no-account">Sign PDF (No Account)</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/redact-pdf">Blackout &amp; Redact PDF</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/protect-pdf">Protect &amp; Encrypt PDF</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/unlock-pdf">Unlock Password PDF</a></li>
             </ul>
           </div>
           <div>
             <h3 style="font-size:0.95rem;margin:0 0 8px 0;color:#f2f1ee;">Security &amp; Conversions</h3>
             <ul style="padding-left:18px;margin:0;">
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/pdf-leak-checker">PDF Privacy Leak Checker</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/check-pdf-privacy">Check PDF Metadata Privacy</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/mask-aadhaar">Mask Aadhaar Number</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/mask-already-downloaded-aadhaar">Mask Downloaded e-Aadhaar PDF</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/mask-pan-card">Mask PAN Card Number</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/verify-signature">Verify Digital Signatures</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/validate-dsc">Validate DSC Certificate</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/security-studio">Security &amp; Privacy Studio</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/contract-risk-radar">Contract Risk Radar</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/pdf-to-word">PDF to Word (.docx)</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/pdf-to-excel">PDF to Excel (.xlsx)</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/jpg-to-pdf">JPG to PDF &amp; PNG to PDF</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/pdf-leak-checker">PDF Privacy Leak Checker</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/check-pdf-privacy">Check PDF Metadata Privacy</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/mask-aadhaar">Mask Aadhaar Number</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/mask-already-downloaded-aadhaar">Mask Downloaded e-Aadhaar PDF</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/mask-pan-card">Mask PAN Card Number</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/verify-signature">Verify Digital Signatures</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/validate-dsc">Validate DSC Certificate</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/security-studio">Security &amp; Privacy Studio</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/contract-risk-radar">Contract Risk Radar</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/pdf-to-word">PDF to Word (.docx)</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/pdf-to-excel">PDF to Excel (.xlsx)</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/jpg-to-pdf">JPG to PDF &amp; PNG to PDF</a></li>
             </ul>
           </div>
           <div>
             <h3 style="font-size:0.95rem;margin:0 0 8px 0;color:#f2f1ee;">Comparisons &amp; Resources</h3>
             <ul style="padding-left:18px;margin:0;">
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/compare/pdfcraft-vs-ilovepdf">PDFCraft vs iLovePDF</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/compare/pdfcraft-vs-smallpdf">PDFCraft vs Smallpdf</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/compare/pdfcraft-vs-adobe">PDFCraft vs Adobe Acrobat</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/ilovepdf-alternative">iLovePDF Alternative</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/smallpdf-alternative">Smallpdf Alternative</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/docusign-alternative">DocuSign Alternative</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/resume-builder">ATS Resume Builder</a></li>
-              <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/privacy">Zero-Cloud Privacy Policy</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/compare/pdfcraft-vs-ilovepdf">PDFCraft vs iLovePDF</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/compare/pdfcraft-vs-smallpdf">PDFCraft vs Smallpdf</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/compare/pdfcraft-vs-adobe">PDFCraft vs Adobe Acrobat</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/ilovepdf-alternative">iLovePDF Alternative</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/smallpdf-alternative">Smallpdf Alternative</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/docusign-alternative">DocuSign Alternative</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/resume-builder">ATS Resume Builder</a></li>
+              <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/privacy">Zero-Cloud Privacy Policy</a></li>
             </ul>
           </div>
         </div>
-        <p style="margin-top:20px;"><a style="color:#f2f1ee;" href="https://pdf-craft-vert.vercel.app/">← Return to PDFCraft Home Directory</a></p>
+        <p style="margin-top:20px;"><a style="color:#f2f1ee;" href="https://usepdfcraft.xyz/">← Return to PDFCraft Home Directory</a></p>
       </nav>
     </main>
   `;
@@ -1004,7 +1004,7 @@ const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 ${allRoutes
   .map(
     (r) => `  <url>
-    <loc>https://pdf-craft-vert.vercel.app/${r.path}</loc>
+    <loc>https://usepdfcraft.xyz/${r.path}</loc>
     <lastmod>${buildDate}</lastmod>
     <changefreq>${r.changefreq}</changefreq>
     <priority>${r.priority}</priority>
@@ -1022,11 +1022,11 @@ const privacyBody = `
     <p style="font-family:monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#f23a62;margin:0 0 12px 0;">PDFCraft · Security Architecture</p>
     <h1 style="font-size:clamp(1.85rem,4vw,2.75rem);line-height:1.1;margin:0 0 16px 0;color:#ffffff;">Zero-Cloud Client-Side Privacy Policy</h1>
     <p style="color:rgba(242,241,238,0.82);">All PDF editing, compression, signature rendering, Aadhaar masking, and file conversions execute strictly inside your local browser memory via WebAssembly. Zero files leave your device.</p>
-    <p style="margin-top:20px;"><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/">← Return to PDFCraft Home</a></p>
+    <p style="margin-top:20px;"><a style="color:#f23a62;" href="https://usepdfcraft.xyz/">← Return to PDFCraft Home</a></p>
   </main>`;
 const privacyHtml = baseHtml
   .replace(/<title>.*?<\/title>/is, '<title>Zero-Cloud Privacy Policy &amp; Security Guarantee | PDFCraft</title>')
-  .replace(/<link rel="canonical" href=".*?" \/>/is, '<link rel="canonical" href="https://pdf-craft-vert.vercel.app/privacy" />')
+  .replace(/<link rel="canonical" href=".*?" \/>/is, '<link rel="canonical" href="https://usepdfcraft.xyz/privacy" />')
   .replace('<div id="root"></div>', `<div id="root">${privacyBody}</div>`);
 fs.writeFileSync(path.join(privacyDir, 'index.html'), privacyHtml, 'utf-8');
 
@@ -1042,12 +1042,12 @@ const homeBody = `
     <p style="color:rgba(242,241,238,0.82);margin:0 0 20px 0;">Edit, e-sign without an account, mask Aadhaar/PAN IDs, compress PDFs strictly under 100KB or 200KB for UPSC/SSC/exam portals, and convert PDF to Word or Excel locally in your browser via WebAssembly.</p>
     <nav aria-label="Popular PDFCraft Tools">
       <ul style="padding-left:20px;margin:0;">
-        <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/upsc-pdf-compressor">UPSC PDF Compressor Under 200KB</a></li>
-        <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/compress-pdf-200kb">Compress PDF Under 200KB Free</a></li>
-        <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/compress-pdf-100kb">Compress PDF Strictly Under 100KB</a></li>
-        <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/mask-aadhaar">Mask Aadhaar Card PDF Offline</a></li>
-        <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/sign-pdf-no-account">Sign PDF Online Without Account</a></li>
-        <li><a style="color:#f23a62;" href="https://pdf-craft-vert.vercel.app/pdf-to-word">Convert PDF to Word (.docx) Free</a></li>
+        <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/upsc-pdf-compressor">UPSC PDF Compressor Under 200KB</a></li>
+        <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/compress-pdf-200kb">Compress PDF Under 200KB Free</a></li>
+        <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/compress-pdf-100kb">Compress PDF Strictly Under 100KB</a></li>
+        <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/mask-aadhaar">Mask Aadhaar Card PDF Offline</a></li>
+        <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/sign-pdf-no-account">Sign PDF Online Without Account</a></li>
+        <li><a style="color:#f23a62;" href="https://usepdfcraft.xyz/pdf-to-word">Convert PDF to Word (.docx) Free</a></li>
       </ul>
     </nav>
   </main>`;

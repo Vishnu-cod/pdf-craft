@@ -1,9 +1,9 @@
 # PDFCraft — Free In-Browser PDF Editor & Utilities
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-pdf--craft--vert.vercel.app-6366f1?style=for-the-badge&logo=vercel)](https://pdf-craft-vert.vercel.app/)
-[![Privacy](https://img.shields.io/badge/Privacy-100%25%20Client--Side-10b981?style=for-the-badge&logo=shield)](https://pdf-craft-vert.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-usepdfcraft.xyz-6366f1?style=for-the-badge&logo=vercel)](https://usepdfcraft.xyz/)
+[![Privacy](https://img.shields.io/badge/Privacy-100%25%20Client--Side-10b981?style=for-the-badge&logo=shield)](https://usepdfcraft.xyz/)
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg?style=for-the-badge)](LICENSE)
-[![Free](https://img.shields.io/badge/Free-No%20Account%20Required-f59e0b?style=for-the-badge)](https://pdf-craft-vert.vercel.app/)
+[![Free](https://img.shields.io/badge/Free-No%20Account%20Required-f59e0b?style=for-the-badge)](https://usepdfcraft.xyz/)
 
 > Fast, client-side document utilities that run entirely in your browser using `pdf-lib`, `pdf.js`, and HTML5 Canvas. Your documents process locally in browser memory and never leave your machine.
 
@@ -97,5 +97,5 @@ Distributed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**. See
 
 <p align="center">
   Crafted for document privacy. <br/>
-  <b><a href="https://pdf-craft-vert.vercel.app">Launch PDFCraft Live →</a></b>
+  <b><a href="https://usepdfcraft.xyz">Launch PDFCraft Live →</a></b>
 </p>
